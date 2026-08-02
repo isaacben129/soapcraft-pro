@@ -1,0 +1,28 @@
+{
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"],
+      "description": "Up-to-date library documentation. Use BEFORE importing any package so agents code against the CURRENT API, not memorized old ones. Required for the 'search-first' rule."
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": { "GITHUB_TOKEN": "${GITHUB_TOKEN}" },
+      "description": "GitHub issue/PR/repo operations beyond the built-in github-* skills."
+    },
+    "excalidraw": {
+      "command": "npx",
+      "args": ["-y", "@matte-as/excalidraw-mcp"],
+      "description": "Architecture + screen/flow wireframes in S2 (PRD design stage). Alternative: figma (official Framelink Figma MCP) for design-token-driven UI."
+    },
+    "firecrawl": {
+      "url": "http://firecrawl-api-1:3002/mcp",
+      "description": "Self-hosted Firecrawl for web research during reverse-prompt (S1). Already healthy."
+    },
+    "postiz": {
+      "url": "https://social.havencompanion.app/mcp",
+      "description": "Distribution: announce releases on ship (S8). Already wired as 11 tools."
+    }
+  }
+}
