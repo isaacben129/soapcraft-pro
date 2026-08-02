@@ -1,0 +1,59 @@
+{
+  "name": "soapcraft-pro",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Recipe, batch, and profitability workspace for serious soap makers. Deterministic lye calculation, guided batch production, cure tracking, cost-per-bar analysis.",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "scan:generic": "bash scripts/scan-generic.sh",
+    "postinstall": "shx mkdir -p components/ui"
+  },
+  "dependencies": {
+    "next": "16.2.10",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "next-auth": "5.0.0-beta.25",
+    "@neondatabase/serverless": "0.10.4",
+    "drizzle-orm": "0.36.0",
+    "drizzle-kit": "0.27.0",
+    "@ai-sdk/openrouter": "1.0.0",
+    "ai": "4.3.0",
+    "zod": "3.24.0",
+    "clsx": "2.1.1",
+    "tailwind-merge": "2.6.0",
+    "lucide-react": "0.460.0",
+    "@radix-ui/react-slot": "1.1.0",
+    "@radix-ui/react-label": "2.1.0",
+    "@radix-ui/react-select": "2.1.0",
+    "@radix-ui/react-dialog": "1.1.0",
+    "@radix-ui/react-toast": "1.2.0",
+    "class-variance-authority": "0.7.1",
+    "tailwindcss": "4.1.0",
+    "@tailwindcss/vite": "4.1.0"
+  },
+  "devDependencies": {
+    "typescript": "5.7.0",
+    "@types/react": "19.1.0",
+    "@types/react-dom": "19.1.0",
+    "vitest": "2.1.0",
+    "@vitest/coverage-v8": "2.1.0",
+    "eslint": "9.15.0",
+    "@eslint/js": "9.15.0",
+    "globals": "15.12.0",
+    "shx": "0.3.4"
+  },
+  "engines": {
+    "node": ">=20.9.0"
+  }
+}
