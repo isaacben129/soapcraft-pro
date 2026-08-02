@@ -40,7 +40,8 @@
     "@radix-ui/react-toast": "1.2.0",
     "class-variance-authority": "0.7.1",
     "tailwindcss": "4.1.0",
-    "@tailwindcss/vite": "4.1.0"
+    "@tailwindcss/vite": "4.1.0",
+    "@tailwindcss/postcss": "4.1.0"
   },
   "devDependencies": {
     "typescript": "5.9.3",
