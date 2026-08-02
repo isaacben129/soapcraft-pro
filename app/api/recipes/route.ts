@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db/schema";
 import { recipes, recipeVersions } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { DEFAULT_OILS } from "@/lib/calculations/sap";
 
 export async function GET() {
   try {
