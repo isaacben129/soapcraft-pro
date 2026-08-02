@@ -5,13 +5,14 @@ import { eq } from "drizzle-orm";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await context.params;
     const result = await db
       .select()
       .from(batchCosts)
-      .where(eq(batchCosts.batchId, params.id))
+      .where(eq(batchCosts.batchId, id))
       .limit(1);
 
     if (!result[0]) {
@@ -29,9 +30,10 @@ export async function GET(
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await context.params;
     const body = await req.json();
     const { ingredientCosts, fragranceCost, otherCosts, batchYieldBars, targetPricePerBar } = body;
 
@@ -56,7 +58,7 @@ export async function PUT(
         targetPricePerBar: targetPricePerBar ?? 0,
         marginPercent,
       })
-      .where(eq(batchCosts.batchId, params.id))
+      .where(eq(batchCosts.batchId, id))
       .returning();
 
     return NextResponse.json(result);

@@ -5,9 +5,10 @@ import { eq } from "drizzle-orm";
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await context.params;
     const body = await req.json();
     const { day, pH, hardness, notes } = body;
 
@@ -21,7 +22,7 @@ export async function POST(
     const [result] = await db
       .insert(cureObservations)
       .values({
-        batchId: params.id,
+        batchId: id,
         day,
         pH: pH ?? null,
         hardness: hardness ?? null,
@@ -40,13 +41,14 @@ export async function POST(
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await context.params;
     const results = await db
       .select()
       .from(cureObservations)
-      .where(eq(cureObservations.batchId, params.id))
+      .where(eq(cureObservations.batchId, id))
       .orderBy(cureObservations.day);
 
     return NextResponse.json(results);

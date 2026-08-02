@@ -18,44 +18,40 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, method, oilBlend, superfatPercent, lyeConcentrationPercent, waterToLyeRatio } = body;
+    const { name, method, oilBlend, superfatPercent, lyeConcentrationPercent, waterToLyeRatio, fragranceLoad, propertyRanges } = body;
 
-    if (!name) {
+    if (!name || !oilBlend || oilBlend.length === 0) {
       return NextResponse.json(
-        { error: "Recipe name is required" },
+        { error: "Name and oil blend are required" },
         { status: 400 }
       );
     }
 
-    const recipeId = crypto.randomUUID();
-    const versionId = crypto.randomUUID();
+    const calculated = calculateSAP(oilBlend, lyeConcentrationPercent, waterToLyeRatio);
 
-    const [recipe] = await db
-      .insert(recipes)
-      .values({
-        id: recipeId,
-        name,
-        method: method ?? "cp",
-        createdBy: "user",
-        isCurated: 0,
-      })
-      .returning();
+    const [recipe] = await db.insert(recipes).values({
+      id: crypto.randomUUID(),
+      name,
+      method,
+      createdBy: "user",
+      isCurated: 0,
+    }).returning();
 
     await db.insert(recipeVersions).values({
-      id: versionId,
-      recipeId,
+      id: crypto.randomUUID(),
+      recipeId: recipe.id,
       version: 1,
       name,
-      method: method ?? "cp",
-      oilBlend: oilBlend ?? [],
-      superfatPercent: superfatPercent ?? 5,
-      lyeConcentrationPercent: lyeConcentrationPercent ?? 33,
-      waterToLyeRatio: waterToLyeRatio ?? 2.5,
-      calculatedLyeNaOH: 0,
-      calculatedLyeKOH: 0,
-      calculatedWater: 0,
-      calculatedFragranceLoad: 0,
-      propertyRanges: null,
+      method,
+      oilBlend,
+      superfatPercent,
+      lyeConcentrationPercent,
+      waterToLyeRatio,
+      calculatedLyeNaOH: calculated.lyeNaOH,
+      calculatedLyeKOH: calculated.lyeKOH,
+      calculatedWater: calculated.water,
+      calculatedFragranceLoad: calculated.fragranceLoad,
+      propertyRanges,
       warnings: [],
     });
 
@@ -66,4 +62,30 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+function calculateSAP(
+  oilBlend: Array<{ oilId: string; percent: number }>,
+  lyeConcentrationPercent: number,
+  waterToLyeRatio: number
+) {
+  const totalSapNaOH = oilBlend.reduce((sum, oil) => {
+    const oilData = DEFAULT_OILS.find((o) => o.id === oil.oilId);
+    return sum + (oilData?.sapValueNaOH ?? 0) * oil.percent;
+  }, 0) / 100;
+
+  const totalSapKOH = oilBlend.reduce((sum, oil) => {
+    const oilData = DEFAULT_OILS.find((o) => o.id === oil.oilId);
+    return sum + (oilData?.sapValueKOH ?? 0) * oil.percent;
+  }, 0) / 100;
+
+  const lyeNaOH = totalSapNaOH * (1 + superfatPercent / 100);
+  const lyeKOH = totalSapKOH * (1 + superfatPercent / 100);
+  const water = lyeNaOH * waterToLyeRatio;
+  const fragranceLoad = oilBlend.reduce((sum, oil) => {
+    const oilData = DEFAULT_OILS.find((o) => o.id === oil.oilId);
+    return sum + (oilData?.maxFragranceLoad ?? 0) * oil.percent;
+  }, 0) / 100;
+
+  return { lyeNaOH, lyeKOH, water, fragranceLoad };
 }
