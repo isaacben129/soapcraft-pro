@@ -73,7 +73,7 @@ export function Costing({ batchName, costData }: CostingProps) {
             <input
               type="text"
               value={ic.oilId}
-              onChange={(e) => updateIngredientCost(i, "oilId", e.target.value as any)}
+              onChange={(e) => updateIngredientCost(i, "oilId", e.target.value)}
               placeholder="Oil ID"
               className="w-32 text-sm border rounded px-2 py-1"
             />
