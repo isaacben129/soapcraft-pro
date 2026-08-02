@@ -63,6 +63,9 @@ export function calculateFormulation(input: FormulationInput): CalculationResult
     throw new Error(`Oil percentages must sum to 100%. Currently: ${totalOilPercent.toFixed(2)}%`);
   }
 
+  // Build lookup map from DEFAULT_OILS
+  const oilLookup = new Map(DEFAULT_OILS.map(o => [o.id, o]));
+
   // Calculate total oil weight (assume 1000g batch for percentage-based calculation)
   const oilWeightTotal = 1000;
 
@@ -70,9 +73,13 @@ export function calculateFormulation(input: FormulationInput): CalculationResult
   let lyeNaOH = 0;
   let lyeKOH = 0;
   for (const oil of oilBlend) {
+    const oilData = oilLookup.get(oil.oilId);
+    if (!oilData) {
+      throw new Error(`Unknown oil: ${oil.oilId}`);
+    }
     const oilWeight = (oil.percent / 100) * oilWeightTotal;
-    lyeNaOH += oilWeight * oil.sapValueNaOH;
-    lyeKOH += oilWeight * oil.sapValueKOH;
+    lyeNaOH += oilWeight * oilData.sapValueNaOH;
+    lyeKOH += oilWeight * oilData.sapValueKOH;
   }
 
   // Apply superfat reduction (NaOH only for cold process)
@@ -92,12 +99,13 @@ export function calculateFormulation(input: FormulationInput): CalculationResult
   // Calculate property ranges (weighted blend of oil properties)
   let hardness = 0, lather = 0, moisturizing = 0, cleansing = 0, condition = 0;
   for (const oil of oilBlend) {
+    const oilData = oilLookup.get(oil.oilId)!;
     const weight = oil.percent / 100;
-    hardness += oil.hardnessFactor * weight;
-    lather += oil.latherFactor * weight;
-    moisturizing += oil.moisturizingFactor * weight;
-    cleansing += oil.cleansingFactor * weight;
-    condition += oil.conditionFactor * weight;
+    hardness += oilData.hardnessFactor * weight;
+    lather += oilData.latherFactor * weight;
+    moisturizing += oilData.moisturizingFactor * weight;
+    cleansing += oilData.cleansingFactor * weight;
+    condition += oilData.conditionFactor * weight;
   }
 
   const propertyRanges = {
@@ -114,10 +122,11 @@ export function calculateFormulation(input: FormulationInput): CalculationResult
   const warnings: CalculationResult["warnings"] = [];
 
   for (const oil of oilBlend) {
+    const oilData = oilLookup.get(oil.oilId);
     if (oil.percent > 80) {
       warnings.push({
         type: "danger",
-        message: `${oil.nameShort} is ${oil.percent}% of the blend — single oil above 80% can cause separation`,
+        message: `${oilData?.nameShort ?? oil.oilId} is ${oil.percent}% of the blend — single oil above 80% can cause separation`,
         oilId: oil.oilId,
       });
     }
