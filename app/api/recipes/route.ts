@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db/schema";
 import { recipes, recipeVersions } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { v4 as uuid } from "uuid";
 
 export async function GET() {
   try {
@@ -28,12 +27,13 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const now = new Date().toISOString();
+    const recipeId = crypto.randomUUID();
+    const versionId = crypto.randomUUID();
 
     const [recipe] = await db
       .insert(recipes)
       .values({
-        id: uuid(),
+        id: recipeId,
         name,
         method: method ?? "cp",
         createdBy: "user",
@@ -42,8 +42,8 @@ export async function POST(req: NextRequest) {
       .returning();
 
     await db.insert(recipeVersions).values({
-      id: uuid(),
-      recipeId: recipe.id,
+      id: versionId,
+      recipeId,
       version: 1,
       name,
       method: method ?? "cp",
