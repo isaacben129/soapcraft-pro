@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db/schema";
-import { batchCosts, batches } from "@/db/schema";
+import { batchCosts } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 export async function GET(

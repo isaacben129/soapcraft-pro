@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { db } from "@/db/schema";
-import { cureObservations, batches } from "@/db/schema";
+import { cureObservations } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 export async function POST(
