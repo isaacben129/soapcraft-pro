@@ -50,7 +50,7 @@ export function OnboardingFlow() {
       setStep(STEPS[stepIndex + 1]);
     } else {
       // Complete onboarding — save and redirect
-      router.push("/recipes/new");
+      router.push({ pathname: "/recipes/new" });
     }
   }
 
