@@ -1,6 +1,11 @@
-import { sql } from "@neondatabase/serverless";
+import { neon } from "@neondatabase/serverless";
+import { sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/neon-http";
 import { pgTable, serial, text, real, integer, timestamp, jsonb, varchar } from "drizzle-orm/pg-core";
+
+// --- Database connection (lazy, initialized on first use) ---
+const querySql = neon(process.env.DATABASE_URL!);
+export const db = drizzle(querySql);
 
 // --- Ingredient ---
 export const ingredients = pgTable("ingredients", {
