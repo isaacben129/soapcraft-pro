@@ -4,8 +4,24 @@ import { drizzle } from "drizzle-orm/neon-http";
 import { pgTable, serial, text, real, integer, timestamp, jsonb, varchar } from "drizzle-orm/pg-core";
 
 // --- Database connection (lazy, initialized on first use) ---
-const querySql = neon(process.env.DATABASE_URL!);
-export const db = drizzle(querySql);
+function createDb() {
+  const databaseUrl = process.env.DATABASE_URL;
+  if (!databaseUrl) {
+    throw new Error("DATABASE_URL is required before using the database");
+  }
+
+  return drizzle(neon(databaseUrl));
+}
+
+let dbClient: ReturnType<typeof createDb> | null = null;
+
+export const db = new Proxy({} as ReturnType<typeof createDb>, {
+  get(_target, prop) {
+    dbClient ??= createDb();
+    const value = Reflect.get(dbClient, prop);
+    return typeof value === "function" ? value.bind(dbClient) : value;
+  },
+});
 
 // --- Ingredient ---
 export const ingredients = pgTable("ingredients", {

@@ -8,4 +8,5 @@ GTM.md
 GTM-implementation.md
 SEO-research.md
 *.log
+tsconfig.tsbuildinfo
 .DS_Store

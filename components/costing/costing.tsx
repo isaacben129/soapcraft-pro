@@ -42,7 +42,11 @@ export function Costing({ batchName, costData }: CostingProps) {
   const marginPercent =
     targetPricePerBar > 0 ? ((targetPricePerBar - costPerBar) / targetPricePerBar) * 100 : 0;
 
-  function updateIngredientCost(index: number, field: keyof IngredientCost, value: number) {
+  function updateIngredientCost<K extends keyof IngredientCost>(
+    index: number,
+    field: K,
+    value: IngredientCost[K]
+  ) {
     const updated = [...ingredientCosts];
     updated[index] = { ...updated[index], [field]: value };
     if (field === "costPerGram" || field === "weightUsedG") {

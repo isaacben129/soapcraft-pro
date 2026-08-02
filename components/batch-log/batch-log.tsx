@@ -4,11 +4,14 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 interface BatchLogProps {
-  recipeName: string;
-  recipeId: string;
+  recipeName?: string;
+  recipeId?: string;
 }
 
-export function BatchLog({ recipeName, recipeId }: BatchLogProps) {
+export function BatchLog({
+  recipeName = "Custom batch",
+  recipeId = "manual",
+}: BatchLogProps) {
   const [batchName, setBatchName] = useState("");
   const [oilWeight, setOilWeight] = useState("");
   const [lyeWeight, setLyeWeight] = useState("");

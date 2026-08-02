@@ -22,6 +22,7 @@ export async function POST(
     const [result] = await db
       .insert(cureObservations)
       .values({
+        id: crypto.randomUUID(),
         batchId: id,
         day,
         pH: pH ?? null,

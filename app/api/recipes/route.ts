@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db/schema";
 import { recipes, recipeVersions } from "@/db/schema";
-import { eq } from "drizzle-orm";
-import { DEFAULT_OILS } from "@/lib/calculations/sap";
+import { calculateFormulation } from "@/lib/calculations/sap";
 
 export async function GET() {
   try {
@@ -19,7 +18,16 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, method, oilBlend, superfatPercent, lyeConcentrationPercent, waterToLyeRatio, fragranceLoad, propertyRanges } = body;
+    const {
+      name,
+      method,
+      oilBlend,
+      superfatPercent,
+      lyeConcentrationPercent,
+      waterToLyeRatio,
+      propertyRanges,
+    } = body;
+    const fragranceLoadPercent = body.fragranceLoadPercent ?? body.fragranceLoad ?? 0;
 
     if (!name || !oilBlend || oilBlend.length === 0) {
       return NextResponse.json(
@@ -28,7 +36,13 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const calculated = calculateSAP(oilBlend, lyeConcentrationPercent, waterToLyeRatio);
+    const calculated = calculateFormulation({
+      oilBlend,
+      superfatPercent,
+      lyeConcentrationPercent,
+      waterToLyeRatio,
+      fragranceLoadPercent,
+    });
 
     const [recipe] = await db.insert(recipes).values({
       id: crypto.randomUUID(),
@@ -52,8 +66,8 @@ export async function POST(req: NextRequest) {
       calculatedLyeKOH: calculated.lyeKOH,
       calculatedWater: calculated.water,
       calculatedFragranceLoad: calculated.fragranceLoad,
-      propertyRanges,
-      warnings: [],
+      propertyRanges: propertyRanges ?? calculated.propertyRanges,
+      warnings: calculated.warnings,
     });
 
     return NextResponse.json(recipe, { status: 201 });
@@ -63,30 +77,4 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     );
   }
-}
-
-function calculateSAP(
-  oilBlend: Array<{ oilId: string; percent: number }>,
-  lyeConcentrationPercent: number,
-  waterToLyeRatio: number
-) {
-  const totalSapNaOH = oilBlend.reduce((sum, oil) => {
-    const oilData = DEFAULT_OILS.find((o) => o.id === oil.oilId);
-    return sum + (oilData?.sapValueNaOH ?? 0) * oil.percent;
-  }, 0) / 100;
-
-  const totalSapKOH = oilBlend.reduce((sum, oil) => {
-    const oilData = DEFAULT_OILS.find((o) => o.id === oil.oilId);
-    return sum + (oilData?.sapValueKOH ?? 0) * oil.percent;
-  }, 0) / 100;
-
-  const lyeNaOH = totalSapNaOH * (1 + superfatPercent / 100);
-  const lyeKOH = totalSapKOH * (1 + superfatPercent / 100);
-  const water = lyeNaOH * waterToLyeRatio;
-  const fragranceLoad = oilBlend.reduce((sum, oil) => {
-    const oilData = DEFAULT_OILS.find((o) => o.id === oil.oilId);
-    return sum + (oilData?.maxFragranceLoad ?? 0) * oil.percent;
-  }, 0) / 100;
-
-  return { lyeNaOH, lyeKOH, water, fragranceLoad };
 }
