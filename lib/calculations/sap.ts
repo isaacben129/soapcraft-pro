@@ -237,7 +237,7 @@ export function checkIFRACompliance(oilBlend: OilInput[], ingredients: Map<strin
     if (ingredient && ingredient.maxUsagePercent !== null && oil.percent > ingredient.maxUsagePercent) {
       violations.push({
         type: "danger",
-        message: `${ingredient.name} exceeds IFRA max usage of ${ingredient.maxUsagePercent}%`,
+        message: `${oil.oilId} exceeds IFRA max usage of ${ingredient.maxUsagePercent}%`,
         oilId: oil.oilId,
       });
     }
