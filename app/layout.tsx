@@ -22,12 +22,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <span className="text-xl">🧼</span>
                 <span>SoapCraft Pro</span>
               </a>
-              <nav className="flex items-center gap-4 text-sm">
-                <a href="/recipes" className="text-muted-foreground hover:text-foreground transition-colors">Recipes</a>
-                <a href="/batches" className="text-muted-foreground hover:text-foreground transition-colors">Batches</a>
-                <a href="/cure" className="text-muted-foreground hover:text-foreground transition-colors">Cure</a>
-                <a href="/costing" className="text-muted-foreground hover:text-foreground transition-colors">Costing</a>
-                <a href="/library" className="text-muted-foreground hover:text-foreground transition-colors">Library</a>
+              <nav className="flex items-center gap-1 text-sm" aria-label="Workflow navigation">
+                <a href="/recipes" className="px-3 py-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">Recipes</a>
+                <span className="text-border mx-1">/</span>
+                <a href="/batches" className="px-3 py-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">Batches</a>
+                <span className="text-border mx-1">/</span>
+                <a href="/cure" className="px-3 py-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">Cure</a>
+                <span className="text-border mx-1">/</span>
+                <a href="/costing" className="px-3 py-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">Costing</a>
               </nav>
             </div>
           </header>

@@ -418,6 +418,20 @@ SoapCraft Pro
 
 ## 11. Functional Requirements
 
+### 11.0 Product Flow Reference
+
+The complete product flow, state map, and user journey documentation is maintained in `flowchart/product-flow.md` and `flowchart/product-flow.excalidraw`. These documents are the authoritative reference for:
+
+- All user journeys (new user, returning user, power user, free tier user)
+- All feature flows (Recipe Builder, Batch Log, Cure Tracker, Costing)
+- All global states (app, navigation, auth, subscription, data, form, calculation, notification)
+- All inter-module interfaces and data contracts
+- All empty, loading, error, and success states
+
+The PRD references these documents — no state is unmapped, no journey is unexplored.
+
+## 11. Functional Requirements
+
 ### Accounts & Authentication
 - Email/password signup (free and paid tiers)
 - Google OAuth (optional)
