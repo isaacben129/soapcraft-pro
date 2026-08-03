@@ -176,7 +176,7 @@ The marketing site and the app are separate deployments with separate routes. Th
 | **Cure Tracker** | Estimated cure window with observation logging | Expected cure window, days elapsed, reminders, pH/hardness observation logs, final outcome review, user-decided completion |
 | **Cost Per Batch / Per Bar** | Ingredient cost catalogue and pricing | Ingredient cost catalogue, cost per batch, cost per bar, target margin pricing, suggested selling price |
 | **Auth** | Login, signup, session management | Email/password signup, login, logout, session persistence, password reset, auth gate on app routes |
-| **Payments** | Subscription management | Free tier (calculator + 3 recipes + 1 active batch), Pro tier ($12/mo or $99/yr — everything above), subscription management page, billing portal |
+- **Payments** — Subscription management | Free tier (calculator + 3 recipes + 1 active batch), Pro tier ($12/mo or $99/yr — everything above), subscription management page, Dodo Payments integration
 
 ### UX Design (see DESIGN.md)
 The App Life Spec (signature interaction, motion vocabulary, first-use guidance, retention surfaces, accessibility budget) is a v1 deliverable defined in `product/DESIGN.md` and referenced throughout this PRD.
@@ -360,6 +360,7 @@ SoapCraft Pro
 ├── Marketing Site (public, no auth)
 │   ├── Homepage (hero, demo, features, workflow, pricing teaser)
 │   ├── Pricing page (tier details, comparison, upgrade CTA)
+│   ├── Blog (programmatic SEO, SEO articles)
 │   └── Auth gate (login/signup links)
 ├── App (auth-gated)
 │   ├── Auth (login, signup, password reset)
@@ -516,19 +517,19 @@ SoapCraft Pro
 - **Analytics events:** dashboard_viewed, quick_action_clicked.
 - **Acceptance criteria:** User can see their active batches, upcoming cures, and cost summary at a glance. All data is current.
 
-### 9.10 Marketing Page (Public, No Auth)
-- **Purpose:** Public marketing page that introduces SoapCraft Pro and drives signups. No login required.
+### 9.10 Marketing Site (Public, No Auth)
+- **Purpose:** Public marketing page that introduces SoapCraft Pro and drives signups. Includes blog for SEO and programmatic SEO. No login required.
 - **Entry points:** Direct URL, Google search, social media link, bookmark.
-- **Required sections/components:** Hero (headline + subheadline + CTA), Live calculation demo (deterministic, < 100ms), Feature overview (4 modules with descriptions), Workflow progression (4-step visual: Recipe → Batch → Cure → Cost), Social proof/testimonials (v1: placeholder), Pricing teaser (free vs Pro), Footer (links, legal).
-- **Required fields/content:** Headline, Subheadline, CTA buttons, Demo calculation data, Feature descriptions, Workflow steps, Pricing tiers.
-- **CTAs/actions:** "Start building" (→ signup → Recipe Builder), "Browse recipes" (→ Recipe Library), "Learn more" (→ Feature overview).
-- **Empty state:** N/A (marketing page always shows the same content).
+- **Required sections/components:** Hero (headline + subheadline + CTA), Live calculation demo (deterministic, < 100ms), Feature overview (4 modules with descriptions), Workflow progression (4-step visual: Recipe → Batch → Cure → Cost), Social proof/testimonials (v1: placeholder), Pricing teaser (free vs Pro), Blog (programmatic SEO), Footer (links, legal).
+- **Required fields/content:** Headline, Subheadline, CTA buttons, Demo calculation data, Feature descriptions, Workflow steps, Pricing tiers, Blog posts.
+- **CTAs/actions:** "Start building" (→ signup → Recipe Builder), "Browse recipes" (→ Recipe Library), "Learn more" (→ Feature overview), "Read the blog" (→ Blog).
+- **Empty state:** N/A (marketing site always shows the same content).
 - **Loading state:** Skeleton hero while loading.
 - **Error state:** "Could not load page. Retry." (static content falls back to cached version).
 - **Permission rules:** All tiers (including logged-out).
-- **Data dependencies:** None (static content).
-- **Analytics events:** homepage_viewed, cta_clicked, demo_calculation_viewed.
-- **Acceptance criteria:** Marketing page loads in < 1s. CTA buttons are visible and clickable. Live demo calculation runs deterministically in < 100ms. The page clearly communicates that SoapCraft Pro is a workspace, not just a calculator.
+- **Data dependencies:** None (static content). Blog content from CMS.
+- **Analytics events:** homepage_viewed, cta_clicked, demo_calculation_viewed, blog_viewed, blog_post_viewed.
+- **Acceptance criteria:** Marketing site loads in < 1s. CTA buttons are visible and clickable. Live demo calculation runs deterministically in < 100ms. The page clearly communicates that SoapCraft Pro is a workspace, not just a calculator. Blog is accessible and SEO-optimised.
 
 ### 9.11 Auth Flow (Login / Signup)
 - **Purpose:** Authenticate users before they access the app. The marketing page is public; the app is gated.
@@ -547,16 +548,16 @@ SoapCraft Pro
 ### 9.12 Subscription / Pricing Page
 - **Purpose:** Present pricing tiers and allow users to upgrade to Pro.
 - **Entry points:** "Pricing" link in marketing page footer, "Upgrade" button in Dashboard, "Manage subscription" in Settings.
-- **Required sections/components:** Free tier details, Pro tier details, Comparison table, Current tier indicator, Upgrade/downgrade actions, Billing portal link.
-- **Required fields/content:** Tier names, Feature lists, Price (monthly/yearly), Current tier badge, Payment method (for upgrade).
-- **CTAs/actions:** "Upgrade to Pro" → Stripe Checkout → "Manage subscription" → "Downgrade to Free."
+- **Required sections/components:** Free tier details, Pro tier details, Comparison table, Current tier indicator, Upgrade/downgrade actions, Dodo Payments checkout.
+- **Required fields/content:** Tier names, Feature lists, Price (monthly/yearly), Current tier badge.
+- **CTAs/actions:** "Upgrade to Pro" → Dodo Payments Checkout → "Manage subscription" → "Downgrade to Free."
 - **Empty state:** N/A (pricing page always shows the same content).
 - **Loading state:** Spinner on payment processing.
 - **Error state:** "Payment failed. Please try again." (payment), "Something went wrong." (general).
 - **Permission rules:** All tiers (including logged-out).
-- **Data dependencies:** Stripe checkout session, user subscription status.
+- **Data dependencies:** Dodo Payments checkout session, user subscription status.
 - **Analytics events:** pricing_viewed, upgrade_clicked, payment_initiated, payment_success, payment_failed, downgrade_clicked.
-- **Acceptance criteria:** User can view pricing tiers on the marketing page. Authenticated user can upgrade from Free to Pro via Stripe Checkout. User can manage their subscription from the Settings page.
+- **Acceptance criteria:** User can view pricing tiers on the marketing page. Authenticated user can upgrade from Free to Pro via Dodo Payments Checkout. User can manage their subscription from the Settings page.
 
 ### 9.13 Account Settings
 - **Purpose:** Manage user profile, subscription, and account settings.
@@ -619,9 +620,9 @@ SoapCraft Pro
 2. User clicks "Upgrade to Pro" or navigates to Pricing page
 3. User is taken to the Subscription / Pricing page
 4. User selects Pro tier (monthly or yearly)
-5. User is redirected to Stripe Checkout
+5. User is redirected to Dodo Payments Checkout
 6. User completes payment
-7. Stripe confirms payment → subscription activated
+7. Dodo Payments confirms payment → subscription activated
 8. User is redirected back to the app with Pro tier access
 9. User can manage subscription from Account Settings (cancel, downgrade, update payment method)
 
@@ -954,7 +955,17 @@ OnboardingState
 
 Editing a recipe after it has been used in batches must not retroactively change historical batch records. Each recipe save creates a new `RecipeVersion`. Batches reference a specific `RecipeVersion`. The current version is tracked on the `Recipe` record.
 
-## 14. SEO Strategy (v2 — Post-Launch)
+## 14. SEO Strategy (v1 + v2)
+
+### v1 — Marketing Site + Blog (Launch)
+The marketing site is the primary SEO surface. It includes:
+1. **Homepage** — programmatic SEO with structured data, schema.org markup
+2. **Blog** — programmatic SEO articles targeting soap-making queries
+   - Content pillars: Soap Calculators, Soap Recipes, Soap Making Guides, Troubleshooting
+   - Each article is a standalone SEO asset with internal links to the app
+   - Blog posts drive organic traffic → marketing site → signup → app
+3. **Pricing page** — SEO-optimised landing for "soap making software" queries
+4. **Programmatic pages** — oil-specific calculator pages (not thin content — each must contain meaningful, validated formulation information)
 
 ### Content Pillars (4 pillars for v1, expanded in v2)
 1. **Soap Calculators** — "soap making calculator," "cold process soap calculator," "lye calculator for soap" + programmatic oil-specific calculator pages
@@ -968,6 +979,7 @@ Editing a recipe after it has been used in batches must not retroactively change
 - Calculators and ingredient database pages are the primary SEO assets
 - Curated recipes with verified formulations are the content moat
 - Troubleshooting articles based on real user problems are the retention asset
+- Blog content drives organic traffic to the marketing site, which converts to app signups
 - Measurable goals: impressions, indexed pages, qualified signups, top-ten rankings for defined clusters
 
 ## 15. Launch Plan
