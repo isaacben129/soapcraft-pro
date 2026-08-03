@@ -13,12 +13,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className="font-sans">
       <body className="min-h-screen bg-background text-foreground antialiased">
         <div className="flex min-h-screen flex-col">
           <header className="sticky top-0 z-50 w-full border-b bg-background">
             <div className="container mx-auto flex h-16 items-center justify-between px-4">
-              <a href="/" className="flex items-center gap-2 font-semibold tracking-tight">
+              <a href="/" className="flex items-center gap-2 font-display font-bold tracking-tight">
                 <span className="text-xl">🧼</span>
                 <span>SoapCraft Pro</span>
               </a>

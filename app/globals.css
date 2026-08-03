@@ -1,48 +1,68 @@
 @import "tailwindcss";
 
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+
 :root {
-  --background: 0 0% 100%;
-  --foreground: 240 10% 3.9%;
-  --muted: 240 4.8% 95.9%;
-  --muted-foreground: 240 3.8% 46.1%;
+  /* ── Typography ── */
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-serif: "Playfair Display", Georgia, "Times New Roman", serif;
+
+  /* ── Color palette: warm cream + dark charcoal + amber accent ── */
+  --background: 38 12% 97%;
+  --foreground: 25 12% 12%;
+  --muted: 38 8% 94%;
+  --muted-foreground: 30 8% 48%;
   --popover: 0 0% 100%;
-  --popover-foreground: 240 10% 3.9%;
+  --popover-foreground: 25 12% 12%;
   --card: 0 0% 100%;
-  --card-foreground: 240 10% 3.9%;
-  --border: 240 5.9% 90%;
-  --input: 240 5.9% 90%;
-  --primary: 240 5.9% 10%;
+  --card-foreground: 25 12% 12%;
+  --border: 30 10% 88%;
+  --input: 30 10% 88%;
+  --primary: 25 60% 35%;
   --primary-foreground: 0 0% 98%;
-  --secondary: 240 4.8% 95.9%;
-  --secondary-foreground: 240 5.9% 10%;
-  --accent: 240 4.8% 95.9%;
-  --accent-foreground: 240 5.9% 10%;
-  --destructive: 0 84.2% 60.2%;
+  --secondary: 38 12% 94%;
+  --secondary-foreground: 25 12% 12%;
+  --accent: 32 80% 55%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 72% 51%;
   --destructive-foreground: 0 0% 98%;
-  --ring: 240 5.9% 10%;
-  --radius: 0.75rem;
+  --ring: 25 60% 35%;
+
+  /* ── Design tokens ── */
+  --radius: 0.5rem;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-lg: 0 4px 16px rgba(0,0,0,0.08);
+
+  /* ── Spacing scale ── */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
 }
 
 .dark {
-  --background: 240 10% 3.9%;
-  --foreground: 0 0% 98%;
-  --muted: 240 3.7% 15.9%;
-  --muted-foreground: 240 5% 64.9%;
-  --popover: 240 10% 3.9%;
-  --popover-foreground: 0 0% 98%;
-  --card: 240 10% 3.9%;
-  --card-foreground: 0 0% 98%;
-  --border: 240 3.7% 15.9%;
-  --input: 240 3.7% 15.9%;
-  --primary: 0 0% 98%;
-  --primary-foreground: 240 5.9% 10%;
-  --secondary: 240 3.7% 15.9%;
-  --secondary-foreground: 0 0% 98%;
-  --accent: 240 3.7% 15.9%;
-  --accent-foreground: 0 0% 98%;
-  --destructive: 0 62.8% 30.6%;
+  --background: 25 10% 8%;
+  --foreground: 38 8% 92%;
+  --muted: 25 6% 16%;
+  --muted-foreground: 30 6% 56%;
+  --popover: 25 10% 10%;
+  --popover-foreground: 38 8% 92%;
+  --card: 25 10% 12%;
+  --card-foreground: 38 8% 92%;
+  --border: 25 6% 20%;
+  --input: 25 6% 20%;
+  --primary: 32 70% 55%;
+  --primary-foreground: 25 10% 8%;
+  --secondary: 25 6% 16%;
+  --secondary-foreground: 38 8% 92%;
+  --accent: 32 80% 55%;
+  --accent-foreground: 25 10% 8%;
+  --destructive: 0 72% 51%;
   --destructive-foreground: 0 0% 98%;
-  --ring: 240 3.7% 15.9%;
+  --ring: 32 70% 55%;
 }
 
 * {
@@ -52,4 +72,57 @@
 body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
+  font-family: var(--font-sans);
+  font-feature-settings: "kern" 1, "liga" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* ── Semantic type scale ── */
+.text-display {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.text-section {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  line-height: 1.3;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.text-body {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.text-label {
+  font-size: 0.875rem;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.text-meta {
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: hsl(var(--muted-foreground));
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
