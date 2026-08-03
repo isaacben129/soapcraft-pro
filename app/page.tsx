@@ -16,7 +16,7 @@ export default function Home() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <section className="max-w-2xl mx-auto text-center mb-12">
+      <section className="max-w-2xl mx-auto text-center mb-16">
         <h1 className="text-4xl font-bold tracking-tight mb-4">
           Build better soap with verified calculations
         </h1>
@@ -32,8 +32,8 @@ export default function Home() {
         </a>
       </section>
 
-      <section className="max-w-2xl mx-auto mb-12">
-        <h2 className="text-2xl font-semibold mb-6">How it works</h2>
+      <section className="max-w-2xl mx-auto mb-16">
+        <h2 className="text-2xl font-semibold mb-6">The workflow</h2>
         <ol className="space-y-4 text-muted-foreground">
           <li className="flex gap-3">
             <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-secondary text-sm font-medium">

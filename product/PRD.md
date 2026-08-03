@@ -190,9 +190,62 @@ The App Life Spec (signature interaction, motion vocabulary, first-use guidance,
 - Etsy/Shopify integrations
 - Compliance reports (use checklists and documentation only)
 - Multi-language support
-- Mobile app (web-first, responsive)
+|- Mobile app (web-first, responsive)
 
-## 8. Information Architecture / App Structure
+## 8. Competitive Analysis — SoapCraft Pro vs SoapCalc
+
+### SoapCalc (the incumbent)
+SoapCalc is the free, no-signup lye calculator that soap makers have used since 2001. It is functional, dense, and information-rich. Its strengths and weaknesses define the baseline SoapCraft Pro must exceed.
+
+**What SoapCalc does well:**
+- Fast, deterministic lye calculations (NaOH, KOH, dual)
+- 150+ oils with SAP values and fatty acid profiles
+- Real-time quality predictions (hardness, cleansing, conditioning, lather, creaminess)
+- Water calculation modes (percentage of oils, lye concentration, water:lye ratio)
+- Superfat and fragrance ratio controls
+- Mobile-responsive design
+- Zero friction: no signup, no fees, instant results
+- 20+ years of community trust
+
+**Where SoapCalc falls short:**
+- Calculator-only: no batch logging, no cure tracking, no cost analysis
+- No recipe library or versioning
+- No guided production process (Making Mode)
+- Dense, utilitarian UI — functional but not delightful
+- No workspace concept: each calculation is isolated
+- No cost per bar or pricing guidance
+- No retention surfaces or user progression
+- Static: no learning, no adaptation, no personalization
+
+**SoapCraft Pro exceeds SoapCalc by being a workspace, not a calculator:**
+
+| Dimension | SoapCalc | SoapCraft Pro |
+|-----------|----------|---------------|
+| Core function | Lye calculator | Full soap-making workspace (recipe → batch → cure → cost) |
+| Calculation | Deterministic, instant | Deterministic, instant (< 100ms), with confidence ranges |
+| Oil database | 150+ oils | 150+ oils + custom ingredient costs + IFRA compliance |
+| Quality predictions | 5 metrics, static scores | 5 metrics + confidence badges + AI trade-off explanations |
+| Recipe management | None | Library with versioning, search, filter, ratings |
+| Batch logging | None | Structured batch log with Making Mode (CP-guided) |
+| Cure tracking | None | Estimated windows, observation logs, user-controlled completion |
+| Cost analysis | None | Per-batch and per-bar costing with target pricing |
+| UI design | Dense, utilitarian | Impeccable design: semantic type scale, restrained palette, deliberate motion |
+| User progression | None | Onboarding quiz → first recipe → first batch → cure → cost |
+| Free tier | Fully free, no limits | Calculator + 3 recipes + 1 active batch (genuinely useful) |
+| Pro tier | N/A | $12/mo or $99/yr — everything above |
+
+### Design Quality Standard
+SoapCraft Pro must not look like a calculator. It must look like a meticulous chemist's notebook — calm precision, editorial restraint, and deliberate motion. Every screen must pass the `scan-generic.sh` quality gate from the `impeccable-design` skill before merge.
+
+### Competitive Moat
+SoapCalc is free and will remain free. SoapCraft Pro competes on:
+1. **Workspace completeness** — recipe → batch → cure → cost in one flow
+2. **Design quality** — impeccable, not generic
+3. **Guided production** — Making Mode with CP step checklist and persistent timers
+4. **Cost intelligence** — knowing what each bar costs and what to charge
+5. **Deterministic trust** — calculations are authoritative; AI explains and recommends only
+
+## 9. Information Architecture / App Structure
 
 ```
 SoapCraft Pro
@@ -422,8 +475,15 @@ SoapCraft Pro
 
 ### Design Quality Gates
 - All PRs must pass `scan-generic.sh` (from the `impeccable-design` skill) before merge
-- Banned patterns: per-section eyebrows, identical card grids, glassmorphism, image-hover zoom, gray-on-dark, side-stripe borders, pure black, hero-metric template, soft 12px radius
+- Banned patterns (hard bans, zero tolerance): per-section eyebrows, identical card grids, glassmorphism, image-hover zoom, gray-on-dark, side-stripe borders, pure black (`#000000`), hero-metric template, soft 12px radius
+- Design system: semantic type scale, only supplied/explicit colours, restrained Impeccable design
+- Every component must use the supplied hero-template JSON first for any hero sections
+- Client mockups: semantic type scale, only supplied/explicit colours, restrained Impeccable design
+- Editorial-looking heroes over generic service layouts
+- Motion: CSS transitions and React Spring, 150–300ms for small state transitions, prefer opacity and transform for performance
+- Accessibility: reduced motion supported, keyboard navigable, screen-reader labels on all inputs, minimum 16px body text, contrast ratio 4.5:1 minimum
 - See `impeccable` repo at `/tmp/impeccable` for the full hard bans list
+- The `impeccable-design` skill is the authoritative source for all design decisions. No component ships without passing its quality gates.
 
 ### Retention Surfaces (see DESIGN.md)
 - Dashboard cure alert: prompts user to log a cure observation for batches approaching completion
