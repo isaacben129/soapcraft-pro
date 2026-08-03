@@ -81,14 +81,14 @@ Every onboarding screen needs a job. Remove screens that merely restate marketin
 Display / screen title / section title / body / body emphasis / label / metadata / button
 ```
 
-- **Display:** Space Grotesk, 48-64px, weight 700, line-height 1.1
-- **Screen title:** Space Grotesk, 32-40px, weight 600, line-height 1.2
-- **Section title:** Space Grotesk, 24-28px, weight 600, line-height 1.3
-- **Body:** Inter, 16px, weight 400, line-height 1.6
-- **Body emphasis:** Inter, 16px, weight 500, line-height 1.6
-- **Label:** Inter, 14px, weight 500, line-height 1.4
-- **Metadata:** Inter, 12px, weight 400, line-height 1.4
-- **Button:** Inter, 14-16px, weight 600, line-height 1.4
+- **Display:** Playfair Display, 48-64px, weight 700, line-height 1.1
+- **Screen title:** Playfair Display, 32-40px, weight 600, line-height 1.2
+- **Section title:** Playfair Display, 24-28px, weight 600, line-height 1.3
+- **Body:** DM Sans, 16px, weight 400, line-height 1.6
+- **Body emphasis:** DM Sans, 16px, weight 500, line-height 1.6
+- **Label:** DM Sans, 14px, weight 500, line-height 1.4
+- **Metadata:** DM Sans, 12px, weight 400, line-height 1.4
+- **Button:** DM Sans, 14-16px, weight 600, line-height 1.4
 
 ### Icon System
 - **Family:** Lucide (open-source, consistent stroke weight)
@@ -177,13 +177,13 @@ Before any PR merge that changes visible UI, verify:
   --accent: #D97706;
   --accent-foreground: #FAFAF9;
   --card: #FFFFFF;
-  --card-foreground: #1C1917;
-  --border: #E7E5E4;
+  --card-foreground: #1A1A1A;
+  --border: #D4CFC8;
   --input: #FFFFFF;
 
   /* Typography */
-  --font-display: 'Space Grotesk', sans-serif;
-  --font-body: 'Inter', sans-serif;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
   /* Spacing */
