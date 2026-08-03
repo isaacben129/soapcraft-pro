@@ -168,7 +168,55 @@ The AI layer operates on top of the deterministic engine. It never invents quant
 ### UX Design (see DESIGN.md)
 The App Life Spec (signature interaction, motion vocabulary, first-use guidance, retention surfaces, accessibility budget) is a v1 deliverable defined in `product/DESIGN.md` and referenced throughout this PRD.
 
-### v2 (post-launch)
+### 7.5 10x Features — Making SoapCraft Pro 10x More Valuable
+
+Based on the competitive dive into SoapCalc and SoapMakingFriend, and the pain points of soap makers, the following features would make SoapCraft Pro 10x more valuable than a standalone calculator. These are ordered by impact and should be prioritized for v1/v2 planning.
+
+| # | Feature | Pain Point It Solves | Why It's 10x | Priority |
+|---|---------|---------------------|--------------|----------|
+| 1 | **Mold Volume Calculator** | SoapCalc has it, SoapMakingFriend doesn't — users need to know how much oil their mold requires | Eliminates the most common calculation error (wrong mold size = ruined batch) | **v1** |
+| 2 | **Recipe Intelligence** | Users don't know what oils to use or what superfat to pick | Replaces trial-and-error with guided recommendations based on goals | **v1** |
+| 3 | **Making Mode with Smart Guidance** | No competitor has guided production with contextual step-by-step instructions | Turns a passive log into an active coach — the single biggest workflow gap | **v1** |
+| 4 | **Cure Dashboard with Predictions** | Users guess when soap is done; no competitor offers predictions | Eliminates the biggest uncertainty in soap making | **v2** |
+| 5 | **Cost Optimization Engine** | SoapMakingFriend has per-batch cost but no per-bar pricing with target margins | Gives users actionable pricing intelligence, not just cost data | **v2** |
+| 6 | **Recipe Comparison** | No competitor lets users compare recipes side-by-side | Accelerates learning and recipe refinement | **v2** |
+| 7 | **Template Recipes** | New soap makers start from scratch every time | Reduces time-to-first-batch from 30 min to 2 min | **v1** |
+| 8 | **Ingredient Cost Catalogue** | SoapMakingFriend has basic inventory; SoapCalc has none | Enables cost-per-bar calculations and reorder alerts | **v2** |
+| 9 | **Batch Outcome Tracking** | No feedback loop — users don't know what worked | Closes the learning loop with personal data | **v2** |
+| 10 | **Exportable Compliance Docs** | Soap makers selling at markets need labels and SDS | Unlocks the commercial use case that no competitor addresses | **v2** |
+
+**v1 10x commitments:** Mold Volume Calculator, Recipe Intelligence, Making Mode with Smart Guidance, Template Recipes — these four features alone make SoapCraft Pro a workspace with intelligence, not a calculator.
+
+### Design Colour Palette
+The colour palette must be warm and distinctive — not black and white, not generic blue/purple. The palette is defined in `app/globals.css` and `tailwind.config.ts` and must be applied consistently across all screens.
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--background` | `hsl(38, 12%, 97%)` | Page background (warm cream) |
+| `--foreground` | `hsl(25, 12%, 12%)` | Primary text (dark charcoal) |
+| `--muted` | `hsl(38, 8%, 94%)` | Secondary backgrounds |
+| `--muted-foreground` | `hsl(30, 8%, 48%)` | Secondary text |
+| `--accent` | `hsl(32, 80%, 55%)` | Amber accent (CTAs, highlights, icons) |
+| `--accent-foreground` | `hsl(32, 80%, 15%)` | Text on amber backgrounds |
+| `--card` | `hsl(38, 12%, 100%)` | Card backgrounds (white) |
+| `--card-foreground` | `hsl(25, 12%, 12%)` | Text on cards |
+| `--border` | `hsl(30, 8%, 88%)` | Border colour |
+| `--input` | `hsl(38, 12%, 100%)` | Input backgrounds |
+| `--success` | `hsl(140, 40%, 50%)` | Sage green (success states) |
+| `--success-foreground` | `hsl(140, 40%, 98%)` | Text on success backgrounds |
+| `--warning` | `hsl(35, 90%, 55%)` | Warm amber (warning states) |
+| `--warning-foreground` | `hsl(35, 90%, 10%)` | Text on warning backgrounds |
+| `--destructive` | `hsl(5, 70%, 60%)` | Muted terracotta (error states) |
+| `--destructive-foreground` | `hsl(5, 70%, 98%)` | Text on error backgrounds |
+| `--info` | `hsl(210, 40%, 55%)` | Warm blue-gray (info states) |
+| `--info-foreground` | `hsl(210, 40%, 98%)` | Text on info backgrounds |
+| `--surface-tint` | `hsl(38, 12%, 94%)` | Surface backgrounds (slightly darker than page) |
+| `--radius` | `0.5rem` | Border radius for cards, inputs, buttons |
+| `--shadow-sm` | `0 1px 2px hsl(25, 12%, 12%, 0.05)` | Subtle elevation |
+| `--shadow-md` | `0 4px 6px hsl(25, 12%, 12%, 0.07)` | Medium elevation |
+| `--shadow-lg` | `0 10px 15px hsl(25, 12%, 12%, 0.10)` | Strong elevation |
+
+The palette is applied in `app/globals.css` (CSS custom properties) and `tailwind.config.ts` (Tailwind tokens). All components must use these tokens, not hardcoded values.
 
 - Public recipe sharing and community features
 - Fragrance pairing engine
@@ -192,9 +240,9 @@ The App Life Spec (signature interaction, motion vocabulary, first-use guidance,
 - Multi-language support
 |- Mobile app (web-first, responsive)
 
-## 8. Competitive Analysis — SoapCraft Pro vs SoapCalc
+## 8. Competitive Analysis — SoapCraft Pro vs SoapCalc vs SoapMakingFriend
 
-### SoapCalc (the incumbent)
+### SoapCalc (the incumbent — lye calculator)
 SoapCalc is the free, no-signup lye calculator that soap makers have used since 2001. It is functional, dense, and information-rich. Its strengths and weaknesses define the baseline SoapCraft Pro must exceed.
 
 **What SoapCalc does well:**
@@ -203,6 +251,7 @@ SoapCalc is the free, no-signup lye calculator that soap makers have used since 
 - Real-time quality predictions (hardness, cleansing, conditioning, lather, creaminess)
 - Water calculation modes (percentage of oils, lye concentration, water:lye ratio)
 - Superfat and fragrance ratio controls
+- Mold volume calculation — enter your mold dimensions and it calculates the volume of oils needed
 - Mobile-responsive design
 - Zero friction: no signup, no fees, instant results
 - 20+ years of community trust
@@ -216,33 +265,79 @@ SoapCalc is the free, no-signup lye calculator that soap makers have used since 
 - No cost per bar or pricing guidance
 - No retention surfaces or user progression
 - Static: no learning, no adaptation, no personalization
+- No inventory management
+- No community or recipe sharing
 
-**SoapCraft Pro exceeds SoapCalc by being a workspace, not a calculator:**
+### SoapMakingFriend (the closest competitor — full workspace)
+SoapMakingFriend is a cloud-based recipe builder, calculator, and workspace with iOS, Android, and web apps. It is the closest competitor to SoapCraft Pro and the one we must differentiate against.
 
-| Dimension | SoapCalc | SoapCraft Pro |
-|-----------|----------|---------------|
-| Core function | Lye calculator | Full soap-making workspace (recipe → batch → cure → cost) |
-| Calculation | Deterministic, instant | Deterministic, instant (< 100ms), with confidence ranges |
-| Oil database | 150+ oils | 150+ oils + custom ingredient costs + IFRA compliance |
-| Quality predictions | 5 metrics, static scores | 5 metrics + confidence badges + AI trade-off explanations |
-| Recipe management | None | Library with versioning, search, filter, ratings |
-| Batch logging | None | Structured batch log with Making Mode (CP-guided) |
-| Cure tracking | None | Estimated windows, observation logs, user-controlled completion |
-| Cost analysis | None | Per-batch and per-bar costing with target pricing |
-| UI design | Dense, utilitarian | Impeccable design: semantic type scale, restrained palette, deliberate motion |
-| User progression | None | Onboarding quiz → first recipe → first batch → cure → cost |
-| Free tier | Fully free, no limits | Calculator + 3 recipes + 1 active batch (genuinely useful) |
-| Pro tier | N/A | $12/mo or $99/yr — everything above |
+**What SoapMakingFriend does well:**
+- Full recipe builder with oils, fats, waxes, custom additives
+- Real-time property updates as you adjust the recipe
+- Add notes and images to recipes
+- Print-friendly recipe format
+- Inventory management: add purchases, manage suppliers, track stock
+- Batch management: portions, packaging, labor, cost analysis
+- Recipe management: folders, filter by ingredient, replicate/refine
+- Community features: copy recipes from the community, forums
+- Cross-platform (web, iOS, Android)
+- Has colour and visual design (not black and white)
+
+**Where SoapMakingFriend falls short:**
+- Ad-supported free tier (2 recipes, 1 batch)
+- Premium at $5.99/mo — cheaper than SoapCraft Pro but also less capable
+- No Making Mode (no guided production steps with timers)
+- No cure tracking with predictions
+- No deterministic confidence ranges on calculations
+- No AI trade-off explanations for recipe adjustments
+- Community features are unfiltered (no quality control on shared recipes)
+- Inventory tracking is basic (no reorder alerts, no supplier comparison)
+- Cost analysis is per-batch only (no per-bar with target pricing)
+- No onboarding quiz or guided first-time experience
+- No design quality standard — functional but not meticulous
+
+**SoapCraft Pro exceeds both by being a workspace with guided production:**
+
+| Dimension | SoapCalc | SoapMakingFriend | SoapCraft Pro |
+|-----------|----------|------------------|---------------|
+| Core function | Lye calculator | Recipe builder + workspace | Full workspace (recipe → batch → cure → cost) |
+| Calculation | Deterministic, instant | Deterministic, instant | Deterministic, instant (< 100ms), with confidence ranges |
+| Oil database | 150+ oils | 150+ oils + custom additives | 150+ oils + custom ingredient costs + IFRA compliance |
+| Quality predictions | 5 metrics, static scores | Properties update live | 5 metrics + confidence badges + AI trade-off explanations |
+| Mold volume | Yes — enter dimensions, calculates oil volume | Not documented | Yes — mold volume calculator integrated with recipe builder |
+| Recipe management | None | Library with folders, filter, replicate | Library with versioning, search, filter, ratings |
+| Batch logging | None | Basic batch tracking | Structured batch log with Making Mode (CP-guided) |
+| Making Mode | None | None | Guided CP production with step checklist and persistent timers |
+| Cure tracking | None | None | Estimated windows, observation logs, user-controlled completion |
+| Cost analysis | None | Per-batch cost | Per-batch and per-bar costing with target pricing |
+| Inventory | None | Basic (purchases, suppliers, stock) | Ingredient cost catalogue with supplier tracking |
+| UI design | Dense, utilitarian, black & white | Functional, has colour | Impeccable design: semantic type scale, warm palette, deliberate motion |
+| User progression | None | None | Onboarding quiz → first recipe → first batch → cure → cost |
+| Community | None | Forums, shared recipes | Curated templates (no public community in v1) |
+| Free tier | Fully free, no limits | 2 recipes, 1 batch, ads | Calculator + 3 recipes + 1 active batch (genuinely useful) |
+| Pro tier | N/A | $5.99/mo | $12/mo or $99/yr — everything above |
+
+### Key Insight: What We Must Have From Day One
+From the competitive dive, the features that SoapCalc and SoapMakingFriend both have that SoapCraft Pro must match or exceed in v1:
+
+1. **Mold volume calculation** — SoapCalc lets you enter your mold dimensions and calculates the volume of oils needed. This is a critical feature that SoapMakingFriend lacks. SoapCraft Pro must have this.
+2. **Recipe library with notes and images** — SoapMakingFriend allows notes and images per recipe. SoapCraft Pro must match this.
+3. **Cost analysis** — SoapMakingFriend has per-batch cost analysis. SoapCraft Pro must have per-batch AND per-bar costing with target pricing.
+4. **Inventory tracking** — SoapMakingFriend tracks purchases, suppliers, and stock. SoapCraft Pro must have an ingredient cost catalogue at minimum.
+5. **Cross-platform** — SoapMakingFriend is on web, iOS, and Android. SoapCraft Pro v1 is web-only, but must be responsive and mobile-friendly.
+6. **Colour and visual design** — SoapMakingFriend has colour. SoapCalc is black and white. SoapCraft Pro must have a warm, distinctive palette from day one.
 
 ### Design Quality Standard
 SoapCraft Pro must not look like a calculator. It must look like a meticulous chemist's notebook — calm precision, editorial restraint, and deliberate motion. Every screen must pass the `scan-generic.sh` quality gate from the `impeccable-design` skill before merge.
 
+The colour palette must be warm and distinctive — not black and white, not generic blue/purple. Warm cream background, dark charcoal foreground, amber accent, with semantic colours for success (sage green), warning (warm amber), error (muted terracotta), and info (warm blue-gray).
+
 ### Competitive Moat
-SoapCalc is free and will remain free. SoapCraft Pro competes on:
+SoapCalc is free and will remain free. SoapMakingFriend is $5.99/mo. SoapCraft Pro competes on:
 1. **Workspace completeness** — recipe → batch → cure → cost in one flow
-2. **Design quality** — impeccable, not generic
-3. **Guided production** — Making Mode with CP step checklist and persistent timers
-4. **Cost intelligence** — knowing what each bar costs and what to charge
+2. **Guided production** — Making Mode with CP step checklist and persistent timers
+3. **Cost intelligence** — per-bar costing with target pricing
+4. **Design quality** — impeccable, warm, distinctive, not generic
 5. **Deterministic trust** — calculations are authoritative; AI explains and recommends only
 
 ## 9. Information Architecture / App Structure
@@ -370,9 +465,23 @@ SoapCraft Pro
 - **Analytics events:** library_viewed, recipe_searched, recipe_viewed, recipe_saved, recipe_rated, recipe_made.
 - **Acceptance criteria:** User can search, filter, view, save, and rate recipes. Search returns relevant results within 1 second.
 
-### 9.8 Dashboard
-- **Purpose:** Overview of active batches, upcoming cures, and cost summary.
-- **Entry points:** App home after onboarding.
+### 9.8 Homepage (Marketing Entry Point)
+- **Purpose:** Marketing page that introduces SoapCraft Pro and drives users into the product. This is the entry point, not the full product. Users who are logged in see their Dashboard; logged-out users see the marketing page.
+- **Entry points:** Direct URL, Google search, social media link, bookmark.
+- **Required sections/components:** Hero (headline + subheadline + CTA), Live calculation demo (deterministic, < 100ms), Feature overview (4 modules with descriptions), Workflow progression (4-step visual: Recipe → Batch → Cure → Cost), Social proof/testimonials (v1: placeholder), Pricing teaser (free vs Pro), Footer (links, legal).
+- **Required fields/content:** Headline, Subheadline, CTA buttons, Demo calculation data, Feature descriptions, Workflow steps, Pricing tiers.
+- **CTAs/actions:** "Start building" (→ Recipe Builder), "Browse recipes" (→ Recipe Library), "Learn more" (→ Feature overview).
+- **Empty state:** N/A (marketing page always shows the same content).
+- **Loading state:** Skeleton hero while loading.
+- **Error state:** "Could not load page. Retry." (static content falls back to cached version).
+- **Permission rules:** All tiers (including logged-out).
+- **Data dependencies:** None (static content).
+- **Analytics events:** homepage_viewed, cta_clicked, demo_calculation_viewed.
+- **Acceptance criteria:** Marketing page loads in < 1s. CTA buttons are visible and clickable. Live demo calculation runs deterministically in < 100ms. The page clearly communicates that SoapCraft Pro is a workspace, not just a calculator.
+
+### 9.9 Dashboard
+- **Purpose:** Overview of active batches, upcoming cures, and cost summary. Shown to logged-in users after onboarding.
+- **Entry points:** App home after onboarding, navigation from any page.
 - **Required sections/components:** Active batches (list), Upcoming cures (calendar preview), Cost summary (this month's costs, avg cost per bar), Quick actions (new recipe, new batch, log cure, calculate cost).
 - **Required fields/content:** Batch count, Cure count, Costs (month), Avg cost per bar, Quick action buttons.
 - **CTAs/actions:** "New Recipe" → "New Batch" → "Log Cure" → "Calculate Cost."
@@ -430,7 +539,7 @@ The complete product flow, state map, and user journey documentation is maintain
 
 The PRD references these documents — no state is unmapped, no journey is unexplored.
 
-## 11. Functional Requirements
+## 12. Functional Requirements
 
 ### Accounts & Authentication
 - Email/password signup (free and paid tiers)
@@ -522,7 +631,7 @@ The PRD references these documents — no state is unmapped, no journey is unexp
 - Ratings are user-specific and can be updated
 - Community rating is v2 (public sharing); v1 ratings are private to the user
 
-## 12. Data Model
+## 13. Data Model
 
 ### Core Entities (Relational)
 
@@ -734,7 +843,7 @@ OnboardingState
 
 Editing a recipe after it has been used in batches must not retroactively change historical batch records. Each recipe save creates a new `RecipeVersion`. Batches reference a specific `RecipeVersion`. The current version is tracked on the `Recipe` record.
 
-## 13. SEO Strategy (v2 — Post-Launch)
+## 14. SEO Strategy (v2 — Post-Launch)
 
 ### Content Pillars (4 pillars for v1, expanded in v2)
 1. **Soap Calculators** — "soap making calculator," "cold process soap calculator," "lye calculator for soap" + programmatic oil-specific calculator pages
@@ -750,7 +859,7 @@ Editing a recipe after it has been used in batches must not retroactively change
 - Troubleshooting articles based on real user problems are the retention asset
 - Measurable goals: impressions, indexed pages, qualified signups, top-ten rankings for defined clusters
 
-## 14. Launch Plan
+## 15. Launch Plan
 
 ### Gate 1: Recipe Builder + Batch Log (Weeks 1-3)
 - Recipe Builder with deterministic calculation engine
@@ -779,7 +888,7 @@ Editing a recipe after it has been used in batches must not retroactively change
 - AI predictions (outcome prediction based on batch history)
 - Etsy/Shopify integration
 
-## 15. Analytics & Instrumentation
+## 16. Analytics & Instrumentation
 
 ### App Life Spec Metrics
 - First-session recipe completion rate (target: 60% month 1)
@@ -802,7 +911,7 @@ All analytics events follow the pattern: `{feature}_{action}`
 - library_viewed, recipe_searched, recipe_viewed, recipe_saved, recipe_rated, recipe_made
 - dashboard_viewed, quick_action_clicked
 
-## 16. Compliance
+## 17. Compliance
 
 - **CPSC:** Soap is a cosmetic product in the US depending on composition, claims, and intended use. Compliance features generate checklists and documentation summaries.
 - **MoCRA:** Modernization of Cosmetics Regulation Act. Compliance features generate MoCRA documentation export.
@@ -812,7 +921,7 @@ All analytics events follow the pattern: `{feature}_{action}`
 
 **Compliance disclaimers:** The compliance features generate checklists, documentation summaries, missing-information warnings, and exportable records. They do not constitute legal advice or certification. Users are responsible for ensuring their own compliance with applicable regulations.
 
-## 17. Non-Functional Requirements
+## 18. Non-Functional Requirements
 
 - **Performance:** Page load < 2s, calculation < 100ms, search results < 1s
 - **Availability:** 99.9% uptime target
@@ -822,7 +931,7 @@ All analytics events follow the pattern: `{feature}_{action}`
 - **SEO:** Semantic HTML, structured data, fast Core Web Vitals
 - **Internationalization:** English only in v1, architecture supports i18n for v2
 
-## 18. Open Questions
+## 19. Open Questions
 
 - Does SoapCalc have an API or only manual export/import? (verify via SoapCalc community)
 - What is the current OpenRouter pricing for Claude/GPT models used in formulation assistance? (verify via OpenRouter API docs)
