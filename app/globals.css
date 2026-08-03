@@ -8,6 +8,7 @@
   --font-serif: "Playfair Display", Georgia, "Times New Roman", serif;
 
   /* ── Color palette: warm cream + dark charcoal + amber accent ── */
+  /* Base */
   --background: 38 12% 97%;
   --foreground: 25 12% 12%;
   --muted: 38 8% 94%;
@@ -18,15 +19,32 @@
   --card-foreground: 25 12% 12%;
   --border: 30 10% 88%;
   --input: 30 10% 88%;
+
+  /* Brand — grounded, craft-oriented, not generic blue */
   --primary: 25 60% 35%;
   --primary-foreground: 0 0% 98%;
   --secondary: 38 12% 94%;
   --secondary-foreground: 25 12% 12%;
-  --accent: 32 80% 55%;
+  --accent: 30 90% 50%;
   --accent-foreground: 0 0% 98%;
-  --destructive: 0 72% 51%;
+  --accent-hover: 30 80% 44%;
+
+  /* Semantic */
+  --success: 145 45% 40%;
+  --success-foreground: 0 0% 98%;
+  --warning: 38 90% 50%;
+  --warning-foreground: 25 12% 12%;
+  --destructive: 5 65% 55%;
   --destructive-foreground: 0 0% 98%;
+  --info: 210 30% 55%;
+  --info-foreground: 0 0% 98%;
+
+  /* Ring */
   --ring: 25 60% 35%;
+
+  /* Surface tints */
+  --surface-warm: 38 10% 95%;
+  --surface-cool: 210 10% 96%;
 
   /* ── Design tokens ── */
   --radius: 0.5rem;
