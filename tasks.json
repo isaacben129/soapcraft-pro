@@ -1,365 +1,339 @@
 {
   "project": "SoapCraft Pro",
-  "version": "1.0.0",
-  "created": "2026-08-02",
-  "scope": "4-module MVP (Recipe Builder, Batch Log + Making Mode, Cure Tracker, Cost Per Batch/Per Bar)",
+  "version": "2.0.0",
+  "created": "2026-08-03",
+  "scope": "v2 — 4-module MVP + Auth + Payments + Marketing Site + Blog + 10x features (Mold Volume Calculator, Recipe Intelligence, Making Mode, Template Recipes)",
   "waves": [
     {
       "id": "wave-1",
-      "name": "Foundation",
-      "description": "Foundation + design quality gates \u2014 deterministic calc engine AND impeccable design from day one",
-      "tasks": [
-        "T1",
-        "T2",
-        "T3",
-        "T4"
-      ]
+      "name": "Foundation + Auth + Payments",
+      "description": "Auth flow, Dodo Payments, marketing site/app separation, colour palette",
+      "tasks": ["T1", "T2", "T3", "T4"]
     },
     {
       "id": "wave-2",
-      "name": "Core Features",
-      "description": "Core features with design quality enforcement on every PR",
-      "tasks": [
-        "T5",
-        "T6",
-        "T7",
-        "T8"
-      ]
+      "name": "Core Features + 10x",
+      "description": "Recipe Builder with mold volume, Making Mode, Template Recipes, Batch Log, Cure Tracker, Costing",
+      "tasks": ["T5", "T6", "T7", "T8", "T9", "T10"]
     },
     {
       "id": "wave-3",
-      "name": "Polish + Launch",
-      "description": "Polish, audit, and launch \u2014 all PRs must pass scan-generic.sh",
-      "tasks": [
-        "T9",
-        "T10",
-        "T11",
-        "T12",
-        "T13"
-      ]
+      "name": "Marketing Site + Blog + Polish",
+      "description": "Marketing site pages, blog, SEO, design polish, launch",
+      "tasks": ["T11", "T12", "T13", "T14", "T15"]
     }
   ],
   "tasks": [
     {
       "id": "T1",
-      "title": "Onboarding flow + experience assessment quiz",
+      "title": "Auth flow — login, signup, password reset, auth gate",
       "wave": "wave-1",
       "status": "planned",
-      "priority": "high",
+      "priority": "critical",
       "dependencies": [],
-      "description": "3-step onboarding quiz (experience level \u2192 goal \u2192 method preference). Contextual action chips, progress indicator. First-use guidance per App Life Spec \u00a73.",
+      "description": "Email/password auth with session persistence. Auth gate on all app routes. Marketing site is public, app is gated.",
       "ux": true,
-      "uxFocus": "Onboarding flow \u2014 3-step quiz with contextual chips, not a tutorial",
+      "uxFocus": "Clean auth gate, no friction on marketing site",
       "acceptanceCriteria": [
-        "Quiz renders \u2192 user selects \u2192 state persists \u2192 next screen",
-        "On completion, user profile is created with experience level and goal",
-        "First recipe screen shows pre-selected oils based on quiz answers",
-        "First batch screen shows 'Ready to make it? Start your first batch' CTA",
-        "First cure observation screen shows 'How is your soap looking after 3 days?' prompt",
-        "scan-generic.sh passes (impeccable-design skill)"
+        "User can sign up with email + password",
+        "User can log in and access the dashboard",
+        "Password reset email is sent",
+        "Auth gate redirects unauthenticated users to marketing site",
+        "Session persists across page reloads"
       ],
-      "appLifeSpecRef": "first-use guidance \u00a73",
-      "tdd": "quiz renders \u2192 user selects \u2192 state persists \u2192 next screen",
+      "appLifeSpecRef": "first-use guidance",
+      "tdd": "signup → login → auth gate → session persistence",
       "designQuality": "impeccable-design skill required"
     },
     {
       "id": "T2",
-      "title": "Ingredient database + SAP calculation engine",
+      "title": "Dodo Payments integration — subscription management",
       "wave": "wave-1",
       "status": "planned",
       "priority": "critical",
-      "dependencies": [],
-      "description": "Relational ingredient database with SAP values (NaOH + KOH per oil), property factors (hardness, lather, moisturizing), IFRA category and max usage percent. Deterministic SAP calculation engine. Validated against SoapCalc for all common oil combinations.",
+      "dependencies": ["T1"],
+      "description": "Dodo Payments integration for Free tier and Pro tier ($12/mo or $99/yr). Subscription management page in Account Settings.",
       "ux": true,
-      "uxFocus": "Instant calculation results (< 100ms), validation warnings",
+      "uxFocus": "Seamless upgrade flow, clear tier boundaries",
       "acceptanceCriteria": [
-        "Top 20 oils by community usage included in default database",
-        "Input oils + percentages \u2192 correct lye + water output",
-        "Output matches SoapCalc for identical inputs (> 95% match)",
-        "Unit tests for every calculation scenario",
-        "Safety disclaimers prominent on all calculation results",
-        "Calculation completes in < 100ms",
-        "scan-generic.sh passes (impeccable-design skill)"
+        "Free tier: calculator + 3 recipes + 1 active batch",
+        "Pro tier: everything above",
+        "Upgrade via Dodo Payments Checkout",
+        "Subscription management in Account Settings",
+        "Tier gates enforced on all features"
       ],
-      "appLifeSpecRef": "moment of truth",
-      "tdd": "input oils + percentages \u2192 correct lye + water output \u2192 matches SoapCalc for same inputs",
+      "appLifeSpecRef": "success feedback — proportionate",
+      "tdd": "free tier works → upgrade CTA → Dodo Payments → Pro tier active",
       "designQuality": "impeccable-design skill required"
     },
     {
       "id": "T3",
-      "title": "Recipe Builder \u2014 core form + calculation display",
-      "wave": "wave-1",
+      "title": "Marketing site — homepage, pricing, blog, SEO",
+      "wave": "wave-3",
       "status": "planned",
       "priority": "high",
-      "dependencies": [
-        "T2"
-      ],
-      "description": "Recipe creation form with oil selection (SAP values shown), percentage-based blending, property range display, warnings panel. Signature interaction: calculation reveal animation. Save to library.",
+      "dependencies": ["T1"],
+      "description": "Public marketing site with homepage, pricing page, blog (programmatic SEO), and auth gate. Separate from the app.",
       "ux": true,
-      "uxFocus": "Oil selection with SAP values, property ranges shown, warnings panel. Signature interaction: calculation reveal.",
+      "uxFocus": "Clean marketing page, drives signups, SEO-optimised",
       "acceptanceCriteria": [
-        "Select oils \u2192 set percentages \u2192 calculate \u2192 see lye, water, fragrance load, property ranges",
-        "Calculation reveal animation (subtle checkmark per metric)",
-        "Save recipe to personal library",
-        "Load saved recipe \u2192 edit \u2192 recalculate",
-        "Warnings panel shows for problematic formulations (single oil > 80%, superfat outside 0-20%)",
-        "First-session recipe completion rate target: 60% month 1",
-        "scan-generic.sh passes (impeccable-design skill)"
+        "Homepage loads in < 1s with hero, demo, features, workflow, pricing teaser",
+        "Pricing page shows Free and Pro tiers",
+        "Blog with programmatic SEO articles",
+        "Auth gate on app routes",
+        "Marketing site links to app, app links back to marketing site"
       ],
-      "appLifeSpecRef": "moment of truth",
-      "tdd": "select oils \u2192 set percentages \u2192 calculate \u2192 save \u2192 load saved recipe",
+      "appLifeSpecRef": "retention surfaces",
+      "tdd": "homepage → pricing → blog → signup → auth gate → app",
       "designQuality": "impeccable-design skill required"
     },
     {
       "id": "T4",
-      "title": "Batch Log \u2014 input logging + Making Mode (guided, not hands-free)",
-      "wave": "wave-1",
-      "status": "planned",
-      "priority": "high",
-      "dependencies": [
-        "T3"
-      ],
-      "description": "Batch creation form auto-populated from recipe. Making Mode for Cold Process only (HP/MP get simplified batch log). Large tap targets, persistent timers, safety checklist before starting. Form preserves user input on error.",
-      "ux": true,
-      "uxFocus": "Form auto-populates from recipe, reduces typing; large tap targets; persistent timers; safety checklist",
-      "acceptanceCriteria": [
-        "Create batch \u2192 form auto-populates from selected recipe",
-        "Making Mode: CP gets guided steps; HP/MP get simplified log",
-        "Safety checklist required before starting CP batch",
-        "Timer persists across page reloads",
-        "Error state preserves user input, explains next action, offers undo",
-        "Batch saved with status: draft|making|curing|completed|archived",
-        "scan-generic.sh passes (impeccable-design skill)"
-      ],
-      "appLifeSpecRef": "preserve user input on error",
-      "tdd": "create batch \u2192 log inputs \u2192 save \u2192 list batches",
-      "designQuality": "impeccable-design skill required"
-    },
-    {
-      "id": "T5",
-      "title": "Cure Tracker \u2014 estimated windows + observation logging",
-      "wave": "wave-2",
-      "status": "planned",
-      "priority": "high",
-      "dependencies": [],
-      "description": "Tracks cure progress with honest estimated windows (not declarations). Users log pH, hardness, and observations. User marks batch as complete. Estimated windows are clearly labeled as estimates.",
-      "ux": true,
-      "uxFocus": "Honest progress state (not fake completion), estimated window not declaration",
-      "acceptanceCriteria": [
-        "Log cure date \u2192 track days elapsed",
-        "Log pH and hardness observations",
-        "Estimated window displayed (e.g., 'Ready in 4\u20136 weeks') \u2014 not a declaration",
-        "User marks batch as complete",
-        "Retention cue: 'Your last batch was 3 days ago \u2014 log an observation'",
-        "Cure data links to batch and recipe",
-        "scan-generic.sh passes (impeccable-design skill)"
-      ],
-      "appLifeSpecRef": "loading/resolution \u2014 honest progress",
-      "tdd": "log cure date \u2192 track days \u2192 log pH/hardness \u2192 user marks complete",
-      "designQuality": "impeccable-design skill required"
-    },
-    {
-      "id": "T6",
-      "title": "Costing \u2014 cost per batch + cost per bar",
-      "wave": "wave-2",
-      "status": "planned",
-      "priority": "high",
-      "dependencies": [],
-      "description": "Real-time cost calculation as inputs change. Ingredient cost catalogue management. Clear margin visualization with target price. Batch yield calculation.",
-      "ux": true,
-      "uxFocus": "Real-time cost update as inputs change, clear margin visualization",
-      "acceptanceCriteria": [
-        "Input ingredient costs \u2192 calculate per-batch cost",
-        "Calculate cost per bar based on batch yield",
-        "Show target price with margin visualization",
-        "Cost updates in real-time as inputs change",
-        "Ingredient cost catalogue is editable (add/update/delete ingredients)",
-        "Target margin pricing formula documented",
-        "scan-generic.sh passes (impeccable-design skill)"
-      ],
-      "appLifeSpecRef": "success feedback \u2014 proportionate",
-      "tdd": "input costs \u2192 calculate per-bar \u2192 show target price \u2192 save",
-      "designQuality": "impeccable-design skill required"
-    },
-    {
-      "id": "T7",
-      "title": "Recipe Library \u2014 browse + search + filter + save",
-      "wave": "wave-2",
-      "status": "planned",
-      "priority": "medium",
-      "dependencies": [
-        "T3"
-      ],
-      "description": "Curated + personal recipe library. Search bar, tag filters (oil blend, fragrance, method, skill level), recipe cards with property ranges, save to personal library, rating system. Part of Recipe Builder module (shared infrastructure).",
-      "ux": true,
-      "uxFocus": "Card layout with property ranges, tag filtering, curated + personal. Empty state handling.",
-      "acceptanceCriteria": [
-        "Browse curated recipes (free tier)",
-        "Search by name, oil, fragrance",
-        "Filter by oil blend, fragrance, method, skill level",
-        "Save curated recipes to personal library",
-        "Rate recipes (1-5 stars)",
-        "Free tier: browse curated + save up to 3 personal recipes",
-        "Pro tier: full library + personal ratings + unlimited saves",
-        "Empty state: 'No recipes yet. Browse the curated library to get started.'",
-        "scan-generic.sh passes (impeccable-design skill)"
-      ],
-      "appLifeSpecRef": "empty state handling",
-      "tdd": "list recipes \u2192 filter \u2192 search \u2192 save \u2192 view details",
-      "designQuality": "impeccable-design skill required"
-    },
-    {
-      "id": "T8",
-      "title": "Free tier (calculator + 3 recipes + 1 active batch)",
-      "wave": "wave-2",
-      "status": "planned",
-      "priority": "medium",
-      "dependencies": [
-        "T1",
-        "T3"
-      ],
-      "description": "Free tier gates: calculator, limited recipes (3), one active batch at a time, curated recipe library. Upgrade prompt is clear but never blocks core functionality. Existing recipes/batches remain viewable/editable after tier limits.",
-      "ux": true,
-      "uxFocus": "Clear upgrade prompt, never block core functionality",
-      "acceptanceCriteria": [
-        "Free user can use calculator, save up to 3 recipes, have 1 active batch",
-        "Upgrade CTA appears when limit is reached (modal, not blocking)",
-        "Free user can browse curated recipe library",
-        "Completed batches remain viewable in read-only history after tier limit",
-        "Upgrade flow: modal \u2192 pricing page \u2192 sign up",
-        "Free tier features work without authentication (optional)",
-        "scan-generic.sh passes (impeccable-design skill)"
-      ],
-      "appLifeSpecRef": "empty state handling",
-      "tdd": "free features work \u2192 upgrade CTA appears \u2192 paid features gated",
-      "designQuality": "impeccable-design skill required"
-    },
-    {
-      "id": "T9",
-      "title": "Pro trial flow (30 days or one complete batch cycle)",
-      "wave": "wave-3",
-      "status": "planned",
-      "priority": "medium",
-      "dependencies": [
-        "T8"
-      ],
-      "description": "30-day or one-complete-batch-cycle trial. No credit card required. Progress preserved. Clear end date displayed. Upgrade prompt when trial expires.",
-      "ux": true,
-      "uxFocus": "No credit card required, progress preserved, clear end date",
-      "acceptanceCriteria": [
-        "Trial starts on Pro plan signup",
-        "Trial duration: 30 days OR one complete batch cycle (whichever comes first)",
-        "No credit card required to start trial",
-        "Progress preserved when trial ends \u2192 upgrade prompt shown",
-        "Clear end date displayed in settings",
-        "Trial expiry mid-batch behavior defined (user can finish current batch)",
-        "scan-generic.sh passes (impeccable-design skill)"
-      ],
-      "appLifeSpecRef": "success feedback \u2014 proportionate",
-      "tdd": "start trial \u2192 use features \u2192 trial ends \u2192 upgrade prompt",
-      "designQuality": "impeccable-design skill required"
-    },
-    {
-      "id": "T10",
-      "title": "Impeccable design pass (run scan-generic.sh)",
+      "title": "Colour palette + design tokens applied to all components",
       "wave": "wave-1",
       "status": "planned",
       "priority": "critical",
       "dependencies": [],
-      "description": "Run scan-generic.sh from impeccable-design skill on all PRs. Fix any banned patterns detected: per-section eyebrows, identical card grids, glassmorphism, image-hover zoom, gray-on-dark, side-stripe borders, pure black, hero-metric template, soft 12px radius.",
+      "description": "Apply the warm cream + dark charcoal + amber accent colour palette to all components. Semantic colours (success, warning, error, info). No black and white, no generic blue/purple.",
       "ux": true,
-      "uxFocus": "Anti-generic pass \u2014 all hard bans from impeccable-design skill",
+      "uxFocus": "Warm, distinctive, not generic",
+      "acceptanceCriteria": [
+        "All components use the colour palette tokens",
+        "scan-generic.sh passes (no banned patterns)",
+        "Semantic colours used correctly (success=green, warning=amber, error=terracotta, info=blue-gray)",
+        "No black and white, no generic blue/purple"
+      ],
+      "appLifeSpecRef": "N/A (design quality gate)",
+      "tdd": "N/A (design pass)",
+      "designQuality": "impeccable-design skill required"
+    },
+    {
+      "id": "T5",
+      "title": "Recipe Builder — core form + mold volume calculator",
+      "wave": "wave-2",
+      "status": "planned",
+      "priority": "critical",
+      "dependencies": ["T4"],
+      "description": "Recipe creation form with oil selection, percentage-based blending, SAP calc, lye/water calc, superfat, property ranges, warnings, validation, batch scaling, save to library. PLUS mold volume calculator (enter mold dimensions → calculates oil volumes).",
+      "ux": true,
+      "uxFocus": "Oil selection with SAP values, mold volume calculator, property ranges, warnings panel",
+      "acceptanceCriteria": [
+        "Select oils → set percentages → calculate → see lye, water, fragrance load, property ranges",
+        "Mold volume calculator: enter dimensions → calculates oil volumes",
+        "Save recipe to personal library",
+        "Warnings panel for problematic formulations",
+        "Calculation reveal animation (subtle checkmark per metric)",
+        "scan-generic.sh passes"
+      ],
+      "appLifeSpecRef": "moment of truth",
+      "tdd": "select oils → set percentages → calculate → mold volume → save",
+      "designQuality": "impeccable-design skill required"
+    },
+    {
+      "id": "T6",
+      "title": "Making Mode — guided CP batch production with smart guidance",
+      "wave": "wave-2",
+      "status": "planned",
+      "priority": "high",
+      "dependencies": ["T5"],
+      "description": "Making Mode for Cold Process with guided step-by-step checklist, persistent timers, temperature tracking, and smart guidance (contextual next-step prompts, not just timers).",
+      "ux": true,
+      "uxFocus": "Contextual guidance, not just timers. Smart next-step prompts.",
+      "acceptanceCriteria": [
+        "CP batch gets guided step checklist",
+        "Persistent timers that survive page reloads",
+        "Smart guidance: contextual next-step prompts",
+        "Safety checklist required before starting CP batch",
+        "Making Mode preserves user input on error",
+        "scan-generic.sh passes"
+      ],
+      "appLifeSpecRef": "signature interaction — Making Mode",
+      "tdd": "start batch → guided steps → timers → safety checklist → complete",
+      "designQuality": "impeccable-design skill required"
+    },
+    {
+      "id": "T7",
+      "title": "Template Recipes — pre-built recipes for common soap types",
+      "wave": "wave-2",
+      "status": "planned",
+      "priority": "high",
+      "dependencies": ["T5"],
+      "description": "Pre-built recipes for common soap types (castile, French milled, milk soap, etc.) that users can customize. New soap makers can make their first batch in 2 minutes instead of 30.",
+      "ux": true,
+      "uxFocus": "Quick start for new users, reduce time-to-first-batch",
+      "acceptanceCriteria": [
+        "Template recipes for common soap types (castile, French milled, milk soap)",
+        "Users can customize template recipes",
+        "Customized recipes save to personal library",
+        "First batch can be created from a template in < 2 minutes",
+        "scan-generic.sh passes"
+      ],
+      "appLifeSpecRef": "first-use guidance",
+      "tdd": "browse templates → select → customize → save → create batch",
+      "designQuality": "impeccable-design skill required"
+    },
+    {
+      "id": "T8",
+      "title": "Batch Log + Cure Tracker + Costing (existing features, polished)",
+      "wave": "wave-2",
+      "status": "planned",
+      "priority": "high",
+      "dependencies": ["T5", "T6"],
+      "description": "Existing Batch Log, Cure Tracker, and Costing features polished with the new colour palette, unified navigation, and coherent interfaces between modules.",
+      "ux": true,
+      "uxFocus": "Coherent interfaces between modules, unified navigation",
+      "acceptanceCriteria": [
+        "Batch Log auto-populates from recipe",
+        "Cure Tracker shows estimated windows (not declarations)",
+        "Costing shows real-time cost per batch + per bar + target price",
+        "Unified navigation shows workflow progression",
+        "scan-generic.sh passes"
+      ],
+      "appLifeSpecRef": "empty state handling, success feedback",
+      "tdd": "create batch → log → cure → cost → complete",
+      "designQuality": "impeccable-design skill required"
+    },
+    {
+      "id": "T9",
+      "title": "Recipe Intelligence — AI-powered oil suggestions",
+      "wave": "wave-2",
+      "status": "planned",
+      "priority": "medium",
+      "dependencies": ["T5"],
+      "description": "AI-powered recipe suggestions based on user goals. 'You want a hard bar with creamy lather — try 60% olive, 30% coconut, 10% shea.' Deterministic calc is the authority; AI explains and recommends only.",
+      "ux": true,
+      "uxFocus": "Contextual suggestions, not overrides. AI explains, calc decides.",
+      "acceptanceCriteria": [
+        "AI suggests oil blends based on user goals",
+        "Suggestions are explanations, not overrides",
+        "User can accept or reject suggestions",
+        "Deterministic calc is always the authority",
+        "scan-generic.sh passes"
+      ],
+      "appLifeSpecRef": "deterministic trust",
+      "tdd": "user sets goal → AI suggests → user accepts/rejects → calc verifies",
+      "designQuality": "impeccable-design skill required"
+    },
+    {
+      "id": "T10",
+      "title": "Account Settings + Subscription Management page",
+      "wave": "wave-3",
+      "status": "planned",
+      "priority": "medium",
+      "dependencies": ["T1", "T2"],
+      "description": "Account Settings page with profile management, subscription details, payment methods, and account deletion. Subscription management page with upgrade/downgrade actions.",
+      "ux": true,
+      "uxFocus": "Clear subscription management, easy upgrade/downgrade",
+      "acceptanceCriteria": [
+        "User can update profile email and name",
+        "User can view current subscription tier and billing cycle",
+        "User can add/remove payment methods",
+        "User can cancel subscription",
+        "User can delete account",
+        "scan-generic.sh passes"
+      ],
+      "appLifeSpecRef": "empty state handling",
+      "tdd": "view settings → update profile → manage subscription → cancel/delete",
+      "designQuality": "impeccable-design skill required"
+    },
+    {
+      "id": "T11",
+      "title": "Blog — programmatic SEO articles",
+      "wave": "wave-3",
+      "status": "planned",
+      "priority": "high",
+      "dependencies": ["T3"],
+      "description": "Blog with programmatic SEO articles targeting soap-making queries. Content pillars: Soap Calculators, Soap Recipes, Soap Making Guides, Troubleshooting. Each article is a standalone SEO asset with internal links to the app.",
+      "ux": true,
+      "uxFocus": "SEO-optimised content, drives organic traffic to marketing site",
+      "acceptanceCriteria": [
+        "Blog accessible from marketing site",
+        "SEO articles for all 4 content pillars",
+        "Internal links to the app from blog articles",
+        "Programmatic oil-specific calculator pages",
+        "scan-generic.sh passes"
+      ],
+      "appLifeSpecRef": "retention surfaces",
+      "tdd": "blog homepage → article → internal link → signup → app",
+      "designQuality": "impeccable-design skill required"
+    },
+    {
+      "id": "T12",
+      "title": "Pricing page — Free vs Pro tier details",
+      "wave": "wave-3",
+      "status": "planned",
+      "priority": "high",
+      "dependencies": ["T3"],
+      "description": "Dedicated pricing page with Free tier and Pro tier details, comparison table, and upgrade CTA. SEO-optimised for 'soap making software' queries.",
+      "ux": true,
+      "uxFocus": "Clear tier comparison, easy upgrade",
+      "acceptanceCriteria": [
+        "Pricing page shows Free and Pro tier details",
+        "Comparison table highlights Pro-only features",
+        "Upgrade CTA leads to Dodo Payments Checkout",
+        "SEO-optimised for 'soap making software' queries",
+        "scan-generic.sh passes"
+      ],
+      "appLifeSpecRef": "success feedback — proportionate",
+      "tdd": "view pricing → compare tiers → upgrade → Dodo Payments → Pro active",
+      "designQuality": "impeccable-design skill required"
+    },
+    {
+      "id": "T13",
+      "title": "Unified navigation — workflow progression (not flat links)",
+      "wave": "wave-2",
+      "status": "planned",
+      "priority": "high",
+      "dependencies": ["T5", "T6", "T7", "T8"],
+      "description": "Navigation shows workflow progression (Recipes → Batches → Cure → Costing) with visual separators. Not a flat list of links — a coherent product flow.",
+      "ux": true,
+      "uxFocus": "Workflow progression, not flat links",
+      "acceptanceCriteria": [
+        "Navigation shows Recipe → Batch → Cure → Cost progression",
+        "Visual separators between workflow stages",
+        "Current workflow stage is highlighted",
+        "No flat list of links",
+        "scan-generic.sh passes"
+      ],
+      "appLifeSpecRef": "core loop",
+      "tdd": "navigate recipes → batches → cure → costing → back",
+      "designQuality": "impeccable-design skill required"
+    },
+    {
+      "id": "T14",
+      "title": "Design quality pass — scan-generic.sh on all components",
+      "wave": "wave-3",
+      "status": "planned",
+      "priority": "critical",
+      "dependencies": ["T4", "T5", "T6", "T7", "T8", "T9", "T10", "T11", "T12", "T13"],
+      "description": "Run scan-generic.sh from impeccable-design skill on all PRs. Fix any banned patterns detected.",
+      "ux": true,
+      "uxFocus": "Anti-generic pass — all hard bans from impeccable-design skill",
       "acceptanceCriteria": [
         "scan-generic.sh passes on all PRs",
-        "No banned patterns detected (eyebrows, identical card grids, glassmorphism, image-hover zoom, gray-on-dark, side-stripe borders, pure black, hero-metric template, soft 12px radius)",
-        "Visual audit complete \u2014 no generic-looking UI elements",
-        "Design quality gate blocks merge if scan fails"
+        "No banned patterns detected",
+        "Visual audit complete — no generic-looking UI elements"
       ],
       "appLifeSpecRef": "N/A (design quality gate)",
       "tdd": "N/A (automated scan)",
       "designQuality": "impeccable-design skill required"
     },
     {
-      "id": "T11",
-      "title": "Accessibility audit",
-      "wave": "wave-3",
-      "status": "planned",
-      "priority": "high",
-      "dependencies": [
-        "T1",
-        "T2",
-        "T3",
-        "T4",
-        "T5",
-        "T6",
-        "T7",
-        "T8",
-        "T9"
-      ],
-      "description": "Verify keyboard navigation, screen reader labels, reduced motion support, contrast ratios (4.5:1 minimum), touch targets (44px minimum), text scaling (200% without breakage). Per App Life Spec accessibility budget.",
-      "ux": true,
-      "uxFocus": "Keyboard navigation, screen reader labels, reduced motion, contrast ratios, touch targets, text scaling",
-      "acceptanceCriteria": [
-        "All interactive elements keyboard-navigable",
-        "Screen reader labels on all inputs",
-        "Reduced motion supported (prefers-reduced-motion)",
-        "Contrast ratio 4.5:1 minimum on all text",
-        "Touch targets minimum 44px",
-        "Text scales to 200% without layout breakage",
-        "No color-only information conveyance",
-        "scan-generic.sh passes (impeccable-design skill)"
-      ],
-      "appLifeSpecRef": "accessibility budget",
-      "tdd": "N/A (manual + automated audit)",
-      "designQuality": "impeccable-design skill required"
-    },
-    {
-      "id": "T12",
-      "title": "Onboarding flow polish (based on first-user feedback)",
+      "id": "T15",
+      "title": "Launch checklist — monitoring, SEO, community seeding",
       "wave": "wave-3",
       "status": "planned",
       "priority": "medium",
-      "dependencies": [
-        "T1"
-      ],
-      "description": "Iterate on quiz, first recipe, first batch log flow based on real user data from Wave 1-2. Measure first-session recipe completion rate.",
-      "ux": true,
-      "uxFocus": "Iterate onboarding flow based on real usage data",
-      "acceptanceCriteria": [
-        "First-session recipe completion rate measured and tracked",
-        "Drop-off points in onboarding identified from analytics",
-        "Iterative improvements applied to quiz flow",
-        "First recipe flow refined based on user behavior",
-        "First batch log flow refined based on user behavior",
-        "scan-generic.sh passes (impeccable-design skill)"
-      ],
-      "appLifeSpecRef": "goal metric tracking",
-      "tdd": "N/A (iterative, data-driven)",
-      "designQuality": "impeccable-design skill required"
-    },
-    {
-      "id": "T13",
-      "title": "Launch checklist + monitoring",
-      "wave": "wave-3",
-      "status": "planned",
-      "priority": "medium",
-      "dependencies": [
-        "T9",
-        "T10",
-        "T11",
-        "T12"
-      ],
-      "description": "Post-launch instrumentation events (App Life Spec reference). Error tracking, performance monitoring. SEO content (10 pages: calculators + guides + troubleshooting). Community seeding (r/soapmaking, SoapCalc, Soapmaking Forum).",
+      "dependencies": ["T10", "T11", "T12", "T13", "T14"],
+      "description": "Post-launch instrumentation, error tracking, performance monitoring. SEO content (10 pages). Community seeding (r/soapmaking, SoapCalc, Soapmaking Forum).",
       "ux": false,
       "uxFocus": null,
       "acceptanceCriteria": [
-        "Post-launch instrumentation events deployed (first-session completion rate, signature interaction, retention surfaces, onboarding drop-off, error states, motion feedback, calculation accuracy)",
+        "Post-launch instrumentation events deployed",
         "Error tracking and performance monitoring active",
-        "SEO content live: 10 pages across 4 pillars (calculators, guides, troubleshooting, ingredient pages)",
-        "Community seeding in progress: r/soapmaking, SoapCalc community, Soapmaking Forum, Handcrafted Soap and Cosmetic Guild",
-        "Pro trial active (30 days or one complete batch cycle, no credit card)",
-        "UX instrumentation tracking all App Life Spec metrics",
-        "scan-generic.sh passes (impeccable-design skill)"
+        "SEO content live: 10 pages across 4 pillars",
+        "Community seeding in progress",
+        "Pro trial active"
       ],
       "appLifeSpecRef": "goal metric tracking",
       "tdd": "N/A (launch checklist)",

@@ -120,6 +120,7 @@ export const users = pgTable("users", {
   id: varchar("id", { length: 36 }).primaryKey(),
   email: varchar("email", { length: 255 }).notNull().unique(),
   name: varchar("name", { length: 255 }),
+  passwordHash: text("password_hash"),
   experienceLevel: varchar("experience_level", { length: 20 }),
   primaryGoal: varchar("primary_goal", { length: 10 }),
   subscriptionTier: varchar("subscription_tier", { length: 10 }),
