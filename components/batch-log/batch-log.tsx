@@ -22,6 +22,23 @@ export function BatchLog({
   const [status, setStatus] = useState<"draft" | "making" | "curing" | "completed" | "archived">("draft");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  // Making Mode state
+  const [makingStep, setMakingStep] = useState(0);
+  const [timerSeconds, setTimerSeconds] = useState(0);
+  const [timerRunning, setTimerRunning] = useState(false);
+  const [tempLye, setTempLye] = useState("");
+  const [tempOils, setTempOils] = useState("");
+  const [safetyChecked, setSafetyChecked] = useState(false);
+
+  // Timer effect
+  useEffect(() => {
+    let interval: ReturnType<typeof setInterval>;
+    if (timerRunning) {
+      interval = setInterval(() => setTimerSeconds((s) => s + 1), 1000);
+    }
+    return () => clearInterval(interval);
+  }, [timerRunning]);
+
   function validate(): boolean {
     const newErrors: Record<string, string> = {};
     if (!batchName.trim()) newErrors.batchName = "Batch name is required";
@@ -218,6 +235,126 @@ export function BatchLog({
           </div>
         )}
 
+        {/* Making Mode — CP guided production */}
+        {method === "cp" && status === "making" && (
+          <div className="bg-card rounded-lg border p-4 space-y-4">
+            <h2 className="text-lg font-semibold">Making Mode</h2>
+            <p className="text-sm text-muted-foreground">
+              Follow the guided steps below. Your progress is saved automatically.
+            </p>
+
+            {/* Step indicator */}
+            <div className="flex items-center gap-2 text-sm">
+              {["Prep & safety","Add lye to water","Heat oils","Combine lye & oils","Trace & pour","Insulate & cure"].map((step, i) => (
+                <button
+                  key={step}
+                  onClick={() => setMakingStep(i)}
+                  className={`flex items-center gap-1 px-2 py-1 rounded text-xs font-medium transition-colors ${
+                    i === makingStep
+                      ? "bg-primary text-primary-foreground"
+                      : i < makingStep
+                      ? "bg-success/10 text-success"
+                      : "bg-muted text-muted-foreground"
+                  }`}
+                >
+                  {i < makingStep && <span aria-hidden="true">✓</span>}
+                  {step}
+                </button>
+              ))}
+            </div>
+
+            {/* Current step content */}
+            <div className="bg-background rounded-lg border p-4">
+              <h3 className="font-semibold text-foreground mb-2">
+                Step {makingStep + 1}: {["Prep & safety","Add lye to water","Heat oils","Combine lye & oils","Trace & pour","Insulate & cure"][makingStep]}
+              </h3>
+              {makingStep === 0 && (
+                <div className="space-y-3">
+                  <p className="text-sm text-muted-foreground">
+                    Put on your safety gear. Ensure your workspace is clean and all ingredients are measured.
+                  </p>
+                  <label className="flex items-start gap-3 text-sm cursor-pointer">
+                    <input type="checkbox" checked={safetyChecked} onChange={(e) => setSafetyChecked(e.target.checked)} />
+                    <span>I have completed the safety checklist above</span>
+                  </label>
+                  {safetyChecked && (
+                    <button onClick={() => setMakingStep(1)} className="text-sm font-medium text-primary hover:underline">
+                      Next step →
+                    </button>
+                  )}
+                </div>
+              )}
+              {makingStep === 1 && (
+                <div className="space-y-3">
+                  <p className="text-sm text-muted-foreground">
+                    Slowly add lye to water (never water to lye). Stir until dissolved. Ventilate.
+                  </p>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-sm font-medium block mb-1">Lye temp (°F)</label>
+                      <input type="number" value={tempLye} onChange={(e) => setTempLye(e.target.value)} className="w-full px-3 py-2 rounded-lg border bg-background text-foreground" />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium block mb-1">Water temp (°F)</label>
+                      <input type="number" value={tempOils} onChange={(e) => setTempOils(e.target.value)} className="w-full px-3 py-2 rounded-lg border bg-background text-foreground" />
+                    </div>
+                  </div>
+                  <button onClick={() => setMakingStep(2)} className="text-sm font-medium text-primary hover:underline">Next step →</button>
+                </div>
+              )}
+              {makingStep === 2 && (
+                <div className="space-y-3">
+                  <p className="text-sm text-muted-foreground">
+                    Heat your oils to 90–100°F. Monitor the temperature closely.
+                  </p>
+                  <div>
+                    <label className="text-sm font-medium block mb-1">Oil temp (°F)</label>
+                    <input type="number" value={tempOils} onChange={(e) => setTempOils(e.target.value)} className="w-full px-3 py-2 rounded-lg border bg-background text-foreground" />
+                  </div>
+                  <button onClick={() => setMakingStep(3)} className="text-sm font-medium text-primary hover:underline">Next step →</button>
+                </div>
+              )}
+              {makingStep === 3 && (
+                <div className="space-y-3">
+                  <p className="text-sm text-muted-foreground">
+                    Slowly pour lye into oils. Stir gently. Watch for trace.
+                  </p>
+                  <button onClick={() => setMakingStep(4)} className="text-sm font-medium text-primary hover:underline">Next step →</button>
+                </div>
+              )}
+              {makingStep === 4 && (
+                <div className="space-y-3">
+                  <p className="text-sm text-muted-foreground">
+                    Your soap has reached trace. Pour into the mold and insulate.
+                  </p>
+                  <button onClick={() => setMakingStep(5)} className="text-sm font-medium text-primary hover:underline">Next step →</button>
+                </div>
+              )}
+              {makingStep === 5 && (
+                <div className="space-y-3">
+                  <p className="text-sm text-muted-foreground">
+                    Your batch is insulated and curing. Check it in 24–48 hours.
+                  </p>
+                  <button onClick={() => { setStatus("curing"); setMakingStep(0); }} className="text-sm font-medium text-primary hover:underline">Mark as curing →</button>
+                </div>
+              )}
+            </div>
+
+            {/* Timer */}
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setTimerRunning(!timerRunning)}
+                className={`px-4 py-2 rounded-lg text-sm font-medium ${timerRunning ? "bg-destructive text-destructive-foreground" : "bg-primary text-primary-foreground"}`}
+              >
+                {timerRunning ? "Pause" : "Start timer"}
+              </button>
+              <span className="text-sm font-mono text-foreground">
+                {Math.floor(timerSeconds / 60)}:{String(timerSeconds % 60).padStart(2, "0")}
+              </span>
+            </div>
+          </div>
+        )}
+
         {/* Notes */}
         <div>
           <label className="text-sm font-medium block mb-1" htmlFor="batch-notes">
@@ -238,7 +375,7 @@ export function BatchLog({
           onClick={handleSave}
           className="w-full py-3 font-medium bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity"
         >
-          Start Batch
+          {status === "making" ? "Update Batch" : "Start Batch"}
         </button>
       </div>
     </div>

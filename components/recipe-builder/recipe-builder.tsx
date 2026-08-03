@@ -245,7 +245,153 @@ export function RecipeBuilder() {
             </div>
           )}
         </div>
+
+        {/* Mold Volume Calculator */}
+        <div className="border-t border-border pt-6 mt-6">
+          <h3 className="font-display text-lg font-semibold text-foreground mb-4">
+            Mold Volume Calculator
+          </h3>
+          <MoldVolumeCalculator />
+        </div>
       </div>
+    </div>
+  );
+}
+
+function MoldVolumeCalculator() {
+  const [moldLength, setMoldLength] = useState("");
+  const [moldWidth, setMoldWidth] = useState("");
+  const [moldDepth, setMoldDepth] = useState("");
+  const [moldUnit, setMoldUnit] = useState<"cm" | "in">("cm");
+  const [result, setResult] = useState<{
+    volume: number;
+    oilWeight: number;
+    waterWeight: number;
+    lyeWeight: number;
+  } | null>(null);
+
+  function calculate() {
+    const length = Number(moldLength);
+    const width = Number(moldWidth);
+    const depth = Number(moldDepth);
+    if (!length || !width || !depth) return;
+
+    // Volume in cubic units
+    const volume = length * width * depth;
+
+    // Convert to liters (1 cubic cm = 0.001 liters, 1 cubic inch = 0.016387 liters)
+    const volumeLiters =
+      moldUnit === "cm" ? volume * 0.001 : volume * 0.016387;
+
+    // Oil weight = volume in liters * 0.9 (soap density approx)
+    const oilWeight = volumeLiters * 0.9;
+
+    // Water = 2.5 * lye weight (standard ratio)
+    // Lye = oil weight * 0.13 (approximate SAP for mixed oils)
+    const lyeWeight = oilWeight * 0.13;
+    const waterWeight = lyeWeight * 2.5;
+
+    setResult({
+      volume: Math.round(volume * 100) / 100,
+      oilWeight: Math.round(oilWeight * 100) / 100,
+      waterWeight: Math.round(waterWeight * 100) / 100,
+      lyeWeight: Math.round(lyeWeight * 100) / 100,
+    });
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="grid grid-cols-3 gap-4">
+        <div>
+          <label className="text-sm font-medium block mb-1">Length ({moldUnit})</label>
+          <input
+            type="number"
+            value={moldLength}
+            onChange={(e) => setMoldLength(e.target.value)}
+            placeholder="e.g., 20"
+            className="w-full px-3 py-2 rounded-lg border bg-background text-foreground"
+          />
+        </div>
+        <div>
+          <label className="text-sm font-medium block mb-1">Width ({moldUnit})</label>
+          <input
+            type="number"
+            value={moldWidth}
+            onChange={(e) => setMoldWidth(e.target.value)}
+            placeholder="e.g., 10"
+            className="w-full px-3 py-2 rounded-lg border bg-background text-foreground"
+          />
+        </div>
+        <div>
+          <label className="text-sm font-medium block mb-1">Depth ({moldUnit})</label>
+          <input
+            type="number"
+            value={moldDepth}
+            onChange={(e) => setMoldDepth(e.target.value)}
+            placeholder="e.g., 8"
+            className="w-full px-3 py-2 rounded-lg border bg-background text-foreground"
+          />
+        </div>
+      </div>
+      <div>
+        <label className="text-sm font-medium block mb-2">Unit</label>
+        <div className="flex gap-3">
+          {(["cm", "in"] as const).map((u) => (
+            <button
+              key={u}
+              onClick={() => setMoldUnit(u)}
+              className={`px-4 py-2 rounded-lg border text-sm font-medium transition-colors ${
+                moldUnit === u
+                  ? "border-primary bg-primary/5 text-primary"
+                  : "border-border hover:bg-accent"
+              }`}
+            >
+              {u === "cm" ? "Centimeters" : "Inches"}
+            </button>
+          ))}
+        </div>
+      </div>
+      <button
+        onClick={calculate}
+        className="w-full py-2 font-medium bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity"
+      >
+        Calculate
+      </button>
+      {result && (
+        <div className="bg-card rounded-lg border p-4 space-y-2">
+          <h4 className="font-semibold text-foreground">Results</h4>
+          <div className="grid grid-cols-2 gap-4 text-sm">
+            <div>
+              <span className="text-muted-foreground">Mold Volume:</span>{" "}
+              <span className="font-medium text-foreground">
+                {result.volume} {moldUnit === "cm" ? "cm³" : "in³"}
+              </span>
+            </div>
+            <div>
+              <span className="text-muted-foreground">Oil Weight:</span>{" "}
+              <span className="font-medium text-foreground">
+                {result.oilWeight}g
+              </span>
+            </div>
+            <div>
+              <span className="text-muted-foreground">Water:</span>{" "}
+              <span className="font-medium text-foreground">
+                {result.waterWeight}g
+              </span>
+            </div>
+            <div>
+              <span className="text-muted-foreground">Lye (NaOH):</span>{" "}
+              <span className="font-medium text-foreground">
+                {result.lyeWeight}g
+              </span>
+            </div>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            These are estimates. Always verify with your recipe calculator before
+            making a batch.
+          </p>
+        </div>
+      )}
     </div>
   );
 }
