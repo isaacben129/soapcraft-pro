@@ -156,14 +156,27 @@ The AI layer operates on top of the deterministic engine. It never invents quant
 
 ## 7. Product Scope
 
-### v1 — Four Modules (MVP)
+### Architecture Principle: Marketing Site vs. App
+SoapCraft Pro has two distinct surfaces:
+1. **Marketing Site** (`soapcraft-pro.vercel.app`) — Public, no login required. Homepage, pricing, features, testimonials. Drives signups.
+2. **App** (`app.soapcraft-pro.com`) — Gated by authentication. Dashboard, Recipe Builder, Batch Log, Cure Tracker, Costing, Library, Settings.
+
+The marketing site and the app are separate deployments with separate routes. The marketing site links to the app; the app links back to the marketing site. This separation ensures:
+- No auth friction on the marketing page
+- Clean login/signup gate before accessing the product
+- Clear pricing and feature visibility before committing
+- Proper subscription management flow
+
+### v1 — Four Modules (MVP) + Auth & Payments
 
 | Module | Description | Key Features |
 |--------|-------------|--------------|
-| **Recipe Builder** | Deterministic formulation with verified calculations | Oil selection, percentage-based blending, SAP calc, lye/water calc, superfat, property ranges, warnings, validation, batch scaling, save to library |
+| **Recipe Builder** | Deterministic formulation with verified calculations | Oil selection, percentage-based blending, SAP calc, lye/water calc, superfat, property ranges, warnings, validation, batch scaling, save to library, mold volume calculator |
 | **Batch Log + Making Mode** | Guided CP batch production with structured logging | Create batch from recipe, record actual measurements, CP step checklist, timers, temperatures, notes, photos, actual yield, safety warnings |
 | **Cure Tracker** | Estimated cure window with observation logging | Expected cure window, days elapsed, reminders, pH/hardness observation logs, final outcome review, user-decided completion |
 | **Cost Per Batch / Per Bar** | Ingredient cost catalogue and pricing | Ingredient cost catalogue, cost per batch, cost per bar, target margin pricing, suggested selling price |
+| **Auth** | Login, signup, session management | Email/password signup, login, logout, session persistence, password reset, auth gate on app routes |
+| **Payments** | Subscription management | Free tier (calculator + 3 recipes + 1 active batch), Pro tier ($12/mo or $99/yr — everything above), subscription management page, billing portal |
 
 ### UX Design (see DESIGN.md)
 The App Life Spec (signature interaction, motion vocabulary, first-use guidance, retention surfaces, accessibility budget) is a v1 deliverable defined in `product/DESIGN.md` and referenced throughout this PRD.
@@ -344,21 +357,30 @@ SoapCalc is free and will remain free. SoapMakingFriend is $5.99/mo. SoapCraft P
 
 ```
 SoapCraft Pro
-├── Onboarding (quiz → goal setting → method preference)
-├── Dashboard (overview of active batches, upcoming cures, cost summary)
-├── Recipe Builder (create, edit, scale, save recipes)
-│   ├── Oil selection (percentage-based)
-│   ├── Calculation display (lye, water, fragrance)
-│   ├── Property ranges (hardness, lather, moisturizing)
-│   ├── Warnings and validation
-│   └── Save to library
-├── Batches (list, create, view, edit)
-│   ├── Batch Detail (inputs, conditions, outcome, photos)
-│   └── Making Mode (step checklist, timers, temperatures)
-├── Cure Tracker (calendar view, list view, observation logs)
-├── Costing (cost per batch, cost per bar, pricing)
-├── Recipe Library (curated + personal, browse, search, filter, save)
-├── Settings (profile, preferences, integrations, billing)
+├── Marketing Site (public, no auth)
+│   ├── Homepage (hero, demo, features, workflow, pricing teaser)
+│   ├── Pricing page (tier details, comparison, upgrade CTA)
+│   └── Auth gate (login/signup links)
+├── App (auth-gated)
+│   ├── Auth (login, signup, password reset)
+│   ├── Onboarding (quiz → goal setting)
+│   ├── Dashboard (overview of active batches, upcoming cures, cost summary)
+│   ├── Recipe Builder (create, edit, scale, save recipes)
+│   │   ├── Oil selection (percentage-based)
+│   │   ├── Calculation display (lye, water, fragrance)
+│   │   ├── Property ranges (hardness, lather, moisturizing)
+│   │   ├── Warnings and validation
+│   │   ├── Mold volume calculator
+│   │   └── Save to library
+│   ├── Batches (list, create, view, edit)
+│   │   ├── Batch Detail (inputs, conditions, outcome, photos)
+│   │   └── Making Mode (step checklist, timers, temperatures)
+│   ├── Cure Tracker (calendar view, list view, observation logs)
+│   ├── Costing (cost per batch, cost per bar, pricing)
+│   ├── Recipe Library (curated + personal, browse, search, filter, save)
+│   ├── Subscription (pricing, upgrade, manage billing)
+│   ├── Account Settings (profile, subscription, payment methods, delete)
+│   └── Settings (profile, preferences, integrations, billing)
 ├── Free Tier (calculator, limited recipes, one active batch)
 └── Pro Tier ($12/month or $99/year — everything above)
 ```
@@ -366,18 +388,19 @@ SoapCraft Pro
 ## 9. Screen-by-Screen / Page-by-Page Requirements
 
 ### 9.1 Onboarding Flow
-- **Purpose:** Assess user's experience level, goals, and preferred soap-making method in < 3 minutes.
-- **Entry points:** Landing page CTA, signup after trial, first login for new users.
-- **Required sections/components:** 3-step quiz (experience → goal → method), contextual action chips, progress indicator.
+- **Purpose:** Authenticate the user, then assess their experience level, goals, and preferred soap-making method in < 3 minutes.
+- **Entry points:** "Get started" CTA on marketing page, signup after trial, first login for new users.
+- **Prerequisite:** User must be authenticated (see §9.11 Auth Flow). Unauthenticated users are redirected to the marketing page.
+- **Required sections/components:** Auth gate (see §9.11), 3-step quiz (experience → goal → method), contextual action chips, progress indicator.
 - **Required fields/content:** Experience level (beginner/intermediate/advanced), Primary goal (hobby/sell). The method preference field is removed from onboarding for v1; it is stored on the user profile for v2 personalization.
 - **CTAs/actions:** "Start" → "Next" → "Get Started" (final).
-- **Empty state:** N/A (this is the first screen).
+- **Empty state:** N/A (this is the first screen after auth).
 - **Loading state:** Progress bar between steps.
-- **Error state:** Preserve quiz answers if user navigates away.
-- **Permission rules:** None.
-- **Data dependencies:** User profile created on completion.
-- **Analytics events:** quiz_started, quiz_step_completed, quiz_completed, onboarding_complete.
-- **Acceptance criteria:** User can complete onboarding in < 3 minutes. First recipe creation is suggested immediately after.
+- **Error state:** Preserve quiz answers if user navigates away. Preserve auth session if quiz is interrupted.
+- **Permission rules:** Authenticated users only.
+- **Data dependencies:** User account (created during auth), user profile (created on onboarding completion).
+- **Analytics events:** auth_required, login_viewed, signup_viewed, quiz_started, quiz_step_completed, quiz_completed, onboarding_complete.
+- **Acceptance criteria:** Unauthenticated user is redirected to the marketing page. Authenticated user can complete onboarding in < 3 minutes. First recipe creation is suggested immediately after.
 
 ### 9.2 Recipe Builder
 - **Purpose:** Help users build accurate soap recipes with verified calculations.
@@ -493,6 +516,62 @@ SoapCraft Pro
 - **Analytics events:** dashboard_viewed, quick_action_clicked.
 - **Acceptance criteria:** User can see their active batches, upcoming cures, and cost summary at a glance. All data is current.
 
+### 9.10 Marketing Page (Public, No Auth)
+- **Purpose:** Public marketing page that introduces SoapCraft Pro and drives signups. No login required.
+- **Entry points:** Direct URL, Google search, social media link, bookmark.
+- **Required sections/components:** Hero (headline + subheadline + CTA), Live calculation demo (deterministic, < 100ms), Feature overview (4 modules with descriptions), Workflow progression (4-step visual: Recipe → Batch → Cure → Cost), Social proof/testimonials (v1: placeholder), Pricing teaser (free vs Pro), Footer (links, legal).
+- **Required fields/content:** Headline, Subheadline, CTA buttons, Demo calculation data, Feature descriptions, Workflow steps, Pricing tiers.
+- **CTAs/actions:** "Start building" (→ signup → Recipe Builder), "Browse recipes" (→ Recipe Library), "Learn more" (→ Feature overview).
+- **Empty state:** N/A (marketing page always shows the same content).
+- **Loading state:** Skeleton hero while loading.
+- **Error state:** "Could not load page. Retry." (static content falls back to cached version).
+- **Permission rules:** All tiers (including logged-out).
+- **Data dependencies:** None (static content).
+- **Analytics events:** homepage_viewed, cta_clicked, demo_calculation_viewed.
+- **Acceptance criteria:** Marketing page loads in < 1s. CTA buttons are visible and clickable. Live demo calculation runs deterministically in < 100ms. The page clearly communicates that SoapCraft Pro is a workspace, not just a calculator.
+
+### 9.11 Auth Flow (Login / Signup)
+- **Purpose:** Authenticate users before they access the app. The marketing page is public; the app is gated.
+- **Entry points:** "Get started" CTA on marketing page, "Log in" link on marketing page, "Sign up" link on marketing page.
+- **Required sections/components:** Login form (email + password), Signup form (email + password + confirm password), Password reset form, Session persistence, Auth gate on all app routes.
+- **Required fields/content:** Email, Password, Confirm Password (signup only).
+- **CTAs/actions:** "Log in" → "Sign up" → "Reset password" → "Back to login."
+- **Empty state:** N/A (auth forms always show the same content).
+- **Loading state:** Spinner on form submission.
+- **Error state:** "Invalid email or password." (login), "Email already in use." (signup), "Passwords do not match." (signup), "Something went wrong. Please try again." (general).
+- **Permission rules:** Unauthenticated users see marketing page; authenticated users see app.
+- **Data dependencies:** User account in database.
+- **Analytics events:** login_viewed, signup_viewed, login_attempted, signup_attempted, login_success, signup_success, login_failed, signup_failed, password_reset_requested, password_reset_completed.
+- **Acceptance criteria:** User can sign up with email + password in < 2 minutes. User can log in and access the dashboard immediately after. Password reset email is sent within 30 seconds. Auth gate redirects unauthenticated users to the marketing page.
+
+### 9.12 Subscription / Pricing Page
+- **Purpose:** Present pricing tiers and allow users to upgrade to Pro.
+- **Entry points:** "Pricing" link in marketing page footer, "Upgrade" button in Dashboard, "Manage subscription" in Settings.
+- **Required sections/components:** Free tier details, Pro tier details, Comparison table, Current tier indicator, Upgrade/downgrade actions, Billing portal link.
+- **Required fields/content:** Tier names, Feature lists, Price (monthly/yearly), Current tier badge, Payment method (for upgrade).
+- **CTAs/actions:** "Upgrade to Pro" → Stripe Checkout → "Manage subscription" → "Downgrade to Free."
+- **Empty state:** N/A (pricing page always shows the same content).
+- **Loading state:** Spinner on payment processing.
+- **Error state:** "Payment failed. Please try again." (payment), "Something went wrong." (general).
+- **Permission rules:** All tiers (including logged-out).
+- **Data dependencies:** Stripe checkout session, user subscription status.
+- **Analytics events:** pricing_viewed, upgrade_clicked, payment_initiated, payment_success, payment_failed, downgrade_clicked.
+- **Acceptance criteria:** User can view pricing tiers on the marketing page. Authenticated user can upgrade from Free to Pro via Stripe Checkout. User can manage their subscription from the Settings page.
+
+### 9.13 Account Settings
+- **Purpose:** Manage user profile, subscription, and account settings.
+- **Entry points:** Settings link in navigation (app only).
+- **Required sections/components:** Profile (email, name), Subscription (current tier, billing cycle, next billing date), Payment methods (add/remove), Danger zone (delete account).
+- **Required fields/content:** Email, Name, Subscription tier, Billing cycle, Next billing date.
+- **CTAs/actions:** "Update profile" → "Manage subscription" → "Add payment method" → "Cancel subscription" → "Delete account."
+- **Empty state:** N/A (settings page always shows the same content).
+- **Loading state:** Spinner on form submission.
+- **Error state:** "Could not update profile. Please try again." (general).
+- **Permission rules:** Authenticated users only.
+- **Data dependencies:** User profile, subscription status, payment methods.
+- **Analytics events:** settings_viewed, profile_updated, subscription_changed, payment_method_added, account_deleted.
+- **Acceptance criteria:** User can update their profile email and name. User can view their current subscription tier and billing cycle. User can add/remove payment methods. User can cancel their subscription. User can delete their account.
+
 ## 10. User Flows
 
 ### 10.1 First Recipe Creation Flow
@@ -524,6 +603,38 @@ SoapCraft Pro
 3. User reviews and adjusts if needed
 4. System shows cost per batch + cost per bar + suggested target price
 5. User can adjust target margin → price updates in real-time
+
+### 10.4 Auth Flow (Login / Signup)
+1. User lands on Marketing Site (public, no auth required)
+2. User clicks "Get started" or "Log in" CTA
+3. User is taken to the Auth page
+4. User chooses "Sign up" or "Log in"
+5. New user: enters email + password → account created → redirected to Onboarding
+6. Returning user: enters email + password → authenticated → redirected to Dashboard
+7. User can request password reset → email sent → reset link clicked → password updated
+8. User can log out → redirected to Marketing Site
+
+### 10.5 Subscription Flow (Upgrade to Pro)
+1. User is on Dashboard (Free tier)
+2. User clicks "Upgrade to Pro" or navigates to Pricing page
+3. User is taken to the Subscription / Pricing page
+4. User selects Pro tier (monthly or yearly)
+5. User is redirected to Stripe Checkout
+6. User completes payment
+7. Stripe confirms payment → subscription activated
+8. User is redirected back to the app with Pro tier access
+9. User can manage subscription from Account Settings (cancel, downgrade, update payment method)
+
+### 10.6 Marketing → App Flow
+1. User lands on Marketing Site (public)
+2. User browses features, sees pricing, views demo calculation
+3. User clicks "Start building" CTA
+4. User is redirected to Auth page (signup or login)
+5. User authenticates → redirected to Onboarding
+6. User completes onboarding → redirected to Dashboard
+7. User can now access all app features (Recipe Builder, Batches, Cure Tracker, Costing)
+8. User can navigate between Marketing Site and App at any time
+9. Unauthenticated user trying to access app routes → redirected to Marketing Site
 
 ## 11. Functional Requirements
 
