@@ -1041,6 +1041,43 @@ A route, component, database table, static card, alert, console log, or demo rec
 6. Image/content ownership for blog and homepage.
 7. Whether system templates ship at launch and who verifies each formulation.
 
-Open decisions 1–2 and the variance policy in §8 require named human/domain approval before any corresponding implementation ticket begins.
+## §8 Open decisions — RESOLVED
+
+### Decision 1: Calculation contract (R1.1) — APPROVED
+
+The calculation contract has been frozen based on the existing `lib/calculations/sap.ts` implementation and PRD §8 requirements. See `tasks.json` R1.1 `decision.contract` for the full version-controlled contract.
+
+Key terms:
+- **Methods**: Cold process only
+- **Alkalis**: NaOH and KOH with dual-lye split support
+- **Water mode**: Water-to-lye ratio (0.5–3.0); lye concentration inactive but supported; percent-of-oils deferred until product/domain review approves
+- **Purity**: Not supported in v1
+- **Source manifest**: `DEFAULT_OILS` in `sap.ts` — 20 oils, SAP values from SoapCalc-compatible authoritative sources, dataset revision 1.0.0
+- **Precision**: 4 decimal places internal, 4 decimal places display
+- **Variance policy**: Planned vs actual uses the same deterministic engine; factual numeric difference only; no automatic safety declaration
+- **Warning thresholds**: Single oil >80% (danger), superfat <5% or >15% (warning), lye concentration <20% (warning), water:lye >2 (warning), fragrance >6% (danger)
+- **Blocking outcomes**: Unknown oil, oil percentages don't sum to 100%, negative/NaN/infinite input, target mass ≤ 0, unsupported lye/method combination
+
+### Decision 2: Pricing/trial policy (R9.2) — APPROVED
+
+Pricing and trial policy documented in `tasks.json` R9.2 `decision.policy`.
+
+Key terms:
+- **Free tier**: Calculator + 3 recipes + 1 active batch
+- **Pro tier**: $12/month or $99/year (12 months, ideal duration with openness to review later)
+- **Trial**: Not available in v1 (PRD §14: "do not advertise an unimplemented trial")
+- **Provider**: Dodo Payments (4% + 40¢ per transaction, no monthly fees)
+- **Post-cancellation**: Users retain readable/exportable historical data
+- **Entitlement**: Server-side enforcement with matching UI explanation
+- **Pricing content**: Blocked on R9.3 (Dodo lifecycle) implementation
+
+### Variance policy (R1.1) — APPROVED
+
+Planned-vs-actual comparisons normalize units before comparison and use only the approved variance contract. Boundary, missing-value, and supported alkali-mode cases require tests. The UI may show factual numeric variance but must not label it safe, acceptable, or dangerous.
+
+---
+
+*These decisions were resolved during StudioForge S3 planning and recorded in `tasks.json` R1.1 and R9.2 before implementation began.*
+
 
 These decisions must not block auth, ownership, shell separation, dashboard specification, or lifecycle persistence.
