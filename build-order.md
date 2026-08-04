@@ -1,401 +1,744 @@
-# SoapCraft Pro — Studio Forge Build Order (Revised)
+# SoapCraft Pro Rescue Build Order
 
-> The complete build order for SoapCraft Pro, revised per PRD critique.
-> MVP is 4 modules, not 12. AI is a formulation assistant, not a recipe generator.
-> Lye calculation is deterministic and authoritative. Community is v2.
-> This replaces the generic Studio Forge pipeline with a product-specific,
-> UX-hardened build sequence.
+**Baseline:** `ed27e22`
+**Purpose:** Dependency-ordered implementation plan for a cheaper coding model.
+**Rule:** Do not parallelize tickets that mutate the same contracts. Do not start visual polish before ownership, domain, and lifecycle seams are stable.
 
 ---
 
-## 0. UX Upgrade to Studio Forge (unchanged from v1)
+## 1. Operating rules
 
-The default Studio Forge pipeline gets a UX layer at every stage, not a polish
-pass at the end. Three sources power the upgrade:
-
-| Source | What It Adds | When It Kicks In |
-|--------|-------------|------------------|
-| **`app-life-and-style`** skill | App Life Spec, signature interaction design, motion language, onboarding flow, retention surfaces | S2 (DESIGN.md) — mandatory before any implementation |
-| **`impeccable-design`** skill | Anti-generic pass, hard bans list | S5 (CI) — automated quality gate, plus manual pass before S7 merge |
-| **`ui-ux-pro-max-skill`** repo | 84 UI styles, 192 product types, 192 color palettes, 74 font pairings, 99 UX guidelines, 161 reasoning rules | S1 (brief stage) — design intelligence at the brief stage |
-
-**Skills to load:**
-- `app-life-and-style` — load at S2, reference through S7
-- `impeccable-design` — load at S5, reference through S7
-- `plan` — load at S3 for bite-sized UX task decomposition
-- `studio-app-implementation` — load at S4 for mockup-first UI workflow
-
-**Repos (cloned at project start):**
-- `github.com/nextlevelbuilder/ui-ux-pro-max-skill` → `references/ui-ux-pro-max-skill`
-- `github.com/pbakaus/impeccable` → `/tmp/impeccable` (source for `scan-generic.sh`)
+1. Read `product/PRD.md`, `product/DESIGN.md`, `flowchart/product-flow.md`, and `product/CODE-PRD-AUDIT.md` before coding.
+2. One ticket = one coherent, testable outcome.
+3. Use TDD for calculations, state transitions, ownership, and billing.
+4. Use realistic seed data through the production schema; no parallel demo-only types.
+5. No placeholder success messages, alerts, console-only saves, or hard-coded demo records.
+6. Every UI mutation implements idle, saving, saved, failed, retry, and preserved-input states.
+7. Every private route/API test includes cross-user denial.
+8. Every visible ticket includes desktop/mobile screenshots and computed-style inspection.
+9. Do not modify the calculation engine and UI contract in separate unsynchronized tickets.
+10. Stop and fix a failed dependency before moving to later waves.
 
 ---
 
-## 1. S0 — Reconnoiter (Week 0)
+## 2. Preflight
 
-### Standard S0
-- Check if SoapCraft Pro project exists on disk
-- If yes, treat existing PRD as source of truth; build missing artifacts
-- If no, proceed to S1
+### R0.1 Preserve and understand worktree state
 
-### UX Addition: UX Audit of Existing Work
-- If a SoapCalc integration exists, audit its UX: what works, what's missing
-- Identify the top 3 UX friction points in the existing soap-making tool landscape
-- Document in `product/UX-AUDIT.md`
+Current pre-existing local state at planning completion includes modified `package.json` and deleted `package-lock.json`. Determine owner/intent before package operations.
 
-### Output
+Acceptance:
+
+- baseline status captured
+- no unrelated file reverted
+- package manager strategy explicit
+
+### R0.2 Restore reproducible validation
+
+Goal: make the existing project verifiable before feature work.
+
+Tasks:
+
+- establish expected package manager/lockfile
+- install dependencies without changing versions accidentally
+- run lint, typecheck, tests, and production build
+- record existing failures as tickets; do not paper over them
+
+Acceptance:
+
+```text
+lint: green
+typecheck: green
+test: green
+build: green
 ```
-product/
-  ├── PRD.md (or reference to existing)
-  ├── DESIGN.md (or reference to existing)
-  └── UX-AUDIT.md (NEW — UX friction audit of existing tools)
-```
+
+If not green, block later tickets until failures are classified and fixed.
+
+### R0.3 Add baseline end-to-end smoke harness
+
+Scenarios:
+
+- logged-out homepage
+- signup/login redirect
+- protected dashboard
+- existing recipe calculation
+- public blog index/article
+
+This is a baseline, not proof of MVP.
 
 ---
 
-## 2. S1 — Reverse-Prompt (Week 1)
+## 3. Wave 1: Trust, contracts, and data isolation
 
-### Standard S1
-- Expand the idea into `brief.md`: problem, users, outcomes, scope, non-goals, stack
+### R1.1 Freeze and specify calculation contract
 
-### UX Addition: Load ui-ux-pro-max-skill Context
-- Before writing the brief, query the ui-ux-pro-max-skill database for:
-  - "SaaS product onboarding" — best practices for first-time user flows
-  - "calculator UX" — patterns for math-heavy tools
-  - "recipe interface" — patterns for structured input/output
-- Record the top 3 relevant patterns in `brief.md` under `UX Patterns`
+**Human approval gate:** This is a product/domain-review decision ticket, not an autonomous implementation ticket. The coding agent must stop until a named approver signs off the version-controlled contract and source manifest.
 
-### brief.md Additions
+Deliverables:
+
+- `docs` or test-adjacent calculation contract
+- supported methods, lye types, water modes, units, purity policy
+- authoritative ingredient/SAP sources and dataset revision
+- internal precision and display rounding policy
+- warning/blocking matrix
+- planned-vs-actual variance contract covering alkali by type, water, total oils, and supported fragrance: normalized comparison basis, approved thresholds, severity, continue/confirm/block behavior, confirmation copy, and audit event
+
+Do not implement unsupported options as fake fields or infer chemistry thresholds from generic web guidance.
+
+Acceptance:
+
+- named product/domain owner approves PRD open decisions 1–2, all numeric boundaries, and variance behavior
+- approved source manifest and independent fixtures are version controlled
+- explicit stop condition prevents R1.2 until approval is recorded
+- no marketing verification claim without evidence
+
+### R1.2 Rebuild deterministic calculation tests, then engine
+
+RED tests first:
+
+- scaling by target oil mass
+- unit conversion
+- each supported lye type
+- each active water mode
+- superfat and purity policy
+- invalid/boundary values
+- rounding separation
+- known independent fixtures
+
+Then implement one typed engine contract used by server and client.
+
+Acceptance:
+
+- all fixtures green
+- no AI/network dependency
+- inactive water mode cannot influence result
+- all invalid outputs become typed errors, not NaN/silent hides
+
+### R1.3 Correct relational model and migrations
+
+Migration safety procedure, before schema edits:
+
+- inventory production row counts, nulls, duplicates, and orphan relationships
+- take and verify a restorable backup
+- document field-by-field mapping from current tables/JSON blobs to the target contract
+- define how `createdBy` maps to real users and quarantine records whose owner cannot be derived
+- add nullable/additive structures first, backfill and verify, then enforce constraints
+- define transaction/locking expectations plus rollback or forward-recovery steps
+- never drop/recreate a production table or delete/quasi-own orphan data merely to pass migration tests
+
+Required changes:
+
+- user ownership on recipes, batches, cost records, private ingredients
+- immutable recipe versions and currentVersionId
+- versioned batch planned snapshot plus normalized actual measurement line items; Batch is the only editable owner of actual quantities
+- Making Session/steps/timer state references Batch measurement IDs and does not duplicate editable actual values
+- cure observations with observedAt and structured text/numeric fields; photos are deferred unless a separate storage/security contract is approved
+- ingredient cost records
+- batch cost revisions/cost basis
+- activity events
+- subscription provider projection
+- archive fields and safe FK behavior
+
+Acceptance:
+
+- migration files committed
+- clean database migrates from zero
+- upgrade migration tested against a copy of current production-shaped schema/data
+- pre/post row counts, owner mappings, and FK lineage verified
+- unresolved ownerless/orphan records are quarantined for manual resolution, not deleted
+- rollback or forward-recovery exercise documented
+- historical recipe versions and batches survive unchanged
+- deleting/archiving a recipe cannot cascade-delete historical batches
+
+### R1.4 Centralize authenticated ownership guards
+
+Implement reusable server helpers for:
+
+- require session user
+- load owned recipe/version
+- load owned batch through userId
+- verify child ownership through parent
+- curated read policy
+
+Acceptance tests:
+
+- unauthenticated denied
+- User A cannot access User B recipe/batch/cure/cost by ID
+- list queries only return current user plus explicitly curated public data
+- client-provided owner IDs ignored
+
+### R1.5 Finish authentication lifecycle
+
+Tasks:
+
+- production secret validation
+- signup → authenticated session → intended route
+- logout
+- real reset token/email/completion flow
+- callback URL validation
+- session-expired recovery
+
+Acceptance:
+
+- no hard-coded production secret fallback
+- password reset success means a token was actually issued/sent
+- no email enumeration
+- dashboard protected server-side
+
+**Wave 1 gate:** calculation, migration, ownership, auth, lint, typecheck, tests, and build all green.
+
+---
+
+## 4. Wave 2: Shell and design-system foundation
+
+### R2.1 Create route groups and three shells
+
+Tasks:
+
+- root document only owns `<html>/<body>`
+- marketing shell
+- auth shell
+- app shell with rail/command bar/mobile nav
+- canonical `/pricing`, `/blog`, `/blog/[slug]`
+- redirects from old `/marketing/**` paths
+- valid logo behavior
+
+Acceptance:
+
+- no duplicate header/footer
+- `/marketing` is not a broken Home destination
+- public pages never render app navigation
+- authenticated root redirects to dashboard
+
+### R2.2 Implement Tailwind v4 semantic theme mapping
+
+Tasks:
+
+- map `--color-*` tokens through Tailwind v4 theme system
+- introduce rail/canvas/ledger/sheet/clay/sage/brass semantics
+- radius/elevation/type tokens
+- numeric mono/tabular utility
+
+Acceptance:
+
+- browser computed styles confirm intended non-transparent fills
+- contrast checks pass
+- no pure-white-on-white default
+- old semantic classes either work or are replaced systematically
+
+### R2.3 Build shared operational primitives
+
+Components:
+
+- AppRail / MobileNav / CommandBar
+- LedgerRow
+- ObjectHeader / Breadcrumbs
+- StatusLabel
+- MeasurementCell / PlanActualCell
+- SaveIndicator
+- AttentionRow
+- ActivityRow
+- structured EmptyState
+- field/blocking error summary
+
+Acceptance:
+
+- Storybook/demo route or focused tests show all states
+- keyboard/focus behavior verified
+- no generic card primitive becomes default content container
+
+**Wave 2 gate:** approved shell + populated dashboard mockup exists before dashboard implementation.
+
+---
+
+## 5. Wave 3: Recipe vertical slice
+
+### R3.1 Ingredient catalogue read model
+
+Tasks:
+
+- seed sourced system ingredients
+- expose user-scoped/system catalogue query
+- surface source/SAP revision
+- no arbitrary system `createdBy`
+
+Acceptance:
+
+- builder uses database/catalogue contract or one canonical shared dataset
+- unknown/missing SAP blocks calculation
+
+### R3.2 Recipe create API/server action
+
+Atomic behavior:
+
+- authenticate
+- validate ownership/input
+- run authoritative calculation server-side
+- create Recipe + Version 1
+- persist calculation/dataset version and warnings
+- append activity event
+
+Acceptance:
+
+- client totals ignored/recomputed
+- invalid/blocking recipe not saved
+- retry does not create accidental duplicate versions
+
+### R3.3 Recipe Builder UX
+
+Implement approved split desktop/staged mobile design.
+
+Required:
+
+- identity, target mass/unit, oil table, one active water mode
+- calculation panel
+- warnings
+- truthful save states
+- Save recipe
+- View recipe / Start batch continuation
+
+Acceptance end-to-end:
+
+```text
+new recipe → calculate → save → recipe detail
+```
+
+No alert/console placeholder.
+
+### R3.4 Recipe portfolio and detail/versioning
+
+Tasks:
+
+- user-scoped recipe list/search/filter/sort
+- recipe detail
+- version history/diff
+- create new version
+- duplicate/archive
+- batches section initially valid empty state
+
+Acceptance:
+
+- editing creates N+1, never mutates N
+- archived recipe preserves batch history
+- if approved launch templates exist, they are clearly separated with provenance; otherwise no template control is rendered
+
+**Wave 3 gate:** first verified recipe save rate can be instrumented and tested.
+
+---
+
+## 6. Wave 4: Batch and persistent Making Mode vertical slice
+
+### R4.1 Batch creation from recipe version
+
+Tasks:
+
+- select exact version
+- copy planned measurement snapshot
+- create user-owned batch
+- activity event
+- batch-list visibility; operational dashboard integration is added incrementally in R4.2 and completed in R7
+
+Acceptance:
+
+- later recipe edit does not alter batch plan
+- unsaved recipe draft cannot start batch
+- cross-user version ID denied
+
+### R4.2 Batch portfolio, minimal dashboard pipeline, and central detail
+
+Implement:
+
+- list/filter/status/next action
+- minimal dashboard active-pipeline query/rows for current batches; later waves enrich cure/cost/attention data
+- `/batches/[id]`
+- Overview, Making, Cure, Cost, Notes/history sections
+- plan vs actual
+- parent version breadcrumb/link
+
+Acceptance:
+
+- no demo batch IDs/data
+- every section derives from same batch
+
+### R4.3 Making state machine and persistence
+
+RED tests:
+
+- checklist gate
+- ordered completion
+- skip reason
+- timer start/pause/resume/reconstruction
+- reload resume
+- completion transaction to curing
+- abandon path
+- idempotent/retried writes use the PRD mutation-key contract: user + operation + client UUID uniqueness, payload-hash conflict, exact-replay original outcome
+
+Implement server contract before UI.
+
+### R4.4 Making Mode UX
+
+Implement desktop/mobile design with:
+
+- one active step
+- planned/actual values
+- persistent timer
+- safety context
+- save indicator
+- complete/skip controls
+- final review
+
+Acceptance end-to-end:
+
+```text
+batch → checklist → making → enter actual → reload → same state/time → complete → curing
+```
+
+**Wave 4 gate:** recipe-to-curing handoff works with no manual re-entry.
+
+---
+
+## 7. Wave 5: Cure vertical slice
+
+### R5.1 Cure observation API and state
+
+Tasks:
+
+- create/read/update/delete observations with ownership
+- computed day from observedAt/cureStartedAt
+- structured values
+- completion/ready transition
+- activity events
+
+Acceptance:
+
+- demo route removed
+- user can correct an observation
+- ready transition requires explicit user action
+- language/tests never treat elapsed time as safety certification
+
+### R5.2 Cure portfolio and batch cure UX
+
+Implement:
+
+- overdue observation / due observation / curing / estimated window reached / completed groups; estimated-window copy remains explicitly non-authoritative
+- observation sheet
+- timeline/trends where data exists
+- next observation date
+- Mark ready
+
+Acceptance end-to-end:
+
+```text
+curing batch → observation → dashboard updates → mark ready → yield request
+```
+
+### R5.3 Reminder policy, optional within MVP
+
+Only implement if notifications are in agreed MVP:
+
+- preference/consent
+- cadence and quiet hours
+- delivery job
+- deep links
+- retry/observability
+
+Do not display reminder claims before this ticket ships.
+
+---
+
+## 8. Wave 6: Costing vertical slice
+
+### R6.1 Ingredient cost records
+
+Tasks:
+
+- add/edit/archive purchase costs
+- unit normalization
+- supplier/effective date
+- user ownership
+
+Acceptance:
+
+- normalized unit calculation tested
+- historical records remain addressable
+
+### R6.2 Batch cost calculation contract
+
+RED tests:
+
+- actual quantities
+- missing cost basis
+- final yield zero/missing
+- total/cost per unit
+- target margin → suggested price
+- optional cost categories according to scope
+- historical cost basis/recalculation revisions
+
+### R6.3 Batch cost UX and cost portfolio
+
+Implement inherited line items, cost-basis selectors, yield, target margin, persisted result, incomplete queue, comparison view.
+
+Acceptance end-to-end:
+
+```text
+ready batch → yield → select costs → save → dashboard/detail/cost portfolio agree
+```
+
+No zero-cost fallback and no arbitrary Oil ID field.
+
+**Wave 6 gate:** complete connected batch metric can be measured.
+
+---
+
+## 9. Wave 7: Operational dashboard
+
+### R7.1 Dashboard query and attention derivation
+
+Build one user-scoped read model for:
+
+- failed save/recovery items if server-known
+- active Making Mode
+- blocking recipes
+- cure due/overdue
+- missing yield/cost
+- active pipeline
+- recent recipe outcomes
+- activity events
+
+Acceptance:
+
+- deterministic priority tests
+- no cross-user aggregation
+- bounded query counts/performance
+
+### R7.2 Dashboard UX
+
+Replace the current tools card grid with:
+
+1. Needs attention rows
+2. Active production pipeline
+3. Recent recipes/outcomes
+4. Activity ledger
+5. New command
+
+Acceptance:
+
+- populated, partial, empty, loading, and error states
+- desktop and mobile approved screenshots
+- every row exposes parent/context and one next action
+- no primary cards that simply link to modules
+
+---
+
+## 10. Wave 8: Marketing and editorial
+
+### R8.1 Blog content contract and routes
+
+Tasks:
+
+- canonical `/blog` and `/blog/[slug]`
+- featured/latest/category filter
+- proper semantic article rendering
+- images/alt text
+- related articles
+- Article/Breadcrumb JSON-LD
+- redirect old URLs
+
+Acceptance:
+
+- canonical category vocabulary is `calculations`, `recipes`, `guides`, `troubleshooting`; links resolve through `/blog?category=...` and change results/URL state
+- no missing image references
+- long-form content renders lists/headings correctly
+
+### R8.2 Homepage redesign
+
+**Pricing dependency:** R9.2 is a product-decision prerequisite for any prices, tier limits, trial language, or entitlement claims. Until it is approved, this ticket may show only a neutral Pricing link and must not invent or preserve stale offer details.
+
+Implement approved proof-led design:
+
+- hero + real rendering of production application components using production-shaped synthetic data clearly labelled Example
+- connected lifecycle artifact
+- calculation trust
+- plan vs actual example
+- featured + latest blog
+- pricing/footer
+
+Acceptance:
+
+- no four-card feature section
+- no hero metric tiles
+- no emoji brand
+- no false persistent timer/reminder/catalogue/connection claims
+- computed semantic fills verified
+- logged-in redirect works
+
+### R8.3 Technical SEO
+
+- sitemap
+- robots
+- canonicals
+- OpenGraph assets
+- structured data
+- heading/image audit
+- no thin programmatic pages
+
+---
+
+## 11. Wave 9: Settings, billing, entitlement
+
+### R9.1 Settings foundation
+
+- profile
+- preferences/units/currency
+- safety acknowledgement
+- data export
+- account deletion only after product/legal approval defines retention/anonymization, active Dodo handling, recovery window, and recent-auth confirmation
+- logout
+- notification preferences if reminders exist
+
+### R9.2 Decide pricing/trial/limits (product decision; complete before R8.2 pricing content)
+
+Before code, resolve:
+
+- trial policy
+- free recipe/active-batch limits
+- post-cancellation access
+- billing periods/prices
+
+Update PRD/copy as one truth.
+
+### R9.3 Dodo lifecycle
+
+Implement:
+
+- customer/subscription IDs
+- checkout session
+- signed idempotent webhook
+- state projection
+- cancel at period end
+- renewal/past_due/canceled handling
+- billing UI
+
+Acceptance matrix:
+
+- checkout canceled
+- payment pending
+- payment succeeds
+- duplicate webhook
+- out-of-order webhook
+- renewal
+- payment failed
+- cancel at period end
+- actual period end
+
+### R9.4 Server-side entitlement gates
+
+- enforce limits in mutations
+- preserve/read historical data per policy
+- UI mirrors server result
+
+No front-end-only gating.
+
+---
+
+## 12. Wave 10: Instrumentation, QA, and launch truth
+
+### R10.1 Analytics wrapper and lifecycle events
+
+Implement PRD event names with privacy-safe payloads. Verify dashboards/queries can compute activation and connected completion.
+
+### R10.2 Accessibility audit
+
+Exercise keyboard, screen reader labels, focus, 200% zoom, 320px viewport, reduced motion, tables/mobile alternatives, timer announcements.
+
+### R10.3 Visual and responsive QA
+
+For every core route:
+
+- 1440×900
+- 1024×768
+- 390×844
+- 320×568 critical flows
+
+Inspect computed tokens and all state variants.
+
+### R10.4 Security review
+
+- ownership and IDOR suite
+- auth rate limiting
+- secret/config validation
+- webhook verification
+- export/delete recent auth
+- logs free of secrets/private notes
+
+### R10.5 Marketing truth audit
+
+Compare every public claim against live behavior. Remove anything not demonstrable.
+
+### R10.6 Final end-to-end gate
+
+Run the 15-step definition of done in `product/PRD.md` with two accounts and real persisted test records.
+
+---
+
+## 13. Dependency graph
+
+```text
+R0 validation
+  → R1 calculation + schema + ownership + auth
+    → R2 shells/tokens/primitives
+      → R3 recipes
+        → R4 batches/making
+          → R5 cure
+            → R6 costing
+              → R7 dashboard
+
+R2 shells/tokens ───────────────→ R8 marketing/blog
+R1 auth/schema + R6 lifecycle ──→ R9 billing/entitlements
+R3–R9 complete ────────────────→ R10 launch gates
+```
+
+Parallelism allowed:
+
+- R2 shell mockups can proceed while R1 tests are being completed, but implementation must use final auth boundaries.
+- R8 editorial content cleanup can proceed after route decisions, but homepage claims must wait for implemented capabilities.
+- R9 pricing decision can occur early, but billing code waits for core lifecycle.
+
+Parallelism forbidden:
+
+- schema migration and multiple feature APIs changing the same entities
+- calculation engine and builder using different input/output contracts
+- dashboard aggregation before lifecycle entities stabilize
+- entitlement UI before webhook/provider state contract
+
+---
+
+## 14. Ticket completion template
+
+Every implementation ticket closes with:
+
 ```markdown
-## UX Patterns (from ui-ux-pro-max-skill)
-1. [Pattern name] — [source style] — [why it fits SoapCraft]
-2. [Pattern name] — [source style] — [why it fits SoapCraft]
-3. [Pattern name] — [source style] — [why it fits SoapCraft]
+### Requirement
+PRD section / DESIGN section / flow handoff
 
-## Design Hypothesis
-- Hypothesis: A deterministic formulation engine that shows exact calculations
-  before the user mixes anything will reduce batch failures by 30%
-- Metric to prove: % of users who complete a full recipe creation flow
-  (start → save) in their first session
+### Changed
+Exact files and behavior
+
+### Tests
+RED test observed, GREEN result, regression suite
+
+### States exercised
+empty / loading / populated / saving / saved / failed / retry / permission denied
+
+### Visual verification
+Desktop + mobile screenshots, computed token check
+
+### Data/security verification
+Ownership predicate and cross-user denial test
+
+### Remaining limitations
+Truthful, no placeholder success path
 ```
 
-### Output
-```
-brief.md (expanded with UX patterns and design hypothesis)
-```
-
----
-
-## 3. S2 — PRD + Design (Weeks 1–2)
-
-### Standard S2
-- Write `product/PRD.md` (30 sections)
-- Write `product/DESIGN.md`
-
-### UX Addition: App Life Spec (MANDATORY — from app-life-and-style)
-
-Before writing DESIGN.md, write the App Life Spec inside it. This is the
-single most important UX document for the product.
-
-```markdown
-## App Life Spec
-
-- **Core loop:** User opens SoapCraft Pro → builds a recipe with verified calculations → logs a batch with actual measurements → tracks cure with honest estimates → knows what each bar costs → refines the next recipe based on outcomes
-- **Moment of truth:** The moment the Recipe Builder shows the calculated lye amount, water, and property ranges after the user sets their oil percentages. This is where the user decides "this tool is precise and trustworthy."
-- **Goal metric:** First-session recipe completion rate (start → save). Target: 60% in month 1, 75% by month 3.
-- **User constraint:** Never slow down the formulation flow. Every step must be faster than the user's current method (pen + paper + Google). Calculations must be instant (< 100ms).
-- **Personality role:** Calm precision. The tool feels like a meticulous chemist's notebook — not a sales pitch, not a tutorial, not a magic trick.
-- **Surface plan:**
-  - In-app: Recipe Builder → Batch Log + Making Mode → Cure Tracker → Costing
-  - Onboarding: 3-step quiz → first recipe → first batch log → first cure observation
-  - Empty states: "Your first recipe is one oil selection away"
-  - Error states: "Please fix the following: [specific validation errors]"
-  - Retention cue: "Your last batch was 3 days ago — log an observation"
-- **Accessibility budget:** Reduced motion supported, keyboard navigable, screen-reader labels on all inputs, minimum 16px body text, contrast ratio 4.5:1 minimum
-```
-
-### DESIGN.md Additions
-- Include the App Life Spec above
-- Include the signature interaction specification (from app-life-and-style §1):
-  ```
-  Trigger: User sets oil percentages and clicks Calculate
-  Before: Input form with oil selection and sliders
-  During: Deterministic engine calculates → result panel reveals with property ranges and warnings
-  After: Lye amount, water amount, fragrance load, property ranges shown
-  Feedback: Subtle checkmark animation on each calculated metric
-  Metric: % of first-session users who save the recipe
-  ```
-- Include the motion vocabulary (from app-life-and-style §2):
-  - Navigation: directional slide, 200ms ease-out
-  - Submit/commit: control transforms into committed state, immediate visible result
-  - Loading/resolution: instant for deterministic calc (< 100ms). For AI requests: honest progress with estimated time
-  - Success: brief scale + opacity, proportionate to the action
-  - Error: preserve user input, explain next action, offer undo
-- Include the first-use guidance design (from app-life-and-style §3):
-  - Onboarding: contextual action chips, not a tutorial
-  - First screen: "Build better soap with verified calculations" — one CTA: "Get Started"
-  - First recipe: pre-selected oils based on quiz answers
-  - First batch: "Ready to make it? Start your first batch" — one CTA
-  - First cure observation: "How's your soap looking after 3 days?" — quick observation log
-
-### Output
-```
-product/PRD.md (30 sections, revised: 4-module MVP, deterministic engine, relational data model)
-product/DESIGN.md (includes App Life Spec, signature interaction, motion vocabulary, first-use guidance, accessibility)
-```
-
----
-
-## 4. S3 — Plan (Weeks 2–3)
-
-### Standard S3
-- PRD → bite-sized TDD tickets on kanban board
-
-### UX Addition: UX Task Tickets
-
-Every module gets at least one UX task alongside its functional task.
-UX tasks cover: onboarding flow, empty states, error states, loading states,
-transitions, micro-interactions, accessibility.
-
-### Build Order (Task Sequence)
-
-```
-WAVE 1 — Foundation (deterministic calculation engine first)
-│
-├── T1: Onboarding flow + experience assessment quiz
-│   ├── UX: 3-step quiz with contextual chips (not a tutorial)
-│   ├── TDD: quiz renders → user selects → state persists → next screen
-│   └── App Life Spec reference: first-use guidance §3
-│
-├── T2: Ingredient database + SAP calculation engine
-│   ├── UX: instant calculation results (< 100ms), validation warnings
-│   ├── TDD: input oils + percentages → correct lye + water output → matches SoapCalc for same inputs
-│   └── CRITICAL: This is the safety-critical foundation. Unit tests for every calculation scenario.
-│
-├── T3: Recipe Builder — core form + calculation display
-│   ├── UX: oil selection with SAP values, property ranges shown, warnings panel
-│   ├── TDD: select oils → set percentages → calculate → save → load saved recipe
-│   └── App Life Spec reference: moment of truth
-│
-├── T4: Batch Log — input logging + Making Mode (guided, not hands-free)
-│   ├── UX: form auto-populates from recipe, reduces typing; large tap targets; persistent timers
-│   ├── TDD: create batch → log inputs → save → list batches
-│   └── App Life Spec reference: preserve user input on error
-│
-WAVE 2 — Core product features
-│
-├── T5: Cure Tracker — estimated windows + observation logging
-│   ├── UX: honest progress state (not fake completion), estimated window not declaration
-│   ├── TDD: log cure date → track days → log pH/hardness → user marks complete
-│   └── App Life Spec reference: loading/resolution — honest progress
-│
-├── T6: Costing — cost per batch + cost per bar
-│   ├── UX: real-time cost update as inputs change, clear margin visualization
-│   ├── TDD: input costs → calculate per-bar → show target price → save
-│   └── App Life Spec reference: success feedback — proportionate
-│
-├── T7: Recipe Library — browse + search + filter + save
-│   ├── UX: card layout with property ranges, tag filtering, curated + personal
-│   ├── TDD: list recipes → filter → search → save → view details
-│   └── App Life Spec reference: empty state handling
-│
-├── T8: Free tier (calculator + 3 recipes + 1 active batch)
-│   ├── UX: clear upgrade prompt, never block core functionality
-│   ├── TDD: free features work → upgrade CTA appears → paid features gated
-│
-WAVE 3 — Polish + launch
-│
-├── T9: Pro trial flow (30 days or one complete batch cycle)
-│   ├── UX: no credit card required, progress preserved, clear end date
-│   ├── TDD: start trial → use features → trial ends → upgrade prompt
-│
-├── T10: Impeccable design pass (run scan-generic.sh)
-│   ├── Apply all hard bans from impeccable-design skill
-│   ├── Fix: per-section eyebrows, identical card grids, glassmorphism,
-│   │        image-hover zoom, gray-on-dark, side-stripe borders,
-│   │        pure black, hero-metric template, soft 12px radius
-│   └── Verify: scan-generic.sh passes, visual audit complete
-│
-├── T11: Accessibility audit
-│   ├── Keyboard navigation, screen reader labels, reduced motion,
-│   │   contrast ratios, touch targets, text scaling
-│   └── App Life Spec reference: accessibility budget
-│
-├── T12: Onboarding flow polish (based on first-user feedback)
-│   ├── Iterate on quiz, first recipe, first batch log flow
-│   └── Measure: first-session recipe completion rate
-│
-└── T13: Launch checklist + monitoring
-    ├── Post-launch instrumentation events (App Life Spec reference)
-    ├── Error tracking, performance monitoring
-    ├── SEO content (10 pages: calculators + guides + troubleshooting)
-    └── Community seeding (r/soapmaking, SoapCalc, Soapmaking Forum)
-```
-
-### Output
-```
-tasks.json (kanban manifest with 13 tasks across 3 waves)
-gh_ids.json (GitHub issue IDs for each task)
-```
-
----
-
-## 5. S4 — Parallel Build (Weeks 3–6)
-
-### Build Order by Wave
-
-**Wave 1 (Foundation):** T1, T2, T3, T4 — run in parallel
-- T2 (SAP calculation engine) is the safety-critical foundation — prioritize it
-- T1 (onboarding) is the first user-facing screen — prioritize it
-- T3 (Recipe Builder) depends on T2 (calculation engine) — coordinate
-- T4 (Batch Log + Making Mode) depends on T3 (Recipe Builder) — coordinate
-
-**Wave 2 (Core features):** T5, T6, T7, T8 — run in parallel after Wave 1 merges
-- Cure Tracker and Costing are independent
-- Recipe Library depends on T3 (Recipe Builder) — wait for merge
-- Free tier depends on T1 (onboarding) and T3 (Recipe Builder) — wait for merge
-
-**Wave 3 (Polish + launch):** T9–T13 — sequential, after all previous waves merge
-- Impeccable pass (T10) must run after all UI is in place
-- Accessibility audit (T11) must run after all UI is in place
-- Onboarding polish (T12) uses real user data from Wave 1-2
-- SEO content can start in parallel (no code dependencies)
-
-### UX Implementation Rules (from studio-app-implementation)
-
-1. **Mockup-first for any UI/screen change.** Before writing code for a
-   screen, generate a mockup, send to Isaac, get approval, then implement.
-2. **Reuse existing components.** Do not introduce a parallel UI system.
-   Use the app's own component library.
-3. **Apply the App Life Spec at every implementation step.** Each task
-   must reference the specific App Life Spec field it addresses.
-4. **Apply the impeccable-design pass before merging.** Every PR must pass
-   scan-generic.sh before it can be merged.
-5. **Instrument the signature interaction.** Every task that touches the
-   core loop must include an analytics event for the moment of truth.
-6. **Deterministic calculations must be tested.** Every PR that touches
-   the calculation engine must include unit tests that verify against
-   known SoapCalc outputs.
-
-### Output
-```
-13 PRs merged to main (all CI green, all scan-generic.sh passing)
-```
-
----
-
-## 6. S5 — Strict CI (Ongoing)
-
-### Standard S5
-- Lint + typecheck, tests + 80% coverage, build, gitleaks + semgrep,
-  conventional-commit lint, 800-line PR cap, no force-push
-
-### UX Addition: Design Quality Gates in CI
-- `scan-generic.sh` (from impeccable-design skill) runs on every PR
-  - Fails if any banned pattern detected (eyebrows, identical card grids,
-    glassmorphism, image-hover zoom, gray-on-dark, side-stripe borders,
-    pure black, hero-metric template, soft 12px radius)
-- App Life Spec compliance check: every PR that touches UI must reference
-  an App Life Spec field in the PR description
-- Accessibility check: contrast ratios, touch targets, keyboard navigation
-  verified on every PR that changes visible UI
-- Calculation accuracy check: every PR that touches the SAP calculation
-  engine must pass unit tests that verify against known SoapCalc outputs
-
-### Output
-```
-CI pipeline: lint → typecheck → test (80% coverage) → build →
-             gitleaks + semgrep → scan-generic.sh → conventional-commit lint →
-             calculation accuracy tests
-```
-
----
-
-## 7. S6 — Review (Ongoing)
-
-### Standard S6
-- Refute-don't-approve; verify the test actually fails without the code
-
-### UX Addition: UX Review Checklist
-Every PR is reviewed against:
-- [ ] App Life Spec field referenced and implemented correctly
-- [ ] Signature interaction behavior preserved (no regression)
-- [ ] Motion adds causality, not decoration
-- [ ] Empty state handled (not just the happy path)
-- [ ] Error state handled (not just success)
-- [ ] Reduced motion respected
-- [ ] Keyboard navigation works
-- [ ] Screen reader labels present
-- [ ] Contrast ratio 4.5:1 minimum
-- [ ] scan-generic.sh passes
-- [ ] No banned patterns from impeccable-design hard bans list
-- [ ] Calculation accuracy verified (for PRs touching the engine)
-
-### Output
-```
-PR reviews include UX checklist alongside functional review
-```
-
----
-
-## 8. S7 — Merge (Ongoing)
-
-### Standard S7
-- `gh pr merge --auto --squash` only when CI is green and review passed
-
-### UX Addition: Merge Gate
-- PR cannot merge unless:
-  1. CI is green (standard)
-  2. Review passed (standard)
-  3. scan-generic.sh passes (UX gate)
-  4. UX checklist is complete (UX gate)
-  5. App Life Spec field documented (UX gate)
-  6. Calculation accuracy tests pass (safety gate, for PRs touching the engine)
-
-### Output
-```
-Merges require: green CI + approved review + UX pass + spec compliance + calculation accuracy
-```
-
----
-
-## 9. S8 — Ship (Week 6+)
-
-### Standard S8
-- Postiz MCP drafts/distributes launch content
-
-### UX Addition: Post-Launch UX Instrumentation
-- Track the App Life Spec goal metric: first-session recipe completion rate
-- Track signature interaction: % of users who save a recipe after calculations are shown
-- Track retention surfaces: which empty state prompts lead to action
-- Track onboarding flow: drop-off at each step of the 3-step quiz
-- Track error states: how often users hit errors, do they recover
-- Track motion: are animations helping or hindering? (via user feedback)
-- Track calculation accuracy: compare SoapCraft Pro outputs against SoapCalc for known inputs
-
-### Launch Content (Postiz)
-- Blog post: "The Soap Making Workspace That Gets the Math Right"
-- SEO content: 10 pages across 4 pillars (calculators, guides, troubleshooting, ingredient pages)
-- Community seeding: r/soapmaking, SoapCalc community, Soapmaking Forum, Handcrafted Soap and Cosmetic Guild
-- Launch offer: Pro trial (30 days or one complete batch cycle, no credit card)
-
-### Output
-```
-SoapCraft Pro launched (4-module MVP)
-Pro trial active
-SEO content live
-Community seeding in progress
-UX instrumentation tracking
-```
-
----
-
-## 10. Files Created/Updated
-
-| File | Description |
-|------|-------------|
-| `/opt/data/studio/apps/soapcraft-pro/brief.md` | S1 output — revised: 4-module MVP, deterministic engine, AI as assistant |
-| `/opt/data/studio/apps/soapcraft-pro/product/PRD.md` | S2 output — revised: 4 modules, relational data model, feature gates, fixed scope |
-| `/opt/data/studio/apps/soapcraft-pro/product/DESIGN.md` | S2 output — revised: App Life Spec, signature interaction, motion vocabulary, first-use guidance |
-| `/opt/data/ideas/soap-making-build-order.md` | Original build order (v1 — superseded by this revised version) |
-| `/opt/data/ideas/soap-making-final-offer.md` | Original offer design (v1 — superseded by revised PRD) |
+A cheaper model should execute one ticket at a time and stop at the stated gate. It should not “finish the whole product” in one pass.

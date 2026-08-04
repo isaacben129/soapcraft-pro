@@ -1,121 +1,213 @@
-# SoapCraft Pro — brief.md (Revised)
+# SoapCraft Pro Product Brief
 
-> Produced by the `studio-build` pipeline, S1 agent.
-> UX patterns sourced from `ui-ux-pro-max-skill` (nextlevelbuilder/ui-ux-pro-max-skill).
-> Design framework: `impeccable` (pbakaus/impeccable) + `app-life-and-style` skill.
-> Freshness check: `web_extract https://registry.npmjs.org/next/latest` → **next@16.2.10** (node >=20.9.0).
-> Stack leanings below are version-verified, not memorized.
->
-> **Revision notes:** MVP shrunk to 4 modules. AI is a formulation assistant, not a recipe generator. Lye calculation is deterministic and authoritative. Community is v2. Cure system provides estimated windows, not declarations.
+**Version:** 3.0 — aligned to rescue PRD
+**Authoritative detail:** `product/PRD.md`
 
-## One-liner
+## One-line product
 
-SoapCraft Pro is a recipe, batch, and profitability workspace for serious soap makers. It combines verified formulation calculations, guided batch production, cure tracking, and real cost-per-bar analysis. AI helps users understand trade-offs and refine recipes — the calculator is the authority, not the AI.
+SoapCraft Pro is a private recipe-to-profitability operating system that keeps a soap formulation, its real production batches, cure evidence, final yield, and cost per bar in one traceable record.
 
 ## Problem
 
-Soap makers — especially serious home crafters and micro-business sellers — juggle fragmented tools to make a single bar of soap: SoapCalc for lye math, spreadsheets for recipes, Google for troubleshooting, separate calculators for pricing, and Facebook groups for community knowledge. Each tool is a friction point: data lives in 5+ places, there's no unified batch tracking, no structured cure logging, and no clear cost-per-bar analysis. The result: failed batches, wasted ingredients, guesswork on pricing, and a steep learning curve that drives beginners away from the craft.
+Serious soapmakers repeatedly re-enter the same information across lye calculators, spreadsheets, notes, timers, cure logs, and pricing sheets. The fragmentation destroys provenance:
 
-**Current workarounds and their pain:**
-- SoapCalc (lye calculator only, no batch tracking, no outcome prediction)
-- Spreadsheets (manual, error-prone, no community data, no versioning)
-- Facebook groups (unstructured Q&A, no persistent knowledge)
-- Pen & paper (lost recipes, no outcome tracking, no cost analysis)
+- a batch is not tied to the exact recipe version used
+- planned and actual measurements drift apart
+- Making Mode state disappears
+- cure notes have no durable relationship to the batch
+- final yield and cost use manually reconstructed inputs
+- lessons from prior batches do not inform the next version
 
-## Target users
+A bundle of standalone tools does not solve this. The product must preserve the handoffs.
 
-- **Serious Hobbyist (primary):** Makes soap regularly, has 10+ recipes, wants better results and fewer failed batches. Job-to-be-done: "Help me make better soap with less waste and less guesswork." Willing to pay for a tool that saves them time and ingredients.
-- **Micro-Business Seller (secondary):** Sells on Etsy/Shopify, needs to track costs and pricing per bar. Job-to-be-done: "Help me know what my soap costs and what to charge for it." Willing to pay for business-tier features (v2).
-- **Beginner (tertiary):** Just started, overwhelmed by lye calculations and safety concerns. Job-to-be-done: "Help me make my first batch successfully without messing up." Starts with free tier, converts to Pro when confident.
+## Product model
 
-## Differentiators
+```text
+Recipe
+  → immutable Recipe Version
+  → Batch
+  → Making Record
+  → Cure Observations
+  → Final Yield
+  → Cost Record
+  → next Recipe Version
+```
 
-1. **Deterministic formulation engine** — verified SAP calculations, not AI improvisation. Every lye amount is calculated, not guessed.
-2. **Batch-to-batch learning** — structured logging creates a personal dataset that improves over time. No other tool connects recipe → batch → outcome → recommendation.
-3. **Honest cure tracking** — estimated windows with user-controlled completion, not AI declarations of "ready."
-4. **Real cost-per-bar analysis** — lightweight cost catalogue with target margin pricing, not just a calculator.
-5. **SoapCalc integration** — import/export for data migration, not competition. Users don't lose their existing data.
-6. **Curated recipe library** — verified formulations, not a wild west of unvalidated recipes.
+The Batch is the central operational object. Cure and costing are contextual batch views plus cross-batch portfolio summaries.
 
-## Constraints
+## Core promise
 
-- Must integrate with SoapCalc (import/export) for data migration
-- Must be a self-paced SaaS (no cohort programs, no consulting, no white-label)
-- Free tier must include lye calculator (compete with SoapCalc on utility)
-- AI features require an LLM API (OpenRouter/Claude via OpenRouter) — used for explanation only, never for quantity generation
-- Must be SEO-driven for organic acquisition (programmatic SEO for oil combinations, troubleshooting pages)
-- Community seeding in r/soapmaking (81K members), SoapCalc community, Soapmaking Forum, Handcrafted Soap and Cosmetic Guild
-- Budget: $0 software cost for MVP (self-hosted stack, AI API pay-per-use)
-- No mobile app in v1 — web-first, responsive design, mobile-optimized
-- AI never invents chemical quantities — the calculator is the authority
+A user can start from an authoritative saved formulation and complete a real batch record through curing and cost per bar without manually rebuilding context.
 
-## Tech leanings (version-verified)
+## Product rule
 
-- **Web framework:** Next.js 16.2.10 (App Router, React 19) — verified current via npm registry
-- **AI/LLM:** OpenRouter API (access to Claude, GPT, and other models via unified endpoint) — industry standard for multi-model access; used for explanation/assistance only
-- **Database:** PostgreSQL (via Neon or Supabase for managed hosting) — relational model with first-class entities for ingredient, recipe versioning, batch, cure observation, cost record
-- **Auth:** NextAuth.js (Auth.js) — current major version, supports credentials + OAuth
-- **Styling:** Tailwind CSS 4.x + shadcn/ui — current versions, component library
-- **AI integration:** `@ai-sdk/openrouter` or direct fetch to OpenRouter API — used for formulation assistance, not formulation generation
-- **Hosting:** Vercel (free tier for MVP, scales with usage)
-- **SEO:** Next.js built-in metadata API + programmatic routes for oil calculator pages and troubleshooting articles
-- **CI:** GitHub Actions with `scan-generic.sh` (impeccable design quality gate)
-- **No heavy deps** — reuse studio primitives (Hermes skills, Postiz for launch)
+Deterministic calculation is authoritative. AI is deferred from the rescue MVP and may later explain deterministic output; it may never invent chemical quantities.
 
-## Success metrics
+## Users
 
-- **Activation:** % of first-session users who complete a full recipe creation flow (start → save). Target: 60% month 1, 75% by month 3.
-- **Retention:** D7 retention rate (users who return within 7 days of first session). Target: 40% month 1.
-- **Revenue:** $200K ARR by end of Year 1 (500 Pro users at $99/yr + 50 Business users at $299/yr in v2).
-- **SEO traffic:** 5,000 organic visits/month by month 6 (10+ programmatic SEO pages in v1, expanded in v2).
-- **Community:** Curated recipe library with 50+ verified recipes by month 6. Public sharing and community features in v2.
-- **Free-to-Pro conversion:** 3–5% (industry benchmark for SaaS with free tier).
-- **Calculation accuracy:** > 95% match with SoapCalc for identical inputs.
+### Serious hobbyist
 
-## Risks
+Wants repeatability, version history, and evidence from previous batches.
 
-1. **Deterministic calculation errors** — if the SAP values or calculation logic is wrong, users lose trust immediately and safety is at stake. Mitigation: validate against SoapCalc for all common oil combinations. Write unit tests for every calculation scenario. Include prominent safety disclaimers.
-2. **Low adoption of the 4-module MVP** — if users want AI formulation and community in v1, they may not adopt. Mitigation: position the deterministic engine as the differentiator ("precise, not magical"). Add AI assistance and community in v2 based on user feedback.
-3. **SoapCalc competition** — SoapCalc is entrenched and free. Mitigation: don't compete on lye calculation (that's their lane), compete on the full workspace. Offer SoapCalc import/export as a bridge, not a replacement.
+### Micro-business soapmaker
 
-## In scope (v1)
+Needs actual yield, cost basis, cost per sellable unit, and target-margin pricing.
 
-- Recipe Builder (deterministic calculation engine + formulation assistance)
-- Batch Log + Making Mode (guided production with structured logging)
-- Cure Tracker (estimated windows + observation logging + user-decided completion)
-- Cost Per Batch / Per Bar (lightweight cost catalogue + pricing)
-- Recipe Library (curated + personal, browse, search, filter, save)
-- Free tier (calculator, 3 recipes, 1 active batch, curated library)
-- Pro tier ($12/month or $99/year — everything above)
-- Pro trial (30 days or one complete batch cycle, no credit card)
-- SoapCalc import/export (CSV)
-- SEO content (10 pages in v1: calculators + guides + troubleshooting)
-- App Life Spec with signature interaction, motion vocabulary, first-use guidance
-- Impeccable design pass on every PR
+### Careful beginner
 
-## Out of scope (v1)
+Needs a clear first workflow and strong, honest safety boundaries.
 
-- Public community features (Q&A, forums, public sharing) — v2
-- AI-generated "perfect" recipes — AI assists, never invents quantities
-- Full inventory management — lightweight cost catalogue in v1, full inventory in v2
-- AI Troubleshooter — v2
-- Fragrance Engine (pairing suggestions) — v2
-- Beginner's adaptive learning path — v2
-- AI predictions (outcome prediction based on batch history) — v2
-- Etsy/Shopify integration — v2
-- Compliance reports (checklists and documentation only in v1, full reports in v2)
-- Mobile app (v1 is web-only; mobile considered for v2)
-- Multi-language support (v1 is English only)
-- AI cure readiness declarations — estimated windows only
+## Goal metrics
 
-## Open questions
+### Primary
 
-- Does SoapCalc have an API or only manual export/import? (verify via SoapCalc community)
-- What is the current OpenRouter pricing for Claude/GPT models used in formulation assistance? (verify via OpenRouter API docs)
-- What SAP values should be included in the default ingredient database? (start with top 20 oils by community usage)
-- What is the acceptable AI formulation accuracy threshold before launch? (recommend: > 80% user satisfaction on first recipe)
-- Preferred default persona voice: calm precision (not playful, not salesy) — confirm with Isaac
-- What is the target first-user onboarding time? (recommend: < 3 minutes to first recipe)
-- What is the exact free-tier limitation for recipes? (recommend: 3 recipes on free tier)
-- What happens to Pro data after cancellation? (recommend: read-only access for 30 days, then data export)
-- How does trial expiry affect existing batches and cure reminders? (recommend: cure reminders continue, new features gated)
+Connected batch completion rate:
+
+```text
+batch started → making completed → cure marked ready → yield finalized → cost complete
+```
+
+### Activation
+
+First verified recipe save rate.
+
+### Guardrails
+
+- zero cross-user data access
+- zero silent save failures
+- zero AI-generated quantities
+- zero false public capability claims
+- all calculation fixtures green
+- historical batch/version linkage preserved
+
+## Rescue MVP
+
+1. Auth and private ownership
+2. Verified deterministic formulation contract
+3. Recipe save and immutable versioning
+4. Batch creation from exact recipe version
+5. Persistent Making Mode
+6. Cure observations and user-controlled readiness
+7. Ingredient cost records, final yield, and cost per bar
+8. Operational dashboard
+9. Recipe, batch, cure, and cost portfolio views
+10. Marketing homepage with real workflow proof and integrated blog content
+11. Settings needed for profile, units, data, safety, and billing
+12. Dodo billing after the core lifecycle works
+
+## Explicitly deferred
+
+- AI formulation assistant
+- generated recipe percentages
+- community/social features
+- public ratings/comments
+- community-data predictions
+- inventory management
+- marketplace comparison
+- ecommerce integrations
+- native mobile app
+- automatic cure/safety declaration
+
+## Required dashboard
+
+The dashboard is not a grid of links to tools. It shows:
+
+1. Needs attention queue
+2. Active production pipeline
+3. Recent recipes and outcomes
+4. Activity ledger
+5. One New command
+
+Every row shows object lineage, status/evidence, and one next action.
+
+## Required marketing homepage
+
+1. Proof-led hero
+2. Composite recipe → batch → cure → cost record
+3. Calculation trust and warning example
+4. Planned-vs-actual example
+5. Featured article plus three latest posts
+6. Category links
+7. Pricing after value proof
+8. Safety/legal footer
+
+Public copy must describe only live, demonstrable behavior.
+
+## Design direction
+
+**Chemist’s production ledger**:
+
+- dark umber/charcoal app rail
+- warm mineral-paper workspace
+- ruled rows, tables, timelines, and plan-vs-actual comparisons
+- clay calculation surfaces, sage cure surfaces, brass cost surfaces
+- white reserved for focused editing/dialogs
+- DM Sans application UI
+- JetBrains Mono/tabular numerals for measurements, batch IDs, timers, and currency
+- 2–4px radii
+- Lucide icons plus a real brand mark
+
+Banned:
+
+- primary dashboard tool cards
+- equal icon/heading/text feature grids
+- white page plus white cards everywhere
+- emoji branding
+- universal `rounded-lg`
+- hero KPI tiles
+- unverified semantic color utilities
+- generic “AI-powered” language
+
+## Trust and safety boundaries
+
+- Formulation quantities come from one versioned deterministic engine.
+- Ingredient/SAP sources are cited and revisioned.
+- Unsupported lye/water modes are not simulated.
+- Blocking validation prevents save/start-batch.
+- Every batch retains the exact recipe-version snapshot.
+- Cure readiness is an explicit user decision.
+- Missing cost basis remains visible; it never silently becomes zero.
+
+## Technology constraints
+
+Current stack remains Next.js, React, TypeScript, Tailwind v4, Drizzle/PostgreSQL, NextAuth, and Dodo Payments unless a separate technical decision changes it.
+
+Implementation requirements:
+
+- route/server boundaries enforce session and ownership
+- migrations committed and tested
+- test mode uses the production schema
+- Tailwind v4 semantic colors verified through computed styles
+- deterministic quantity calculation has no network/AI dependency
+- Dodo entitlement changes come from verified idempotent webhooks
+
+## Release definition
+
+The MVP is not done until a clean user can:
+
+```text
+sign up
+→ save verified recipe v1
+→ start batch from v1
+→ resume Making Mode after reload
+→ complete into cure
+→ log observation
+→ mark ready
+→ finalize yield
+→ save cost per bar and target-margin price
+→ see the full record on dashboard/detail
+```
+
+A second user must be unable to access any of those records by guessing URLs or IDs.
+
+## Open decisions
+
+- authoritative SAP/property sources
+- first-release lye types and water modes
+- free/trial/paid limits and trial policy
+- labor/overhead inclusion in rescue costing
+- default cure observation cadence
+- verified launch templates
+- owned homepage/blog imagery
+
+Do not let these decisions block shell separation, ownership, recipe/batch persistence, or dashboard design.

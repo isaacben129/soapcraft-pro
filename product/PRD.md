@@ -1,1077 +1,1046 @@
-# PRD — SoapCraft Pro (Revised)
+# SoapCraft Pro Product Requirements Document
 
-> Buildable spec. A capable builder must be able to implement the product from this
-> document alone, page-to-page, flow-to-flow, module-to-module. No basic requirement
-> may be missing.
->
-> **Revision notes:** This PRD has been tightened per critique (2026-08-02).
-> The MVP is four modules, not twelve. AI is a formulation assistant, not a recipe
-> generator. Lye calculation is deterministic and authoritative. Community is v2.
-> The data model is relational with recipe versioning.
+**Version:** 3.0 — Rescue specification
+**Baseline audited:** `ed27e22`
+**Status:** Ready for decomposition, not ready to claim MVP completion
+**Companion documents:**
 
-## 1. Executive Summary
+- `product/CODE-PRD-AUDIT.md` — evidence-based implementation baseline
+- `product/DESIGN.md` — page anatomy, interaction, visual system, and states
+- `flowchart/product-flow.md` — route, object, lifecycle, and error-state maps
+- `build-order.md` — dependency-ordered implementation plan
 
-SoapCraft Pro is a recipe, batch, and profitability workspace for serious soap makers.
-It combines verified formulation calculations, guided batch production, cure tracking,
-and real cost-per-bar analysis. AI helps users understand trade-offs, refine recipes,
-and learn from their own batch history — without replacing deterministic safety calculations.
+---
 
-The product is not an AI wrapper. The calculator is the authority. AI explains,
-recommends, and interprets.
+## 1. Product definition
 
-## 2. Goals and Non-Goals
+SoapCraft Pro is a private recipe-to-profitability operating system for serious soapmakers. It keeps formulation, production, curing, yield, and unit economics in one traceable production record.
 
-- **Goals:**
-  - Help soap makers create accurate recipes with verified calculations
-  - Reduce batch failures through structured logging and outcome tracking
-  - Make soap business economics transparent (cost per bar, target pricing)
-  - Build a private recipe library that improves with usage
-  - Provide a credible, safe, deterministic formulation foundation
-- **Non-Goals (explicit):**
-  - Not positioned as a replacement for SoapCalc in marketing (SoapCalc remains the dedicated lye calculator), but SoapCraft Pro calculates lye internally as part of the formulation workspace
-  - Not a course or education platform (no video lessons, no cohorts)
-  - Not a marketplace for buying/selling soap or ingredients
-  - Not a social media platform (private libraries first, public sharing v2)
-  - Not a mobile app in v1 (web-first, responsive design, mobile-optimized)
-  - Not a multi-product platform (soap only in v1)
-  - Not an AI recipe generator (AI assists, never invents quantities)
+### Product promise
 
-## 3. Product Context / Background
+A soapmaker can move from an authoritative saved formulation to a real batch, record what actually happened, track cure evidence, finalize yield, and understand cost per bar without re-entering the same information across disconnected tools.
 
-The soap making community is passionate and growing. There are 81K+ members in r/soapmaking,
-active forums, and Facebook groups for every style (cold process, hot process, melt-and-pour).
-The existing tools are fragmented: SoapCalc handles lye math but nothing else, Craftybase
-($24/mo) handles inventory but not formulation, and no tool provides a unified workspace
-for the full recipe-to-sale lifecycle.
+### Product rule
 
-The gap is not another lye calculator. The gap is a workspace where a soap maker can:
-1. Build a recipe with verified calculations
-2. Log the actual batch with real measurements
-3. Track cure progress with honest estimates
-4. Know what each bar costs and what to charge
+> Deterministic calculation is authoritative. AI may explain deterministic output later; it must never invent chemical quantities or silently modify a formulation.
 
-That lifecycle is coherent, repeatable, and valuable. It does not require AI to be
-exciting — it requires precision.
+### Product model
 
-## 4. Target Users and Personas
+SoapCraft Pro is **not** four tools. It is one connected lifecycle:
 
-- **Persona 1 — Serious Hobbyist (primary):** Makes soap regularly, has 10+ recipes,
-  wants better results and fewer failed batches. Job-to-be-done: "Help me make better
-  soap with less waste and less guesswork." Willing to pay for a tool that saves them
-  time and ingredients.
-- **Persona 2 — Micro-Business Seller (secondary):** Sells on Etsy/Shopify, needs to
-  track costs and pricing per bar. Job-to-be-done: "Help me know what my soap costs
-  and what to charge for it." Willing to pay for business-tier features.
-- **Persona 3 — Beginner (tertiary):** Just started, overwhelmed by lye calculations
-  and safety concerns. Job-to-be-done: "Help me make my first batch successfully
-  without messing up." Starts with free tier, converts when confident.
-
-## 5. Use Cases
-
-1. **Build a recipe:** User selects oils, sets percentages, adjusts superfat and lye
-   concentration → system calculates lye, water, and expected properties → user saves.
-2. **Scale a recipe:** User changes batch size → all quantities scale proportionally.
-3. **Log a batch:** User inputs actual measurements, conditions, and outcomes → system
-   stores for comparison and learning.
-4. **Track cure:** User logs pH and hardness over time → system shows estimated cure
-   window → user decides when soap is ready.
-5. **Price a product:** User inputs ingredient costs → system calculates cost per bar →
-   user sets target margin → system suggests selling price.
-6. **Compare batches:** User views side-by-side comparison of past batches → sees what
-   changed and what the outcome was.
-7. **Browse curated recipes:** User browses a curated library of verified recipes → saves
-   to personal library → logs their own batch.
-
-## 6. Architecture: Deterministic Calculation Engine + AI Layer
-
-### 6.1 Calculation Engine (Deterministic, Authoritative)
-
-The calculation engine is the foundation. It must be correct before anything else runs.
-
-**SAP Calculation:**
-- Uses verified SAP values for each oil (sourced from published data, user-editable)
-- Supports NaOH (sodium hydroxide) and KOH (potassium hydroxide)
-- Supports dual-lye recipes (NaOH + KOH in same batch) — each oil has separate NaOH and KOH SAP values; the engine computes lye amounts separately for each alkali
-- Accounts for alkali purity (user-specified, default 100%)
-- Accounts for water concentration (lye solution strength, user-specified)
-- Handles unit conversion (g, oz, kg, lbs) — weight units only in v1; volume units excluded because soap formulation requires mass-based accuracy
-- Applies superfat percentage (user-specified, default 5%) — superfat reduces the calculated lye amount by the specified percentage; the remaining unsaponified oils contribute to moisturizing properties
-- Validates inputs (negative values, zero batch size, impossible percentages)
-- Validates safety-critical ranges: superfat 0–20%, lye concentration 10–50%, water-to-lye ratio ≥ 2:1, no single oil > 80% of total blend
-- Flags values in danger zones with prominent safety warnings (not just validation errors)
-- Rounds according to configurable precision rules (default: lye and water to 1 decimal place, oil percentages to 1 decimal place, superfat to 1 decimal place)
-- Prominent safety warnings for lye handling at every point where lye quantities are displayed or entered
-
-**Water Calculation Mode:**
-- Users select one primary mode: lye concentration, water-to-lye ratio, or percent of oils
-- The other values are derived and displayed read-only
-- The calculation engine derives water amount from the selected mode and the lye quantity
-
-**Dual-Lye Recipes:**
-- Each oil has separate NaOH and KOH SAP values
-- The calculation engine computes lye amounts separately for each alkali based on the oil's respective SAP value
-- The user specifies the lye type and percentage for each oil in the blend
-
-**Property Prediction:**
-- Hardness, lather, moisturizing scores calculated from oil percentages
-- Uses SAP-based blending rules with named factors per oil (hardness factor, lather factor, moisturizing factor)
-- Scores normalized to a 1–10 scale
-- Results shown as ranges with confidence indicators (High: ≥5 oils, all published SAP; Medium: 3–4 oils, all published SAP; Low: <3 oils or user-edited SAP)
-- Confidence displayed as a color-coded badge (green/yellow/red) next to each property score
-- Ranges represent expected variation based on oil blend composition and published SAP value ranges, not user batch history
-- AI layer can explain trade-offs and suggest adjustments
-
-**IFRA Handling:**
-- IFRA usage limits are enforced by the deterministic calculation engine, not the AI layer
-- Each fragrance ingredient has `ifraCategory` and `maxUsagePercent` sourced from published IFRA data
-- If a fragrance load exceeds the IFRA maximum for the oil blend, a warning is shown: "This fragrance load exceeds the IFRA recommended maximum of X% for this oil combination"
-- The AI layer explains what the IFRA limit means; it does not validate or suggest fragrance loads
-- Compliance documentation generates a summary of IFRA compliance for the recipe
-
-**Batch Scaling:**
-- Scale recipe to any target weight
-- Recalculate all quantities proportionally
-- Preserve ratios and percentages
-
-### 6.2 AI Layer (Assistive, Not Authoritative)
-
-The AI layer operates on top of the deterministic engine. It never invents quantities.
-
-**Formulation Assistant:**
-- Explains trade-offs between oil choices ("More coconut oil increases lather but can be drying")
-- Recommends adjustments based on user preferences ("You want more hardness — try increasing olive oil by 5%")
-- Interprets property predictions ("Your current superfat of 8% is higher than typical — this will make the bar softer")
-- Suggests fragrance load ranges based on IFRA guidelines
-- Flags potential issues ("This combination has a high superfat — cure time may be longer")
-
-- **What AI does NOT do:**
-- Does not generate final lye quantities (the calculator does)
-- Does not override user input
-- Does not claim to know the "perfect" recipe
-- Does not replace safety warnings
-- Does not make claims about cure readiness
-- Does not validate IFRA limits or suggest fragrance loads (the deterministic engine does this)
-- Safety flags are advisory only and do not override deterministic validation. All safety-critical limits (IFRA, lye concentration, water ratio) are enforced by the calculation engine. AI flags are informational suggestions.
-- AI suggestions are non-blocking and can be dismissed. The formulation assistant is accessible via a "Suggest" button in the Recipe Builder, opening a slide-out panel with contextual suggestions based on the current recipe state.
-
-## 7. Product Scope
-
-### Architecture Principle: Marketing Site vs. App
-SoapCraft Pro has two distinct surfaces:
-1. **Marketing Site** (`soapcraft-pro.vercel.app`) — Public, no login required. Homepage, pricing, features, testimonials. Drives signups.
-2. **App** (`app.soapcraft-pro.com`) — Gated by authentication. Dashboard, Recipe Builder, Batch Log, Cure Tracker, Costing, Library, Settings.
-
-The marketing site and the app are separate deployments with separate routes. The marketing site links to the app; the app links back to the marketing site. This separation ensures:
-- No auth friction on the marketing page
-- Clean login/signup gate before accessing the product
-- Clear pricing and feature visibility before committing
-- Proper subscription management flow
-
-### v1 — Four Modules (MVP) + Auth & Payments
-
-| Module | Description | Key Features |
-|--------|-------------|--------------|
-| **Recipe Builder** | Deterministic formulation with verified calculations | Oil selection, percentage-based blending, SAP calc, lye/water calc, superfat, property ranges, warnings, validation, batch scaling, save to library, mold volume calculator |
-| **Batch Log + Making Mode** | Guided CP batch production with structured logging | Create batch from recipe, record actual measurements, CP step checklist, timers, temperatures, notes, photos, actual yield, safety warnings |
-| **Cure Tracker** | Estimated cure window with observation logging | Expected cure window, days elapsed, reminders, pH/hardness observation logs, final outcome review, user-decided completion |
-| **Cost Per Batch / Per Bar** | Ingredient cost catalogue and pricing | Ingredient cost catalogue, cost per batch, cost per bar, target margin pricing, suggested selling price |
-| **Auth** | Login, signup, session management | Email/password signup, login, logout, session persistence, password reset, auth gate on app routes |
-- **Payments** — Subscription management | Free tier (calculator + 3 recipes + 1 active batch), Pro tier ($12/mo or $99/yr — everything above), subscription management page, Dodo Payments integration
-
-### UX Design (see DESIGN.md)
-The App Life Spec (signature interaction, motion vocabulary, first-use guidance, retention surfaces, accessibility budget) is a v1 deliverable defined in `product/DESIGN.md` and referenced throughout this PRD.
-
-### 7.5 10x Features — Making SoapCraft Pro 10x More Valuable
-
-Based on the competitive dive into SoapCalc and SoapMakingFriend, and the pain points of soap makers, the following features would make SoapCraft Pro 10x more valuable than a standalone calculator. These are ordered by impact and should be prioritized for v1/v2 planning.
-
-| # | Feature | Pain Point It Solves | Why It's 10x | Priority |
-|---|---------|---------------------|--------------|----------|
-| 1 | **Mold Volume Calculator** | SoapCalc has it, SoapMakingFriend doesn't — users need to know how much oil their mold requires | Eliminates the most common calculation error (wrong mold size = ruined batch) | **v1** |
-| 2 | **Recipe Intelligence** | Users don't know what oils to use or what superfat to pick | Replaces trial-and-error with guided recommendations based on goals | **v1** |
-| 3 | **Making Mode with Smart Guidance** | No competitor has guided production with contextual step-by-step instructions | Turns a passive log into an active coach — the single biggest workflow gap | **v1** |
-| 4 | **Cure Dashboard with Predictions** | Users guess when soap is done; no competitor offers predictions | Eliminates the biggest uncertainty in soap making | **v2** |
-| 5 | **Cost Optimization Engine** | SoapMakingFriend has per-batch cost but no per-bar pricing with target margins | Gives users actionable pricing intelligence, not just cost data | **v2** |
-| 6 | **Recipe Comparison** | No competitor lets users compare recipes side-by-side | Accelerates learning and recipe refinement | **v2** |
-| 7 | **Template Recipes** | New soap makers start from scratch every time | Reduces time-to-first-batch from 30 min to 2 min | **v1** |
-| 8 | **Ingredient Cost Catalogue** | SoapMakingFriend has basic inventory; SoapCalc has none | Enables cost-per-bar calculations and reorder alerts | **v2** |
-| 9 | **Batch Outcome Tracking** | No feedback loop — users don't know what worked | Closes the learning loop with personal data | **v2** |
-| 10 | **Exportable Compliance Docs** | Soap makers selling at markets need labels and SDS | Unlocks the commercial use case that no competitor addresses | **v2** |
-
-**v1 10x commitments:** Mold Volume Calculator, Recipe Intelligence, Making Mode with Smart Guidance, Template Recipes — these four features alone make SoapCraft Pro a workspace with intelligence, not a calculator.
-
-### Design Colour Palette
-The colour palette must be warm and distinctive — not black and white, not generic blue/purple. The palette is defined in `app/globals.css` and `tailwind.config.ts` and must be applied consistently across all screens.
-
-| Token | Value | Usage |
-|-------|-------|-------|
-| `--background` | `hsl(38, 12%, 97%)` | Page background (warm cream) |
-| `--foreground` | `hsl(25, 12%, 12%)` | Primary text (dark charcoal) |
-| `--muted` | `hsl(38, 8%, 94%)` | Secondary backgrounds |
-| `--muted-foreground` | `hsl(30, 8%, 48%)` | Secondary text |
-| `--accent` | `hsl(32, 80%, 55%)` | Amber accent (CTAs, highlights, icons) |
-| `--accent-foreground` | `hsl(32, 80%, 15%)` | Text on amber backgrounds |
-| `--card` | `hsl(38, 12%, 100%)` | Card backgrounds (white) |
-| `--card-foreground` | `hsl(25, 12%, 12%)` | Text on cards |
-| `--border` | `hsl(30, 8%, 88%)` | Border colour |
-| `--input` | `hsl(38, 12%, 100%)` | Input backgrounds |
-| `--success` | `hsl(140, 40%, 50%)` | Sage green (success states) |
-| `--success-foreground` | `hsl(140, 40%, 98%)` | Text on success backgrounds |
-| `--warning` | `hsl(35, 90%, 55%)` | Warm amber (warning states) |
-| `--warning-foreground` | `hsl(35, 90%, 10%)` | Text on warning backgrounds |
-| `--destructive` | `hsl(5, 70%, 60%)` | Muted terracotta (error states) |
-| `--destructive-foreground` | `hsl(5, 70%, 98%)` | Text on error backgrounds |
-| `--info` | `hsl(210, 40%, 55%)` | Warm blue-gray (info states) |
-| `--info-foreground` | `hsl(210, 40%, 98%)` | Text on info backgrounds |
-| `--surface-tint` | `hsl(38, 12%, 94%)` | Surface backgrounds (slightly darker than page) |
-| `--radius` | `0.5rem` | Border radius for cards, inputs, buttons |
-| `--shadow-sm` | `0 1px 2px hsl(25, 12%, 12%, 0.05)` | Subtle elevation |
-| `--shadow-md` | `0 4px 6px hsl(25, 12%, 12%, 0.07)` | Medium elevation |
-| `--shadow-lg` | `0 10px 15px hsl(25, 12%, 12%, 0.10)` | Strong elevation |
-
-The palette is applied in `app/globals.css` (CSS custom properties) and `tailwind.config.ts` (Tailwind tokens). All components must use these tokens, not hardcoded values.
-
-- Public recipe sharing and community features
-- Fragrance pairing engine
-- AI Troubleshooter (batch failure diagnosis)
-- Full inventory management
-- Beginner's adaptive learning path
-- AI predictions (outcome prediction based on batch history)
-- Etsy/Shopify integration
-- SEO publishing operation
-- Compliance documentation export
-
-### Explicitly Out of Scope for v1
-
-- Public community Q&A or forums
-- AI-generated "perfect" recipes
-- Full inventory management system
-- AI troubleshooting
-- AI cure readiness declarations
-- Etsy/Shopify integrations
-- Compliance reports (use checklists and documentation only)
-- Multi-language support
-|- Mobile app (web-first, responsive)
-
-## 8. Competitive Analysis — SoapCraft Pro vs SoapCalc vs SoapMakingFriend
-
-### SoapCalc (the incumbent — lye calculator)
-SoapCalc is the free, no-signup lye calculator that soap makers have used since 2001. It is functional, dense, and information-rich. Its strengths and weaknesses define the baseline SoapCraft Pro must exceed.
-
-**What SoapCalc does well:**
-- Fast, deterministic lye calculations (NaOH, KOH, dual)
-- 150+ oils with SAP values and fatty acid profiles
-- Real-time quality predictions (hardness, cleansing, conditioning, lather, creaminess)
-- Water calculation modes (percentage of oils, lye concentration, water:lye ratio)
-- Superfat and fragrance ratio controls
-- Mold volume calculation — enter your mold dimensions and it calculates the volume of oils needed
-- Mobile-responsive design
-- Zero friction: no signup, no fees, instant results
-- 20+ years of community trust
-
-**Where SoapCalc falls short:**
-- Calculator-only: no batch logging, no cure tracking, no cost analysis
-- No recipe library or versioning
-- No guided production process (Making Mode)
-- Dense, utilitarian UI — functional but not delightful
-- No workspace concept: each calculation is isolated
-- No cost per bar or pricing guidance
-- No retention surfaces or user progression
-- Static: no learning, no adaptation, no personalization
-- No inventory management
-- No community or recipe sharing
-
-### SoapMakingFriend (the closest competitor — full workspace)
-SoapMakingFriend is a cloud-based recipe builder, calculator, and workspace with iOS, Android, and web apps. It is the closest competitor to SoapCraft Pro and the one we must differentiate against.
-
-**What SoapMakingFriend does well:**
-- Full recipe builder with oils, fats, waxes, custom additives
-- Real-time property updates as you adjust the recipe
-- Add notes and images to recipes
-- Print-friendly recipe format
-- Inventory management: add purchases, manage suppliers, track stock
-- Batch management: portions, packaging, labor, cost analysis
-- Recipe management: folders, filter by ingredient, replicate/refine
-- Community features: copy recipes from the community, forums
-- Cross-platform (web, iOS, Android)
-- Has colour and visual design (not black and white)
-
-**Where SoapMakingFriend falls short:**
-- Ad-supported free tier (2 recipes, 1 batch)
-- Premium at $5.99/mo — cheaper than SoapCraft Pro but also less capable
-- No Making Mode (no guided production steps with timers)
-- No cure tracking with predictions
-- No deterministic confidence ranges on calculations
-- No AI trade-off explanations for recipe adjustments
-- Community features are unfiltered (no quality control on shared recipes)
-- Inventory tracking is basic (no reorder alerts, no supplier comparison)
-- Cost analysis is per-batch only (no per-bar with target pricing)
-- No onboarding quiz or guided first-time experience
-- No design quality standard — functional but not meticulous
-
-**SoapCraft Pro exceeds both by being a workspace with guided production:**
-
-| Dimension | SoapCalc | SoapMakingFriend | SoapCraft Pro |
-|-----------|----------|------------------|---------------|
-| Core function | Lye calculator | Recipe builder + workspace | Full workspace (recipe → batch → cure → cost) |
-| Calculation | Deterministic, instant | Deterministic, instant | Deterministic, instant (< 100ms), with confidence ranges |
-| Oil database | 150+ oils | 150+ oils + custom additives | 150+ oils + custom ingredient costs + IFRA compliance |
-| Quality predictions | 5 metrics, static scores | Properties update live | 5 metrics + confidence badges + AI trade-off explanations |
-| Mold volume | Yes — enter dimensions, calculates oil volume | Not documented | Yes — mold volume calculator integrated with recipe builder |
-| Recipe management | None | Library with folders, filter, replicate | Library with versioning, search, filter, ratings |
-| Batch logging | None | Basic batch tracking | Structured batch log with Making Mode (CP-guided) |
-| Making Mode | None | None | Guided CP production with step checklist and persistent timers |
-| Cure tracking | None | None | Estimated windows, observation logs, user-controlled completion |
-| Cost analysis | None | Per-batch cost | Per-batch and per-bar costing with target pricing |
-| Inventory | None | Basic (purchases, suppliers, stock) | Ingredient cost catalogue with supplier tracking |
-| UI design | Dense, utilitarian, black & white | Functional, has colour | Impeccable design: semantic type scale, warm palette, deliberate motion |
-| User progression | None | None | Onboarding quiz → first recipe → first batch → cure → cost |
-| Community | None | Forums, shared recipes | Curated templates (no public community in v1) |
-| Free tier | Fully free, no limits | 2 recipes, 1 batch, ads | Calculator + 3 recipes + 1 active batch (genuinely useful) |
-| Pro tier | N/A | $5.99/mo | $12/mo or $99/yr — everything above |
-
-### Key Insight: What We Must Have From Day One
-From the competitive dive, the features that SoapCalc and SoapMakingFriend both have that SoapCraft Pro must match or exceed in v1:
-
-1. **Mold volume calculation** — SoapCalc lets you enter your mold dimensions and calculates the volume of oils needed. This is a critical feature that SoapMakingFriend lacks. SoapCraft Pro must have this.
-2. **Recipe library with notes and images** — SoapMakingFriend allows notes and images per recipe. SoapCraft Pro must match this.
-3. **Cost analysis** — SoapMakingFriend has per-batch cost analysis. SoapCraft Pro must have per-batch AND per-bar costing with target pricing.
-4. **Inventory tracking** — SoapMakingFriend tracks purchases, suppliers, and stock. SoapCraft Pro must have an ingredient cost catalogue at minimum.
-5. **Cross-platform** — SoapMakingFriend is on web, iOS, and Android. SoapCraft Pro v1 is web-only, but must be responsive and mobile-friendly.
-6. **Colour and visual design** — SoapMakingFriend has colour. SoapCalc is black and white. SoapCraft Pro must have a warm, distinctive palette from day one.
-
-### Design Quality Standard
-SoapCraft Pro must not look like a calculator. It must look like a meticulous chemist's notebook — calm precision, editorial restraint, and deliberate motion. Every screen must pass the `scan-generic.sh` quality gate from the `impeccable-design` skill before merge.
-
-The colour palette must be warm and distinctive — not black and white, not generic blue/purple. Warm cream background, dark charcoal foreground, amber accent, with semantic colours for success (sage green), warning (warm amber), error (muted terracotta), and info (warm blue-gray).
-
-### Competitive Moat
-SoapCalc is free and will remain free. SoapMakingFriend is $5.99/mo. SoapCraft Pro competes on:
-1. **Workspace completeness** — recipe → batch → cure → cost in one flow
-2. **Guided production** — Making Mode with CP step checklist and persistent timers
-3. **Cost intelligence** — per-bar costing with target pricing
-4. **Design quality** — impeccable, warm, distinctive, not generic
-5. **Deterministic trust** — calculations are authoritative; AI explains and recommends only
-
-## 9. Information Architecture / App Structure
-
-```
-SoapCraft Pro
-├── Marketing Site (public, no auth)
-│   ├── Homepage (hero, demo, features, workflow, pricing teaser)
-│   ├── Pricing page (tier details, comparison, upgrade CTA)
-│   ├── Blog (programmatic SEO, SEO articles)
-│   └── Auth gate (login/signup links)
-├── App (auth-gated)
-│   ├── Auth (login, signup, password reset)
-│   ├── Onboarding (quiz → goal setting)
-│   ├── Dashboard (overview of active batches, upcoming cures, cost summary)
-│   ├── Recipe Builder (create, edit, scale, save recipes)
-│   │   ├── Oil selection (percentage-based)
-│   │   ├── Calculation display (lye, water, fragrance)
-│   │   ├── Property ranges (hardness, lather, moisturizing)
-│   │   ├── Warnings and validation
-│   │   ├── Mold volume calculator
-│   │   └── Save to library
-│   ├── Batches (list, create, view, edit)
-│   │   ├── Batch Detail (inputs, conditions, outcome, photos)
-│   │   └── Making Mode (step checklist, timers, temperatures)
-│   ├── Cure Tracker (calendar view, list view, observation logs)
-│   ├── Costing (cost per batch, cost per bar, pricing)
-│   ├── Recipe Library (curated + personal, browse, search, filter, save)
-│   ├── Subscription (pricing, upgrade, manage billing)
-│   ├── Account Settings (profile, subscription, payment methods, delete)
-│   └── Settings (profile, preferences, integrations, billing)
-├── Free Tier (calculator, limited recipes, one active batch)
-└── Pro Tier ($12/month or $99/year — everything above)
-```
-
-## 9. Screen-by-Screen / Page-by-Page Requirements
-
-### 9.1 Onboarding Flow
-- **Purpose:** Authenticate the user, then assess their experience level, goals, and preferred soap-making method in < 3 minutes.
-- **Entry points:** "Get started" CTA on marketing page, signup after trial, first login for new users.
-- **Prerequisite:** User must be authenticated (see §9.11 Auth Flow). Unauthenticated users are redirected to the marketing page.
-- **Required sections/components:** Auth gate (see §9.11), 3-step quiz (experience → goal → method), contextual action chips, progress indicator.
-- **Required fields/content:** Experience level (beginner/intermediate/advanced), Primary goal (hobby/sell). The method preference field is removed from onboarding for v1; it is stored on the user profile for v2 personalization.
-- **CTAs/actions:** "Start" → "Next" → "Get Started" (final).
-- **Empty state:** N/A (this is the first screen after auth).
-- **Loading state:** Progress bar between steps.
-- **Error state:** Preserve quiz answers if user navigates away. Preserve auth session if quiz is interrupted.
-- **Permission rules:** Authenticated users only.
-- **Data dependencies:** User account (created during auth), user profile (created on onboarding completion).
-- **Analytics events:** auth_required, login_viewed, signup_viewed, quiz_started, quiz_step_completed, quiz_completed, onboarding_complete.
-- **Acceptance criteria:** Unauthenticated user is redirected to the marketing page. Authenticated user can complete onboarding in < 3 minutes. First recipe creation is suggested immediately after.
-
-### 9.2 Recipe Builder
-- **Purpose:** Help users build accurate soap recipes with verified calculations.
-- **Entry points:** Dashboard "New Recipe" button, Recipe Library "Create New," from Recipe "Make a Variation."
-- **Required sections/components:** Oil selection (searchable list with SAP values and properties), percentage sliders, calculation display (lye, water, fragrance), property ranges, warnings panel, save action, AI "Suggest" button (slide-out panel with contextual suggestions).
-- **Required fields/content:** Recipe name, Oil blend (% each oil), Superfat (%), Lye type (NaOH/KOH), Water calculation mode (lye concentration|water-to-lye ratio|percent of oils), Water calculation value, Batch size (weight + unit), Fragrance/EO (name, % load).
-- **CTAs/actions:** "Calculate" → "Save to Library" → "Edit" → "Start This Batch."
-- **Empty state:** "Your first recipe is one oil selection away."
-- **Loading state:** Calculation progress indicator (instant for deterministic calc, < 100ms).
-- **Error state:** "Please fix the following issues: [list of validation errors]."
-- **Permission rules:** Free tier (save up to 3 recipes), Pro tier (unlimited).
-- **Data dependencies:** Ingredient database (SAP values, properties), user preferences.
-- **Analytics events:** recipe_builder_started, oil_selected, calculation_performed, recipe_saved, recipe_edited.
-- **Acceptance criteria:** User can create a complete recipe with verified calculations in < 5 minutes. All calculations are deterministic and match SoapCalc for the same inputs within documented tolerance (±0.5g for lye/water quantities).
-
-### 9.3 Batch Log + Making Mode
-- **Purpose:** Record every input and outcome for each batch of soap.
-|- **Purpose:** Record every input and outcome for each batch of soap. Safety warnings are present at every step where lye quantities are entered or compared.
-|- **Entry points:** Dashboard "New Batch" button, from Recipe "Start This Batch," from Batch list.
-|- **Required sections/components:** Input form (oils, lye, water, fragrance — pre-filled from recipe, editable), condition form (temperature, trace time, mold), outcome form (hardness, lather, moisturizing, scent, appearance, yield), photo attachment, notes, safety checklist (required before Starting Making Mode).
-|- **Required fields/content:** Recipe ID (linked), Actual oils used (with weights), Actual lye amount, Actual water amount, Actual fragrance amount, Trace temperature, Mold type, Batch size (target vs actual), Cure start date, Outcome ratings (1-5 for each dimension), Actual number of bars, Photos, Notes.
-|- **CTAs/actions:** "Start Batch" → "Log Outcome" → "Save" → "View Analytics."
-|- **Empty state:** "Your first batch is one tap away. Start making!"
-|- **Loading state:** Saving indicator with success confirmation.
-|- **Error state:** Preserve all entered data if connection drops. "Your batch data is safe. Retry saving."
-|- **Safety warning:** When actual lye amount differs from recipe calculation by more than ±10%, display: "Your actual lye amount differs from the recipe calculation by X%. Please verify this is intentional."
-|- **Permission rules:** Free tier (1 active batch), Pro tier (unlimited active batches).
-|- **Data dependencies:** Recipe data, user profile, ingredient database.
-|- **Analytics events:** batch_started, batch_input_logged, batch_outcome_logged, batch_photo_added, batch_completed.
-|- **Acceptance criteria:** User can create a batch, log all inputs, log outcome, and attach a photo in < 5 minutes. Actual quantities can differ from recipe quantities without breaking the link. Safety warnings appear when actual measurements deviate significantly from calculated values.
-
-### 9.4 Making Mode
-- **Purpose:** Guided batch production with structured steps and persistent timers. CP-specific in v1.
-- **Scope note:** In v1, Making Mode supports cold process only. Hot process and melt-and-pour receive simplified batch logs (no Making Mode step guide). Users who selected HP or MP in onboarding see a contextual message: "Making Mode for [method] is coming soon."
-- **Entry points:** From Batch Detail "Start Making," from Dashboard active batches.
-- **Required sections/components:** Safety checklist (required before starting — "Wear gloves and eye protection. Work in a ventilated area. Keep vinegar nearby for lye spills."), step checklist (CP-specific steps), current step highlight, timer (persistent across refreshes), temperature targets, checkpoint alerts.
-- **Required fields/content:** Step-by-step guide for CP soap (prepare workspace, measure oils, mix lye, combine, trace, pour, insulate), timer for each step, temperature targets, large tap targets (min 44x44px), high-contrast display option.
-- **CTAs/actions:** "Next Step" → "Mark Complete" → "Skip" → "Pause Timer" → "Resume Timer."
-- **Empty state:** N/A (this is an active flow).
-- **Loading state:** Timer countdown with progress.
-- **Error state:** "Timer paused. Resume when ready." (timer persists across page refreshes).
-- **Permission rules:** Pro tier only (Making Mode is CP-specific in v1; HP and MP users receive a simplified batch log).
-- **Data dependencies:** Batch data, CP step guide.
-- **Analytics events:** making_mode_started, step_completed, timer_paused, timer_resumed, making_mode_completed.
-- **Acceptance criteria:** User can follow a complete CP soap making process with guided steps and persistent timers. All steps must be marked complete or skipped to finish the batch. Timer survives page refreshes. Safety checklist must be acknowledged before Making Mode starts.
-
-### 9.5 Cure Tracker
-- **Purpose:** Track cure progress with honest estimates and user-controlled completion.
-- **Entry points:** From Batch Detail "Track Cure," from Dashboard cure calendar.
-- **Required sections/components:** Cure progress (days elapsed / estimated window), pH logging, hardness tracking, observation log, user-decided completion, reminders.
-- **Required fields/content:** Cure start date, Cure method (air cure, wrap, etc.), pH readings (date + value), Hardness readings (date + value), Observation notes, Estimated cure window (based on oil blend and superfat), User completion date.
-- **CTAs/actions:** "Log pH" → "Log Hardness" → "Add Observation" → "Mark as Complete" → "View History."
-- **Empty state:** "Start tracking your cure by logging the first pH reading."
-- **Loading state:** Progress bar showing cure days elapsed.
-- **Error state:** "This pH reading falls outside the expected range. Verify the measurement method and record any observations before continuing."
-- **Permission rules:** Pro tier only. Cure tracking is a post-production activity tied to batch completion.
-- **Analytics events:** cure_tracking_started, ph_logged, hardness_logged, observation_added, cure_marked_complete, reminder_sent.
-- **Acceptance criteria:** User can log pH and hardness readings, see cure progress with estimated window, add observations, and mark completion on their own terms. The system never claims to know "exactly when" the soap is ready. pH readings are one observation, not a ready/not-ready switch.
-
-### 9.6 Costing
-- **Purpose:** Know your ingredient and production cost per bar.
-- **Entry points:** From Batch Detail "Calculate Cost," from Dashboard cost summary.
-- **Required sections/components:** Ingredient cost breakdown (per batch), cost per bar calculator, target margin pricing, suggested selling price.
-- **Required fields/content:** Ingredient costs (per unit from catalogue), Usage per batch, Batch size (number of bars), Target margin (%), Suggested selling price.
-- **CTAs/actions:** "Calculate Cost" → "Set Target Price" → "View Recipe Margins."
-- **Empty state:** "Add your ingredient costs to see your real cost per bar."
-- **Loading state:** Real-time cost update as inputs change.
-- **Error state:** "Missing cost data for [ingredient]. Add it to your cost catalogue to get accurate pricing."
-- **Permission rules:** Pro tier (cost tracking).
-- **Data dependencies:** Ingredient cost catalogue, batch data.
-- **Analytics events:** cost_calculated, target_price_set, margin_analyzed.
-- **Acceptance criteria:** User can input ingredient costs and get ingredient cost per bar + target selling price within 2 minutes. Formula: suggested selling price = cost per bar / (1 - target margin). Waste, labour, and overhead are excluded from cost calculation but noted as separate considerations. Cost catalogue is pre-populated with common ingredients and user-editable.
-
-### 9.7 Recipe Library
-- **Purpose:** Browse curated recipes and manage personal library. Part of the Recipe Builder module (shared infrastructure, not a standalone module).
-- **Entry points:** Nav "Library" link, from Recipe Builder "Browse Similar."
-- **Required sections/components:** Search bar, tag filters (oil blend, fragrance, method, skill level), recipe cards (name, creator, rating, key properties), recipe detail view, save to personal library, rating system.
-- **Required fields/content:** Recipe name, Creator, Oil blend, Fragrance, Method, Skill level, Property ranges, Community rating (if public), User's own rating, Photo.
-- **CTAs/actions:** "Search" → "Filter" → "Save to My Recipes" → "Rate" → "Make This."
-- **Empty state:** "No recipes yet. Browse the curated library to get started."
-- **Loading state:** Skeleton cards while loading.
-- **Error state:** "Search failed. Try different keywords."
-- **Permission rules:** Free tier (browse curated, save up to 3 personal recipes), Pro (full library + personal ratings + unlimited saves).
-- **Data dependencies:** Curated recipe database, user ratings, search index.
-- **Analytics events:** library_viewed, recipe_searched, recipe_viewed, recipe_saved, recipe_rated, recipe_made.
-- **Acceptance criteria:** User can search, filter, view, save, and rate recipes. Search returns relevant results within 1 second.
-
-### 9.8 Homepage (Marketing Entry Point)
-- **Purpose:** Marketing page that introduces SoapCraft Pro and drives users into the product. This is the entry point, not the full product. Users who are logged in see their Dashboard; logged-out users see the marketing page.
-- **Entry points:** Direct URL, Google search, social media link, bookmark.
-- **Required sections/components:** Hero (headline + subheadline + CTA), Live calculation demo (deterministic, < 100ms), Feature overview (4 modules with descriptions), Workflow progression (4-step visual: Recipe → Batch → Cure → Cost), Social proof/testimonials (v1: placeholder), Pricing teaser (free vs Pro), Footer (links, legal).
-- **Required fields/content:** Headline, Subheadline, CTA buttons, Demo calculation data, Feature descriptions, Workflow steps, Pricing tiers.
-- **CTAs/actions:** "Start building" (→ Recipe Builder), "Browse recipes" (→ Recipe Library), "Learn more" (→ Feature overview).
-- **Empty state:** N/A (marketing page always shows the same content).
-- **Loading state:** Skeleton hero while loading.
-- **Error state:** "Could not load page. Retry." (static content falls back to cached version).
-- **Permission rules:** All tiers (including logged-out).
-- **Data dependencies:** None (static content).
-- **Analytics events:** homepage_viewed, cta_clicked, demo_calculation_viewed.
-- **Acceptance criteria:** Marketing page loads in < 1s. CTA buttons are visible and clickable. Live demo calculation runs deterministically in < 100ms. The page clearly communicates that SoapCraft Pro is a workspace, not just a calculator.
-
-### 9.9 Dashboard
-- **Purpose:** Overview of active batches, upcoming cures, and cost summary. Shown to logged-in users after onboarding.
-- **Entry points:** App home after onboarding, navigation from any page.
-- **Required sections/components:** Active batches (list), Upcoming cures (calendar preview), Cost summary (this month's costs, avg cost per bar), Quick actions (new recipe, new batch, log cure, calculate cost).
-- **Required fields/content:** Batch count, Cure count, Costs (month), Avg cost per bar, Quick action buttons.
-- **CTAs/actions:** "New Recipe" → "New Batch" → "Log Cure" → "Calculate Cost."
-- **Empty state:** "Welcome to SoapCraft Pro! Create your first recipe to get started."
-- **Loading state:** Skeleton cards while loading.
-- **Error state:** "Could not load dashboard data. Retry."
-- **Permission rules:** All tiers.
-- **Data dependencies:** Batch data, cure data, cost data.
-- **Analytics events:** dashboard_viewed, quick_action_clicked.
-- **Acceptance criteria:** User can see their active batches, upcoming cures, and cost summary at a glance. All data is current.
-
-### 9.10 Marketing Site (Public, No Auth)
-- **Purpose:** Public marketing page that introduces SoapCraft Pro and drives signups. Includes blog for SEO and programmatic SEO. No login required.
-- **Entry points:** Direct URL, Google search, social media link, bookmark.
-- **Required sections/components:** Hero (headline + subheadline + CTA), Live calculation demo (deterministic, < 100ms), Feature overview (4 modules with descriptions), Workflow progression (4-step visual: Recipe → Batch → Cure → Cost), Social proof/testimonials (v1: placeholder), Pricing teaser (free vs Pro), Blog (programmatic SEO), Footer (links, legal).
-- **Required fields/content:** Headline, Subheadline, CTA buttons, Demo calculation data, Feature descriptions, Workflow steps, Pricing tiers, Blog posts.
-- **CTAs/actions:** "Start building" (→ signup → Recipe Builder), "Browse recipes" (→ Recipe Library), "Learn more" (→ Feature overview), "Read the blog" (→ Blog).
-- **Empty state:** N/A (marketing site always shows the same content).
-- **Loading state:** Skeleton hero while loading.
-- **Error state:** "Could not load page. Retry." (static content falls back to cached version).
-- **Permission rules:** All tiers (including logged-out).
-- **Data dependencies:** None (static content). Blog content from CMS.
-- **Analytics events:** homepage_viewed, cta_clicked, demo_calculation_viewed, blog_viewed, blog_post_viewed.
-- **Acceptance criteria:** Marketing site loads in < 1s. CTA buttons are visible and clickable. Live demo calculation runs deterministically in < 100ms. The page clearly communicates that SoapCraft Pro is a workspace, not just a calculator. Blog is accessible and SEO-optimised.
-
-### 9.11 Auth Flow (Login / Signup)
-- **Purpose:** Authenticate users before they access the app. The marketing page is public; the app is gated.
-- **Entry points:** "Get started" CTA on marketing page, "Log in" link on marketing page, "Sign up" link on marketing page.
-- **Required sections/components:** Login form (email + password), Signup form (email + password + confirm password), Password reset form, Session persistence, Auth gate on all app routes.
-- **Required fields/content:** Email, Password, Confirm Password (signup only).
-- **CTAs/actions:** "Log in" → "Sign up" → "Reset password" → "Back to login."
-- **Empty state:** N/A (auth forms always show the same content).
-- **Loading state:** Spinner on form submission.
-- **Error state:** "Invalid email or password." (login), "Email already in use." (signup), "Passwords do not match." (signup), "Something went wrong. Please try again." (general).
-- **Permission rules:** Unauthenticated users see marketing page; authenticated users see app.
-- **Data dependencies:** User account in database.
-- **Analytics events:** login_viewed, signup_viewed, login_attempted, signup_attempted, login_success, signup_success, login_failed, signup_failed, password_reset_requested, password_reset_completed.
-- **Acceptance criteria:** User can sign up with email + password in < 2 minutes. User can log in and access the dashboard immediately after. Password reset email is sent within 30 seconds. Auth gate redirects unauthenticated users to the marketing page.
-
-### 9.12 Subscription / Pricing Page
-- **Purpose:** Present pricing tiers and allow users to upgrade to Pro.
-- **Entry points:** "Pricing" link in marketing page footer, "Upgrade" button in Dashboard, "Manage subscription" in Settings.
-- **Required sections/components:** Free tier details, Pro tier details, Comparison table, Current tier indicator, Upgrade/downgrade actions, Dodo Payments checkout.
-- **Required fields/content:** Tier names, Feature lists, Price (monthly/yearly), Current tier badge.
-- **CTAs/actions:** "Upgrade to Pro" → Dodo Payments Checkout → "Manage subscription" → "Downgrade to Free."
-- **Empty state:** N/A (pricing page always shows the same content).
-- **Loading state:** Spinner on payment processing.
-- **Error state:** "Payment failed. Please try again." (payment), "Something went wrong." (general).
-- **Permission rules:** All tiers (including logged-out).
-- **Data dependencies:** Dodo Payments checkout session, user subscription status.
-- **Analytics events:** pricing_viewed, upgrade_clicked, payment_initiated, payment_success, payment_failed, downgrade_clicked.
-- **Acceptance criteria:** User can view pricing tiers on the marketing page. Authenticated user can upgrade from Free to Pro via Dodo Payments Checkout. User can manage their subscription from the Settings page.
-
-### 9.13 Account Settings
-- **Purpose:** Manage user profile, subscription, and account settings.
-- **Entry points:** Settings link in navigation (app only).
-- **Required sections/components:** Profile (email, name), Subscription (current tier, billing cycle, next billing date), Payment methods (add/remove), Danger zone (delete account).
-- **Required fields/content:** Email, Name, Subscription tier, Billing cycle, Next billing date.
-- **CTAs/actions:** "Update profile" → "Manage subscription" → "Add payment method" → "Cancel subscription" → "Delete account."
-- **Empty state:** N/A (settings page always shows the same content).
-- **Loading state:** Spinner on form submission.
-- **Error state:** "Could not update profile. Please try again." (general).
-- **Permission rules:** Authenticated users only.
-- **Data dependencies:** User profile, subscription status, payment methods.
-- **Analytics events:** settings_viewed, profile_updated, subscription_changed, payment_method_added, account_deleted.
-- **Acceptance criteria:** User can update their profile email and name. User can view their current subscription tier and billing cycle. User can add/remove payment methods. User can cancel their subscription. User can delete their account.
-
-## 10. User Flows
-
-### 10.1 First Recipe Creation Flow
-1. User completes onboarding (experience → goal → method)
-2. User lands on Dashboard → clicks "New Recipe"
-3. User is taken to Recipe Builder
-4. User selects oils and sets percentages
-5. User sets batch size, superfat, lye type, concentration
-6. System calculates lye, water, fragrance load, property ranges
-7. User reviews calculations and warnings
-8. User clicks "Save to Library"
-9. Recipe saved → user redirected to Batch creation
-10. User clicks "Start This Batch" → batch created from recipe
-11. User can now use Making Mode to produce the soap
-
-### 10.2 Batch Logging Flow
-1. User navigates to Dashboard → clicks "New Batch"
-2. User selects a recipe (or creates a new one)
-3. User reviews pre-filled actual measurements (editable)
-4. User inputs batch conditions (temperature, trace time, mold)
-5. User saves the batch
-6. User can log outcome after curing (hardness, lather, moisturizing, scent, appearance, yield)
-7. User can attach photos
-8. Outcome saved → batch marked complete
-
-### 10.3 Cost Calculation Flow
-1. User navigates to a Batch → clicks "Calculate Cost"
-2. System auto-fills ingredient costs from cost catalogue
-3. User reviews and adjusts if needed
-4. System shows cost per batch + cost per bar + suggested target price
-5. User can adjust target margin → price updates in real-time
-
-### 10.4 Auth Flow (Login / Signup)
-1. User lands on Marketing Site (public, no auth required)
-2. User clicks "Get started" or "Log in" CTA
-3. User is taken to the Auth page
-4. User chooses "Sign up" or "Log in"
-5. New user: enters email + password → account created → redirected to Onboarding
-6. Returning user: enters email + password → authenticated → redirected to Dashboard
-7. User can request password reset → email sent → reset link clicked → password updated
-8. User can log out → redirected to Marketing Site
-
-### 10.5 Subscription Flow (Upgrade to Pro)
-1. User is on Dashboard (Free tier)
-2. User clicks "Upgrade to Pro" or navigates to Pricing page
-3. User is taken to the Subscription / Pricing page
-4. User selects Pro tier (monthly or yearly)
-5. User is redirected to Dodo Payments Checkout
-6. User completes payment
-7. Dodo Payments confirms payment → subscription activated
-8. User is redirected back to the app with Pro tier access
-9. User can manage subscription from Account Settings (cancel, downgrade, update payment method)
-
-### 10.6 Marketing → App Flow
-1. User lands on Marketing Site (public)
-2. User browses features, sees pricing, views demo calculation
-3. User clicks "Start building" CTA
-4. User is redirected to Auth page (signup or login)
-5. User authenticates → redirected to Onboarding
-6. User completes onboarding → redirected to Dashboard
-7. User can now access all app features (Recipe Builder, Batches, Cure Tracker, Costing)
-8. User can navigate between Marketing Site and App at any time
-9. Unauthenticated user trying to access app routes → redirected to Marketing Site
-
-## 11. Functional Requirements
-
-### 11.0 Product Flow Reference
-
-The complete product flow, state map, and user journey documentation is maintained in `flowchart/product-flow.md` and `flowchart/product-flow.excalidraw`. These documents are the authoritative reference for:
-
-- All user journeys (new user, returning user, power user, free tier user)
-- All feature flows (Recipe Builder, Batch Log, Cure Tracker, Costing)
-- All global states (app, navigation, auth, subscription, data, form, calculation, notification)
-- All inter-module interfaces and data contracts
-- All empty, loading, error, and success states
-
-The PRD references these documents — no state is unmapped, no journey is unexplored.
-
-## 12. Functional Requirements
-
-### Accounts & Authentication
-- Email/password signup (free and paid tiers)
-- Google OAuth (optional)
-- **Trial:** 30-day Pro trial. The trial ends after 30 days or when the user completes one full batch cycle (batch creation → cure completion, marked by the user), whichever comes first. Users in-progress when the trial expires retain view and complete access to existing batches but cannot start new batches or access Pro-only features. Cure reminders continue during the trial.
-- Tier-based feature gating (Free → Pro)
-
-### Roles
-- Free user: calculator, limited recipes (3), one active batch, curated recipe library
-- Pro user: all features including unlimited recipes, batch tracking, cure tracking, costing, personal recipe library
-
-### CRUD Operations
-- Create/Read/Update/Delete recipes (with versioning — see §12)
-  - Recipes with no batches can be permanently deleted
-  - Recipes referenced by batches are soft-deleted (status: deleted) and preserve all referencing batches
-  - Users are warned before deletion if batches exist
-  - Recipe versions are immutable after creation
-  - Deleting a personal saved recipe removes only the saved reference
-  - Curated recipes cannot be modified directly by normal users
-  - Making a variation creates a private recipe owned by the user
-- Create/Read/Update/Delete batches
-  - Batch status transitions: draft → making → curing → completed → archived
-  - Completed batches retain cure observations and cost records
-- Create/Read/Update/Delete cure observations
-- Create/Read/Update/Delete cost records
-- Create/Read/Update/Delete saved recipes (personal library)
-
-### Search & Filter
-- Full-text search on recipes
-- Filter by oil blend, fragrance, method, skill level
-- Sort by rating, newest, most popular
-
-### Payments
-- Stripe integration for subscription payments
-- Pro: $12/month or $99/year (annual discount)
-- **Free tier:** calculator, limited recipes (3), one active batch at a time, curated recipe library. Completed batches remain viewable in read-only history.
-- Trial: 30 days or one complete batch cycle (whichever comes first)
-
-### Integrations
-- SoapCalc import/export (CSV) — for data migration. Import format: CSV with columns [recipe_name, oil_name, oil_percentage, superfat, lye_type, lye_concentration, water_ratio, batch_size, batch_unit, fragrance_name, fragrance_load]. Export format mirrors the import format. Invalid rows are reported with line numbers and error descriptions.
-
-### Background Jobs
-- AI formulation requests (async)
-- Cure reminder notifications (cron)
-- SEO content generation (v2)
-
-### Free Tier Limit Enforcement
-- When a free-tier user attempts to exceed their recipe limit (3) or active batch limit (1), show a modal explaining the limitation and offering to upgrade to Pro
-- The user can still view and edit existing recipes/batches but cannot create new ones
-- Completed batches remain viewable in read-only history
-
-### AI Request Failure Handling
-- AI requests have a 10-second timeout
-- On failure, the UI shows "Assistant unavailable — try again later"
-- The deterministic calculation engine continues to work independently of AI availability
-
-### Design Quality Gates
-- All PRs must pass `scan-generic.sh` (from the `impeccable-design` skill) before merge
-- Banned patterns (hard bans, zero tolerance): per-section eyebrows, identical card grids, glassmorphism, image-hover zoom, gray-on-dark, side-stripe borders, pure black (`#000000`), hero-metric template, soft 12px radius
-- Design system: semantic type scale, only supplied/explicit colours, restrained Impeccable design
-- Every component must use the supplied hero-template JSON first for any hero sections
-- Client mockups: semantic type scale, only supplied/explicit colours, restrained Impeccable design
-- Editorial-looking heroes over generic service layouts
-- Motion: CSS transitions and React Spring, 150–300ms for small state transitions, prefer opacity and transform for performance
-- Accessibility: reduced motion supported, keyboard navigable, screen-reader labels on all inputs, minimum 16px body text, contrast ratio 4.5:1 minimum
-- See `impeccable` repo at `/tmp/impeccable` for the full hard bans list
-- The `impeccable-design` skill is the authoritative source for all design decisions. No component ships without passing its quality gates.
-
-### Retention Surfaces (see DESIGN.md)
-- Dashboard cure alert: prompts user to log a cure observation for batches approaching completion
-- Recipe recommendation: suggests recipes based on user's oil preferences and batch history
-- Batch reminder: prompts user to log an outcome for completed batches
-- All retention surfaces are opt-in and respect user privacy settings
-
-### Audit Logs
-- Track all user actions for debugging and analytics
-- Log AI model calls for quality monitoring
-
-### Settings
-- Profile settings (name, email, password)
-- Notification preferences (email, in-app)
-- Method preference (CP/HP/MP) — stored for v2 personalization
-- Unit preferences (metric/imperial)
-- Integration settings (SoapCalc import/export)
-- Safety disclaimer acknowledgment (first-use)
-
-### Community Rating
-- Ratings attach to a specific recipe version (not the general recipe record) to prevent substantial edits from inheriting ratings earned by older formulations
-- Ratings are user-specific and can be updated
-- Community rating is v2 (public sharing); v1 ratings are private to the user
-
-## 13. Data Model
-
-### Core Entities (Relational)
-
-```
-User
-  - id (UUID)
-  - email
-  - name
-  - tier (free/pro)
-  - onboardingComplete (boolean)
-  - preferences (JSON: method, units, notifications)
-  - createdAt
-  - updatedAt
-
-Ingredient
-  - id (UUID)
-  - name
-  - type (oil, lye, fragrance, additive)
-  - sapValueNaOH (number)
-  - sapValueKOH (number)
-  - hardnessFactor (number)
-  - latherFactor (number)
-  - moisturizingFactor (number)
-  - ifraCategory (string, nullable)
-  - maxUsagePercent (number)
-  - isCustom (boolean)
-  - createdBy (FK → User, nullable)
-  - sapSource (string, nullable)
-  - createdAt
-  - updatedAt
-
+```text
 Recipe
-  - id (UUID)
-  - userId (FK → User)
-  - name
-  - currentVersionId (FK → RecipeVersion)
-  - visibility (private|curated)
-  - creatorId (FK → User, nullable — null for system-curated)
-  - createdAt
-  - updatedAt
+  → immutable Recipe Version
+  → Batch
+  → Making Record
+  → Cure Observations
+  → Final Yield
+  → Cost Record
+  → evidence for the next Recipe Version
+```
 
-RecipeVersion
-  - id (UUID)
-  - recipeId (FK → Recipe)
-  - version (integer)
-  - superfat (number)
-  - waterCalcMode (string: lye_concentration|water_lye_ratio|percent_of_oils)
-  - waterCalcValue (number)
-  - batchSize (number)
-  - batchUnit (string: g|oz|kg|lbs)
-  - fragranceLoad (number)
-  - fragranceId (FK → Ingredient, nullable)
-  - calculatedLye (number)
-  - calculatedWater (number)
-  - calculatedFragrance (number)
-  - createdAt
+The **Batch** is the central operational object. Cure and cost are batch views, not orphan calculators.
 
-RecipeIngredient
-  - id (UUID)
-  - recipeVersionId (FK → RecipeVersion)
-  - ingredientId (FK → Ingredient)
-  - percentage (number)
-  - sortOrder (integer)
+---
 
-RecipeWarning
-  - id (UUID)
-  - recipeVersionId (FK → RecipeVersion)
-  - type (string)
-  - message (text)
+## 2. Goal system
 
-SavedRecipe
-  - id (UUID)
-  - userId (FK → User)
-  - recipeVersionId (FK → RecipeVersion)
-  - savedAt
+### Primary goal metric
 
-Batch
-  - id (UUID)
-  - userId (FK → User)
-  - recipeVersionId (FK → RecipeVersion)
-  - cureStartDate (date)
-  - cureCompleteDate (date, nullable)
-  - status (draft|making|curing|completed|archived)
-  - createdAt
-  - updatedAt
+**Connected batch completion rate:** percentage of activated users who move one saved recipe version through:
 
-BatchIngredient
-  - id (UUID)
-  - batchId (FK → Batch)
-  - ingredientId (FK → Ingredient)
-  - plannedWeight (number)
-  - actualWeight (number, nullable)
-  - unit (string: g|oz|kg|lbs)
+```text
+batch started → making completed → cure marked ready → yield finalized → cost per bar available
+```
 
-BatchLyeWater
-  - id (UUID)
-  - batchId (FK → Batch)
-  - lyeAmount (number)
-  - lyeUnit (string: g|oz|kg|lbs)
-  - waterAmount (number)
-  - waterUnit (string: g|oz|kg|lbs)
-  - fragranceAmount (number, nullable)
-  - fragranceUnit (string: g|oz|kg|lbs)
+Initial product target is to establish a measured baseline. Do not invent a target before real traffic exists.
 
-BatchCondition
-  - id (UUID)
-  - batchId (FK → Batch)
-  - traceTemp (number, nullable)
-  - moldType (string, nullable)
-  - actualYield (number, nullable)
+### Activation metric
 
-BatchOutcome
-  - id (UUID)
-  - batchId (FK → Batch)
-  - hardness (number, 1-5, nullable)
-  - lather (number, 1-5, nullable)
-  - moisturizing (number, 1-5, nullable)
-  - scent (number, 1-5, nullable)
-  - appearance (number, 1-5, nullable)
-  - notes (text, nullable)
-  - actualBars (integer, nullable)
-  - completedAt (datetime, nullable)
+**First verified recipe save rate:** percentage of new users who create, calculate, review warnings, name, and save a valid recipe version in their first session.
 
-BatchPhoto
-  - id (UUID)
-  - batchId (FK → Batch)
-  - url (string)
-  - caption (text, nullable)
-  - sortOrder (integer)
-  - createdAt
+### Supporting metrics
 
-CureObservation
-  - id (UUID)
-  - batchId (FK → Batch)
-  - date (date)
-  - phValue (number, nullable)
-  - hardness (number, nullable)
-  - notes (text, nullable)
-  - createdAt
+- recipe save → batch start conversion
+- batch start → Making Mode completion
+- Making Mode completion → first cure observation
+- cure marked ready → yield finalized
+- yield finalized → cost record complete
+- percentage of dashboard visits resulting in a due action completed
+- D7 return rate for users with an active batch
+- calculation-error recovery rate
+- save-failure recovery rate
 
-CostRecord
-  - id (UUID)
-  - userId (FK → User)
-  - ingredientId (FK → Ingredient)
-  - costPerUnit (number)
-  - unit (string)
-  - supplier (string, nullable)
-  - date (date)
-  - createdAt
+### Guardrail metrics
 
-BatchCost
-  - id (UUID)
-  - batchId (FK → Batch)
-  - totalCost (number)
-  - costPerBar (number)
-  - targetMargin (number)
-  - suggestedPrice (number)
-  - calculatedAt (datetime)
+- zero unauthorized cross-user data access
+- zero marketing claims for unimplemented behavior
+- zero silent save failures
+- zero chemical quantity generated by AI
+- calculation test suite passes all independently verified vectors
+- no historical batch loses its recipe-version snapshot
 
-BatchCostIngredient
-  - id (UUID)
-  - batchCostId (FK → BatchCost)
-  - ingredientId (FK → Ingredient)
-  - cost (number)
-  - quantity (number)
-  - unit (string)
-  - costRecordId (FK → CostRecord, nullable)
+---
 
-RecipeRating
-  - id (UUID)
-  - userId (FK → User)
-  - recipeVersionId (FK → RecipeVersion)
-  - score (integer, 1-5)
-  - notes (text, nullable)
-  - createdAt
-  - updatedAt
+## 3. Users and jobs
 
-Subscription
-  - id (UUID)
-  - userId (FK → User)
-  - tier (free/pro)
-  - status (active|trialing|expired|cancelled)
-  - trialStartDate (datetime, nullable)
-  - trialEndDate (datetime, nullable)
-  - stripeCustomerId (string, nullable)
-  - currentPeriodStart (datetime, nullable)
-  - currentPeriodEnd (datetime, nullable)
-  - createdAt
-  - updatedAt
+### Primary: serious hobbyist
 
-MethodGuide
-  - id (UUID)
-  - method (string: CP|HP|MP)
-  - stepNumber (integer)
-  - title (string)
-  - instructions (text)
-  - temperatureTarget (number, nullable)
-  - notes (text, nullable)
+- Has multiple formulations and repeats batches.
+- Needs trustworthy calculations, version history, and batch outcomes.
+- Job: “Help me repeat what worked and understand what changed.”
 
-OnboardingState
-  - id (UUID)
-  - userId (FK → User)
-  - step (integer)
-  - answers (JSON)
-  - completedAt (datetime, nullable)
-  - createdAt
+### Secondary: micro-business soapmaker
 
-### Recipe Versioning
+- Produces batches for sale.
+- Needs actual yield and cost basis, not just formula estimates.
+- Job: “Help me know what this batch cost and what price protects my margin.”
 
-Editing a recipe after it has been used in batches must not retroactively change historical batch records. Each recipe save creates a new `RecipeVersion`. Batches reference a specific `RecipeVersion`. The current version is tracked on the `Recipe` record.
+### Tertiary: careful beginner
 
-## 14. SEO Strategy (v1 + v2)
+- Needs strong safety boundaries and a clear first workflow.
+- Job: “Help me prepare a valid formulation and keep a complete record without hiding risk.”
 
-### v1 — Marketing Site + Blog (Launch)
-The marketing site is the primary SEO surface. It includes:
-1. **Homepage** — programmatic SEO with structured data, schema.org markup
-2. **Blog** — programmatic SEO articles targeting soap-making queries
-   - Content pillars: Soap Calculators, Soap Recipes, Soap Making Guides, Troubleshooting
-   - Each article is a standalone SEO asset with internal links to the app
-   - Blog posts drive organic traffic → marketing site → signup → app
-3. **Pricing page** — SEO-optimised landing for "soap making software" queries
-4. **Programmatic pages** — oil-specific calculator pages (not thin content — each must contain meaningful, validated formulation information)
+### Explicit user constraints
 
-### Content Pillars (4 pillars for v1, expanded in v2)
-1. **Soap Calculators** — "soap making calculator," "cold process soap calculator," "lye calculator for soap" + programmatic oil-specific calculator pages
-2. **Soap Recipes** — "cold process soap recipe," "soap recipe for beginners" + curated recipe pages with verified formulations
-3. **Soap Making Guides** — "how to make soap," "soap making for beginners," "cold process soap tutorial" + long-form guides (2,000+ words)
-4. **Troubleshooting** — "soap making problems," "my soap didn't trace," "soap soda ash fix" + articles based on actual recurring user problems
+- Calculations must be immediate and explainable.
+- Mobile Making Mode must work with wet/gloved hands and large controls.
+- The interface must not imply a save occurred when data is only local.
+- Cure readiness remains a user decision; the product provides elapsed time and observations, not a safety declaration.
 
-### SEO Principles
-- Do not generate thin programmatic pages for every oil/fragrance combination
-- Each page must contain meaningful, validated formulation information
-- Calculators and ingredient database pages are the primary SEO assets
-- Curated recipes with verified formulations are the content moat
-- Troubleshooting articles based on real user problems are the retention asset
-- Blog content drives organic traffic to the marketing site, which converts to app signups
-- Measurable goals: impressions, indexed pages, qualified signups, top-ten rankings for defined clusters
+---
 
-## 15. Launch Plan
+## 4. Scope
 
-### Gate 1: Recipe Builder + Batch Log (Weeks 1-3)
-- Recipe Builder with deterministic calculation engine
-- Batch Log with Making Mode (CP-guided production)
-- Free tier (calculator, 3 recipes, 1 active batch)
-- Pro tier ($12/month or $99/year)
-- 30-day trial or one complete batch cycle
+### Rescue MVP scope
 
-### Gate 2: Cure Tracker + Costing (Weeks 3-5)
-- Cure Tracker with estimated windows and observation logging
-- Cost Per Batch / Per Bar with lightweight cost catalogue
-- All v1 features integrated and tested
+1. Authentication and private data ownership
+2. Verified deterministic formulation engine
+3. Recipe and immutable version management
+4. Batch creation from a recipe version
+5. Persistent Making Mode
+6. Cure observation and user-controlled readiness
+7. Ingredient cost records, final yield, and cost per bar
+8. Operational dashboard
+9. Personal recipe and batch portfolios
+10. Logged-out marketing homepage with integrated blog/editorial content
+11. Settings required for units, profile, safety, data, and billing
+12. Dodo subscription lifecycle after the core workflow is working
 
-### Gate 3: Launch (Week 6)
-- Launch Free tier + Pro trial
-- Announce in r/soapmaking, SoapCalc community, Soapmaking Forum
-- First 50 users → collect feedback
-- SEO content: 10 pages (calculators + guides + troubleshooting) — v1 deliverable
+### Deferred until core lifecycle works
 
-### Gate 4: v2 (Months 2-4)
-- Public recipe sharing and community features
-- Fragrance pairing engine
-- AI Troubleshooter
-- Full inventory management
-- Beginner's adaptive learning path
-- AI predictions (outcome prediction based on batch history)
+- AI formulation assistant
+- recipe percentage generation of any kind
+- public community, ratings, comments, follows, or public profiles
+- prediction from aggregated community data
+- inventory depletion and purchase ordering
+- marketplace comparison
 - Etsy/Shopify integration
+- native mobile applications
+- multi-language support
+- advanced compliance reports
+- automated declaration that soap is safe or cured
 
-## 16. Analytics & Instrumentation
+### Rescue sequencing rule
 
-### App Life Spec Metrics
-- First-session recipe completion rate (target: 60% month 1)
-- Signature interaction: % of users who save a recipe after calculations are shown
-- Retention surfaces: which empty state prompts lead to action
-- Onboarding flow: drop-off at each step of the 3-step quiz
-- Error states: how often users hit errors, do they recover
-- Motion: user feedback on animations (helping vs. hindering)
-- Safety disclaimer acknowledgment rate (first-use)
-- AI suggestion acceptance rate (target: > 80%)
+No new broad feature may be added while the lifecycle has an empty/demo/console-only handoff. Integration depth wins over feature count.
 
-### Event Tracking
-All analytics events follow the pattern: `{feature}_{action}`
-- onboarding_started, onboarding_step_completed, onboarding_complete
-- recipe_builder_started, oil_selected, calculation_performed, recipe_saved, recipe_edited
-- batch_started, batch_input_logged, batch_outcome_logged, batch_photo_added, batch_completed
-- making_mode_started, step_completed, timer_paused, timer_resumed, making_mode_completed
-- cure_tracking_started, ph_logged, hardness_logged, observation_added, cure_marked_complete, reminder_sent
-- cost_calculated, target_price_set, margin_analyzed
-- library_viewed, recipe_searched, recipe_viewed, recipe_saved, recipe_rated, recipe_made
-- dashboard_viewed, quick_action_clicked
+---
 
-## 17. Compliance
+## 5. Information architecture
 
-- **CPSC:** Soap is a cosmetic product in the US depending on composition, claims, and intended use. Compliance features generate checklists and documentation summaries.
-- **MoCRA:** Modernization of Cosmetics Regulation Act. Compliance features generate MoCRA documentation export.
-- **IFRA:** International Fragrance Association. Fragrance calculator includes IFRA usage category and concentration guidance. Not a legal certification — generates documentation and warnings.
-- **GDPR:** User data is encrypted at rest, users can export/delete their data.
-- **PCI DSS:** Payment processing handled by Stripe (PCI compliant), no card data stored on our servers.
+### Route shells
 
-**Compliance disclaimers:** The compliance features generate checklists, documentation summaries, missing-information warnings, and exportable records. They do not constitute legal advice or certification. Users are responsible for ensuring their own compliance with applicable regulations.
+The application must have three non-overlapping shells.
 
-## 18. Non-Functional Requirements
+| Shell | Routes | Navigation |
+|---|---|---|
+| Marketing | `/`, `/pricing`, `/blog`, `/blog/[slug]`, `/guides/[slug]`, `/legal/privacy`, `/legal/terms`, `/legal/safety` | Product, Pricing, Guides, Blog, Log in, Start a recipe |
+| Auth | `/auth/login`, `/auth/signup`, `/auth/reset-password`, `/auth/reset-password/[token]` | Brand, minimal help/legal links; no app navigation |
+| App | `/dashboard`, `/recipes/**`, `/batches/**`, `/cure`, `/costing`, `/ingredients`, `/settings/**` | Overview, Recipes, Batches, Curing, Costs, Ingredients, Guides, Settings |
 
-- **Performance:** Page load < 2s, calculation < 100ms, search results < 1s
-- **Availability:** 99.9% uptime target
-- **Security:** HTTPS everywhere, encrypted PII at rest, no raw API keys in client code
-- **Scalability:** Architecture must scale horizontally. Initial paid infrastructure budget supports first defined usage target without major rearchitecture.
-- **Accessibility:** WCAG 2.1 AA, keyboard navigable, screen reader compatible, reduced motion support
-- **SEO:** Semantic HTML, structured data, fast Core Web Vitals
-- **Internationalization:** English only in v1, architecture supports i18n for v2
+### Root behavior
 
-## 19. Open Questions
+- Logged-out request to `/` renders the marketing homepage.
+- Logged-in request to `/` redirects to `/dashboard`.
+- Successful login redirects to validated `callbackUrl`, otherwise `/dashboard`.
+- Successful signup signs the user in, then routes to first-use setup or `/recipes/new` with a starter state.
+- App logo routes to `/dashboard`; marketing logo routes to `/`.
 
-- Does SoapCalc have an API or only manual export/import? (verify via SoapCalc community)
-- What is the current OpenRouter pricing for Claude/GPT models used in formulation assistance? (verify via OpenRouter API docs)
-- What SAP values should be included in the default ingredient database? (start with top 20 oils by community usage)
-- AI accuracy metric: > 80% of AI suggestions are accepted or acted upon by users, measured as "AI suggestion acceptance rate" in analytics. AI may never recommend an adjustment that violates a deterministic safety constraint without visibly flagging the conflict.
-- Preferred default persona voice: calm expertise (not playful, not salesy) — confirm with Isaac
-- What is the target first-user onboarding time? (recommend: < 3 minutes to first recipe)
-- What is the exact free-tier limitation for recipes? (recommend: 3 recipes on free tier)
-- What happens to Pro data after cancellation? (recommend: read-only access for 30 days, then data export)
-- How does trial expiry affect existing batches and cure reminders? (recommend: cure reminders continue, new features gated)
-- What is the CSV format for SoapCalc import/export? (recommend: columns [recipe_name, oil_name, oil_percentage, superfat, lye_type, lye_concentration, water_ratio, batch_size, batch_unit, fragrance_name, fragrance_load]; invalid rows reported with line numbers and error descriptions)
-- How does recipe versioning work in the UI? (recommend: version history accessible from Recipe detail view; users can view previous versions, compare differences, and revert; "Make a Variation" creates a new RecipeVersion with the current recipe as parent)
-- How is the cost catalogue managed? (recommend: users can add, edit, and delete ingredient costs; each entry links to an Ingredient and specifies costPerUnit and unit; catalogue pre-populated with common ingredients)
-- What are the Making Mode step completeness rules? (recommend: all CP steps must be marked complete or skipped to finish the batch)
-- What happens when a trial expires mid-batch? (recommend: user retains view and complete access to in-progress batches but cannot start new batches or access Pro-only features)
-- What happens when a free-tier user exceeds their limit? (recommend: modal explaining the limitation and offering to upgrade; user can still view and edit existing recipes/batches but cannot create new ones)
-- How does AI request failure degrade? (recommend: 10-second timeout; on failure, UI shows "Assistant unavailable — try again later"; deterministic calculation engine continues independently)
-- What is the fragrance load calculation base? (recommend: percentage of total oil weight; e.g., 1000g oil blend + 3% load = 30g fragrance)
-- What property prediction methodology is used? (recommend: SAP-based blending with named factors per oil; scores normalized to 1-10 scale; ranges derived from published SAP data and blending rules, not user batch history)
-- What are the confidence indicators for property predictions? (recommend: High ≥5 oils all published SAP; Medium 3-4 oils all published SAP; Low <3 oils or user-edited SAP; displayed as color-coded badge green/yellow/red)
+### Canonical routes
+
+```text
+/
+/pricing
+/blog
+/blog/[slug]
+/guides/[slug]
+
+/dashboard
+/recipes
+/recipes/new
+/recipes/[recipeId]
+/recipes/[recipeId]/versions/[versionId]
+/batches
+/batches/new?recipeVersionId=...
+/batches/[batchId]
+/batches/[batchId]/making
+/cure
+/costing
+/ingredients
+/settings/profile
+/settings/preferences
+/settings/billing
+/settings/data
+```
+
+### Route rules
+
+- No nested `<html>` or `<body>` outside the root layout.
+- No duplicate headers.
+- No public navigation that exposes private module links as if they are usable without auth.
+- Every private detail route resolves ownership before returning data.
+- `/cure` and `/costing` are portfolio summaries; edits occur in a batch context.
+- Breadcrumbs show object lineage, e.g. `Recipes / Lavender Bar / v3 / Batch #024`.
+
+---
+
+## 6. Core domain and data contracts
+
+### User
+
+Required fields:
+
+- id
+- email
+- name
+- password hash or provider identity
+- preferred weight unit
+- preferred temperature unit
+- currency
+- experience level, optional
+- primary goal, optional
+- safety acknowledgement timestamp/version
+- onboarding completion timestamp
+- subscription status and entitlement projection
+- created/updated timestamps
+
+### Ingredient
+
+Required fields:
+
+- id
+- canonical name and aliases
+- ingredient class: base oil, butter, alkali, liquid, fragrance, additive, packaging
+- authoritative SAP values where applicable
+- source citation and source revision date
+- system-defined vs user-defined
+- owner userId when private
+- active/archived state
+
+A system ingredient must not require an arbitrary `createdBy` string.
+
+### Recipe
+
+Required fields:
+
+- id
+- userId
+- name
+- method
+- notes
+- currentVersionId
+- archivedAt
+- created/updated timestamps
+
+### Recipe Version
+
+A recipe version is immutable after creation.
+
+Required snapshot:
+
+- id, recipeId, sequential version number
+- target oil weight and canonical storage unit
+- lye type and split where supported
+- oil ingredients with percentage and exact weight
+- superfat
+- water mode and value
+- alkali purity where supported
+- fragrance identity/load where supported
+- mold inputs where used
+- deterministic outputs
+- calculator version
+- ingredient/SAP dataset revision
+- warnings and blocking errors at save time
+- creator and timestamp
+
+A batch referencing a version prevents destructive deletion of that version.
+
+If approved launch templates exist, the UI may offer a verified-template path with provenance and approval metadata. Otherwise all template controls are omitted and the builder starts blank. A coding agent must not promote the current hard-coded templates to verified status.
+
+### Batch
+
+Required fields:
+
+- id
+- userId
+- immutable recipeVersionId
+- human-readable batch number/name
+- status
+- planned measurement snapshot owned canonically by the Batch and copied once from the immutable Recipe Version
+- actual measurement line items owned canonically by the Batch; Making Session steps reference and mutate those line items rather than storing a second editable copy
+- method
+- started/completed timestamps
+- cure started/ready timestamps
+- final yield quantity and unit
+- notes
+- created/updated timestamps
+
+Required status state machine:
+
+```text
+draft → ready_to_make → making → curing → ready → archived
+```
+
+Allowed exceptional transitions:
+
+```text
+making → abandoned
+curing → abandoned
+ready → curing     only with reason and audit event
+```
+
+Statuses cannot be skipped silently.
+
+### Making Session
+
+Required fields:
+
+- batchId
+- safety checklist acknowledgements and timestamp
+- active/completed/skipped steps
+- skip reasons
+- timer origin, accumulated duration, running/paused state
+- planned and actual measurements
+- trace/temperature/condition observations
+- save revision and lastSavedAt
+
+### Cure Observation
+
+Required fields:
+
+- id, batchId, observedAt
+- computed cure day at observation time
+- optional weight, pH, hardness method/value, appearance, scent, and notes
+- observer userId
+- created/updated timestamps
+
+### Ingredient Cost Record
+
+Required fields:
+
+- id, userId, ingredientId
+- purchase quantity and unit
+- purchase price and currency
+- normalized cost per canonical unit
+- supplier/label, optional
+- effective date
+- archivedAt
+
+Historical batch cost must retain the cost basis used for calculation.
+
+### Batch Cost Record
+
+Required fields:
+
+- batchId
+- ingredient cost line items with quantity, cost record, and normalized cost
+- packaging costs, optional
+- labor and overhead, optional and separately labelled
+- waste adjustment, optional
+- actual yield
+- total batch cost
+- cost per sellable unit
+- target gross margin
+- suggested price
+- calculation version and calculatedAt
+
+Formula:
+
+```text
+suggested price = cost per unit / (1 - target margin decimal)
+```
+
+Validate target margin as greater than or equal to 0 and less than 1.
+
+### Storage and measurement contract
+
+- Planned batch values are immutable, versioned JSON snapshots only when preserving the full historical calculator result; each snapshot carries a schema version and calculator/dataset revision.
+- Queryable ingredient measurements use normalized line items keyed by stable ingredient ID, quantity in canonical storage units, display unit, planned/actual role, and source step.
+- Batch owns actual measurement truth. Making Session owns workflow state and references Batch measurement IDs; it must not contain independently editable duplicate quantities.
+- Recipe Version owns formula truth. Batch owns the copied historical plan. Recipe edits never rewrite the Batch snapshot.
+- Cost line items reference a Batch measurement and an Ingredient Cost Record revision while also retaining the normalized quantity/rate used for historical reproducibility.
+- Enforce one current recipe version per recipe, unique sequential version numbers per recipe, one active Making Session per batch, and one current Batch Cost revision per batch.
+- Deliberate JSON snapshots require explicit schema-version parsing and migration tests. Do not preserve the current untyped JSON blobs by default merely because they already exist.
+
+### Activity Event
+
+Required fields:
+
+- userId
+- actor
+- object type/id
+- event type
+- factual summary
+- timestamp
+- safe metadata
+
+Used for the dashboard ledger and auditability. Never store secrets or full sensitive payloads.
+
+---
+
+## 7. Security and ownership requirements
+
+- Exact route visibility is enforced by middleware or server layouts.
+- Every API route and server action independently retrieves the authenticated user.
+- Every private query includes user ownership in the database predicate.
+- Child-object access verifies ownership through its parent batch/recipe.
+- Client-supplied `userId`, `createdBy`, totals, tier, and price calculations are never trusted.
+- Production startup fails if required auth secret is missing; no production fallback secret.
+- Password reset uses single-use expiring tokens, non-enumerating responses, and actual email delivery.
+- Rate-limit auth and expensive mutation paths.
+- Recipe reads never return all users’ data.
+- Subscription webhooks are signature verified and idempotent.
+- Export/delete operations require recent authentication. Before account-deletion implementation, product/legal owners approve whether deletion is immediate, scheduled, or anonymizing; which billing/tax records must be retained; what happens to active Dodo subscriptions; and the recovery window. The coding agent must not invent retention policy.
+
+Acceptance test: User A cannot read, update, observe, cost, or delete any object owned by User B, even by guessing IDs.
+
+---
+
+## 8. Deterministic calculation requirements
+
+### Safety boundary
+
+The engine is not accepted because its output resembles another calculator. It is accepted only after the formula contract, ingredient sources, and independent fixtures are documented and verified.
+
+### Mandatory human/domain approval gate
+
+The calculation-contract ticket is a human/domain-review decision ticket, not an autonomous coding ticket. The implementation agent must stop until a named product/domain owner approves a version-controlled contract covering:
+
+- supported soap methods and alkalis
+- dual-lye semantics, if supported
+- active water modes and alkali-purity behavior
+- source citations and dataset revision
+- numeric input boundaries and precision
+- planned-vs-actual variance policy for alkali by type, water, total oils, and fragrance where supported
+- severity thresholds and whether each result informs, requires confirmation, or blocks continuation
+- confirmation/audit language for accepted deviations
+
+Unsupported combinations remain absent from the UI and API. A coding agent must never infer thresholds from generic internet guidance.
+
+### Required inputs
+
+- method
+- target oil mass
+- display/storage unit
+- oil blend percentages or weights
+- lye type: NaOH, KOH, or explicitly supported dual-lye split
+- superfat
+- one active water mode:
+  - lye concentration, or
+  - water:lye ratio, or
+  - percent of oils if product/domain review approves it
+- alkali purity if supported
+- fragrance identity and load if supported
+
+Inactive water inputs must not appear editable or influence output.
+
+### Required outputs
+
+- exact oil weights
+- alkali amount by type
+- water amount
+- fragrance amount
+- total planned batch mass
+- warnings and blocking errors
+- property estimates labelled as estimates with method/source
+- calculator version and dataset revision on save
+
+### Validation
+
+- oil percentages sum to 100 within documented tolerance
+- no negative/NaN/infinite input
+- target mass greater than zero
+- superfat and water inputs within domain-reviewed boundaries
+- selected ingredients have required authoritative data
+- unsupported lye/method combinations block calculation
+- fragrance/IFRA claims are absent unless identity/category data and calculation are valid
+- blocking errors prevent save/start-batch
+- warnings remain visible beside affected output and in review summary
+
+Planned-vs-actual comparisons normalize units before comparison and use only the approved variance contract. Boundary, missing-value, and supported alkali-mode cases require tests. Until that contract is approved, the UI may show factual numeric variance but must not label it safe, acceptable, or dangerous.
+
+### Test acceptance
+
+Fixtures must cover:
+
+- single and multi-oil blends
+- scaling across target weights and supported units
+- NaOH, KOH, and dual lye if shipped
+- each supported water mode
+- purity if shipped
+- rounding/display precision vs internal precision
+- malformed input and boundary values
+- known vectors independently cross-checked against authoritative references
+
+No AI or network call may sit in the quantity-calculation path.
+
+---
+
+## 9. Page-level requirements
+
+### 9.1 Marketing homepage `/`
+
+**Job:** Prove connected workflow value and route qualified visitors to first recipe or educational content.
+
+Required anatomy:
+
+1. left-aligned proof-led hero
+2. real rendering of production application components populated with production-shaped synthetic data clearly labelled “Example,” not KPI cards or fabricated customer activity
+3. connected lifecycle artifact showing inherited data
+4. calculation trust section with exact numbers and warnings
+5. planned-vs-actual batch example
+6. featured article plus three latest articles
+7. category links using the canonical blog filter URLs `/blog?category=calculations`, `/blog?category=recipes`, `/blog?category=guides`, and `/blog?category=troubleshooting`
+8. pricing teaser
+9. safety/legal/footer
+
+Required states:
+
+- one or more valid repository posts: render featured/latest content
+- zero valid posts: homepage still renders with a bounded editorial empty state; malformed repository content blocks the build during content validation rather than becoming a runtime fallback
+- authenticated request redirects before marketing rendering
+
+Acceptance:
+
+- no four-card feature grid
+- no emoji branding
+- no claims for unimplemented behavior
+- blog cards use real images or deliberate original illustrations with alt text
+- all CTAs resolve to valid routes
+
+### 9.2 Blog index `/blog`
+
+**Job:** Help soapmakers solve real problems and move contextually into product actions.
+
+Required:
+
+- featured article
+- category filter with real URL/query state
+- latest articles
+- readable excerpts, dates, reading time, images
+- optional context CTA such as “Open calculator” only where capability is live
+- pagination or bounded initial list
+
+### 9.3 Article `/blog/[slug]`
+
+Required:
+
+- canonical metadata and OpenGraph image
+- title, date, category, reading time, author/editorial attribution
+- semantic article rendering
+- table of contents for long articles
+- safety callout where chemistry is discussed
+- related articles
+- product CTA aligned to article intent
+- Article JSON-LD and breadcrumbs
+
+Content must not claim user data, predictions, or functionality that does not exist.
+
+### 9.4 Dashboard `/dashboard`
+
+**Job:** Answer what is happening, what needs attention, and what changed.
+
+Required regions in priority order:
+
+1. **Needs attention queue** — ordered actionable rows
+2. **Active production pipeline** — one row per active batch across lifecycle stages
+3. **Recent recipes and outcomes** — formulation plus latest result
+4. **Activity ledger** — chronological events
+5. **Single New command** — recipe, batch from recipe, ingredient cost
+
+Every operational row includes:
+
+- object name/type
+- parent relationship
+- status/time
+- reason for attention
+- one primary action
+- secondary overflow actions
+
+Never use the dashboard’s primary area as cards linking to tools.
+
+Empty state:
+
+- one guided first production record
+- blank recipe choice; show a template choice only if approved launch templates exist with provenance
+- visible example of the eventual pipeline
+- no fake user data
+
+### 9.5 Recipes `/recipes`
+
+Required:
+
+- user-owned active recipes
+- if approved launch templates exist, show them in a clearly separate section/filter with provenance; otherwise omit templates entirely
+- search by name and ingredient
+- filters for method, warning state, last made
+- sort by updated, created, last made, name
+- table/list default on desktop; dense records, not equal marketing cards
+- empty state with Build recipe; add Use verified template only if approved templates exist
+
+### 9.6 Recipe Builder `/recipes/new`
+
+Flow:
+
+```text
+identity → target/method → oil blend → lye/water settings → additives/fragrance → calculate → review → save
+```
+
+Required:
+
+- recipe name before save
+- target oil weight and unit
+- one active water mode
+- planned exact quantities beside percentages
+- persistent warning summary
+- saved/unsaved/error states
+- Save recipe action
+- after save: View recipe and Start batch from vN
+
+A mold calculator may set target oil weight only after validated unit conversion. It cannot estimate lye independently of the selected formulation.
+
+### 9.7 Recipe detail `/recipes/[recipeId]`
+
+Required:
+
+- current version and safety status
+- formula table
+- deterministic output and warnings
+- version history with diff
+- batches made from each version
+- latest outcomes and cost per bar
+- actions: Create new version, Duplicate, Start batch, Archive
+
+Editing creates a new version; it never mutates a version used by a batch.
+
+### 9.8 Batches `/batches`
+
+Required:
+
+- active and historical batch list
+- filters by lifecycle status, recipe, date, incomplete data
+- columns: batch, recipe version, status, started, current day/step, yield, cost status, next action
+- Start batch requires selecting a valid saved recipe version
+
+### 9.9 Batch detail `/batches/[batchId]`
+
+This is the central record.
+
+Required sections:
+
+- Overview
+- Making record
+- Cure
+- Cost
+- Notes and activity
+
+Header shows batch number/name, exact recipe version, lifecycle state, dates, and one primary next action.
+
+Overview shows planned vs actual measurements, active step/cure day, latest observation, yield, cost status, and event timeline.
+
+### 9.10 Making Mode `/batches/[batchId]/making`
+
+Required:
+
+- safety checklist before start
+- one step at a time on mobile
+- persistent timer based on stored timestamps, not interval memory alone
+- planned vs actual measurement entry
+- inline variance and domain-reviewed warnings
+- step complete/skip with reason
+- saving/saved/failed status
+- exact resume after reload/navigation
+- completion review before transition to curing
+
+### 9.11 Curing portfolio `/cure`
+
+Required:
+
+- batches grouped factually as overdue observation, due observation, curing, estimated window reached, and completed
+- cure day/window, last observation, next observation date
+- Log observation action deep-links to batch context
+- no blanket cure-completion percentage or safety declaration
+
+“Estimated window reached” is derived only from elapsed time against the configured window and is displayed as: “Estimated window reached — review observations; only you can mark ready.” It is not a scientific or safety status.
+
+Batch cure section supports observation CRUD and user-controlled Mark ready with confirmation/final notes. Observation photos are deferred from the rescue MVP; adding them requires a separate object-storage, authorization, retention, export, and deletion contract.
+
+### 9.12 Cost portfolio `/costing`
+
+Required:
+
+- batches missing cost data
+- cost per unit by batch and recipe version
+- margin status
+- ingredient cost changes over time
+- direct link to batch cost section
+
+Batch cost section inherits actual quantities and yield. Users choose cost records rather than entering arbitrary “Oil ID” strings.
+
+### 9.13 Ingredients `/ingredients`
+
+Required:
+
+- authoritative formulation ingredient catalogue, read-only where system-owned
+- private cost records and user-defined ingredients
+- add/edit/archive purchase cost
+- normalized cost preview
+- source and effective date
+
+### 9.14 Settings
+
+Required:
+
+- profile
+- units/currency/method preferences
+- notification preferences and quiet hours if reminders ship
+- safety acknowledgement
+- billing and subscription status
+- data export
+- account deletion
+- logout
+
+---
+
+## 10. Cross-module interface contracts
+
+### Recipe Version → Batch
+
+Preconditions:
+
+- user owns recipe
+- version exists and passes all blocking validation
+- entitlement permits starting batch
+
+Handoff:
+
+- batch stores immutable recipeVersionId
+- planned measurement snapshot is copied
+- subsequent recipe versions do not change batch plan
+
+Postcondition:
+
+- batch appears immediately in dashboard pipeline and batch list
+
+### Making completion → Cure
+
+Preconditions:
+
+- safety checklist acknowledged
+- required making steps complete or explicitly skipped with reasons
+- actual measurements saved
+
+Handoff:
+
+- batch status changes to curing
+- cureStartedAt is stored
+- first observation due date is calculated according to configured cadence, not a fabricated readiness claim
+- activity event is written
+
+### Cure ready → Yield/Cost
+
+Preconditions:
+
+- user explicitly marks ready
+- final yield requested if absent
+
+Handoff:
+
+- batch status changes to ready
+- costing recalculates from actual quantities, selected cost records, and final yield
+- missing cost bases create attention items rather than zero-cost assumptions
+
+### Cost change → Dashboard
+
+- cost record changes recompute affected non-final/draft estimates or mark them stale according to policy
+- finalized historical records retain their original cost basis unless user explicitly recalculates
+- dashboard reflects complete/incomplete/margin status
+
+---
+
+## 11. Save, loading, error, and empty states
+
+Every persistent mutation must expose:
+
+```text
+idle → saving → saved
+              ↘ failed → retrying → saved/failed
+```
+
+Rules:
+
+- Preserve user input on failure.
+- Show last successful save time.
+- Never display “auto-saved” for transient state.
+- Warn before leaving dirty high-value forms.
+- Use skeleton rows that preserve layout, not whole-page generic spinners.
+- Field errors appear at fields; blocking summary appears at commit action.
+- Deterministic calculation warnings use information / review / blocking severity.
+- Empty states are object-specific and have one meaningful next action.
+
+---
+
+## 12. Visual and interaction direction
+
+The complete system is in `product/DESIGN.md`.
+
+Product metaphor: **chemist’s production ledger**.
+
+Required direction:
+
+- dark umber/charcoal application rail
+- warm mineral-paper workspace
+- ledger rows, ruled separators, timelines, and comparison tables
+- pale clay calculation surfaces and desaturated sage cure surfaces
+- white reserved for editable sheets/dialogs, not the entire app
+- DM Sans application UI; JetBrains Mono/tabular numerals for measurements, timers, batch IDs, temperatures, and currency
+- Playfair reserved for marketing display and rare object titles
+- 2–4px radius by default
+- Lucide icons and a real brand mark; no emoji branding
+
+Banned:
+
+- dashboard tool-link card grid
+- equal icon/heading/copy card grids as section structure
+- pure-white page plus white cards as default
+- `rounded-lg` as a universal grammar
+- hero KPI tiles
+- generic “AI-powered” copy
+- decorative gradients/glassmorphism
+- unverified semantic color classes
+
+---
+
+## 13. Marketing, SEO, and editorial requirements
+
+### Content source
+
+For rescue MVP, structured repository content is acceptable if the content contract supports title, slug, description, category, date, author, reading time, image, alt text, body, related slugs, and contextual CTA. A CMS is not required before the owner has an operational need for it.
+
+### Technical SEO
+
+- canonical URLs
+- sitemap and robots routes
+- Article and Breadcrumb JSON-LD
+- OpenGraph images
+- valid heading hierarchy
+- image dimensions and alt text
+- no broken `/marketing` route
+- redirect old `/marketing/blog/**` URLs if public slugs move
+
+### Content quality
+
+- No invented user data.
+- No claims of verification against another calculator without documented fixtures.
+- No advice framed as safety certification.
+- Programmatic pages must contain unique, useful calculations/explanations; no thin oil-combination spam.
+
+---
+
+## 14. Billing and entitlement requirements
+
+**Provider decision:** Dodo Payments. Stripe references are removed from the authoritative plan.
+
+Billing is implemented only after the core private lifecycle is integrated.
+
+Required states:
+
+```text
+free
+trialing
+active
+past_due
+cancel_at_period_end
+canceled
+payment_pending
+```
+
+Required provider data:
+
+- Dodo customer ID
+- Dodo subscription ID
+- product/price ID
+- current period dates
+- cancellation state
+- last verified webhook event ID
+
+Rules:
+
+- checkout does not directly grant entitlement
+- verified webhook projects provider state into app entitlement
+- webhook processing is idempotent
+- cancellation at period end retains access until period end
+- expired users retain readable/exportable historical data according to explicit policy
+- all limits are enforced server-side, with matching UI explanation
+
+Pricing and trial policy must be one documented truth before billing implementation. Until then, do not advertise an unimplemented trial.
+
+---
+
+## 15. Analytics events
+
+Instrument only after persistent flows exist.
+
+Minimum events:
+
+- `signup_completed`
+- `onboarding_completed`
+- `recipe_calculated`
+- `recipe_validation_blocked`
+- `recipe_saved`
+- `batch_created`
+- `batch_ready_to_make`
+- `batch_started`
+- `making_resumed`
+- `making_step_completed`
+- `making_completed`
+- `cure_observation_added`
+- `batch_marked_ready`
+- `yield_finalized`
+- `cost_completed`
+- `dashboard_attention_actioned`
+- `save_failed`
+- `save_recovered`
+- `upgrade_started`
+- `subscription_activated`
+
+Event payloads use IDs/statuses and non-sensitive metadata. Never log formulations, passwords, payment details, or free-form private notes to analytics by default.
+
+---
+
+## 16. Accessibility and responsive requirements
+
+- WCAG 2.2 AA target
+- keyboard operation for all controls
+- visible focus states
+- semantic tables with row headers and mobile list alternative
+- statuses conveyed by icon/text, not color alone
+- 44×44px targets in Making Mode and mobile primary actions
+- `aria-live` for calculation and save results
+- reduced-motion support
+- 200% zoom without content loss
+- numeric inputs use appropriate input mode and explicit units
+- safety information remains reachable and does not obscure content
+
+Mobile priorities:
+
+1. Needs attention
+2. Resume Making Mode
+3. Log cure observation
+4. Start batch from recipe
+5. Review/save calculation
+
+Desktop tables become grouped mobile records; do not horizontally squeeze every column.
+
+---
+
+## 17. Performance and reliability
+
+- deterministic calculation response: under 100ms on supported client hardware
+- no network dependency for quantity calculation
+- dashboard useful-content server response target: under 1 second at p75 excluding cold start
+- Core Web Vitals target: green at p75
+- timer resumes from server timestamps after reload
+- mutations are idempotent where retries are likely: client supplies a mutation UUID unique within user + operation; the database enforces uniqueness; a payload-hash mismatch on key reuse returns conflict; an exact replay returns the original outcome. Provider webhook event ID is the billing idempotency key.
+- no zero-value fallback that appears to be real cost/data
+- production errors use observability without exposing secrets or user notes
+
+---
+
+## 18. Definition of MVP done
+
+The rescue MVP is done only when a clean test user can:
+
+1. Sign up and remain authenticated.
+2. Create a valid recipe using a verified calculation engine.
+3. Save it as recipe version 1.
+4. See it in Recipes and open its detail page.
+5. Start a batch from that exact version.
+6. See the batch in the dashboard pipeline.
+7. Enter Making Mode, acknowledge safety, save measurements, pause/resume timer, reload, and continue at the same step.
+8. Complete Making Mode and see the same batch enter Curing.
+9. Add and edit cure observations.
+10. Mark the batch ready by explicit user choice.
+11. Finalize actual yield.
+12. Select ingredient cost records and receive a persisted cost per bar and suggested price from target margin.
+13. See the completed lifecycle and activity on dashboard and detail pages.
+14. Log out and confirm another account cannot access any object by URL or API ID.
+15. Visit the logged-out homepage and see the product workflow plus real blog content without duplicate shells, broken links, false claims, or transparent semantic fills.
+
+A route, component, database table, static card, alert, console log, or demo record does not satisfy these acceptance criteria.
+
+---
+
+## 19. Release gates
+
+### Trust gate
+
+- calculation contract and source citations reviewed
+- independent fixture suite green
+- safety copy reviewed
+
+### Data gate
+
+- migrations committed
+- ownership tests green
+- immutable history tests green
+- seed/test mode uses the live data model, not parallel mock types
+
+### UX gate
+
+- approved mockups for marketing homepage, dashboard, recipe detail/builder, batch detail/Making Mode, cure portfolio, and costing
+- computed styles visually inspected
+- no tool-card dashboard
+- all save/loading/error/empty states exercised
+- mobile Making Mode exercised on a real viewport
+
+### Engineering gate
+
+- lint, typecheck, tests, and production build green
+- no hard-coded production secret fallback
+- no placeholder TODO on a user-visible success path
+- no demo data in production routes
+- no false marketing copy
+
+### Billing gate
+
+- checkout/webhook/cancel/renewal test matrix green
+- Dodo webhook signature and idempotency verified
+- server-side entitlements tested
+
+---
+
+## 20. Open decisions that must be resolved before their tickets
+
+1. Authoritative SAP/property source set and review owner.
+2. Supported lye types and water modes for first release.
+3. Trial policy and free-tier limits.
+4. Whether labor/overhead are included in rescue MVP costing or visibly deferred.
+5. Cure observation cadence defaults by method.
+6. Image/content ownership for blog and homepage.
+7. Whether system templates ship at launch and who verifies each formulation.
+
+Open decisions 1–2 and the variance policy in §8 require named human/domain approval before any corresponding implementation ticket begins.
+
+These decisions must not block auth, ownership, shell separation, dashboard specification, or lifecycle persistence.
