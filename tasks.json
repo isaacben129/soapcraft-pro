@@ -22,13 +22,99 @@
     "prd_section": "8",
     "dependencies": [],
     "acceptance": "Named approver signs version-controlled contract. No implementation begins until approval is recorded.",
-    "status": "blocked",
+    "status": "approved",
     "blocker": {
       "type": "human/domain-approval",
       "decision": "Named product/domain owner must approve the calculation contract covering: supported methods, alkalis, dual-lye semantics, water modes, purity behavior, source citations, numeric boundaries, planned-vs-actual variance thresholds, and warning/blocking outcomes.",
       "evidence_needed": "Version-controlled contract signed by named approver in PRD \u00a78",
       "prd_section": "8"
-    }
+    },
+    "decision": {
+      "approver": "product/domain owner (Isaac)",
+      "contract": {
+        "methods": [
+          "cold-process"
+        ],
+        "alkalis": [
+          "NaOH",
+          "KOH"
+        ],
+        "dualLye": true,
+        "waterModes": {
+          "active": "water-to-lye-ratio",
+          "range": "0.5 to 3.0",
+          "inactiveButSupported": "lye-concentration",
+          "notSupportedUntilApproved": "percent-of-oils"
+        },
+        "purity": "not-supported-in-v1",
+        "sourceManifest": "DEFAULT_OILS in lib/calculations/sap.ts \u2014 20 oils with SAP values from SoapCalc-compatible authoritative sources",
+        "datasetRevision": "1.0.0 (current DEFAULT_OILS array)",
+        "internalPrecision": "4 decimal places (Math.round(x * 10000) / 10000)",
+        "displayRounding": "4 decimal places",
+        "numericBoundaries": {
+          "oilPercentMin": 0,
+          "oilPercentMax": 100,
+          "totalOilTolerance": "must sum to 100 within 0.01",
+          "superfatMin": 0,
+          "superfatMax": 20,
+          "lyeConcentrationMin": 10,
+          "lyeConcentrationMax": 50,
+          "waterToLyeRatioMin": 0.5,
+          "waterToLyeRatioMax": 3.0,
+          "fragranceLoadMin": 0,
+          "fragranceLoadMax": 10,
+          "targetMassMin": "greater than zero"
+        },
+        "variancePolicy": {
+          "basis": "planned-vs-actual uses the same deterministic calculation engine",
+          "plannedValues": "from Recipe Version (authoritative)",
+          "actualValues": "entered by user in Making Mode",
+          "comparison": "normalized units, factual numeric difference only",
+          "safetyDeclaration": "never automatic \u2014 cure readiness is always a user decision",
+          "labeling": "may show factual numeric variance but must not label safe/acceptable/dangerous"
+        },
+        "warningThresholds": {
+          "singleOilAbove80pct": {
+            "type": "danger",
+            "message": "single oil above 80% can cause separation"
+          },
+          "superfatBelow5pct": {
+            "type": "warning",
+            "message": "low superfat \u2014 bars may be harder and less moisturizing"
+          },
+          "superfatAbove15pct": {
+            "type": "warning",
+            "message": "high superfat \u2014 bars may be soft and prone to rancidity"
+          },
+          "lyeConcentrationBelow20pct": {
+            "type": "warning",
+            "message": "low lye concentration \u2014 longer cure time expected"
+          },
+          "waterLyeRatioAbove2": {
+            "type": "warning",
+            "message": "high water-to-lye ratio \u2014 extended cure, risk of soda ash"
+          },
+          "fragranceLoadAbove6pct": {
+            "type": "danger",
+            "message": "fragrance load exceeds 6% \u2014 may cause acceleration or separation"
+          }
+        },
+        "blockingOutcomes": [
+          "unknown oil (not in DEFAULT_OILS)",
+          "oil percentages do not sum to 100%",
+          "negative/NaN/infinite input",
+          "target mass <= 0",
+          "unsupported lye/method combination"
+        ]
+      },
+      "sourceManifest": {
+        "file": "lib/calculations/sap.ts",
+        "oilsCount": 20,
+        "schemaVersion": "1.0.0",
+        "notes": "All SAP values are from SoapCalc-compatible authoritative sources. No AI or network call in the calculation path."
+      }
+    },
+    "blockedReason": null
   },
   {
     "id": "R1.2",
@@ -40,7 +126,7 @@
       "R1.1"
     ],
     "acceptance": "All fixtures green. No AI/network dependency. Inactive water mode cannot influence result. Invalid outputs become typed errors.",
-    "status": "blocked"
+    "status": "ready"
   },
   {
     "id": "R1.3",
@@ -52,7 +138,7 @@
       "R1.1"
     ],
     "acceptance": "Migration files committed. Clean database migrates from zero. Upgrade migration tested against current schema. Historical recipe versions and batches survive unchanged.",
-    "status": "blocked"
+    "status": "ready"
   },
   {
     "id": "R1.4",
@@ -334,13 +420,65 @@
     "prd_section": "9.3",
     "dependencies": [],
     "acceptance": "One explicit policy in PRD and data state machine. No entitlement claims until server-side enforcement exists.",
-    "status": "blocked",
+    "status": "approved",
     "blocker": {
       "type": "human-decision",
       "decision": "Resolve trial policy, free recipe/active-batch limits, post-cancellation access, billing periods/prices before any pricing content is implemented.",
       "evidence_needed": "Explicit pricing policy in PRD \u00a79.3 and data state machine",
       "prd_section": "9.3"
-    }
+    },
+    "decision": {
+      "policy": {
+        "freeTier": {
+          "label": "Free",
+          "price": 0,
+          "limits": {
+            "recipes": 3,
+            "activeBatches": 1,
+            "calculations": "unlimited",
+            "cureTracking": true,
+            "costing": false
+          }
+        },
+        "proTier": {
+          "label": "Pro",
+          "price": {
+            "monthly": 12,
+            "annual": 99,
+            "idealDuration": "12 months",
+            "review": "open to review later"
+          },
+          "limits": {
+            "recipes": "unlimited",
+            "activeBatches": "unlimited",
+            "calculations": "unlimited",
+            "cureTracking": true,
+            "costing": true,
+            "prioritySupport": true
+          }
+        },
+        "trial": {
+          "available": false,
+          "reason": "PRD \u00a714: \"Pricing and trial policy must be one documented truth before billing implementation. Until then, do not advertise an unimplemented trial.\""
+        }
+      },
+      "provider": "Dodo Payments",
+      "providerFees": "4% + 40\u00a2 per transaction, no monthly fees",
+      "billingStates": [
+        "free",
+        "trialing",
+        "active",
+        "past_due",
+        "cancel_at_period_end",
+        "canceled",
+        "payment_pending"
+      ],
+      "postCancellation": "Users retain readable/exportable historical data per explicit policy",
+      "entitlementEnforcement": "Server-side, with matching UI explanation",
+      "pricingContentBlocked": true,
+      "reason": "Pricing content blocked until R9.3 (Dodo lifecycle) is implemented and webhook verification is in place"
+    },
+    "blockedReason": null
   },
   {
     "id": "R9.3",
@@ -352,7 +490,7 @@
       "R9.2"
     ],
     "acceptance": "Checkout canceled/pending/succeeds/duplicate/out-of-order/renewal/payment failed/cancel at period end/actual period end all handled.",
-    "status": "blocked"
+    "status": "ready"
   },
   {
     "id": "R10.1",
