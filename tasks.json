@@ -225,7 +225,7 @@
       "R3.1"
     ],
     "acceptance": "Client totals ignored/recomputed. Invalid/blocking recipe not saved. Retry does not create accidental duplicate versions.",
-    "status": "blocked"
+    "status": "ready"
   },
   {
     "id": "R3.3",
@@ -335,7 +335,7 @@
       "R1.3"
     ],
     "acceptance": "Normalized unit calculation tested. Historical records remain addressable.",
-    "status": "ready"
+    "status": "completed"
   },
   {
     "id": "R6.2",
@@ -347,7 +347,7 @@
       "R6.1"
     ],
     "acceptance": "All fixtures green. Missing cost basis remains visible. No zero-cost fallback.",
-    "status": "blocked"
+    "status": "ready"
   },
   {
     "id": "R6.3",
@@ -397,7 +397,7 @@
       "R2.1"
     ],
     "acceptance": "Category filter changes results and URL state. No missing image references. Long-form content renders lists/headings correctly.",
-    "status": "blocked"
+    "status": "ready"
   },
   {
     "id": "R8.2",
