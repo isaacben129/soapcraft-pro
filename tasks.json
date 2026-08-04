@@ -238,7 +238,7 @@
       "R2.3"
     ],
     "acceptance": "End-to-end: new recipe to calculate to save to recipe detail. No alert/console placeholder.",
-    "status": "blocked"
+    "status": "ready"
   },
   {
     "id": "R3.4",
@@ -359,7 +359,7 @@
       "R6.2"
     ],
     "acceptance": "End-to-end: ready batch to yield to select costs to save to dashboard/detail/cost portfolio agree.",
-    "status": "blocked"
+    "status": "ready"
   },
   {
     "id": "R7.1",
@@ -397,7 +397,7 @@
       "R2.1"
     ],
     "acceptance": "Category filter changes results and URL state. No missing image references. Long-form content renders lists/headings correctly.",
-    "status": "ready"
+    "status": "completed"
   },
   {
     "id": "R8.2",
