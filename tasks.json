@@ -275,7 +275,7 @@
       "R4.1"
     ],
     "acceptance": "No demo batch IDs/data. Every section derives from same batch.",
-    "status": "ready"
+    "status": "completed"
   },
   {
     "id": "R4.3",
@@ -287,7 +287,7 @@
       "R4.2"
     ],
     "acceptance": "Making Mode persists through reload. Safety acknowledgement required before start. Completion transaction moves batch to curing.",
-    "status": "blocked"
+    "status": "ready"
   },
   {
     "id": "R4.4",
