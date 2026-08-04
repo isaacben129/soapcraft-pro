@@ -225,7 +225,7 @@
       "R3.1"
     ],
     "acceptance": "Client totals ignored/recomputed. Invalid/blocking recipe not saved. Retry does not create accidental duplicate versions.",
-    "status": "ready"
+    "status": "completed"
   },
   {
     "id": "R3.3",
