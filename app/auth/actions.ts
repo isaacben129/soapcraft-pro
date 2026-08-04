@@ -7,7 +7,11 @@ import { hashPassword } from "@/lib/auth";
 import { signIn } from "next-auth/react";
 
 function isDatabaseConfigError(error: unknown) {
-  return error instanceof Error && error.message.includes("DATABASE_URL");
+  return (
+    error instanceof Error &&
+    (error.message.includes("DATABASE_URL") ||
+      error.message.includes("POSTGRES_URL"))
+  );
 }
 
 // ── Signup ──
@@ -62,7 +66,7 @@ export async function signUp(prevState: any, formData: FormData) {
     if (isDatabaseConfigError(err)) {
       return {
         error:
-          "Database is not configured. Add DATABASE_URL to .env.local and restart the dev server.",
+          "Database is not configured. Pull Vercel env vars or add DATABASE_URL/POSTGRES_URL to .env.local, then restart the dev server.",
       };
     }
 
@@ -92,7 +96,7 @@ export async function resetPassword(prevState: any, formData: FormData) {
     if (isDatabaseConfigError(err)) {
       return {
         error:
-          "Database is not configured. Add DATABASE_URL to .env.local and restart the dev server.",
+          "Database is not configured. Pull Vercel env vars or add DATABASE_URL/POSTGRES_URL to .env.local, then restart the dev server.",
       };
     }
 

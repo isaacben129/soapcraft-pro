@@ -5,9 +5,11 @@ import { pgTable, serial, text, real, integer, timestamp, jsonb, varchar } from 
 
 // --- Database connection (lazy, initialized on first use) ---
 function createDb() {
-  const databaseUrl = process.env.DATABASE_URL;
+  const databaseUrl = process.env.DATABASE_URL ?? process.env.POSTGRES_URL;
   if (!databaseUrl) {
-    throw new Error("DATABASE_URL is required before using the database");
+    throw new Error(
+      "DATABASE_URL or POSTGRES_URL is required before using the database"
+    );
   }
 
   return drizzle(neon(databaseUrl));

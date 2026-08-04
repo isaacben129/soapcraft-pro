@@ -60,10 +60,11 @@ export const authOptions: NextAuthOptions = {
         } catch (error) {
           if (
             error instanceof Error &&
-            error.message.includes("DATABASE_URL")
+            (error.message.includes("DATABASE_URL") ||
+              error.message.includes("POSTGRES_URL"))
           ) {
             console.error(
-              "Login database config error: add DATABASE_URL to .env.local and restart the dev server."
+              "Login database config error: pull Vercel env vars or add DATABASE_URL/POSTGRES_URL to .env.local and restart the dev server."
             );
             return null;
           }
