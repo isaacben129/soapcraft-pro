@@ -198,7 +198,7 @@
       "R2.2"
     ],
     "acceptance": "All states exercised. Keyboard/focus behavior verified. No generic card primitive becomes default content container.",
-    "status": "ready"
+    "status": "completed"
   },
   {
     "id": "R3.1",
