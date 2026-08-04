@@ -323,7 +323,7 @@
       "R5.1"
     ],
     "acceptance": "End-to-end: curing batch to observation to dashboard updates to mark ready to yield request.",
-    "status": "ready"
+    "status": "completed"
   },
   {
     "id": "R6.1",
@@ -373,7 +373,7 @@
       "R6.3"
     ],
     "acceptance": "Deterministic priority tests. No cross-user aggregation. Bounded query counts/performance.",
-    "status": "blocked"
+    "status": "ready"
   },
   {
     "id": "R7.2",
