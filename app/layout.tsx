@@ -21,7 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <header className="sticky top-0 z-50 w-full border-b bg-background">
             <div className="container mx-auto flex h-16 items-center justify-between px-4">
               <a href="/" className="flex items-center gap-2 font-display font-bold tracking-tight">
-                <span className="text-xl">🧼</span>
+                <span className="text-xl">◆</span>
                 <span>SoapCraft Pro</span>
               </a>
               <nav className="flex items-center gap-1 text-sm" aria-label="Workflow navigation">
