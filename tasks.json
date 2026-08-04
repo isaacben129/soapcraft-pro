@@ -347,7 +347,7 @@
       "R6.1"
     ],
     "acceptance": "All fixtures green. Missing cost basis remains visible. No zero-cost fallback.",
-    "status": "ready"
+    "status": "completed"
   },
   {
     "id": "R6.3",
