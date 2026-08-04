@@ -126,7 +126,7 @@
       "R1.1"
     ],
     "acceptance": "All fixtures green. No AI/network dependency. Inactive water mode cannot influence result. Invalid outputs become typed errors.",
-    "status": "ready"
+    "status": "completed"
   },
   {
     "id": "R1.3",
@@ -138,7 +138,7 @@
       "R1.1"
     ],
     "acceptance": "Migration files committed. Clean database migrates from zero. Upgrade migration tested against current schema. Historical recipe versions and batches survive unchanged.",
-    "status": "ready"
+    "status": "completed"
   },
   {
     "id": "R1.4",
@@ -490,7 +490,7 @@
       "R9.2"
     ],
     "acceptance": "Checkout canceled/pending/succeeds/duplicate/out-of-order/renewal/payment failed/cancel at period end/actual period end all handled.",
-    "status": "ready"
+    "status": "completed"
   },
   {
     "id": "R10.1",
