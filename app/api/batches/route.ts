@@ -102,7 +102,7 @@ export async function POST(req: NextRequest) {
       versionId,
       userId: session.user.id,
       name: batchName.trim(),
-      plannedOilWeight: version.oilBlend.reduce((sum, o) => {
+      plannedOilWeight: version.oilBlend.reduce((sum: number, o: { percent: number }) => {
         // We don't have the target weight here, so we store the blend ratios
         // The actual weight will be set when the batch is started
         return sum;

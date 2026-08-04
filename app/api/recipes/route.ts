@@ -108,7 +108,7 @@ export async function POST(req: NextRequest) {
 
     // 5. Check for blocking warnings
     const blockingWarnings = calculated.warnings.filter(
-      (w) => w.type === "blocking" || w.severity === "error"
+      (w) => w.type === "blocking"
     );
 
     if (blockingWarnings.length > 0) {

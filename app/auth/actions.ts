@@ -150,7 +150,7 @@ export async function resetPasswordRequest(prevState: any, formData: FormData) {
 
 // ── Password Reset Completion ──
 
-export async function resetPasswordComplete(
+export async function resetPassword(
   prevState: any,
   formData: FormData
 ) {
@@ -249,3 +249,7 @@ export async function handleSessionExpired() {
 
   revalidatePath("/");
 }
+
+
+// Alias for backward compatibility
+export const resetPasswordComplete = resetPassword;

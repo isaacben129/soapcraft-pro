@@ -39,7 +39,7 @@ export async function GET(req: NextRequest) {
     }));
 
     // If user is authenticated, also include their private ingredients
-    let userIngredients = [];
+    const userIngredients: { id: string; name: string; costPerUnit: number; unit: string; source: string; sapRevision: string; notes: string | null; createdBy: string; createdAt: Date }[] = [];
     if (session?.user?.id) {
       const [user] = await db
         .select()
