@@ -49,12 +49,27 @@ export const authOptions: NextAuthOptions = {
 
         const email = credentials.email.toLowerCase().trim();
 
-        // Look up user in database
-        const result = await db
-          .select()
-          .from(users)
-          .where(eq(users.email, email))
-          .limit(1);
+        let result;
+        try {
+          // Look up user in database
+          result = await db
+            .select()
+            .from(users)
+            .where(eq(users.email, email))
+            .limit(1);
+        } catch (error) {
+          if (
+            error instanceof Error &&
+            error.message.includes("DATABASE_URL")
+          ) {
+            console.error(
+              "Login database config error: add DATABASE_URL to .env.local and restart the dev server."
+            );
+            return null;
+          }
+
+          throw error;
+        }
 
         const user = result[0];
         if (!user) {
@@ -104,5 +119,4 @@ export const authOptions: NextAuthOptions = {
     signIn: "/auth/login",
   },
   secret: process.env.NEXTAUTH_SECRET ?? "soapcraft-pro-dev-secret-change-me",
-  trustHost: true,
 };

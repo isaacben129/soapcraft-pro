@@ -1,4 +1,4 @@
-import { calculateFormulation, DEFAULT_OILS } from "@/lib/calculations/sap";
+import { calculateFormulation } from "@/lib/calculations/sap";
 
 const features = [
   {
@@ -59,11 +59,17 @@ const workflow = [
 ];
 
 export default function HomePage() {
-  const demoResult = calculateFormulation(
-    DEFAULT_OILS.filter((o) => ["olive-oil", "coconut-oil", "shea-butter"].includes(o.id)),
-    { oliveOil: 60, coconutOil: 30, sheaButter: 10 },
-    { superfat: 5, lyeType: "NaOH", waterMode: "concentration", concentration: 33, batchSize: 1000, batchUnit: "g" }
-  );
+  const demoResult = calculateFormulation({
+    oilBlend: [
+      { oilId: "olive-oil", percent: 60 },
+      { oilId: "coconut-oil", percent: 30 },
+      { oilId: "shea-butter", percent: 10 },
+    ],
+    superfatPercent: 5,
+    lyeConcentrationPercent: 33,
+    waterToLyeRatio: 2.03,
+    fragranceLoadPercent: 3,
+  });
 
   return (
     <main className="flex flex-col min-h-screen">
@@ -117,12 +123,12 @@ export default function HomePage() {
                   <div className="text-sm text-muted-foreground mt-1">Water</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-foreground">{demoResult.fragranceLoad.toFixed(1)}%</div>
+                  <div className="text-2xl font-bold text-foreground">{demoResult.fragranceLoad.toFixed(0)}g</div>
                   <div className="text-sm text-muted-foreground mt-1">Fragrance</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-foreground">{demoResult.sapValue.toFixed(2)}</div>
-                  <div className="text-sm text-muted-foreground mt-1">SAP Value</div>
+                  <div className="text-2xl font-bold text-foreground">{demoResult.totalWeight.toFixed(0)}g</div>
+                  <div className="text-sm text-muted-foreground mt-1">Total Weight</div>
                 </div>
               </div>
             </div>

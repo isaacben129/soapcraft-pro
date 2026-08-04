@@ -6,6 +6,10 @@ import { eq } from "drizzle-orm";
 import { hashPassword } from "@/lib/auth";
 import { signIn } from "next-auth/react";
 
+function isDatabaseConfigError(error: unknown) {
+  return error instanceof Error && error.message.includes("DATABASE_URL");
+}
+
 // ── Signup ──
 
 export async function signUp(prevState: any, formData: FormData) {
@@ -27,22 +31,22 @@ export async function signUp(prevState: any, formData: FormData) {
     return { error: "Passwords do not match." };
   }
 
-  // Check if user already exists
-  const existing = await db
-    .select()
-    .from(users)
-    .where(eq(users.email, email))
-    .limit(1);
-
-  if (existing.length > 0) {
-    return { error: "An account with this email already exists." };
-  }
-
-  // Hash password and create user
-  const passwordHash = hashPassword(password);
-  const userId = crypto.randomUUID();
-
   try {
+    // Check if user already exists
+    const existing = await db
+      .select()
+      .from(users)
+      .where(eq(users.email, email))
+      .limit(1);
+
+    if (existing.length > 0) {
+      return { error: "An account with this email already exists." };
+    }
+
+    // Hash password and create user
+    const passwordHash = hashPassword(password);
+    const userId = crypto.randomUUID();
+
     await db.insert(users).values({
       id: userId,
       email,
@@ -55,6 +59,13 @@ export async function signUp(prevState: any, formData: FormData) {
 
     return { success: "Account created! Welcome to SoapCraft Pro." };
   } catch (err) {
+    if (isDatabaseConfigError(err)) {
+      return {
+        error:
+          "Database is not configured. Add DATABASE_URL to .env.local and restart the dev server.",
+      };
+    }
+
     console.error("Signup error:", err);
     return { error: "Something went wrong. Please try again." };
   }
@@ -69,12 +80,25 @@ export async function resetPassword(prevState: any, formData: FormData) {
     return { error: "Please enter your email address." };
   }
 
-  // Check if user exists
-  const existing = await db
-    .select()
-    .from(users)
-    .where(eq(users.email, email))
-    .limit(1);
+  let existing;
+  try {
+    // Check if user exists
+    existing = await db
+      .select()
+      .from(users)
+      .where(eq(users.email, email))
+      .limit(1);
+  } catch (err) {
+    if (isDatabaseConfigError(err)) {
+      return {
+        error:
+          "Database is not configured. Add DATABASE_URL to .env.local and restart the dev server.",
+      };
+    }
+
+    console.error("Password reset error:", err);
+    return { error: "Something went wrong. Please try again." };
+  }
 
   // Always return success to prevent email enumeration
   if (existing.length === 0) {

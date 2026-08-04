@@ -118,7 +118,7 @@ export function RecipeIntelligence() {
         }));
 
         // Ensure total is 100%
-        let total = oilPercents.reduce((sum, oil) => sum + oil.percent, 0);
+        const total = oilPercents.reduce((sum, oil) => sum + oil.percent, 0);
         if (total !== 100 && oilPercents.length > 0) {
           oilPercents[0].percent += (100 - total);
         }

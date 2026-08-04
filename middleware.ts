@@ -1,6 +1,7 @@
 import { withAuth } from "next-auth/middleware";
 
 export default withAuth({
+  secret: process.env.NEXTAUTH_SECRET ?? "soapcraft-pro-dev-secret-change-me",
   callbacks: {
     authorized({ token, req }) {
       const { pathname } = req.nextUrl;

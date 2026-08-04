@@ -7,7 +7,13 @@ import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { Check } from "lucide-react";
 
-async function getCurrentTier() {
+type SubscriptionTier = "free" | "pro";
+
+function normalizeTier(tier: unknown): SubscriptionTier {
+  return tier === "pro" ? "pro" : "free";
+}
+
+async function getCurrentTier(): Promise<SubscriptionTier> {
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.email) {
@@ -20,7 +26,7 @@ async function getCurrentTier() {
     .where(eq(users.email, session.user.email))
     .limit(1);
 
-  return (user?.subscriptionTier as string) || "free";
+  return normalizeTier(user?.subscriptionTier);
 }
 
 export const metadata = {
