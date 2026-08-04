@@ -186,7 +186,7 @@
       "R2.1"
     ],
     "acceptance": "Browser computed styles confirm intended non-transparent fills. Contrast checks pass. No pure-white-on-white default. Old semantic classes either work or are replaced systematically.",
-    "status": "ready"
+    "status": "completed"
   },
   {
     "id": "R2.3",
@@ -198,7 +198,7 @@
       "R2.2"
     ],
     "acceptance": "All states exercised. Keyboard/focus behavior verified. No generic card primitive becomes default content container.",
-    "status": "blocked"
+    "status": "ready"
   },
   {
     "id": "R3.1",
