@@ -373,7 +373,7 @@
       "R6.3"
     ],
     "acceptance": "Deterministic priority tests. No cross-user aggregation. Bounded query counts/performance.",
-    "status": "ready"
+    "status": "completed"
   },
   {
     "id": "R7.2",
@@ -385,7 +385,7 @@
       "R7.1"
     ],
     "acceptance": "Populated, partial, empty, loading, and error states. Desktop and mobile approved screenshots. Every row exposes parent/context and one next action.",
-    "status": "blocked"
+    "status": "ready"
   },
   {
     "id": "R8.1",
