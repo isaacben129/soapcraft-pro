@@ -505,7 +505,7 @@
       "R6.3"
     ],
     "acceptance": "All lifecycle transitions instrumented. No PII in analytics payloads.",
-    "status": "ready"
+    "status": "completed"
   },
   {
     "id": "R10.6",
@@ -520,6 +520,6 @@
       "R10.1"
     ],
     "acceptance": "Clean user can complete full lifecycle. Second user cannot access any first-user records by guessing URLs or IDs.",
-    "status": "blocked"
+    "status": "ready"
   }
 ]
