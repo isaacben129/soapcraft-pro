@@ -263,7 +263,7 @@
       "R1.4"
     ],
     "acceptance": "Later recipe edit does not alter batch plan. Unsaved recipe draft cannot start batch. Cross-user version ID denied.",
-    "status": "ready"
+    "status": "completed"
   },
   {
     "id": "R4.2",
@@ -275,7 +275,7 @@
       "R4.1"
     ],
     "acceptance": "No demo batch IDs/data. Every section derives from same batch.",
-    "status": "blocked"
+    "status": "ready"
   },
   {
     "id": "R4.3",
