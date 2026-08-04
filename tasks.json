@@ -238,7 +238,7 @@
       "R2.3"
     ],
     "acceptance": "End-to-end: new recipe to calculate to save to recipe detail. No alert/console placeholder.",
-    "status": "ready"
+    "status": "completed"
   },
   {
     "id": "R3.4",
