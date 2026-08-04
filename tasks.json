@@ -250,7 +250,7 @@
       "R3.3"
     ],
     "acceptance": "Editing creates N+1, never mutates N. Archived recipe preserves batch history. Curated templates clearly separated.",
-    "status": "ready"
+    "status": "completed"
   },
   {
     "id": "R4.1",
@@ -263,7 +263,7 @@
       "R1.4"
     ],
     "acceptance": "Later recipe edit does not alter batch plan. Unsaved recipe draft cannot start batch. Cross-user version ID denied.",
-    "status": "blocked"
+    "status": "ready"
   },
   {
     "id": "R4.2",
