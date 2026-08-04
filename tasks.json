@@ -174,7 +174,7 @@
       "R1.5"
     ],
     "acceptance": "No duplicate header/footer. /marketing is not broken Home destination. Public pages never render app navigation. Authenticated root redirects to dashboard.",
-    "status": "ready"
+    "status": "completed"
   },
   {
     "id": "R2.2",
@@ -186,7 +186,7 @@
       "R2.1"
     ],
     "acceptance": "Browser computed styles confirm intended non-transparent fills. Contrast checks pass. No pure-white-on-white default. Old semantic classes either work or are replaced systematically.",
-    "status": "blocked"
+    "status": "ready"
   },
   {
     "id": "R2.3",
