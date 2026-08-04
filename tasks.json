@@ -299,7 +299,7 @@
       "R4.3"
     ],
     "acceptance": "End-to-end: batch to checklist to making to enter actual to reload to same state/time to complete to curing.",
-    "status": "ready"
+    "status": "completed"
   },
   {
     "id": "R5.1",
@@ -311,7 +311,7 @@
       "R4.4"
     ],
     "acceptance": "Demo route removed. User can correct observation. Ready transition requires explicit user action. Language/tests never treat elapsed time as safety certification.",
-    "status": "blocked"
+    "status": "ready"
   },
   {
     "id": "R5.2",
