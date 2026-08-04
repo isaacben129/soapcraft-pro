@@ -7,16 +7,20 @@ export default withAuth({
       const { pathname } = req.nextUrl;
 
       // Public routes — always accessible
-      const publicPaths = [
+      const publicRoutes = new Set([
         "/",
         "/marketing",
         "/auth/login",
         "/auth/signup",
         "/auth/reset-password",
         "/api/auth",
-      ];
+      ]);
+      const publicPrefixes = ["/marketing/", "/api/auth/"];
 
-      if (publicPaths.some((p) => pathname.startsWith(p))) {
+      if (
+        publicRoutes.has(pathname) ||
+        publicPrefixes.some((prefix) => pathname.startsWith(prefix))
+      ) {
         return true;
       }
 

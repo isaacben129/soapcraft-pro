@@ -7,13 +7,13 @@ import Link from "next/link";
 import { resetPassword } from "@/app/auth/actions";
 
 export default function ResetPasswordPage() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
   const [state, formAction] = useActionState(resetPassword, { error: "" });
 
   useEffect(() => {
     if (status === "authenticated") {
-      router.replace("/");
+      router.replace("/dashboard");
     }
   }, [status, router]);
 

@@ -1,4 +1,7 @@
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
 import { calculateFormulation } from "@/lib/calculations/sap";
+import { authOptions } from "@/lib/auth";
 
 const features = [
   {
@@ -58,7 +61,13 @@ const workflow = [
   },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const session = await getServerSession(authOptions);
+
+  if (session) {
+    redirect("/dashboard");
+  }
+
   const demoResult = calculateFormulation({
     oilBlend: [
       { oilId: "olive-oil", percent: 60 },
@@ -169,7 +178,7 @@ export default function HomePage() {
               handoffs.
             </p>
             <div className="mt-12 space-y-8">
-              {workflow.map((step, index) => (
+              {workflow.map((step) => (
                 <div key={step.step} className="flex gap-6 items-start">
                   <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center">
                     <span className="font-display font-bold text-primary text-lg">{step.step}</span>

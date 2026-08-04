@@ -4,7 +4,6 @@ import { db } from "@/lib/db/index";
 import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { hashPassword } from "@/lib/auth";
-import { signIn } from "next-auth/react";
 
 function isDatabaseConfigError(error: unknown) {
   return (
@@ -57,9 +56,6 @@ export async function signUp(prevState: any, formData: FormData) {
       name: name || undefined,
       passwordHash,
     });
-
-    // Auto sign in after signup
-    await signIn("credentials", { email, password, redirect: false });
 
     return { success: "Account created! Welcome to SoapCraft Pro." };
   } catch (err) {
