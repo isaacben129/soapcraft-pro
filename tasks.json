@@ -250,7 +250,7 @@
       "R3.3"
     ],
     "acceptance": "Editing creates N+1, never mutates N. Archived recipe preserves batch history. Curated templates clearly separated.",
-    "status": "blocked"
+    "status": "ready"
   },
   {
     "id": "R4.1",
@@ -359,7 +359,7 @@
       "R6.2"
     ],
     "acceptance": "End-to-end: ready batch to yield to select costs to save to dashboard/detail/cost portfolio agree.",
-    "status": "ready"
+    "status": "completed"
   },
   {
     "id": "R7.1",
