@@ -1,5 +1,20 @@
 [
   {
+    "id": "R0.2",
+    "title": "Restore reproducible validation",
+    "type": "infrastructure",
+    "description": "Make the existing project verifiable before feature work. Establish expected package manager/lockfile, install dependencies, run lint/typecheck/test/build, record existing failures.",
+    "prd_section": "R0",
+    "dependencies": [],
+    "acceptance": "lint: green, typecheck: green, test: green, build: green",
+    "status": "in_progress",
+    "blocker": {
+      "type": "infrastructure",
+      "issue": "npm install fails in WSL due to ENOTEMPTY errors on stale temp dirs and slow network. Vercel CI will handle dependency resolution on push.",
+      "workaround": "Push code to GitHub and let Vercel CI run npm ci + build + test. Local validation deferred until WSL environment is fixed."
+    }
+  },
+  {
     "id": "R1.1",
     "title": "Freeze calculation contract and source manifest",
     "type": "human/domain-review gate",
@@ -7,7 +22,13 @@
     "prd_section": "8",
     "dependencies": [],
     "acceptance": "Named approver signs version-controlled contract. No implementation begins until approval is recorded.",
-    "status": "blocked"
+    "status": "blocked",
+    "blocker": {
+      "type": "human/domain-approval",
+      "decision": "Named product/domain owner must approve the calculation contract covering: supported methods, alkalis, dual-lye semantics, water modes, purity behavior, source citations, numeric boundaries, planned-vs-actual variance thresholds, and warning/blocking outcomes.",
+      "evidence_needed": "Version-controlled contract signed by named approver in PRD \u00a78",
+      "prd_section": "8"
+    }
   },
   {
     "id": "R1.2",
@@ -15,7 +36,9 @@
     "type": "implementation",
     "description": "RED tests for scaling, unit conversion, lye types, water modes, superfat, purity, invalid/boundary values, rounding separation, known fixtures. Then implement one typed engine contract used by server and client.",
     "prd_section": "8",
-    "dependencies": ["R1.1"],
+    "dependencies": [
+      "R1.1"
+    ],
     "acceptance": "All fixtures green. No AI/network dependency. Inactive water mode cannot influence result. Invalid outputs become typed errors.",
     "status": "blocked"
   },
@@ -25,7 +48,9 @@
     "type": "implementation",
     "description": "Add user ownership, immutable recipe versions, batch planned snapshot plus normalized actuals, Making Session, cure observations, ingredient cost records, batch cost revisions, activity events, subscription projection, archive fields. Use additive nullable columns, backfill, then enforce constraints.",
     "prd_section": "6",
-    "dependencies": ["R1.1"],
+    "dependencies": [
+      "R1.1"
+    ],
     "acceptance": "Migration files committed. Clean database migrates from zero. Upgrade migration tested against current schema. Historical recipe versions and batches survive unchanged.",
     "status": "blocked"
   },
@@ -35,7 +60,9 @@
     "type": "implementation",
     "description": "Reusable server helpers: require session user, load owned recipe/version, load owned batch through userId, verify child ownership through parent, curated read policy.",
     "prd_section": "6",
-    "dependencies": ["R1.3"],
+    "dependencies": [
+      "R1.3"
+    ],
     "acceptance": "Unauthenticated denied. User A cannot access User B records. List queries scoped to current user. Client-provided owner IDs ignored.",
     "status": "blocked"
   },
@@ -45,7 +72,9 @@
     "type": "implementation",
     "description": "Production secret validation, signup to session to intended route, logout, real reset token/email/completion, callback URL validation, session-expired recovery.",
     "prd_section": "4",
-    "dependencies": ["R1.3"],
+    "dependencies": [
+      "R1.3"
+    ],
     "acceptance": "No hard-coded production secret fallback. Password reset success means token was issued. No email enumeration. Dashboard protected server-side.",
     "status": "blocked"
   },
@@ -55,7 +84,9 @@
     "type": "implementation",
     "description": "Root document owns html/body only. Marketing shell, auth shell, app shell with rail/command bar/mobile nav. Canonical /pricing, /blog, /blog/[slug]. Redirects from old /marketing/** paths.",
     "prd_section": "7",
-    "dependencies": ["R1.5"],
+    "dependencies": [
+      "R1.5"
+    ],
     "acceptance": "No duplicate header/footer. /marketing is not broken Home destination. Public pages never render app navigation. Authenticated root redirects to dashboard.",
     "status": "blocked"
   },
@@ -65,7 +96,9 @@
     "type": "implementation",
     "description": "Map --color-* tokens through Tailwind v4 theme system. Introduce rail/canvas/ledger/sheet/clay/sage/brass semantics. Radius/elevation/type tokens. Numeric mono/tabular utility.",
     "prd_section": "3",
-    "dependencies": ["R2.1"],
+    "dependencies": [
+      "R2.1"
+    ],
     "acceptance": "Browser computed styles confirm intended non-transparent fills. Contrast checks pass. No pure-white-on-white default. Old semantic classes either work or are replaced systematically.",
     "status": "blocked"
   },
@@ -75,7 +108,9 @@
     "type": "implementation",
     "description": "AppRail, MobileNav, CommandBar, LedgerRow, ObjectHeader/Breadcrumbs, StatusLabel, MeasurementCell/PlanActualCell, SaveIndicator, AttentionRow, ActivityRow, structured EmptyState, field/blocking error summary.",
     "prd_section": "3",
-    "dependencies": ["R2.2"],
+    "dependencies": [
+      "R2.2"
+    ],
     "acceptance": "All states exercised. Keyboard/focus behavior verified. No generic card primitive becomes default content container.",
     "status": "blocked"
   },
@@ -85,7 +120,10 @@
     "type": "implementation",
     "description": "Seed sourced system ingredients. Expose user-scoped/system catalogue query. Surface source/SAP revision. Unknown/missing SAP blocks calculation.",
     "prd_section": "5",
-    "dependencies": ["R1.3", "R1.2"],
+    "dependencies": [
+      "R1.3",
+      "R1.2"
+    ],
     "acceptance": "Builder uses database/catalogue contract or one canonical shared dataset. Unknown/missing SAP blocks calculation.",
     "status": "blocked"
   },
@@ -95,7 +133,11 @@
     "type": "implementation",
     "description": "Authenticate, validate ownership/input, run authoritative calculation server-side, create Recipe + Version 1 atomically, persist calculation/dataset version and warnings, append activity event.",
     "prd_section": "5",
-    "dependencies": ["R1.2", "R1.4", "R3.1"],
+    "dependencies": [
+      "R1.2",
+      "R1.4",
+      "R3.1"
+    ],
     "acceptance": "Client totals ignored/recomputed. Invalid/blocking recipe not saved. Retry does not create accidental duplicate versions.",
     "status": "blocked"
   },
@@ -105,7 +147,10 @@
     "type": "implementation",
     "description": "Approved split desktop/staged mobile design. Identity, target mass/unit, oil table, one active water mode, calculation panel, warnings, truthful save states, Save recipe, View recipe/Start batch continuation.",
     "prd_section": "5",
-    "dependencies": ["R3.2", "R2.3"],
+    "dependencies": [
+      "R3.2",
+      "R2.3"
+    ],
     "acceptance": "End-to-end: new recipe to calculate to save to recipe detail. No alert/console placeholder.",
     "status": "blocked"
   },
@@ -115,7 +160,9 @@
     "type": "implementation",
     "description": "User-scoped recipe list/search/filter/sort, recipe detail, version history/diff, create new version, duplicate/archive, batches section initially valid empty state.",
     "prd_section": "5",
-    "dependencies": ["R3.3"],
+    "dependencies": [
+      "R3.3"
+    ],
     "acceptance": "Editing creates N+1, never mutates N. Archived recipe preserves batch history. Curated templates clearly separated.",
     "status": "blocked"
   },
@@ -125,7 +172,10 @@
     "type": "implementation",
     "description": "Select exact version, copy planned measurement snapshot, create user-owned batch, activity event, dashboard/list visibility.",
     "prd_section": "6",
-    "dependencies": ["R3.4", "R1.4"],
+    "dependencies": [
+      "R3.4",
+      "R1.4"
+    ],
     "acceptance": "Later recipe edit does not alter batch plan. Unsaved recipe draft cannot start batch. Cross-user version ID denied.",
     "status": "blocked"
   },
@@ -135,7 +185,9 @@
     "type": "implementation",
     "description": "List/filter/status/next action, minimal dashboard active-pipeline query/rows for current batches, /batches/[id] with Overview, Making record, Cure, Cost, Notes/history sections.",
     "prd_section": "6",
-    "dependencies": ["R4.1"],
+    "dependencies": [
+      "R4.1"
+    ],
     "acceptance": "No demo batch IDs/data. Every section derives from same batch.",
     "status": "blocked"
   },
@@ -145,7 +197,9 @@
     "type": "implementation",
     "description": "RED tests for checklist gate, ordered completion, skip reason, timer start/pause/resume/reconstruction, reload resume, completion transaction to curing, abandon path, idempotent/retried writes. Implement server contract before UI.",
     "prd_section": "6",
-    "dependencies": ["R4.2"],
+    "dependencies": [
+      "R4.2"
+    ],
     "acceptance": "Making Mode persists through reload. Safety acknowledgement required before start. Completion transaction moves batch to curing.",
     "status": "blocked"
   },
@@ -155,7 +209,9 @@
     "type": "implementation",
     "description": "Desktop/mobile design with one active step, planned/actual values, persistent timer, safety context, save indicator, complete/skip controls, final review.",
     "prd_section": "6",
-    "dependencies": ["R4.3"],
+    "dependencies": [
+      "R4.3"
+    ],
     "acceptance": "End-to-end: batch to checklist to making to enter actual to reload to same state/time to complete to curing.",
     "status": "blocked"
   },
@@ -165,7 +221,9 @@
     "type": "implementation",
     "description": "Create/read/update/delete observations with ownership. Computed day from observedAt/cureStartedAt. Structured text/numeric fields. Completion/ready transition. Activity events.",
     "prd_section": "7",
-    "dependencies": ["R4.4"],
+    "dependencies": [
+      "R4.4"
+    ],
     "acceptance": "Demo route removed. User can correct observation. Ready transition requires explicit user action. Language/tests never treat elapsed time as safety certification.",
     "status": "blocked"
   },
@@ -175,7 +233,9 @@
     "type": "implementation",
     "description": "Due/overdue/curing/estimated-window-reached/completed groups, observation sheet, timeline/trends, next observation date, Mark ready.",
     "prd_section": "7",
-    "dependencies": ["R5.1"],
+    "dependencies": [
+      "R5.1"
+    ],
     "acceptance": "End-to-end: curing batch to observation to dashboard updates to mark ready to yield request.",
     "status": "blocked"
   },
@@ -185,7 +245,9 @@
     "type": "implementation",
     "description": "Add/edit/archive purchase costs. Unit normalization. Supplier/effective date. User ownership.",
     "prd_section": "9",
-    "dependencies": ["R1.3"],
+    "dependencies": [
+      "R1.3"
+    ],
     "acceptance": "Normalized unit calculation tested. Historical records remain addressable.",
     "status": "blocked"
   },
@@ -195,7 +257,9 @@
     "type": "implementation",
     "description": "RED tests for actual quantities, missing cost basis, final yield zero/missing, total/cost per unit, target margin to suggested price, optional cost categories, historical cost basis/recalculation revisions.",
     "prd_section": "9",
-    "dependencies": ["R6.1"],
+    "dependencies": [
+      "R6.1"
+    ],
     "acceptance": "All fixtures green. Missing cost basis remains visible. No zero-cost fallback.",
     "status": "blocked"
   },
@@ -205,7 +269,9 @@
     "type": "implementation",
     "description": "Inherited line items, cost-basis selectors, yield, target margin, persisted result, incomplete queue, comparison view.",
     "prd_section": "9",
-    "dependencies": ["R6.2"],
+    "dependencies": [
+      "R6.2"
+    ],
     "acceptance": "End-to-end: ready batch to yield to select costs to save to dashboard/detail/cost portfolio agree.",
     "status": "blocked"
   },
@@ -215,7 +281,11 @@
     "type": "implementation",
     "description": "One user-scoped read model for failed save/recovery, active Making Mode, blocking recipes, cure due/overdue, missing yield/cost, active pipeline, recent recipe outcomes, activity events.",
     "prd_section": "9.4",
-    "dependencies": ["R4.4", "R5.2", "R6.3"],
+    "dependencies": [
+      "R4.4",
+      "R5.2",
+      "R6.3"
+    ],
     "acceptance": "Deterministic priority tests. No cross-user aggregation. Bounded query counts/performance.",
     "status": "blocked"
   },
@@ -225,7 +295,9 @@
     "type": "implementation",
     "description": "Replace current five-card directory with Needs attention rows, Active production pipeline, Recent recipes/outcomes, Activity ledger, New command.",
     "prd_section": "9.4",
-    "dependencies": ["R7.1"],
+    "dependencies": [
+      "R7.1"
+    ],
     "acceptance": "Populated, partial, empty, loading, and error states. Desktop and mobile approved screenshots. Every row exposes parent/context and one next action.",
     "status": "blocked"
   },
@@ -235,7 +307,9 @@
     "type": "implementation",
     "description": "Canonical /blog and /blog/[slug]. Featured/latest/category filter. Proper semantic article rendering. Images/alt text. Related articles. Article/Breadcrumb JSON-LD. Redirect old URLs.",
     "prd_section": "9.2",
-    "dependencies": ["R2.1"],
+    "dependencies": [
+      "R2.1"
+    ],
     "acceptance": "Category filter changes results and URL state. No missing image references. Long-form content renders lists/headings correctly.",
     "status": "blocked"
   },
@@ -245,7 +319,10 @@
     "type": "implementation",
     "description": "Approved proof-led design: hero with real composite workflow proof, connected lifecycle artifact, calculation trust, plan vs actual example, featured plus latest blog, pricing/footer.",
     "prd_section": "9.2",
-    "dependencies": ["R8.1", "R7.2"],
+    "dependencies": [
+      "R8.1",
+      "R7.2"
+    ],
     "acceptance": "No four-card feature section. No hero metric tiles. No emoji brand. No false persistent timer/reminder/catalogue/connection claims. Computed semantic fills verified.",
     "status": "blocked"
   },
@@ -257,7 +334,13 @@
     "prd_section": "9.3",
     "dependencies": [],
     "acceptance": "One explicit policy in PRD and data state machine. No entitlement claims until server-side enforcement exists.",
-    "status": "blocked"
+    "status": "blocked",
+    "blocker": {
+      "type": "human-decision",
+      "decision": "Resolve trial policy, free recipe/active-batch limits, post-cancellation access, billing periods/prices before any pricing content is implemented.",
+      "evidence_needed": "Explicit pricing policy in PRD \u00a79.3 and data state machine",
+      "prd_section": "9.3"
+    }
   },
   {
     "id": "R9.3",
@@ -265,7 +348,9 @@
     "type": "implementation",
     "description": "Customer/subscription IDs, checkout session, signed idempotent webhook, state projection, cancel at period end, renewal/past_due/canceled handling, billing UI.",
     "prd_section": "9.3",
-    "dependencies": ["R9.2"],
+    "dependencies": [
+      "R9.2"
+    ],
     "acceptance": "Checkout canceled/pending/succeeds/duplicate/out-of-order/renewal/payment failed/cancel at period end/actual period end all handled.",
     "status": "blocked"
   },
@@ -275,7 +360,12 @@
     "type": "implementation",
     "description": "Implement PRD event names with privacy-safe payloads. Verify dashboards/queries can compute activation and connected completion.",
     "prd_section": "10",
-    "dependencies": ["R3.2", "R4.3", "R5.1", "R6.3"],
+    "dependencies": [
+      "R3.2",
+      "R4.3",
+      "R5.1",
+      "R6.3"
+    ],
     "acceptance": "All lifecycle transitions instrumented. No PII in analytics payloads.",
     "status": "blocked"
   },
@@ -285,7 +375,12 @@
     "type": "verification",
     "description": "Run the 15-step definition of done in product/PRD.md with two accounts and real persisted test records.",
     "prd_section": "11",
-    "dependencies": ["R7.2", "R8.2", "R9.3", "R10.1"],
+    "dependencies": [
+      "R7.2",
+      "R8.2",
+      "R9.3",
+      "R10.1"
+    ],
     "acceptance": "Clean user can complete full lifecycle. Second user cannot access any first-user records by guessing URLs or IDs.",
     "status": "blocked"
   }
