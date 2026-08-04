@@ -150,7 +150,7 @@
       "R1.3"
     ],
     "acceptance": "Unauthenticated denied. User A cannot access User B records. List queries scoped to current user. Client-provided owner IDs ignored.",
-    "status": "ready"
+    "status": "completed"
   },
   {
     "id": "R1.5",
@@ -162,7 +162,7 @@
       "R1.3"
     ],
     "acceptance": "No hard-coded production secret fallback. Password reset success means token was issued. No email enumeration. Dashboard protected server-side.",
-    "status": "ready"
+    "status": "completed"
   },
   {
     "id": "R2.1",
@@ -174,7 +174,7 @@
       "R1.5"
     ],
     "acceptance": "No duplicate header/footer. /marketing is not broken Home destination. Public pages never render app navigation. Authenticated root redirects to dashboard.",
-    "status": "blocked"
+    "status": "ready"
   },
   {
     "id": "R2.2",
@@ -211,7 +211,7 @@
       "R1.2"
     ],
     "acceptance": "Builder uses database/catalogue contract or one canonical shared dataset. Unknown/missing SAP blocks calculation.",
-    "status": "blocked"
+    "status": "ready"
   },
   {
     "id": "R3.2",
@@ -335,7 +335,7 @@
       "R1.3"
     ],
     "acceptance": "Normalized unit calculation tested. Historical records remain addressable.",
-    "status": "blocked"
+    "status": "ready"
   },
   {
     "id": "R6.2",
