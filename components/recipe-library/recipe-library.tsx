@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
-interface Recipe {
+export interface Recipe {
   id: string;
   name: string;
   method: string;
