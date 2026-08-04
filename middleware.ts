@@ -1,21 +1,32 @@
 import { withAuth } from "next-auth/middleware";
+import { NextResponse } from "next/server";
 
 export default withAuth({
-  secret: process.env.NEXTAUTH_SECRET ?? "soapcraft-pro-dev-secret-change-me",
+  secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     authorized({ token, req }) {
       const { pathname } = req.nextUrl;
 
+      // Redirect old /marketing/** paths to canonical routes
+      if (pathname.startsWith("/marketing")) {
+        const canonicalPath = pathname
+          .replace("/marketing", "")
+          .replace(/\/$/, "") || "/";
+        return NextResponse.rewrite(new URL(canonicalPath, req.url));
+      }
+
       // Public routes — always accessible
       const publicRoutes = new Set([
         "/",
-        "/marketing",
+        "/pricing",
+        "/blog",
         "/auth/login",
         "/auth/signup",
         "/auth/reset-password",
         "/api/auth",
+        "/api/webhooks",
       ]);
-      const publicPrefixes = ["/marketing/", "/api/auth/"];
+      const publicPrefixes = ["/blog/", "/api/auth/"];
 
       if (
         publicRoutes.has(pathname) ||
