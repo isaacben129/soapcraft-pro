@@ -150,7 +150,7 @@
       "R1.3"
     ],
     "acceptance": "Unauthenticated denied. User A cannot access User B records. List queries scoped to current user. Client-provided owner IDs ignored.",
-    "status": "blocked"
+    "status": "ready"
   },
   {
     "id": "R1.5",
@@ -162,7 +162,7 @@
       "R1.3"
     ],
     "acceptance": "No hard-coded production secret fallback. Password reset success means token was issued. No email enumeration. Dashboard protected server-side.",
-    "status": "blocked"
+    "status": "ready"
   },
   {
     "id": "R2.1",
