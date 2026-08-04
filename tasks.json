@@ -211,7 +211,7 @@
       "R1.2"
     ],
     "acceptance": "Builder uses database/catalogue contract or one canonical shared dataset. Unknown/missing SAP blocks calculation.",
-    "status": "ready"
+    "status": "completed"
   },
   {
     "id": "R3.2",
