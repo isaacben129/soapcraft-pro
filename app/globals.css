@@ -46,9 +46,31 @@
 
   /* ── Design tokens ── */
   --radius: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
   --shadow-md: 0 2px 8px rgba(0,0,0,0.06);
   --shadow-lg: 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-elevation-1: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-elevation-2: 0 4px 12px rgba(0,0,0,0.10);
+  --shadow-elevation-3: 0 8px 24px rgba(0,0,0,0.12);
+
+  /* ── Semantic surface tokens (rail/canvas/ledger/sheet/clay/sage/brass) ── */
+  --rail: 25 12% 18%;
+  --rail-foreground: 38 8% 92%;
+  --canvas: 0 0% 100%;
+  --canvas-foreground: 25 12% 12%;
+  --ledger: 38 6% 96%;
+  --ledger-foreground: 25 12% 12%;
+  --sheet: 0 0% 100%;
+  --sheet-foreground: 25 12% 12%;
+  --clay: 38 10% 94%;
+  --clay-foreground: 25 12% 12%;
+  --sage: 145 35% 35%;
+  --sage-foreground: 0 0% 98%;
+  --brass: 35 85% 55%;
+  --brass-foreground: 25 12% 12%;
 
   /* ── Spacing scale ── */
   --space-xs: 0.25rem;
@@ -142,3 +164,30 @@ h1, h2, h3, h4, h5, h6 {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ── Numeric mono / tabular utilities ── */
+.font-mono,
+.mono {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Semantic color utilities ── */
+.bg-rail { background-color: hsl(var(--rail)); }
+.text-rail { color: hsl(var(--rail)); }
+.bg-canvas { background-color: hsl(var(--canvas)); }
+.text-canvas { color: hsl(var(--canvas)); }
+.bg-ledger { background-color: hsl(var(--ledger)); }
+.text-ledger { color: hsl(var(--ledger)); }
+.bg-sheet { background-color: hsl(var(--sheet)); }
+.text-sheet { color: hsl(var(--sheet)); }
+.bg-clay { background-color: hsl(var(--clay)); }
+.text-clay { color: hsl(var(--clay)); }
+.bg-sage { background-color: hsl(var(--sage)); }
+.text-sage { color: hsl(var(--sage)); }
+.bg-brass { background-color: hsl(var(--brass)); }
+.text-brass { color: hsl(var(--brass)); }
