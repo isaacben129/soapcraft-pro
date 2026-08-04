@@ -119,5 +119,5 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: "/auth/login",
   },
-  secret: process.env.NEXTAUTH_SECRET ?? "soapcraft-pro-dev-secret-change-me",
+  secret: process.env.NEXTAUTH_SECRET,
 };

@@ -75,6 +75,8 @@ export const users = pgTable("users", {
   subscriptionTier: varchar("subscription_tier", { length: 10 }),
   trialStartsAt: timestamp("trial_starts_at", { withTimezone: true }),
   trialEndsAt: timestamp("trial_ends_at", { withTimezone: true }),
+  resetToken: text("reset_token"),
+  resetTokenExpires: timestamp("reset_token_expires", { withTimezone: true }),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().default(sql`now()`),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().default(sql`now()`),
 });
