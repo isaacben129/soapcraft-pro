@@ -311,7 +311,7 @@
       "R4.4"
     ],
     "acceptance": "Demo route removed. User can correct observation. Ready transition requires explicit user action. Language/tests never treat elapsed time as safety certification.",
-    "status": "ready"
+    "status": "completed"
   },
   {
     "id": "R5.2",
@@ -323,7 +323,7 @@
       "R5.1"
     ],
     "acceptance": "End-to-end: curing batch to observation to dashboard updates to mark ready to yield request.",
-    "status": "blocked"
+    "status": "ready"
   },
   {
     "id": "R6.1",
@@ -505,7 +505,7 @@
       "R6.3"
     ],
     "acceptance": "All lifecycle transitions instrumented. No PII in analytics payloads.",
-    "status": "blocked"
+    "status": "ready"
   },
   {
     "id": "R10.6",
