@@ -32,6 +32,29 @@ export function getBlogPostsByCategory(category: string): BlogPost[] {
   return blogPosts.filter((post) => post.category === category);
 }
 
+// ── Related posts ──────────────────────
+// Returns posts that share at least one tag, excluding the current post.
+
+export function getRelatedPosts(
+  currentSlug: string,
+  limit: number = 3
+): BlogPost[] {
+  const current = blogPosts.find((p) => p.slug === currentSlug);
+  if (!current) return blogPosts.slice(0, limit);
+
+  const currentTags = new Set(current.tags);
+
+  const scored = blogPosts
+    .filter((p) => p.slug !== currentSlug)
+    .map((post) => {
+      const sharedTags = post.tags.filter((t) => currentTags.has(t)).length;
+      return { post, score: sharedTags };
+    })
+    .sort((a, b) => b.score - a.score);
+
+  return scored.slice(0, limit).map((s) => s.post);
+}
+
 export const blogCategories = [
   "Soap Calculators",
   "Soap Recipes",
