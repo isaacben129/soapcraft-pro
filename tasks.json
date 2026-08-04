@@ -1,343 +1,292 @@
-{
-  "project": "SoapCraft Pro",
-  "version": "2.0.0",
-  "created": "2026-08-03",
-  "scope": "v2 — 4-module MVP + Auth + Payments + Marketing Site + Blog + 10x features (Mold Volume Calculator, Recipe Intelligence, Making Mode, Template Recipes)",
-  "waves": [
-    {
-      "id": "wave-1",
-      "name": "Foundation + Auth + Payments",
-      "description": "Auth flow, Dodo Payments, marketing site/app separation, colour palette",
-      "tasks": ["T1", "T2", "T3", "T4"]
-    },
-    {
-      "id": "wave-2",
-      "name": "Core Features + 10x",
-      "description": "Recipe Builder with mold volume, Making Mode, Template Recipes, Batch Log, Cure Tracker, Costing",
-      "tasks": ["T5", "T6", "T7", "T8", "T9", "T10"]
-    },
-    {
-      "id": "wave-3",
-      "name": "Marketing Site + Blog + Polish",
-      "description": "Marketing site pages, blog, SEO, design polish, launch",
-      "tasks": ["T11", "T12", "T13", "T14", "T15"]
-    }
-  ],
-  "tasks": [
-    {
-      "id": "T1",
-      "title": "Auth flow — login, signup, password reset, auth gate",
-      "wave": "wave-1",
-      "status": "planned",
-      "priority": "critical",
-      "dependencies": [],
-      "description": "Email/password auth with session persistence. Auth gate on all app routes. Marketing site is public, app is gated.",
-      "ux": true,
-      "uxFocus": "Clean auth gate, no friction on marketing site",
-      "acceptanceCriteria": [
-        "User can sign up with email + password",
-        "User can log in and access the dashboard",
-        "Password reset email is sent",
-        "Auth gate redirects unauthenticated users to marketing site",
-        "Session persists across page reloads"
-      ],
-      "appLifeSpecRef": "first-use guidance",
-      "tdd": "signup → login → auth gate → session persistence",
-      "designQuality": "impeccable-design skill required"
-    },
-    {
-      "id": "T2",
-      "title": "Dodo Payments integration — subscription management",
-      "wave": "wave-1",
-      "status": "planned",
-      "priority": "critical",
-      "dependencies": ["T1"],
-      "description": "Dodo Payments integration for Free tier and Pro tier ($12/mo or $99/yr). Subscription management page in Account Settings.",
-      "ux": true,
-      "uxFocus": "Seamless upgrade flow, clear tier boundaries",
-      "acceptanceCriteria": [
-        "Free tier: calculator + 3 recipes + 1 active batch",
-        "Pro tier: everything above",
-        "Upgrade via Dodo Payments Checkout",
-        "Subscription management in Account Settings",
-        "Tier gates enforced on all features"
-      ],
-      "appLifeSpecRef": "success feedback — proportionate",
-      "tdd": "free tier works → upgrade CTA → Dodo Payments → Pro tier active",
-      "designQuality": "impeccable-design skill required"
-    },
-    {
-      "id": "T3",
-      "title": "Marketing site — homepage, pricing, blog, SEO",
-      "wave": "wave-3",
-      "status": "planned",
-      "priority": "high",
-      "dependencies": ["T1"],
-      "description": "Public marketing site with homepage, pricing page, blog (programmatic SEO), and auth gate. Separate from the app.",
-      "ux": true,
-      "uxFocus": "Clean marketing page, drives signups, SEO-optimised",
-      "acceptanceCriteria": [
-        "Homepage loads in < 1s with hero, demo, features, workflow, pricing teaser",
-        "Pricing page shows Free and Pro tiers",
-        "Blog with programmatic SEO articles",
-        "Auth gate on app routes",
-        "Marketing site links to app, app links back to marketing site"
-      ],
-      "appLifeSpecRef": "retention surfaces",
-      "tdd": "homepage → pricing → blog → signup → auth gate → app",
-      "designQuality": "impeccable-design skill required"
-    },
-    {
-      "id": "T4",
-      "title": "Colour palette + design tokens applied to all components",
-      "wave": "wave-1",
-      "status": "planned",
-      "priority": "critical",
-      "dependencies": [],
-      "description": "Apply the warm cream + dark charcoal + amber accent colour palette to all components. Semantic colours (success, warning, error, info). No black and white, no generic blue/purple.",
-      "ux": true,
-      "uxFocus": "Warm, distinctive, not generic",
-      "acceptanceCriteria": [
-        "All components use the colour palette tokens",
-        "scan-generic.sh passes (no banned patterns)",
-        "Semantic colours used correctly (success=green, warning=amber, error=terracotta, info=blue-gray)",
-        "No black and white, no generic blue/purple"
-      ],
-      "appLifeSpecRef": "N/A (design quality gate)",
-      "tdd": "N/A (design pass)",
-      "designQuality": "impeccable-design skill required"
-    },
-    {
-      "id": "T5",
-      "title": "Recipe Builder — core form + mold volume calculator",
-      "wave": "wave-2",
-      "status": "planned",
-      "priority": "critical",
-      "dependencies": ["T4"],
-      "description": "Recipe creation form with oil selection, percentage-based blending, SAP calc, lye/water calc, superfat, property ranges, warnings, validation, batch scaling, save to library. PLUS mold volume calculator (enter mold dimensions → calculates oil volumes).",
-      "ux": true,
-      "uxFocus": "Oil selection with SAP values, mold volume calculator, property ranges, warnings panel",
-      "acceptanceCriteria": [
-        "Select oils → set percentages → calculate → see lye, water, fragrance load, property ranges",
-        "Mold volume calculator: enter dimensions → calculates oil volumes",
-        "Save recipe to personal library",
-        "Warnings panel for problematic formulations",
-        "Calculation reveal animation (subtle checkmark per metric)",
-        "scan-generic.sh passes"
-      ],
-      "appLifeSpecRef": "moment of truth",
-      "tdd": "select oils → set percentages → calculate → mold volume → save",
-      "designQuality": "impeccable-design skill required"
-    },
-    {
-      "id": "T6",
-      "title": "Making Mode — guided CP batch production with smart guidance",
-      "wave": "wave-2",
-      "status": "planned",
-      "priority": "high",
-      "dependencies": ["T5"],
-      "description": "Making Mode for Cold Process with guided step-by-step checklist, persistent timers, temperature tracking, and smart guidance (contextual next-step prompts, not just timers).",
-      "ux": true,
-      "uxFocus": "Contextual guidance, not just timers. Smart next-step prompts.",
-      "acceptanceCriteria": [
-        "CP batch gets guided step checklist",
-        "Persistent timers that survive page reloads",
-        "Smart guidance: contextual next-step prompts",
-        "Safety checklist required before starting CP batch",
-        "Making Mode preserves user input on error",
-        "scan-generic.sh passes"
-      ],
-      "appLifeSpecRef": "signature interaction — Making Mode",
-      "tdd": "start batch → guided steps → timers → safety checklist → complete",
-      "designQuality": "impeccable-design skill required"
-    },
-    {
-      "id": "T7",
-      "title": "Template Recipes — pre-built recipes for common soap types",
-      "wave": "wave-2",
-      "status": "planned",
-      "priority": "high",
-      "dependencies": ["T5"],
-      "description": "Pre-built recipes for common soap types (castile, French milled, milk soap, etc.) that users can customize. New soap makers can make their first batch in 2 minutes instead of 30.",
-      "ux": true,
-      "uxFocus": "Quick start for new users, reduce time-to-first-batch",
-      "acceptanceCriteria": [
-        "Template recipes for common soap types (castile, French milled, milk soap)",
-        "Users can customize template recipes",
-        "Customized recipes save to personal library",
-        "First batch can be created from a template in < 2 minutes",
-        "scan-generic.sh passes"
-      ],
-      "appLifeSpecRef": "first-use guidance",
-      "tdd": "browse templates → select → customize → save → create batch",
-      "designQuality": "impeccable-design skill required"
-    },
-    {
-      "id": "T8",
-      "title": "Batch Log + Cure Tracker + Costing (existing features, polished)",
-      "wave": "wave-2",
-      "status": "planned",
-      "priority": "high",
-      "dependencies": ["T5", "T6"],
-      "description": "Existing Batch Log, Cure Tracker, and Costing features polished with the new colour palette, unified navigation, and coherent interfaces between modules.",
-      "ux": true,
-      "uxFocus": "Coherent interfaces between modules, unified navigation",
-      "acceptanceCriteria": [
-        "Batch Log auto-populates from recipe",
-        "Cure Tracker shows estimated windows (not declarations)",
-        "Costing shows real-time cost per batch + per bar + target price",
-        "Unified navigation shows workflow progression",
-        "scan-generic.sh passes"
-      ],
-      "appLifeSpecRef": "empty state handling, success feedback",
-      "tdd": "create batch → log → cure → cost → complete",
-      "designQuality": "impeccable-design skill required"
-    },
-    {
-      "id": "T9",
-      "title": "Recipe Intelligence — AI-powered oil suggestions",
-      "wave": "wave-2",
-      "status": "planned",
-      "priority": "medium",
-      "dependencies": ["T5"],
-      "description": "AI-powered recipe suggestions based on user goals. 'You want a hard bar with creamy lather — try 60% olive, 30% coconut, 10% shea.' Deterministic calc is the authority; AI explains and recommends only.",
-      "ux": true,
-      "uxFocus": "Contextual suggestions, not overrides. AI explains, calc decides.",
-      "acceptanceCriteria": [
-        "AI suggests oil blends based on user goals",
-        "Suggestions are explanations, not overrides",
-        "User can accept or reject suggestions",
-        "Deterministic calc is always the authority",
-        "scan-generic.sh passes"
-      ],
-      "appLifeSpecRef": "deterministic trust",
-      "tdd": "user sets goal → AI suggests → user accepts/rejects → calc verifies",
-      "designQuality": "impeccable-design skill required"
-    },
-    {
-      "id": "T10",
-      "title": "Account Settings + Subscription Management page",
-      "wave": "wave-3",
-      "status": "planned",
-      "priority": "medium",
-      "dependencies": ["T1", "T2"],
-      "description": "Account Settings page with profile management, subscription details, payment methods, and account deletion. Subscription management page with upgrade/downgrade actions.",
-      "ux": true,
-      "uxFocus": "Clear subscription management, easy upgrade/downgrade",
-      "acceptanceCriteria": [
-        "User can update profile email and name",
-        "User can view current subscription tier and billing cycle",
-        "User can add/remove payment methods",
-        "User can cancel subscription",
-        "User can delete account",
-        "scan-generic.sh passes"
-      ],
-      "appLifeSpecRef": "empty state handling",
-      "tdd": "view settings → update profile → manage subscription → cancel/delete",
-      "designQuality": "impeccable-design skill required"
-    },
-    {
-      "id": "T11",
-      "title": "Blog — programmatic SEO articles",
-      "wave": "wave-3",
-      "status": "planned",
-      "priority": "high",
-      "dependencies": ["T3"],
-      "description": "Blog with programmatic SEO articles targeting soap-making queries. Content pillars: Soap Calculators, Soap Recipes, Soap Making Guides, Troubleshooting. Each article is a standalone SEO asset with internal links to the app.",
-      "ux": true,
-      "uxFocus": "SEO-optimised content, drives organic traffic to marketing site",
-      "acceptanceCriteria": [
-        "Blog accessible from marketing site",
-        "SEO articles for all 4 content pillars",
-        "Internal links to the app from blog articles",
-        "Programmatic oil-specific calculator pages",
-        "scan-generic.sh passes"
-      ],
-      "appLifeSpecRef": "retention surfaces",
-      "tdd": "blog homepage → article → internal link → signup → app",
-      "designQuality": "impeccable-design skill required"
-    },
-    {
-      "id": "T12",
-      "title": "Pricing page — Free vs Pro tier details",
-      "wave": "wave-3",
-      "status": "planned",
-      "priority": "high",
-      "dependencies": ["T3"],
-      "description": "Dedicated pricing page with Free tier and Pro tier details, comparison table, and upgrade CTA. SEO-optimised for 'soap making software' queries.",
-      "ux": true,
-      "uxFocus": "Clear tier comparison, easy upgrade",
-      "acceptanceCriteria": [
-        "Pricing page shows Free and Pro tier details",
-        "Comparison table highlights Pro-only features",
-        "Upgrade CTA leads to Dodo Payments Checkout",
-        "SEO-optimised for 'soap making software' queries",
-        "scan-generic.sh passes"
-      ],
-      "appLifeSpecRef": "success feedback — proportionate",
-      "tdd": "view pricing → compare tiers → upgrade → Dodo Payments → Pro active",
-      "designQuality": "impeccable-design skill required"
-    },
-    {
-      "id": "T13",
-      "title": "Unified navigation — workflow progression (not flat links)",
-      "wave": "wave-2",
-      "status": "planned",
-      "priority": "high",
-      "dependencies": ["T5", "T6", "T7", "T8"],
-      "description": "Navigation shows workflow progression (Recipes → Batches → Cure → Costing) with visual separators. Not a flat list of links — a coherent product flow.",
-      "ux": true,
-      "uxFocus": "Workflow progression, not flat links",
-      "acceptanceCriteria": [
-        "Navigation shows Recipe → Batch → Cure → Cost progression",
-        "Visual separators between workflow stages",
-        "Current workflow stage is highlighted",
-        "No flat list of links",
-        "scan-generic.sh passes"
-      ],
-      "appLifeSpecRef": "core loop",
-      "tdd": "navigate recipes → batches → cure → costing → back",
-      "designQuality": "impeccable-design skill required"
-    },
-    {
-      "id": "T14",
-      "title": "Design quality pass — scan-generic.sh on all components",
-      "wave": "wave-3",
-      "status": "planned",
-      "priority": "critical",
-      "dependencies": ["T4", "T5", "T6", "T7", "T8", "T9", "T10", "T11", "T12", "T13"],
-      "description": "Run scan-generic.sh from impeccable-design skill on all PRs. Fix any banned patterns detected.",
-      "ux": true,
-      "uxFocus": "Anti-generic pass — all hard bans from impeccable-design skill",
-      "acceptanceCriteria": [
-        "scan-generic.sh passes on all PRs",
-        "No banned patterns detected",
-        "Visual audit complete — no generic-looking UI elements"
-      ],
-      "appLifeSpecRef": "N/A (design quality gate)",
-      "tdd": "N/A (automated scan)",
-      "designQuality": "impeccable-design skill required"
-    },
-    {
-      "id": "T15",
-      "title": "Launch checklist — monitoring, SEO, community seeding",
-      "wave": "wave-3",
-      "status": "planned",
-      "priority": "medium",
-      "dependencies": ["T10", "T11", "T12", "T13", "T14"],
-      "description": "Post-launch instrumentation, error tracking, performance monitoring. SEO content (10 pages). Community seeding (r/soapmaking, SoapCalc, Soapmaking Forum).",
-      "ux": false,
-      "uxFocus": null,
-      "acceptanceCriteria": [
-        "Post-launch instrumentation events deployed",
-        "Error tracking and performance monitoring active",
-        "SEO content live: 10 pages across 4 pillars",
-        "Community seeding in progress",
-        "Pro trial active"
-      ],
-      "appLifeSpecRef": "goal metric tracking",
-      "tdd": "N/A (launch checklist)",
-      "designQuality": "impeccable-design skill required"
-    }
-  ]
-}
+[
+  {
+    "id": "R1.1",
+    "title": "Freeze calculation contract and source manifest",
+    "type": "human/domain-review gate",
+    "description": "Product/domain owner must approve: supported methods, alkalis, dual-lye semantics, water modes, purity behavior, source citations, numeric boundaries, planned-vs-actual variance thresholds, and warning/blocking outcomes.",
+    "prd_section": "8",
+    "dependencies": [],
+    "acceptance": "Named approver signs version-controlled contract. No implementation begins until approval is recorded.",
+    "status": "blocked"
+  },
+  {
+    "id": "R1.2",
+    "title": "Rebuild deterministic calculation tests and engine",
+    "type": "implementation",
+    "description": "RED tests for scaling, unit conversion, lye types, water modes, superfat, purity, invalid/boundary values, rounding separation, known fixtures. Then implement one typed engine contract used by server and client.",
+    "prd_section": "8",
+    "dependencies": ["R1.1"],
+    "acceptance": "All fixtures green. No AI/network dependency. Inactive water mode cannot influence result. Invalid outputs become typed errors.",
+    "status": "blocked"
+  },
+  {
+    "id": "R1.3",
+    "title": "Correct relational model and migrations",
+    "type": "implementation",
+    "description": "Add user ownership, immutable recipe versions, batch planned snapshot plus normalized actuals, Making Session, cure observations, ingredient cost records, batch cost revisions, activity events, subscription projection, archive fields. Use additive nullable columns, backfill, then enforce constraints.",
+    "prd_section": "6",
+    "dependencies": ["R1.1"],
+    "acceptance": "Migration files committed. Clean database migrates from zero. Upgrade migration tested against current schema. Historical recipe versions and batches survive unchanged.",
+    "status": "blocked"
+  },
+  {
+    "id": "R1.4",
+    "title": "Centralize authenticated ownership guards",
+    "type": "implementation",
+    "description": "Reusable server helpers: require session user, load owned recipe/version, load owned batch through userId, verify child ownership through parent, curated read policy.",
+    "prd_section": "6",
+    "dependencies": ["R1.3"],
+    "acceptance": "Unauthenticated denied. User A cannot access User B records. List queries scoped to current user. Client-provided owner IDs ignored.",
+    "status": "blocked"
+  },
+  {
+    "id": "R1.5",
+    "title": "Finish authentication lifecycle",
+    "type": "implementation",
+    "description": "Production secret validation, signup to session to intended route, logout, real reset token/email/completion, callback URL validation, session-expired recovery.",
+    "prd_section": "4",
+    "dependencies": ["R1.3"],
+    "acceptance": "No hard-coded production secret fallback. Password reset success means token was issued. No email enumeration. Dashboard protected server-side.",
+    "status": "blocked"
+  },
+  {
+    "id": "R2.1",
+    "title": "Create route groups and three shells",
+    "type": "implementation",
+    "description": "Root document owns html/body only. Marketing shell, auth shell, app shell with rail/command bar/mobile nav. Canonical /pricing, /blog, /blog/[slug]. Redirects from old /marketing/** paths.",
+    "prd_section": "7",
+    "dependencies": ["R1.5"],
+    "acceptance": "No duplicate header/footer. /marketing is not broken Home destination. Public pages never render app navigation. Authenticated root redirects to dashboard.",
+    "status": "blocked"
+  },
+  {
+    "id": "R2.2",
+    "title": "Implement Tailwind v4 semantic theme mapping",
+    "type": "implementation",
+    "description": "Map --color-* tokens through Tailwind v4 theme system. Introduce rail/canvas/ledger/sheet/clay/sage/brass semantics. Radius/elevation/type tokens. Numeric mono/tabular utility.",
+    "prd_section": "3",
+    "dependencies": ["R2.1"],
+    "acceptance": "Browser computed styles confirm intended non-transparent fills. Contrast checks pass. No pure-white-on-white default. Old semantic classes either work or are replaced systematically.",
+    "status": "blocked"
+  },
+  {
+    "id": "R2.3",
+    "title": "Build shared operational primitives",
+    "type": "implementation",
+    "description": "AppRail, MobileNav, CommandBar, LedgerRow, ObjectHeader/Breadcrumbs, StatusLabel, MeasurementCell/PlanActualCell, SaveIndicator, AttentionRow, ActivityRow, structured EmptyState, field/blocking error summary.",
+    "prd_section": "3",
+    "dependencies": ["R2.2"],
+    "acceptance": "All states exercised. Keyboard/focus behavior verified. No generic card primitive becomes default content container.",
+    "status": "blocked"
+  },
+  {
+    "id": "R3.1",
+    "title": "Ingredient catalogue read model",
+    "type": "implementation",
+    "description": "Seed sourced system ingredients. Expose user-scoped/system catalogue query. Surface source/SAP revision. Unknown/missing SAP blocks calculation.",
+    "prd_section": "5",
+    "dependencies": ["R1.3", "R1.2"],
+    "acceptance": "Builder uses database/catalogue contract or one canonical shared dataset. Unknown/missing SAP blocks calculation.",
+    "status": "blocked"
+  },
+  {
+    "id": "R3.2",
+    "title": "Recipe create API/server action",
+    "type": "implementation",
+    "description": "Authenticate, validate ownership/input, run authoritative calculation server-side, create Recipe + Version 1 atomically, persist calculation/dataset version and warnings, append activity event.",
+    "prd_section": "5",
+    "dependencies": ["R1.2", "R1.4", "R3.1"],
+    "acceptance": "Client totals ignored/recomputed. Invalid/blocking recipe not saved. Retry does not create accidental duplicate versions.",
+    "status": "blocked"
+  },
+  {
+    "id": "R3.3",
+    "title": "Recipe Builder UX",
+    "type": "implementation",
+    "description": "Approved split desktop/staged mobile design. Identity, target mass/unit, oil table, one active water mode, calculation panel, warnings, truthful save states, Save recipe, View recipe/Start batch continuation.",
+    "prd_section": "5",
+    "dependencies": ["R3.2", "R2.3"],
+    "acceptance": "End-to-end: new recipe to calculate to save to recipe detail. No alert/console placeholder.",
+    "status": "blocked"
+  },
+  {
+    "id": "R3.4",
+    "title": "Recipe portfolio and detail/versioning",
+    "type": "implementation",
+    "description": "User-scoped recipe list/search/filter/sort, recipe detail, version history/diff, create new version, duplicate/archive, batches section initially valid empty state.",
+    "prd_section": "5",
+    "dependencies": ["R3.3"],
+    "acceptance": "Editing creates N+1, never mutates N. Archived recipe preserves batch history. Curated templates clearly separated.",
+    "status": "blocked"
+  },
+  {
+    "id": "R4.1",
+    "title": "Batch creation from recipe version",
+    "type": "implementation",
+    "description": "Select exact version, copy planned measurement snapshot, create user-owned batch, activity event, dashboard/list visibility.",
+    "prd_section": "6",
+    "dependencies": ["R3.4", "R1.4"],
+    "acceptance": "Later recipe edit does not alter batch plan. Unsaved recipe draft cannot start batch. Cross-user version ID denied.",
+    "status": "blocked"
+  },
+  {
+    "id": "R4.2",
+    "title": "Batch portfolio, minimal dashboard pipeline, and central detail",
+    "type": "implementation",
+    "description": "List/filter/status/next action, minimal dashboard active-pipeline query/rows for current batches, /batches/[id] with Overview, Making record, Cure, Cost, Notes/history sections.",
+    "prd_section": "6",
+    "dependencies": ["R4.1"],
+    "acceptance": "No demo batch IDs/data. Every section derives from same batch.",
+    "status": "blocked"
+  },
+  {
+    "id": "R4.3",
+    "title": "Making state machine and persistence",
+    "type": "implementation",
+    "description": "RED tests for checklist gate, ordered completion, skip reason, timer start/pause/resume/reconstruction, reload resume, completion transaction to curing, abandon path, idempotent/retried writes. Implement server contract before UI.",
+    "prd_section": "6",
+    "dependencies": ["R4.2"],
+    "acceptance": "Making Mode persists through reload. Safety acknowledgement required before start. Completion transaction moves batch to curing.",
+    "status": "blocked"
+  },
+  {
+    "id": "R4.4",
+    "title": "Making Mode UX",
+    "type": "implementation",
+    "description": "Desktop/mobile design with one active step, planned/actual values, persistent timer, safety context, save indicator, complete/skip controls, final review.",
+    "prd_section": "6",
+    "dependencies": ["R4.3"],
+    "acceptance": "End-to-end: batch to checklist to making to enter actual to reload to same state/time to complete to curing.",
+    "status": "blocked"
+  },
+  {
+    "id": "R5.1",
+    "title": "Cure observation API and state",
+    "type": "implementation",
+    "description": "Create/read/update/delete observations with ownership. Computed day from observedAt/cureStartedAt. Structured text/numeric fields. Completion/ready transition. Activity events.",
+    "prd_section": "7",
+    "dependencies": ["R4.4"],
+    "acceptance": "Demo route removed. User can correct observation. Ready transition requires explicit user action. Language/tests never treat elapsed time as safety certification.",
+    "status": "blocked"
+  },
+  {
+    "id": "R5.2",
+    "title": "Cure portfolio and batch cure UX",
+    "type": "implementation",
+    "description": "Due/overdue/curing/estimated-window-reached/completed groups, observation sheet, timeline/trends, next observation date, Mark ready.",
+    "prd_section": "7",
+    "dependencies": ["R5.1"],
+    "acceptance": "End-to-end: curing batch to observation to dashboard updates to mark ready to yield request.",
+    "status": "blocked"
+  },
+  {
+    "id": "R6.1",
+    "title": "Ingredient cost records",
+    "type": "implementation",
+    "description": "Add/edit/archive purchase costs. Unit normalization. Supplier/effective date. User ownership.",
+    "prd_section": "9",
+    "dependencies": ["R1.3"],
+    "acceptance": "Normalized unit calculation tested. Historical records remain addressable.",
+    "status": "blocked"
+  },
+  {
+    "id": "R6.2",
+    "title": "Batch cost calculation contract",
+    "type": "implementation",
+    "description": "RED tests for actual quantities, missing cost basis, final yield zero/missing, total/cost per unit, target margin to suggested price, optional cost categories, historical cost basis/recalculation revisions.",
+    "prd_section": "9",
+    "dependencies": ["R6.1"],
+    "acceptance": "All fixtures green. Missing cost basis remains visible. No zero-cost fallback.",
+    "status": "blocked"
+  },
+  {
+    "id": "R6.3",
+    "title": "Batch cost UX and cost portfolio",
+    "type": "implementation",
+    "description": "Inherited line items, cost-basis selectors, yield, target margin, persisted result, incomplete queue, comparison view.",
+    "prd_section": "9",
+    "dependencies": ["R6.2"],
+    "acceptance": "End-to-end: ready batch to yield to select costs to save to dashboard/detail/cost portfolio agree.",
+    "status": "blocked"
+  },
+  {
+    "id": "R7.1",
+    "title": "Dashboard query and attention derivation",
+    "type": "implementation",
+    "description": "One user-scoped read model for failed save/recovery, active Making Mode, blocking recipes, cure due/overdue, missing yield/cost, active pipeline, recent recipe outcomes, activity events.",
+    "prd_section": "9.4",
+    "dependencies": ["R4.4", "R5.2", "R6.3"],
+    "acceptance": "Deterministic priority tests. No cross-user aggregation. Bounded query counts/performance.",
+    "status": "blocked"
+  },
+  {
+    "id": "R7.2",
+    "title": "Dashboard UX",
+    "type": "implementation",
+    "description": "Replace current five-card directory with Needs attention rows, Active production pipeline, Recent recipes/outcomes, Activity ledger, New command.",
+    "prd_section": "9.4",
+    "dependencies": ["R7.1"],
+    "acceptance": "Populated, partial, empty, loading, and error states. Desktop and mobile approved screenshots. Every row exposes parent/context and one next action.",
+    "status": "blocked"
+  },
+  {
+    "id": "R8.1",
+    "title": "Blog content contract and routes",
+    "type": "implementation",
+    "description": "Canonical /blog and /blog/[slug]. Featured/latest/category filter. Proper semantic article rendering. Images/alt text. Related articles. Article/Breadcrumb JSON-LD. Redirect old URLs.",
+    "prd_section": "9.2",
+    "dependencies": ["R2.1"],
+    "acceptance": "Category filter changes results and URL state. No missing image references. Long-form content renders lists/headings correctly.",
+    "status": "blocked"
+  },
+  {
+    "id": "R8.2",
+    "title": "Homepage redesign",
+    "type": "implementation",
+    "description": "Approved proof-led design: hero with real composite workflow proof, connected lifecycle artifact, calculation trust, plan vs actual example, featured plus latest blog, pricing/footer.",
+    "prd_section": "9.2",
+    "dependencies": ["R8.1", "R7.2"],
+    "acceptance": "No four-card feature section. No hero metric tiles. No emoji brand. No false persistent timer/reminder/catalogue/connection claims. Computed semantic fills verified.",
+    "status": "blocked"
+  },
+  {
+    "id": "R9.2",
+    "title": "Decide pricing/trial/limits (product decision)",
+    "type": "human decision",
+    "description": "Resolve trial policy, free recipe/active-batch limits, post-cancellation access, billing periods/prices before any pricing content is implemented.",
+    "prd_section": "9.3",
+    "dependencies": [],
+    "acceptance": "One explicit policy in PRD and data state machine. No entitlement claims until server-side enforcement exists.",
+    "status": "blocked"
+  },
+  {
+    "id": "R9.3",
+    "title": "Dodo lifecycle implementation",
+    "type": "implementation",
+    "description": "Customer/subscription IDs, checkout session, signed idempotent webhook, state projection, cancel at period end, renewal/past_due/canceled handling, billing UI.",
+    "prd_section": "9.3",
+    "dependencies": ["R9.2"],
+    "acceptance": "Checkout canceled/pending/succeeds/duplicate/out-of-order/renewal/payment failed/cancel at period end/actual period end all handled.",
+    "status": "blocked"
+  },
+  {
+    "id": "R10.1",
+    "title": "Analytics wrapper and lifecycle events",
+    "type": "implementation",
+    "description": "Implement PRD event names with privacy-safe payloads. Verify dashboards/queries can compute activation and connected completion.",
+    "prd_section": "10",
+    "dependencies": ["R3.2", "R4.3", "R5.1", "R6.3"],
+    "acceptance": "All lifecycle transitions instrumented. No PII in analytics payloads.",
+    "status": "blocked"
+  },
+  {
+    "id": "R10.6",
+    "title": "Final end-to-end gate",
+    "type": "verification",
+    "description": "Run the 15-step definition of done in product/PRD.md with two accounts and real persisted test records.",
+    "prd_section": "11",
+    "dependencies": ["R7.2", "R8.2", "R9.3", "R10.1"],
+    "acceptance": "Clean user can complete full lifecycle. Second user cannot access any first-user records by guessing URLs or IDs.",
+    "status": "blocked"
+  }
+]
