@@ -385,7 +385,7 @@
       "R7.1"
     ],
     "acceptance": "Populated, partial, empty, loading, and error states. Desktop and mobile approved screenshots. Every row exposes parent/context and one next action.",
-    "status": "ready"
+    "status": "completed"
   },
   {
     "id": "R8.1",
@@ -410,7 +410,7 @@
       "R7.2"
     ],
     "acceptance": "No four-card feature section. No hero metric tiles. No emoji brand. No false persistent timer/reminder/catalogue/connection claims. Computed semantic fills verified.",
-    "status": "blocked"
+    "status": "ready"
   },
   {
     "id": "R9.2",
