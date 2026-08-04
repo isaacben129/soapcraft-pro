@@ -287,7 +287,7 @@
       "R4.2"
     ],
     "acceptance": "Making Mode persists through reload. Safety acknowledgement required before start. Completion transaction moves batch to curing.",
-    "status": "ready"
+    "status": "completed"
   },
   {
     "id": "R4.4",
@@ -299,7 +299,7 @@
       "R4.3"
     ],
     "acceptance": "End-to-end: batch to checklist to making to enter actual to reload to same state/time to complete to curing.",
-    "status": "blocked"
+    "status": "ready"
   },
   {
     "id": "R5.1",
