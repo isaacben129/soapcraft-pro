@@ -67,7 +67,6 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
   return (
     <div className="w-full max-w-md space-y-6">
       <div className="text-center">
-        <span className="text-4xl mb-4 block">ðŸ§¼</span>
         <h1 className="font-display text-2xl font-bold tracking-tight text-foreground">
           Welcome back
         </h1>
@@ -114,7 +113,7 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
             id="password"
             name="password"
             type="password"
-            placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+            placeholder="Enter your password"
             required
             autoComplete="current-password"
             className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"

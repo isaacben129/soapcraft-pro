@@ -20,7 +20,7 @@ export default function ResetPasswordPage() {
   if (status === "loading") {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="text-muted-foreground text-sm">Loading…</div>
+        <div className="text-muted-foreground text-sm">Loading...</div>
       </div>
     );
   }
@@ -28,7 +28,6 @@ export default function ResetPasswordPage() {
   return (
     <div className="w-full max-w-md space-y-6">
       <div className="text-center">
-        <span className="text-4xl mb-4 block">🔑</span>
         <h1 className="font-display text-2xl font-bold tracking-tight text-foreground">
           Reset your password
         </h1>

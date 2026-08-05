@@ -5,6 +5,10 @@ import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { randomBytes, scryptSync, timingSafeEqual } from "crypto";
 
+function logCredentialFailure(reason: string) {
+  console.warn(`Credentials sign-in rejected: ${reason}`);
+}
+
 // ── Password hashing (uses Node.js built-in crypto — no extra dependency) ──
 
 export function hashPassword(password: string): string {
@@ -21,6 +25,7 @@ export function verifyPassword(
   if (!salt || !keyHex) return false;
   const derivedKey = scryptSync(password, salt, 64);
   const storedKey = Buffer.from(keyHex, "hex");
+  if (storedKey.length !== derivedKey.length) return false;
   return timingSafeEqual(derivedKey, storedKey);
 }
 
@@ -44,6 +49,7 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
+          logCredentialFailure("missing_email_or_password");
           return null;
         }
 
@@ -64,26 +70,30 @@ export const authOptions: NextAuthOptions = {
               error.message.includes("POSTGRES_URL"))
           ) {
             console.error(
-              "Login database config error: pull Vercel env vars or add DATABASE_URL/POSTGRES_URL to .env.local and restart the dev server."
+              "Credentials sign-in database config error: add DATABASE_URL or POSTGRES_URL to the Vercel Production environment and redeploy."
             );
-            return null;
+            throw error;
           }
 
+          console.error("Credentials sign-in database lookup failed:", error);
           throw error;
         }
 
         const user = result[0];
         if (!user) {
+          logCredentialFailure("no_matching_user");
           return null;
         }
 
         // Verify password hash
         if (!user.passwordHash) {
+          logCredentialFailure("missing_password_hash");
           return null;
         }
 
         const isValid = verifyPassword(credentials.password, user.passwordHash);
         if (!isValid) {
+          logCredentialFailure("invalid_password");
           return null;
         }
 
