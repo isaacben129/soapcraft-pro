@@ -5,44 +5,63 @@
   --font-sans: "DM Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-serif: "Playfair Display", Georgia, "Times New Roman", serif;
 
-  /* ── Color palette: warm cream + dark charcoal + amber accent ── */
-  /* Base */
-  --background: 38 12% 97%;
-  --foreground: 25 12% 12%;
-  --muted: 38 8% 94%;
-  --muted-foreground: 30 8% 48%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 25 12% 12%;
-  --card: 0 0% 100%;
-  --card-foreground: 25 12% 12%;
-  --border: 30 10% 88%;
-  --input: 30 10% 88%;
+  /* ── Color palette: craft ledger — warm cream, umber charcoal, amber-brown ── */
+  /* Mapped from DESIGN.md §4.2 — values are HSL components for hsl() reconstruction */
 
-  /* Brand — grounded, craft-oriented, not generic blue */
-  --primary: 25 60% 35%;
-  --primary-foreground: 0 0% 98%;
+  /* Base surfaces */
+  --background: 40 7% 90%;
+  --foreground: 25 12% 12%;
+  --muted: 30 10% 90%;
+  --muted-foreground: 30 8% 35%;
+  --popover: 38 18% 96%;
+  --popover-foreground: 25 12% 12%;
+  --card: 38 18% 96%;
+  --card-foreground: 25 12% 12%;
+  --border: 30 8% 75%;
+  --input: 30 8% 75%;
+
+  /* Brand — grounded, craft-oriented amber-brown, not generic blue */
+  --primary: 25 55% 35%;
+  --primary-foreground: 38 100% 98%;
   --secondary: 38 12% 94%;
   --secondary-foreground: 25 12% 12%;
-  --accent: 30 90% 50%;
-  --accent-foreground: 0 0% 98%;
-  --accent-hover: 30 80% 44%;
+  --accent: 40 30% 75%;
+  --accent-foreground: 25 12% 12%;
+  --accent-hover: 25 55% 28%;
 
   /* Semantic */
-  --success: 145 45% 40%;
-  --success-foreground: 0 0% 98%;
-  --warning: 38 90% 50%;
+  --success: 145 30% 30%;
+  --success-foreground: 38 100% 98%;
+  --warning: 38 65% 35%;
   --warning-foreground: 25 12% 12%;
-  --destructive: 5 65% 55%;
-  --destructive-foreground: 0 0% 98%;
-  --info: 210 30% 55%;
-  --info-foreground: 0 0% 98%;
+  --destructive: 5 45% 40%;
+  --destructive-foreground: 38 100% 98%;
+  --info: 195 35% 35%;
+  --info-foreground: 38 100% 98%;
 
-  /* Ring */
-  --ring: 25 60% 35%;
+  /* Ring / focus */
+  --ring: 210 65% 50%;
 
-  /* Surface tints */
-  --surface-warm: 38 10% 95%;
-  --surface-cool: 210 10% 96%;
+  /* ── DESIGN.md §4.2 color tokens (hex originals, stored as HSL components) ── */
+  --color-canvas: 40 7% 90%;
+  --color-sheet: 38 18% 96%;
+  --color-ledger: 30 10% 90%;
+  --color-rail: 25 12% 13%;
+  --color-rail-muted: 30 8% 65%;
+  --color-ink: 25 12% 12%;
+  --color-ink-muted: 30 8% 35%;
+  --color-rule: 30 8% 75%;
+  --color-action: 25 55% 35%;
+  --color-action-hover: 25 55% 28%;
+  --color-action-text: 38 100% 98%;
+  --color-clay: 25 25% 85%;
+  --color-sage: 80 12% 80%;
+  --color-brass: 40 30% 75%;
+  --color-info: 195 35% 35%;
+  --color-success: 145 30% 30%;
+  --color-warning: 38 65% 35%;
+  --color-danger: 5 45% 40%;
+  --color-focus: 210 65% 50%;
 
   /* ── Design tokens ── */
   --radius: 0.5rem;
@@ -57,19 +76,20 @@
   --shadow-elevation-3: 0 8px 24px rgba(0,0,0,0.12);
 
   /* ── Semantic surface tokens (rail/canvas/ledger/sheet/clay/sage/brass) ── */
-  --rail: 25 12% 18%;
-  --rail-foreground: 38 8% 92%;
-  --canvas: 0 0% 100%;
+  /* Aligned to DESIGN.md §4.1 surface architecture */
+  --rail: 25 12% 13%;
+  --rail-foreground: 30 8% 65%;
+  --canvas: 40 7% 90%;
   --canvas-foreground: 25 12% 12%;
-  --ledger: 38 6% 96%;
+  --ledger: 30 10% 90%;
   --ledger-foreground: 25 12% 12%;
-  --sheet: 0 0% 100%;
+  --sheet: 38 18% 96%;
   --sheet-foreground: 25 12% 12%;
-  --clay: 38 10% 94%;
+  --clay: 25 25% 85%;
   --clay-foreground: 25 12% 12%;
-  --sage: 145 35% 35%;
-  --sage-foreground: 0 0% 98%;
-  --brass: 35 85% 55%;
+  --sage: 80 12% 80%;
+  --sage-foreground: 25 12% 12%;
+  --brass: 40 30% 75%;
   --brass-foreground: 25 12% 12%;
 
   /* ── Spacing scale ── */

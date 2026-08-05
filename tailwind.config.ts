@@ -1,4 +1,7 @@
-import { type Config } from "tailwindcss";
+// ── Tailwind v4 theme mapping ──
+// DESIGN.md §4.2 color tokens mapped through the Tailwind theme system.
+// Semantic surface tokens (rail/canvas/ledger/sheet/clay/sage/brass)
+// provide the craft-ledger visual identity.
 
 const config: Config = {
   content: [
@@ -12,15 +15,16 @@ const config: Config = {
         sans: ["var(--font-sans)", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
         serif: ["var(--font-serif)", "Georgia", "Times New Roman", "serif"],
         display: ["var(--font-serif)", "Georgia", "serif"],
+        mono: ["ui-monospace", "SFMono-Regular", "SF Mono", "Menlo", "Consolas", "monospace"],
       },
       borderRadius: {
         lg: "var(--radius-lg)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
-      // Semantic color tokens mapped through Tailwind v4 theme system
+      // ── Base palette (mapped from DESIGN.md §4.2) ──
       colors: {
-        // Base palette
+        // Base surfaces
         background: { DEFAULT: "hsl(var(--background))", foreground: "hsl(var(--foreground))" },
         foreground: "hsl(var(--foreground))",
         muted: { DEFAULT: "hsl(var(--muted))", foreground: "hsl(var(--muted-foreground))" },
@@ -29,14 +33,26 @@ const config: Config = {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
+
+        // Brand — craft-oriented amber-brown, not generic blue
         primary: { DEFAULT: "hsl(var(--primary))", foreground: "hsl(var(--primary-foreground))" },
         secondary: { DEFAULT: "hsl(var(--secondary))", foreground: "hsl(var(--secondary-foreground))" },
-        destructive: { DEFAULT: "hsl(var(--destructive))", foreground: "hsl(var(--destructive-foreground))" },
+        accent: { DEFAULT: "hsl(var(--accent))", foreground: "hsl(var(--accent-foreground))" },
+
+        // Semantic fills
         success: { DEFAULT: "hsl(var(--success))", foreground: "hsl(var(--success-foreground))" },
         warning: { DEFAULT: "hsl(var(--warning))", foreground: "hsl(var(--warning-foreground))" },
+        destructive: { DEFAULT: "hsl(var(--destructive))", foreground: "hsl(var(--destructive-foreground))" },
         info: { DEFAULT: "hsl(var(--info))", foreground: "hsl(var(--info-foreground))" },
-        accent: { DEFAULT: "hsl(var(--accent))", foreground: "hsl(var(--accent-foreground))" },
+
+        // DESIGN.md §4.2 named tokens
+        ink: { DEFAULT: "hsl(var(--color-ink))", muted: "hsl(var(--color-ink-muted))" },
+        action: { DEFAULT: "hsl(var(--color-action))", hover: "hsl(var(--color-action-hover))", text: "hsl(var(--color-action-text))" },
+        rule: "hsl(var(--color-rule))",
+        focus: "hsl(var(--color-focus))",
+
         // Semantic surface tokens (rail/canvas/ledger/sheet/clay/sage/brass)
+        // Aligned to DESIGN.md §4.1 surface architecture
         rail: { DEFAULT: "hsl(var(--rail))", foreground: "hsl(var(--rail-foreground))" },
         canvas: { DEFAULT: "hsl(var(--canvas))", foreground: "hsl(var(--canvas-foreground))" },
         ledger: { DEFAULT: "hsl(var(--ledger))", foreground: "hsl(var(--ledger-foreground))" },

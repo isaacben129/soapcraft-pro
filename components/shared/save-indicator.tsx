@@ -3,6 +3,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Loader2, Check, XCircle } from "lucide-react";
 
 type SaveState = "idle" | "saving" | "saved" | "error";
 
@@ -29,13 +30,15 @@ export function SaveIndicator({ state, lastSaved }: SaveIndicatorProps) {
   }, [state]);
 
   const config = {
-    idle: { text: "", icon: "" },
-    saving: { text: "Saving...", icon: "⟳" },
-    saved: { text: lastSaved ? `Saved ${lastSaved.toLocaleTimeString()}` : "Saved", icon: "✓" },
-    error: { text: "Save failed", icon: "✕" },
+    idle: { text: "", icon: null },
+    saving: { text: "Saving...", icon: Loader2 },
+    saved: { text: lastSaved ? `Saved ${lastSaved.toLocaleTimeString()}` : "Saved", icon: Check },
+    error: { text: "Save failed", icon: XCircle },
   };
 
   if (!visible) return null;
+
+  const Icon = config[state].icon;
 
   return (
     <span
@@ -43,11 +46,11 @@ export function SaveIndicator({ state, lastSaved }: SaveIndicatorProps) {
         state === "error" ? "text-destructive" : "text-muted-foreground"
       }`}
     >
-      <span
-        className={`inline-block ${state === "saving" ? "animate-spin" : ""}`}
-      >
-        {config[state].icon}
-      </span>
+      {Icon && (
+        <span className={`inline-block ${state === "saving" ? "animate-spin" : ""}`}>
+          <Icon className="h-3 w-3" />
+        </span>
+      )}
       {config[state].text}
     </span>
   );
