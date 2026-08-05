@@ -20,7 +20,7 @@ export function pageMetadata(args: {
       type,
       url,
       siteName: "SoapCraft Pro",
-      ...(image ? { images: [{ url: image, alt: title }] : {}),
+      ...(image ? { images: [{ url: image, alt: title }] } : {}),
     },
     twitter: {
       card: "summary_large_image",
