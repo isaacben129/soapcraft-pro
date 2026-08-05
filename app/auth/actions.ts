@@ -7,7 +7,7 @@ import { hashPassword } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
-import { randomBytes, scryptSync, timingSafeEqual } from "crypto";
+import { randomBytes } from "crypto";
 
 function isDatabaseConfigError(error: unknown) {
   return (
@@ -41,7 +41,7 @@ export async function signUp(prevState: any, formData: FormData) {
   try {
     // Check if user already exists
     const existing = await db
-      .select()
+      .select({ id: users.id })
       .from(users)
       .where(eq(users.email, email))
       .limit(1);
@@ -101,7 +101,7 @@ export async function resetPasswordRequest(prevState: any, formData: FormData) {
   let existing;
   try {
     existing = await db
-      .select()
+      .select({ id: users.id })
       .from(users)
       .where(eq(users.email, email))
       .limit(1);
@@ -172,7 +172,10 @@ export async function resetPassword(
 
   try {
     const [user] = await db
-      .select()
+      .select({
+        id: users.id,
+        resetTokenExpires: users.resetTokenExpires,
+      })
       .from(users)
       .where(eq(users.resetToken, token))
       .limit(1);

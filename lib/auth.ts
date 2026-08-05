@@ -57,9 +57,13 @@ export const authOptions: NextAuthOptions = {
 
         let result;
         try {
-          // Look up user in database
           result = await db
-            .select()
+            .select({
+              id: users.id,
+              email: users.email,
+              name: users.name,
+              passwordHash: users.passwordHash,
+            })
             .from(users)
             .where(eq(users.email, email))
             .limit(1);

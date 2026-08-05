@@ -37,7 +37,10 @@ export async function GET(req: NextRequest) {
 
     // Look up user in database
     const [user] = await db
-      .select()
+      .select({
+        id: users.id,
+        subscriptionTier: users.subscriptionTier,
+      })
       .from(users)
       .where(eq(users.email, session.user.email))
       .limit(1);
@@ -114,7 +117,10 @@ export async function POST(req: NextRequest) {
 
     // Look up user in database
     const [user] = await db
-      .select()
+      .select({
+        id: users.id,
+        subscriptionTier: users.subscriptionTier,
+      })
       .from(users)
       .where(eq(users.email, session.user.email))
       .limit(1);

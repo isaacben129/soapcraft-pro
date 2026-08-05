@@ -21,7 +21,7 @@ async function getCurrentTier(): Promise<SubscriptionTier> {
   }
 
   const [user] = await db
-    .select()
+    .select({ subscriptionTier: users.subscriptionTier })
     .from(users)
     .where(eq(users.email, session.user.email))
     .limit(1);
