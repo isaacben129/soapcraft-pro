@@ -48,10 +48,10 @@ const config: Config = {
         info: { DEFAULT: "hsl(var(--info))", foreground: "hsl(var(--info-foreground))" },
 
         // DESIGN.md §4.2 named tokens
-        ink: { DEFAULT: "hsl(var(--color-ink))", muted: "hsl(var(--color-ink-muted))" },
-        action: { DEFAULT: "hsl(var(--color-action))", hover: "hsl(var(--color-action-hover))", text: "hsl(var(--color-action-text))" },
-        rule: "hsl(var(--color-rule))",
-        focus: "hsl(var(--color-focus))",
+        ink: { DEFAULT: "var(--color-ink)", muted: "var(--color-ink-muted)" },
+        action: { DEFAULT: "var(--color-action)", hover: "var(--color-action-hover)", text: "var(--color-action-text)" },
+        rule: "var(--color-rule)",
+        focus: "var(--color-focus)",
 
         // Semantic surface tokens (rail/canvas/ledger/sheet/clay/sage/brass)
         // Aligned to DESIGN.md §4.1 surface architecture

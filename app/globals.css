@@ -1,5 +1,68 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+  --font-display: var(--font-serif);
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-success: hsl(var(--success));
+  --color-success-foreground: hsl(var(--success-foreground));
+  --color-warning: hsl(var(--warning));
+  --color-warning-foreground: hsl(var(--warning-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-info: hsl(var(--info));
+  --color-info-foreground: hsl(var(--info-foreground));
+
+  --color-ink: hsl(25 12% 12%);
+  --color-ink-muted: hsl(30 8% 35%);
+  --color-rule: hsl(30 8% 75%);
+  --color-action: hsl(25 55% 35%);
+  --color-action-hover: hsl(25 55% 28%);
+  --color-action-text: hsl(38 100% 98%);
+  --color-focus: hsl(210 65% 50%);
+  --color-danger: hsl(5 45% 40%);
+
+  --color-rail: hsl(var(--rail));
+  --color-rail-foreground: hsl(var(--rail-foreground));
+  --color-canvas: hsl(var(--canvas));
+  --color-canvas-foreground: hsl(var(--canvas-foreground));
+  --color-ledger: hsl(var(--ledger));
+  --color-ledger-foreground: hsl(var(--ledger-foreground));
+  --color-sheet: hsl(var(--sheet));
+  --color-sheet-foreground: hsl(var(--sheet-foreground));
+  --color-clay: hsl(var(--clay));
+  --color-clay-foreground: hsl(var(--clay-foreground));
+  --color-sage: hsl(var(--sage));
+  --color-sage-foreground: hsl(var(--sage-foreground));
+  --color-brass: hsl(var(--brass));
+  --color-brass-foreground: hsl(var(--brass-foreground));
+
+  --shadow-elevation-1: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-elevation-2: 0 4px 12px rgba(0,0,0,0.10);
+  --shadow-elevation-3: 0 8px 24px rgba(0,0,0,0.12);
+}
+
 :root {
   /* ── Typography ── */
   --font-sans: "DM Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
@@ -42,26 +105,26 @@
   /* Ring / focus */
   --ring: 210 65% 50%;
 
-  /* ── DESIGN.md §4.2 color tokens (hex originals, stored as HSL components) ── */
-  --color-canvas: 40 7% 90%;
-  --color-sheet: 38 18% 96%;
-  --color-ledger: 30 10% 90%;
-  --color-rail: 25 12% 13%;
-  --color-rail-muted: 30 8% 65%;
-  --color-ink: 25 12% 12%;
-  --color-ink-muted: 30 8% 35%;
-  --color-rule: 30 8% 75%;
-  --color-action: 25 55% 35%;
-  --color-action-hover: 25 55% 28%;
-  --color-action-text: 38 100% 98%;
-  --color-clay: 25 25% 85%;
-  --color-sage: 80 12% 80%;
-  --color-brass: 40 30% 75%;
-  --color-info: 195 35% 35%;
-  --color-success: 145 30% 30%;
-  --color-warning: 38 65% 35%;
-  --color-danger: 5 45% 40%;
-  --color-focus: 210 65% 50%;
+  /* ── DESIGN.md §4.2 color tokens exposed as complete CSS colors for Tailwind v4 ── */
+  --color-canvas: hsl(40 7% 90%);
+  --color-sheet: hsl(38 18% 96%);
+  --color-ledger: hsl(30 10% 90%);
+  --color-rail: hsl(25 12% 13%);
+  --color-rail-muted: hsl(30 8% 65%);
+  --color-ink: hsl(25 12% 12%);
+  --color-ink-muted: hsl(30 8% 35%);
+  --color-rule: hsl(30 8% 75%);
+  --color-action: hsl(25 55% 35%);
+  --color-action-hover: hsl(25 55% 28%);
+  --color-action-text: hsl(38 100% 98%);
+  --color-clay: hsl(25 25% 85%);
+  --color-sage: hsl(80 12% 80%);
+  --color-brass: hsl(40 30% 75%);
+  --color-info: hsl(195 35% 35%);
+  --color-success: hsl(145 30% 30%);
+  --color-warning: hsl(38 65% 35%);
+  --color-danger: hsl(5 45% 40%);
+  --color-focus: hsl(210 65% 50%);
 
   /* ── Design tokens ── */
   --radius: 0.5rem;
