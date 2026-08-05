@@ -5,6 +5,7 @@
 // No filler. No generic feature cards. No emoji brand.
 // DESIGN.md §4 visual system, §7 marketing spec.
 
+import { Metadata } from "next";
 import Link from "next/link";
 import {
   Check,
@@ -18,6 +19,30 @@ import {
   Clock,
   DollarSign,
 } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "SoapCraft Pro — Recipe, Batch & Profitability Workspace",
+  description:
+    "Deterministic lye calculations, guided batch production, cure tracking, and cost-per-bar analysis for serious soap makers. Start free — no signup required.",
+  openGraph: {
+    title: "SoapCraft Pro — The Soap Maker's Workspace",
+    description:
+      "Verified calculations, batch tracking, and cost analysis. Start free with the calculator — no signup required.",
+    type: "website",
+    url: "https://soapcraft-pro.vercel.app",
+    siteName: "SoapCraft Pro",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SoapCraft Pro — The Soap Maker's Workspace",
+    description:
+      "Deterministic lye calculations, guided batch production, cure tracking, and cost-per-bar analysis.",
+  },
+  robots: { index: true, follow: true },
+  alternates: {
+    canonical: "https://soapcraft-pro.vercel.app",
+  },
+};
 
 export default function HomePage() {
   return (
@@ -701,6 +726,70 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── Resources ── */}
+      <section className="container mx-auto px-4 py-20 md:py-28" aria-label="Resources">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="font-display text-3xl md:text-4xl font-bold text-ink">
+            Resources for serious soap makers.
+          </h2>
+          <p className="mt-5 text-body text-ink-muted max-w-2xl leading-relaxed">
+            Free tools and guides that help you calculate, formulate, track,
+            and price your soap — whether you use SoapCraft Pro or not.
+          </p>
+          <div className="mt-10 grid gap-6 md:grid-cols-2">
+            <a
+              href="/calculators/soap-cost-calculator"
+              className="block border border-rule rounded-lg p-6 bg-sheet hover:shadow-elevation-1 transition-shadow"
+            >
+              <h3 className="font-display text-lg font-bold text-ink">
+                Soap Cost Per Bar Calculator
+              </h3>
+              <p className="mt-2 text-sm text-ink-muted leading-relaxed">
+                Calculate the real cost per bar from ingredient costs and
+                actual yield. Set a target margin and get a suggested selling
+                price.
+              </p>
+            </a>
+            <a
+              href="/compare/soapcalc-alternative"
+              className="block border border-rule rounded-lg p-6 bg-sheet hover:shadow-elevation-1 transition-shadow"
+            >
+              <h3 className="font-display text-lg font-bold text-ink">
+                SoapCalc Alternative
+              </h3>
+              <p className="mt-2 text-sm text-ink-muted leading-relaxed">
+                SoapCalc handles lye math. SoapCraft Pro adds versioned
+                recipes, tracked batches, cure monitoring, and cost analysis.
+              </p>
+            </a>
+            <a
+              href="/soap-recipe-management-software"
+              className="block border border-rule rounded-lg p-6 bg-sheet hover:shadow-elevation-1 transition-shadow"
+            >
+              <h3 className="font-display text-lg font-bold text-ink">
+                Soap Recipe Management Software
+              </h3>
+              <p className="mt-2 text-sm text-ink-muted leading-relaxed">
+                Versioned recipes that never rewrite historical batch records.
+                Track formulations, not just formulas.
+              </p>
+            </a>
+            <a
+              href="/soap-batch-tracking-software"
+              className="block border border-rule rounded-lg p-6 bg-sheet hover:shadow-elevation-1 transition-shadow"
+            >
+              <h3 className="font-display text-lg font-bold text-ink">
+                Soap Batch Tracking Software
+              </h3>
+              <p className="mt-2 text-sm text-ink-muted leading-relaxed">
+                From recipe to finished bar — planned vs actual measurements,
+                cure observations, yield, and cost in one record.
+              </p>
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* ── Footer ── */}
       <footer className="border-t border-rule py-14" aria-label="Footer">
         <div className="container mx-auto px-4 max-w-6xl">
@@ -732,6 +821,16 @@ export default function HomePage() {
                 <li>
                   <a href="/marketing/blog" className="hover:text-ink transition-colors">
                     Blog
+                  </a>
+                </li>
+                <li>
+                  <a href="/calculators/soap-cost-calculator" className="hover:text-ink transition-colors">
+                    Cost Calculator
+                  </a>
+                </li>
+                <li>
+                  <a href="/compare/soapcalc-alternative" className="hover:text-ink transition-colors">
+                    SoapCalc Alternative
                   </a>
                 </li>
               </ul>

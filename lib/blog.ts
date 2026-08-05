@@ -17,6 +17,12 @@ export interface BlogPost {
     description: string;
     keywords: string[];
   };
+  // Editorial quality fields
+  reviewStatus: "draft" | "review" | "approved" | "published";
+  source?: string;
+  sourceRevision?: string;
+  lastReviewed?: string;
+  reviewer?: string;
 }
 
 export const blogPosts: BlogPost[] = blogData as BlogPost[];
@@ -31,6 +37,10 @@ export function getAllBlogSlugs(): string[] {
 
 export function getBlogPostsByCategory(category: string): BlogPost[] {
   return blogPosts.filter((post) => post.category === category);
+}
+
+export function getPublishedPosts(): BlogPost[] {
+  return blogPosts.filter((post) => post.reviewStatus === "published");
 }
 
 // ── Related posts ──────────────────────
