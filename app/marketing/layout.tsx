@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Flame } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "SoapCraft Pro — Recipe, Batch & Profitability Workspace",
@@ -39,7 +40,7 @@ export default function MarketingShell({
             href="/"
             className="flex items-center gap-2 font-display font-bold tracking-tight text-ink"
           >
-            <span className="text-action text-xl">◆</span>
+            <Flame className="text-action text-xl" />
             <span>SoapCraft Pro</span>
           </a>
           <nav
