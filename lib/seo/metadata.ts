@@ -5,7 +5,7 @@ export function pageMetadata(args: {
   title: string;
   description: string;
   path: string;
-  type?: string;
+  type?: "website" | "article";
   image?: string;
 }): Metadata {
   const { title, description, path, type = "website", image } = args;

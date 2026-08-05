@@ -6,7 +6,6 @@ import posthog from "posthog-js";
 
 const POSTHOG_KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY;
 const POSTHOG_HOST = process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com";
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://soapcraft-pro.vercel.app";
 
 // ── Initialise PostHog ────────────────────────
 // Call once at app initialisation (e.g. in a root layout or provider).
@@ -16,14 +15,13 @@ export function initPostHog(): void {
 
   posthog.init(POSTHOG_KEY, {
     api_host: POSTHOG_HOST,
-    site_url: SITE_URL,
     // Do not capture pageviews automatically — we send explicit events.
     capture_pageview: false,
     // Do not capture page leave events.
     capture_pageleave: false,
     // Use the anonymous ID from localStorage (matches existing pattern).
-    distinct_id: getAnonymousId(),
   });
+  posthog.identify(getAnonymousId());
 }
 
 // ── Anonymous ID ──────────────────────────────

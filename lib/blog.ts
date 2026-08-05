@@ -19,8 +19,8 @@ export interface BlogPost {
   };
   // Editorial quality fields
   reviewStatus: "draft" | "review" | "approved" | "published";
-  source?: string;
-  sourceRevision?: string;
+  source?: string | null;
+  sourceRevision?: string | null;
   lastReviewed?: string;
   reviewer?: string;
 }
