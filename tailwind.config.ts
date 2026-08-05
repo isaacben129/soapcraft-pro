@@ -3,6 +3,8 @@
 // Semantic surface tokens (rail/canvas/ledger/sheet/clay/sage/brass)
 // provide the craft-ledger visual identity.
 
+import type { Config } from "tailwindcss";
+
 const config: Config = {
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
