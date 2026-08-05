@@ -14,6 +14,7 @@ import { StatusLabel } from "@/components/shared/status-label";
 import { EmptyState } from "@/components/shared/empty-state";
 import { AttentionRow } from "@/components/shared/attention-row";
 import { SaveIndicator } from "@/components/shared/save-indicator";
+import { LedgerRow } from "@/components/shared/ledger-row";
 
 interface RecipeVersion {
   id: string;

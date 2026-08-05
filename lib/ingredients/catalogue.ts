@@ -4,7 +4,7 @@
 
 import { db } from "@/lib/db";
 import { ingredients } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 import { DEFAULT_OILS } from "@/lib/calculations/sap";
 
 // ── Seed system ingredients ───────────────────
@@ -72,9 +72,13 @@ export async function getUserIngredients(userId: string) {
   const rows = await db
     .select()
     .from(ingredients)
-    .where(eq(ingredients.createdBy, userId))
-    .where(eq(ingredients.isPrivate, true))
-    .where(eq(ingredients.archivedAt, null))
+    .where(
+      and(
+        eq(ingredients.createdBy, userId),
+        eq(ingredients.isPrivate, true),
+        isNull(ingredients.archivedAt)
+      )
+    )
     .limit(50);
 
   return rows.map((ing) => ({

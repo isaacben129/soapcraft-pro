@@ -11,7 +11,7 @@ import {
   jsonb,
   varchar,
   boolean,
-  uuid,
+  type AnyPgColumn,
 } from "drizzle-orm/pg-core";
 
 // --- Database connection (lazy, initialized on first use) ---
@@ -54,6 +54,8 @@ export const ingredients = pgTable("ingredients", {
   hardnessFactor: real("hardness_factor").notNull().default(0),
   latherFactor: real("lather_factor").notNull().default(0),
   moisturizingFactor: real("moisturizing_factor").notNull().default(0),
+  cleansingFactor: real("cleansing_factor").notNull().default(0),
+  conditionFactor: real("condition_factor").notNull().default(0),
   ifraCategory: text("ifra_category"),
   maxUsagePercent: real("max_usage_percent"),
   source: text("source").notNull().default("community"),
@@ -89,7 +91,7 @@ export const recipes = pgTable("recipes", {
   method: varchar("method", { length: 2 }),
   createdBy: varchar("created_by", { length: 36 }).notNull().references(() => users.id, { onDelete: "cascade" }),
   isCurated: integer("is_curated").notNull().default(0),
-  currentVersionId: varchar("current_version_id", { length: 36 }).references(() => recipeVersions.id, { onDelete: "set null" }),
+  currentVersionId: varchar("current_version_id", { length: 36 }).references((): AnyPgColumn => recipeVersions.id, { onDelete: "set null" }),
   archivedAt: timestamp("archived_at", { withTimezone: true }),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().default(sql`now()`),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().default(sql`now()`),
@@ -98,7 +100,7 @@ export const recipes = pgTable("recipes", {
 // --- Recipe Version (immutable) ---
 export const recipeVersions = pgTable("recipe_versions", {
   id: varchar("id", { length: 36 }).primaryKey(),
-  recipeId: varchar("recipe_id", { length: 36 }).notNull().references(() => recipes.id, { onDelete: "cascade" }),
+  recipeId: varchar("recipe_id", { length: 36 }).notNull().references((): AnyPgColumn => recipes.id, { onDelete: "cascade" }),
   version: integer("version").notNull(),
   name: text("name").notNull(),
   notes: text("notes"),

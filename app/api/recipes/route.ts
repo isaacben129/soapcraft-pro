@@ -108,7 +108,7 @@ export async function POST(req: NextRequest) {
 
     // 5. Check for blocking warnings
     const blockingWarnings = calculated.warnings.filter(
-      (w) => w.type === "blocking"
+      (w) => w.type === "danger"
     );
 
     if (blockingWarnings.length > 0) {
@@ -162,8 +162,11 @@ export async function POST(req: NextRequest) {
       action: "created",
       entityType: "recipe",
       entityId: recipeId,
-      entityName: name,
-      details: { version: 1, warnings: calculated.warnings.length },
+      payload: {
+        entityName: name,
+        version: 1,
+        warnings: calculated.warnings.length,
+      },
       createdAt: new Date(),
     });
 

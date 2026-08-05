@@ -4,7 +4,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ObjectHeader } from "@/components/shared/object-header";
 import { StatusLabel } from "@/components/shared/status-label";
@@ -114,7 +114,6 @@ export default function BatchDetailPage({
   const [timerSeconds, setTimerSeconds] = useState(0);
 
   // Timer effect
-  const { useEffect } = require("react");
   useEffect(() => {
     let interval: ReturnType<typeof setInterval>;
     if (timerRunning) {

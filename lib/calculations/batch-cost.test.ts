@@ -276,7 +276,7 @@ describe("calculateBatchCost", () => {
     // 17.64 oz * 28.3495 g/oz = ~500g
     // $1.42/oz / 28.3495 g/oz = $0.05/g
     // 500g * $0.05 = $25.00
-    expect(result.totalCost).toBeCloseTo(25.0, 2);
+    expect(result.totalCost).toBeCloseTo(25.05, 2);
   });
 
   it("normalizes lb to grams correctly", () => {

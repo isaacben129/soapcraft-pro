@@ -112,8 +112,11 @@ export async function saveRecipe(input: SaveRecipeInput) {
     action: "created",
     entityType: "recipe",
     entityId: recipeId,
-    entityName: input.name.trim(),
-    details: { version: 1, warnings: serverResult.warnings.length },
+    payload: {
+      entityName: input.name.trim(),
+      version: 1,
+      warnings: serverResult.warnings.length,
+    },
   });
 
   return {

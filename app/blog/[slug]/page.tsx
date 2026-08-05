@@ -7,6 +7,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getBlogPost, getAllBlogSlugs, getRelatedPosts } from "@/lib/blog";
 
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   const slugs = getAllBlogSlugs();
   return slugs.map((slug) => ({ slug }));
@@ -235,19 +237,19 @@ export default async function BlogPostPage({
               </li>
               <li aria-hidden="true" className="mx-1">/</li>
               <li className="text-foreground">
-                {articlePost.title}
+                {post.title}
               </li>
             </ol>
           </nav>
 
           {/* Article header */}
           <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-            <span>{articlePost.category}</span>
+            <span>{post.category}</span>
             <span aria-hidden="true">·</span>
-            <span>{articlePost.readingTime} min read</span>
+            <span>{post.readingTime} min read</span>
             <span aria-hidden="true">·</span>
-            <time dateTime={articlePost.publishedAt}>
-              {new Date(articlePost.publishedAt).toLocaleDateString("en-US", {
+            <time dateTime={post.publishedAt}>
+              {new Date(post.publishedAt).toLocaleDateString("en-US", {
                 year: "numeric",
                 month: "long",
                 day: "numeric",
@@ -256,23 +258,23 @@ export default async function BlogPostPage({
           </div>
 
           <h1 className="font-display text-3xl md:text-4xl font-bold text-foreground">
-            {articlePost.title}
+            {post.title}
           </h1>
           <p className="mt-4 text-lg text-muted-foreground">
-            {articlePost.description}
+            {post.description}
           </p>
 
           {/* Article image with alt text */}
-          {articlePost.image && (
+          {post.image && (
             <figure className="mt-6">
               <img
-                src={articlePost.image}
-                alt={articlePost.imageAlt || articlePost.title}
+                src={post.image}
+                alt={post.imageAlt || post.title}
                 className="w-full rounded-lg border border-border"
               />
-              {articlePost.imageAlt && (
+              {post.imageAlt && (
                 <figcaption className="mt-2 text-xs text-muted-foreground text-center">
-                  {articlePost.imageAlt}
+                  {post.imageAlt}
                 </figcaption>
               )}
             </figure>
@@ -280,7 +282,7 @@ export default async function BlogPostPage({
 
           {/* Tags */}
           <div className="mt-6 flex flex-wrap gap-2">
-            {articlePost.tags.map((tag) => (
+            {post.tags.map((tag) => (
               <span
                 key={tag}
                 className="rounded-full bg-muted px-3 py-1 text-xs text-muted-foreground"
@@ -292,7 +294,7 @@ export default async function BlogPostPage({
 
           {/* Article content */}
           <div className="mt-12 prose prose-lg max-w-none">
-            {formatContent(articlePost.content)}
+            {formatContent(post.content)}
           </div>
 
           {/* Related articles */}

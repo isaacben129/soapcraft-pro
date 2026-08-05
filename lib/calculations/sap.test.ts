@@ -46,6 +46,7 @@ describe("R1.2 RED: calculateFormulation", () => {
       const result1000 = calculateFormulation({
         ...baseInput,
         oilBlend: [{ oilId: "olive-oil", percent: 100 }],
+        superfatPercent: 5,
       });
       // With 1000g target, NaOH = 1000 * 0.1340 * 0.95 = 127.3
       expect(result1000.lyeNaOH).toBeCloseTo(127.3, 1);

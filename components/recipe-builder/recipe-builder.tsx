@@ -80,7 +80,7 @@ export function RecipeBuilder() {
   // Calculate planned exact quantities for each oil
   const plannedQuantities = oilBlend.map((entry) => {
     const oil = DEFAULT_OILS.find((o) => o.id === entry.oilId);
-    if (!oil) return { ...entry, plannedGrams: 0 };
+    if (!oil) return { ...entry, plannedGrams: 0, oilName: entry.oilId };
     const oilWeight = (targetWeight * entry.percent) / 100;
     return { ...entry, plannedGrams: oilWeight, oilName: oil.name };
   });
@@ -192,7 +192,7 @@ export function RecipeBuilder() {
       />
 
       {/* Persistent warning summary */}
-      {showResult && result.warnings.length > 0 && (
+      {showResult && result && result.warnings.length > 0 && (
         <div className="mt-4 space-y-2">
           {result.warnings.map((w, i) => (
             <AttentionRow

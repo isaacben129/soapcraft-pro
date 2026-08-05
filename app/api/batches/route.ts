@@ -12,6 +12,8 @@ import { db } from "@/db/schema";
 import { batches, recipeVersions, recipes, activityEvents } from "@/db/schema";
 import { eq, and } from "drizzle-orm";
 
+type OilBlendEntry = { oilId: string; percent: number };
+
 // ── GET /api/batches ───────────────────
 // List user's batches with recipe version info.
 
@@ -96,40 +98,29 @@ export async function POST(req: NextRequest) {
 
     // Copy planned measurement snapshot from version
     // Later recipe edit does not alter batch plan — we snapshot the version data
+    const oilBlend = Array.isArray(version.oilBlend)
+      ? (version.oilBlend as OilBlendEntry[])
+      : [];
+    const plannedSnapshot = {
+      oilBlend,
+      superfatPercent: version.superfatPercent,
+      lyeConcentrationPercent: version.lyeConcentrationPercent,
+      waterToLyeRatio: version.waterToLyeRatio,
+      calculatedLyeNaOH: version.calculatedLyeNaOH,
+      calculatedLyeKOH: version.calculatedLyeKOH,
+      calculatedWater: version.calculatedWater,
+      calculatedFragranceLoad: version.calculatedFragranceLoad,
+      warnings: version.warnings,
+      datasetRevision: version.datasetRevision,
+    };
+
     const newBatch = {
       id: crypto.randomUUID(),
-      recipeId,
-      versionId,
+      recipeVersionId: versionId,
       userId: session.user.id,
-      name: batchName.trim(),
-      plannedOilWeight: version.oilBlend.reduce((sum: number, o: { percent: number }) => {
-        // We don't have the target weight here, so we store the blend ratios
-        // The actual weight will be set when the batch is started
-        return sum;
-      }, 0),
-      plannedLyeNaOH: version.calculatedLyeNaOH,
-      plannedLyeKOH: version.calculatedLyeKOH,
-      plannedWater: version.calculatedWater,
-      plannedFragranceLoad: version.calculatedFragranceLoad,
-      plannedTotalWeight: version.totalWeight,
-      plannedSnapshot: {
-        oilBlend: version.oilBlend,
-        superfatPercent: version.superfatPercent,
-        lyeConcentrationPercent: version.lyeConcentrationPercent,
-        waterToLyeRatio: version.waterToLyeRatio,
-        calculatedLyeNaOH: version.calculatedLyeNaOH,
-        calculatedLyeKOH: version.calculatedLyeKOH,
-        calculatedWater: version.calculatedWater,
-        calculatedFragranceLoad: version.calculatedFragranceLoad,
-        totalWeight: version.totalWeight,
-        warnings: version.warnings,
-        datasetRevision: "1.0.0",
-      },
-      lifecycleStatus: "draft" as const,
-      currentStep: 0,
-      currentDay: 0,
-      yieldBars: 0,
-      costStatus: "incomplete",
+      batchName: batchName.trim(),
+      plannedSnapshot,
+      status: "draft",
       archivedAt: null,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -144,8 +135,8 @@ export async function POST(req: NextRequest) {
       action: "created",
       entityType: "batch",
       entityId: batch.id,
-      entityName: batchName.trim(),
-      details: {
+      payload: {
+        entityName: batchName.trim(),
         recipeId,
         recipeName: recipe.name,
         version: version.version,
@@ -155,9 +146,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         id: batch.id,
-        name: batch.name,
-        recipeId: batch.recipeId,
-        versionId: batch.versionId,
+        name: batch.batchName,
+        recipeId,
+        versionId: batch.recipeVersionId,
         version: version.version,
         plannedSnapshot: batch.plannedSnapshot,
       },

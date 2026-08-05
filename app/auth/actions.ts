@@ -2,7 +2,7 @@
 
 import { db } from "@/lib/db/index";
 import { users } from "@/db/schema";
-import { eq, and } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { hashPassword } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -174,14 +174,7 @@ export async function resetPassword(
     const [user] = await db
       .select()
       .from(users)
-      .where(
-        and(
-          eq(users.resetToken, token),
-          eq(users.resetTokenExpires, null),
-          // Token not expired
-          // Note: resetTokenExpires is stored as a timestamp, compare in code
-        )
-      )
+      .where(eq(users.resetToken, token))
       .limit(1);
 
     // Check if token exists and is not expired
@@ -220,7 +213,7 @@ export async function resetPassword(
 
 // ── Callback URL Validation ──
 
-export function validateCallbackUrl(url: string): string {
+function validateCallbackUrl(url: string): string {
   // Only allow relative URLs or same-origin absolute URLs
   try {
     const parsed = new URL(url, "http://localhost");

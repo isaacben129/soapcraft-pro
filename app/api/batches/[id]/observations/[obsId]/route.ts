@@ -13,6 +13,25 @@ import { db } from "@/db/schema";
 import { cureObservations, batches, activityEvents } from "@/db/schema";
 import { eq, and } from "drizzle-orm";
 
+function getCureStart(batch: { startedAt: Date | null; createdAt: Date }) {
+  return batch.startedAt ?? batch.createdAt;
+}
+
+function buildObservationNotes(input: {
+  note?: string;
+  temperature?: number;
+  color?: string;
+  scent?: string;
+}) {
+  const details = [
+    input.temperature !== undefined ? `Temperature: ${input.temperature}` : null,
+    input.color ? `Color: ${input.color}` : null,
+    input.scent ? `Scent: ${input.scent}` : null,
+  ].filter(Boolean);
+
+  return [input.note?.trim(), ...details].filter(Boolean).join("\n");
+}
+
 // ── GET /api/batches/[id]/observations ──────────
 // List observations for a batch (user-owned).
 
@@ -47,7 +66,7 @@ export async function GET(
 
     // Compute day for each observation
     const observationsWithDay = observations.map((obs) => {
-      const cureStart = batch.cureStartedAt || batch.createdAt;
+      const cureStart = getCureStart(batch);
       const day = Math.floor(
         (new Date(obs.observedAt).getTime() - new Date(cureStart).getTime()) /
           86400000
@@ -109,7 +128,7 @@ export async function POST(
     }
 
     // Compute day from observedAt / cureStartedAt
-    const cureStart = batch.cureStartedAt || batch.createdAt;
+    const cureStart = getCureStart(batch);
     const day = Math.floor(
       (new Date(observedAt).getTime() - new Date(cureStart).getTime()) / 86400000
     );
@@ -118,16 +137,14 @@ export async function POST(
     const newObservation = {
       id: crypto.randomUUID(),
       batchId: id,
-      userId: session.user.id,
-      observedAt,
-      note: note.trim(),
-      temperature: temperature ?? null,
-      hardness: hardness ?? null,
-      color: color ?? null,
-      scent: scent ?? null,
+      createdBy: session.user.id,
+      observedAt: new Date(observedAt),
+      notes: buildObservationNotes({ note, temperature, color, scent }),
+      pH: null,
+      hardness: hardness !== undefined ? String(hardness) : null,
+      traceState: null,
       day,
       createdAt: new Date(),
-      updatedAt: new Date(),
     };
 
     await db.insert(cureObservations).values(newObservation);
@@ -139,8 +156,7 @@ export async function POST(
       action: "created",
       entityType: "cure-observation",
       entityId: newObservation.id,
-      entityName: `Day ${day} observation`,
-      details: { batchId: id, day, observedAt },
+      payload: { entityName: `Day ${day} observation`, batchId: id, day, observedAt },
     });
 
     return NextResponse.json({ observation: newObservation }, { status: 201 });
@@ -184,7 +200,7 @@ export async function PUT(
       .where(
         and(
           eq(cureObservations.id, obsId),
-          eq(cureObservations.userId, session.user.id)
+          eq(cureObservations.createdBy, session.user.id)
         )
       )
       .limit(1);
@@ -194,13 +210,22 @@ export async function PUT(
     }
 
     // Update observation
-    const updates: Record<string, unknown> = { updatedAt: new Date() };
-    if (observedAt) updates.observedAt = observedAt;
-    if (note !== undefined) updates.note = note.trim();
-    if (temperature !== undefined) updates.temperature = temperature;
-    if (hardness !== undefined) updates.hardness = hardness;
-    if (color !== undefined) updates.color = color;
-    if (scent !== undefined) updates.scent = scent;
+    const updates: Partial<typeof cureObservations.$inferInsert> = {};
+    if (observedAt) updates.observedAt = new Date(observedAt);
+    if (
+      note !== undefined ||
+      temperature !== undefined ||
+      color !== undefined ||
+      scent !== undefined
+    ) {
+      updates.notes = buildObservationNotes({
+        note: note ?? obs.notes ?? "",
+        temperature,
+        color,
+        scent,
+      });
+    }
+    if (hardness !== undefined) updates.hardness = String(hardness);
 
     // Recompute day if observedAt changed
     if (observedAt) {
@@ -209,7 +234,7 @@ export async function PUT(
         .from(batches)
         .where(eq(batches.id, id))
         .limit(1);
-      const cureStart = batch?.cureStartedAt || batch?.createdAt;
+      const cureStart = batch ? getCureStart(batch) : null;
       if (cureStart) {
         updates.day = Math.floor(
           (new Date(observedAt).getTime() - new Date(cureStart).getTime()) / 86400000
@@ -229,8 +254,7 @@ export async function PUT(
       action: "updated",
       entityType: "cure-observation",
       entityId: obsId,
-      entityName: `Day ${obs.day} observation`,
-      details: { batchId: id, observationId: obsId },
+      payload: { entityName: `Day ${obs.day} observation`, batchId: id, observationId: obsId },
     });
 
     return NextResponse.json({ observation: { ...obs, ...updates } });
@@ -265,7 +289,7 @@ export async function DELETE(
       .where(
         and(
           eq(cureObservations.id, obsId),
-          eq(cureObservations.userId, session.user.id)
+          eq(cureObservations.createdBy, session.user.id)
         )
       )
       .limit(1);
@@ -285,8 +309,7 @@ export async function DELETE(
       action: "deleted",
       entityType: "cure-observation",
       entityId: obsId,
-      entityName: `Day ${obs.day} observation`,
-      details: { batchId: id, observationId: obsId },
+      payload: { entityName: `Day ${obs.day} observation`, batchId: id, observationId: obsId },
     });
 
     return NextResponse.json({ deleted: true });

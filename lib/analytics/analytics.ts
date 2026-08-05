@@ -204,7 +204,7 @@ export const runtime = "edge";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { event, anonymousId, timestamp, data } = body as {
+    const { event, anonymousId, timestamp: _timestamp, data } = body as {
       event: string;
       anonymousId: string;
       timestamp: string;
@@ -221,7 +221,7 @@ export async function POST(req: Request) {
 
     // Validate event name is a known PRD event
     const validEvents = Object.values(AnalyticsEvents);
-    if (!validEvents.includes(event as string)) {
+    if (!(validEvents as string[]).includes(event)) {
       return new Response(
         JSON.stringify({ error: `Unknown event: ${event}` }),
         { status: 400, headers: { "Content-Type": "application/json" } }

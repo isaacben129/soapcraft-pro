@@ -8,7 +8,6 @@ import { subscriptions, users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 const DODO_WEBHOOK_SECRET = process.env.DODO_WEBHOOK_SECRET ?? "dw_secret_placeholder_replace_me";
-  process.env.DODO_WEBHOOK_SECRET ?? "dw_secret_placeholder_replace_me";
 
 // ── Types ─────────────────────────────────────────────────────
 

@@ -11,6 +11,7 @@ export interface BlogPost {
   author: string;
   readingTime: number;
   image: string;
+  imageAlt?: string;
   seo: {
     title: string;
     description: string;

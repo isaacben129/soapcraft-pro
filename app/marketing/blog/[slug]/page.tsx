@@ -2,6 +2,8 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getBlogPost, getAllBlogSlugs } from "@/lib/blog";
 
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   const slugs = getAllBlogSlugs();
   return slugs.map((slug) => ({ slug }));

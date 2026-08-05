@@ -99,11 +99,11 @@ export function acknowledgeSafety(state: MakingState, timestamp: string): Making
 }
 
 export function startMaking(state: MakingState, timestamp: string): MakingState {
-  if (!state.safetyAcknowledged) {
-    throw new Error("Safety acknowledgement required before starting making");
-  }
   if (state.status === "completed" || state.status === "abandoned") {
     throw new Error(`Cannot start making from ${state.status} state`);
+  }
+  if (!state.safetyAcknowledged) {
+    throw new Error("Safety acknowledgement required before starting making");
   }
 
   return {

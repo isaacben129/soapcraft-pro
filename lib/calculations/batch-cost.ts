@@ -26,6 +26,7 @@ export interface BatchCostResult {
   otherCosts: number;
   marginPercent: number;
   suggestedPrice: number;
+  costBasisRevision: number;
   missingCostBasis: Array<{
     ingredientId: string;
     reason: string;
@@ -56,6 +57,14 @@ export function normalizeToGrams(
   return quantity * gramsPerUnit;
 }
 
+function normalizeCostPerGram(costPerUnit: number, unit: string): number {
+  const gramsPerUnit = UNIT_TO_GRAMS[unit];
+  if (!gramsPerUnit) {
+    throw new Error(`Unknown unit: ${unit}. Supported: g, kg, oz, lb`);
+  }
+  return costPerUnit / gramsPerUnit;
+}
+
 // ── Calculate batch cost ────────────────────
 
 export function calculateBatchCost(input: BatchCostInput): BatchCostResult {
@@ -64,8 +73,11 @@ export function calculateBatchCost(input: BatchCostInput): BatchCostResult {
 
   // 1. Calculate ingredient cost total
   let ingredientCostTotal = 0;
+  const costRows = Array.from(
+    new Map(input.ingredientCosts.map((cost) => [cost.ingredientId, cost])).values()
+  );
 
-  for (const cost of input.ingredientCosts) {
+  for (const cost of costRows) {
     // Missing cost basis — remains visible, not hidden
     if (cost.costPerUnit <= 0) {
       missingCostBasis.push({
@@ -76,7 +88,8 @@ export function calculateBatchCost(input: BatchCostInput): BatchCostResult {
     }
 
     const quantityInGrams = normalizeToGrams(cost.quantity, cost.quantityUnit);
-    const costForIngredient = cost.costPerUnit * quantityInGrams;
+    const costForIngredient =
+      normalizeCostPerGram(cost.costPerUnit, cost.unit) * quantityInGrams;
     ingredientCostTotal += costForIngredient;
   }
 
@@ -95,7 +108,7 @@ export function calculateBatchCost(input: BatchCostInput): BatchCostResult {
   const costPerBar = input.batchYieldBars > 0 ? totalCost / input.batchYieldBars : 0;
 
   // 4. Calculate cost per unit (per gram)
-  const totalQuantityGrams = input.ingredientCosts.reduce((sum, cost) => {
+  const totalQuantityGrams = costRows.reduce((sum, cost) => {
     return sum + normalizeToGrams(cost.quantity, cost.quantityUnit);
   }, 0);
 
@@ -146,6 +159,7 @@ export function calculateBatchCost(input: BatchCostInput): BatchCostResult {
     otherCosts: input.otherCosts,
     marginPercent,
     suggestedPrice,
+    costBasisRevision: input.costBasisRevision,
     missingCostBasis,
     warnings,
   };

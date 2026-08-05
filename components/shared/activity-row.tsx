@@ -1,13 +1,30 @@
 // ── ActivityRow ──────────────────────────────
 
-import { formatDistanceToNow } from "date-fns";
-
 interface ActivityRowProps {
   action: string;
   entityType: string;
   entityName: string;
-  timestamp: Date;
+  timestamp: Date | string;
   userId?: string;
+}
+
+function formatDistanceToNow(timestamp: Date | string): string {
+  const date = timestamp instanceof Date ? timestamp : new Date(timestamp);
+  const diffSeconds = Math.max(0, Math.floor((Date.now() - date.getTime()) / 1000));
+  const units = [
+    { label: "year", seconds: 31536000 },
+    { label: "month", seconds: 2592000 },
+    { label: "week", seconds: 604800 },
+    { label: "day", seconds: 86400 },
+    { label: "hour", seconds: 3600 },
+    { label: "minute", seconds: 60 },
+  ];
+
+  const unit = units.find((item) => diffSeconds >= item.seconds);
+  if (!unit) return "just now";
+
+  const value = Math.floor(diffSeconds / unit.seconds);
+  return `${value} ${unit.label}${value === 1 ? "" : "s"} ago`;
 }
 
 export function ActivityRow({
@@ -27,7 +44,7 @@ export function ActivityRow({
           <span className="font-medium">{entityName}</span>
         </p>
         <p className="text-xs text-muted-foreground mt-0.5">
-          {formatDistanceToNow(timestamp, { addSuffix: true })}
+          {formatDistanceToNow(timestamp)}
           {userId && <span> · by {userId}</span>}
         </p>
       </div>

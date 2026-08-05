@@ -55,7 +55,13 @@ const PROPERTY_RANGES = {
 
 // --- Core calculation engine ---
 export function calculateFormulation(input: FormulationInput): CalculationResult {
-  const { oilBlend, superfatPercent, lyeConcentrationPercent, waterToLyeRatio, fragranceLoadPercent } = input;
+  const {
+    oilBlend,
+    superfatPercent,
+    lyeConcentrationPercent,
+    waterToLyeRatio,
+    fragranceLoadPercent,
+  } = FormulationInputSchema.parse(input);
 
   // Validate total oil percentage
   const totalOilPercent = oilBlend.reduce((sum, o) => sum + o.percent, 0);

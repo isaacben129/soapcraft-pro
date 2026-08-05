@@ -39,6 +39,7 @@ interface Recipe {
   currentVersion: number;
   status: "active" | "draft" | "archived";
   batchesCount: number;
+  totalWeight: number;
   updatedAt: string;
 }
 
@@ -49,6 +50,7 @@ const recipe: Recipe = {
   currentVersion: 1,
   status: "active",
   batchesCount: 3,
+  totalWeight: 1000,
   updatedAt: "2026-07-20",
 };
 

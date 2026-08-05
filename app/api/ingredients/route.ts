@@ -10,6 +10,12 @@ import { ingredients } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { DEFAULT_OILS } from "@/lib/calculations/sap";
 
+type CatalogueIngredient = (typeof DEFAULT_OILS)[number] & {
+  source: string;
+  datasetRevision: string;
+  isPrivate?: boolean;
+};
+
 // ── GET /api/ingredients ───────────────────────────
 // Returns the system ingredient catalogue with source/SAP revision.
 
@@ -21,7 +27,7 @@ export async function GET(req: NextRequest) {
     // User-scoped private ingredients are filtered by userId
 
     // Return the system catalogue (DEFAULT_OILS as the authoritative source)
-    const catalogue = DEFAULT_OILS.map((oil) => ({
+    const catalogue: CatalogueIngredient[] = DEFAULT_OILS.map((oil) => ({
       id: oil.id,
       name: oil.name,
       nameShort: oil.nameShort,
@@ -39,16 +45,14 @@ export async function GET(req: NextRequest) {
     }));
 
     // If user is authenticated, also include their private ingredients
-    const userIngredients: { id: string; name: string; costPerUnit: number; unit: string; source: string; sapRevision: string; notes: string | null; createdBy: string; createdAt: Date }[] = [];
-    if (session?.user?.id) {
-      const [user] = await db
-        .select()
-        .from(ingredients)
-        .where(eq(ingredients.createdBy, session.user.id))
-        .limit(50);
-
-      if (user) {
-        userIngredients = [user].map((ing) => ({
+    const userIngredients: CatalogueIngredient[] = session?.user?.id
+      ? (
+          await db
+            .select()
+            .from(ingredients)
+            .where(eq(ingredients.createdBy, session.user.id))
+            .limit(50)
+        ).map((ing) => ({
           id: ing.id,
           name: ing.name,
           nameShort: ing.nameShort,
@@ -64,9 +68,8 @@ export async function GET(req: NextRequest) {
           source: "user-defined",
           datasetRevision: "1.0.0",
           isPrivate: true,
-        }));
-      }
-    }
+        }))
+      : [];
 
     return NextResponse.json({
       catalogue,

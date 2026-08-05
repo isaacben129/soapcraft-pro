@@ -45,6 +45,7 @@ export interface BatchSummary {
   name: string;
   recipeName: string;
   status: string;
+  priority?: number;
 }
 
 export interface RecipeSummary {
@@ -105,7 +106,7 @@ export function deriveAttention(data: DashboardData): AttentionItem[] {
       type: "active-making",
       label: `Making: ${batch.name}`,
       description: batch.nextAction,
-      priority: batch.priority,
+      priority: batch.priority ?? 0,
       href: `/batches/${batch.id}`,
     });
   }
@@ -116,7 +117,7 @@ export function deriveAttention(data: DashboardData): AttentionItem[] {
       type: "cure-overdue",
       label: `Overdue: ${batch.name}`,
       description: `Day ${batch.currentDay}, past estimated cure of ${batch.estimatedCureDays} days`,
-      priority: batch.priority,
+      priority: batch.priority ?? 0,
       href: `/batches/${batch.id}`,
     });
   }
@@ -127,7 +128,7 @@ export function deriveAttention(data: DashboardData): AttentionItem[] {
       type: "cure-due",
       label: `Due: ${batch.name}`,
       description: `Next observation: ${batch.nextObservationDate}`,
-      priority: batch.priority,
+      priority: batch.priority ?? 0,
       href: `/batches/${batch.id}`,
     });
   }
@@ -138,7 +139,7 @@ export function deriveAttention(data: DashboardData): AttentionItem[] {
       type: "missing-yield",
       label: `Missing yield: ${batch.name}`,
       description: `${batch.recipeName} — yield not recorded`,
-      priority: batch.priority,
+      priority: batch.priority ?? 0,
       href: `/batches/${batch.id}`,
     });
   }
@@ -149,7 +150,7 @@ export function deriveAttention(data: DashboardData): AttentionItem[] {
       type: "missing-cost",
       label: `Missing cost: ${batch.name}`,
       description: `${batch.recipeName} — cost data incomplete`,
-      priority: batch.priority,
+      priority: batch.priority ?? 0,
       href: `/batches/${batch.id}`,
     });
   }

@@ -6,7 +6,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { ingredientCostRecords } from "@/db/schema";
-import { eq, and } from "drizzle-orm";
+import { eq, and, isNull } from "drizzle-orm";
 
 // ── Unit normalization ──────────────────────
 // Converts cost per unit to a common base unit (grams).
@@ -50,7 +50,7 @@ export async function GET(req: NextRequest) {
       .from(ingredientCostRecords)
       .where(and(
         eq(ingredientCostRecords.userId, session.user.id),
-        eq(ingredientCostRecords.archivedAt, null)
+        isNull(ingredientCostRecords.archivedAt)
       ))
       .orderBy(ingredientCostRecords.effectiveDate);
 

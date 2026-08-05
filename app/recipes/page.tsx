@@ -172,7 +172,7 @@ export default function RecipesPage() {
   const [sort, setSort] = useState<"updated" | "created" | "name">("updated");
 
   const filtered = useMemo(() => {
-    let result = mockRecipes.filter((r) => {
+    const result = mockRecipes.filter((r) => {
       const matchesSearch = r.name.toLowerCase().includes(search.toLowerCase());
       const matchesFilter = filter === "all" || r.status === filter;
       return matchesSearch && matchesFilter;

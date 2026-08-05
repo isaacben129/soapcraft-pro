@@ -5,6 +5,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   calculateBatchCost,
@@ -49,6 +50,8 @@ interface BatchCostFormProps {
   yieldBars: number;
 }
 
+type SelectedCosts = Record<string, string>;
+
 export function BatchCostForm({
   recipeId,
   recipeName,
@@ -60,9 +63,7 @@ export function BatchCostForm({
 }: BatchCostFormProps) {
   const router = useRouter();
   const [costRecords, setCostRecords] = useState<CostRecord[]>([]);
-  const [selectedCosts, setSelectedCosts] = useState<
-    Record<string, string // cost record ID
-  >({});
+  const [selectedCosts, setSelectedCosts] = useState<SelectedCosts>({});
   const [fragranceCost, setFragranceCost] = useState(0);
   const [otherCosts, setOtherCosts] = useState(0);
   const [targetPricePerBar, setTargetPricePerBar] = useState(0);
