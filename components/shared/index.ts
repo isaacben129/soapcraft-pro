@@ -13,7 +13,3 @@ export { AttentionRow } from "./attention-row";
 export { ActivityRow } from "./activity-row";
 export { EmptyState } from "./empty-state";
 export { FieldError, BlockingErrorSummary } from "./field-error";
-export { DashboardHeader } from "./dashboard-header";
-export { KPICard } from "./kpi-card";
-export { BarChart } from "./bar-chart";
-export { ChartCard } from "./chart-card";
