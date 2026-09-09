@@ -1,0 +1,94 @@
+{
+  "$schema": "https://studioforge.dev/schemas/chemistry-fixtures.json",
+  "version": "2.0.0",
+  "description": "Synthetic algebra fixtures from CALCULATION-SPEC.md §14. These use an explicitly synthetic oil record so implementation can begin without treating a provisional ingredient value as authoritative.",
+  "molecularWeights": {
+    "MW_NaOH": 39.997,
+    "MW_KOH": 56.106
+  },
+  "syntheticFixture": {
+    "id": "test-oil-a",
+    "sapKOH": 0.190000,
+    "sapNaOH": 0.1354477239510926,
+    "status": "synthetic",
+    "note": "This record MUST be impossible to load in production."
+  },
+  "pureNaOH": {
+    "description": "For 1000 g oil, 5% superfat, 100% NaOH purity",
+    "oilWeightTotal": 1000,
+    "superfatPercent": 5,
+    "naOHPurityPercent": 100,
+    "kohPercentOfAlkaliEquivalents": 0,
+    "expected": {
+      "fullNaOHPure": 135.4477,
+      "naohPureMass": 128.6753,
+      "naohAsSuppliedMass": 128.6753,
+      "kohPureMass": 0,
+      "kohAsSuppliedMass": 0,
+      "totalAlkaliAsSupplied": 128.6753,
+      "tolerance": 0.0001
+    }
+  },
+  "pureKOH": {
+    "description": "For 1000 g oil, 5% superfat, 90% KOH purity",
+    "oilWeightTotal": 1000,
+    "superfatPercent": 5,
+    "naOHPurityPercent": 100,
+    "kohPercentOfAlkaliEquivalents": 100,
+    "expected": {
+      "fullNaOHPure": 135.4477,
+      "naohPureMass": 0,
+      "naohAsSuppliedMass": 0,
+      "kohPureMass": 180.5000,
+      "kohAsSuppliedMass": 200.5556,
+      "totalAlkaliAsSupplied": 200.5556,
+      "tolerance": 0.0001
+    }
+  },
+  "mixedAlkali": {
+    "description": "For 1000 g oil, 5% superfat, 40% KOH alkali equivalents, 99% NaOH purity, 90% KOH purity",
+    "oilWeightTotal": 1000,
+    "superfatPercent": 5,
+    "naOHPurityPercent": 99,
+    "kohPercentOfAlkaliEquivalents": 40,
+    "kohPurityPercent": 90,
+    "expected": {
+      "naohAsSuppliedMass": 77.9851,
+      "kohAsSuppliedMass": 80.2222,
+      "totalAlkaliAsSupplied": 158.2073,
+      "tolerance": 0.0001
+    }
+  },
+  "waterModes": {
+    "description": "Using the mixed-alkali result above (totalAlkaliAsSupplied = 158.2073 g, oilWeightTotal = 1000 g)",
+    "totalAlkaliAsSupplied": 158.2073,
+    "oilWeightTotal": 1000,
+    "ratio": {
+      "waterToLyeRatio": 2.0,
+      "expectedWater": 316.4146,
+      "tolerance": 0.0001
+    },
+    "concentration": {
+      "lyeConcentrationPercent": 33.3333333333,
+      "expectedWater": 316.4146,
+      "tolerance": 0.0002
+    },
+    "percentOfOils": {
+      "waterAsPercentOfOils": 30,
+      "expectedWater": 300.0000,
+      "tolerance": 0.0001
+    }
+  },
+  "economicFixtures": {
+    "description": "For a complete cost basis of 6.80 per unit",
+    "costPerBar": 6.80,
+    "markup50Percent": {
+      "markupPercent": 50,
+      "expectedPrice": 10.20
+    },
+    "grossMargin50Percent": {
+      "grossMarginPercent": 50,
+      "expectedPrice": 13.60
+    }
+  }
+}
