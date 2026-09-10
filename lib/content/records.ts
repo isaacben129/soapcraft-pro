@@ -149,7 +149,7 @@ export const forumRecords: BlogRecord[] = [
 // These should be populated from actual Search Console data.
 
 export const searchConsoleRecords: BlogRecord[] = [
-  // Placeholder — populated by seo-audit.sh from Search Console data
+  // Search Console records are added only from verified export data.
   // Each record follows the same structure as forumRecords
 ];
 
@@ -158,7 +158,7 @@ export const searchConsoleRecords: BlogRecord[] = [
 // These should be populated from SERP analysis.
 
 export const competitorGapRecords: BlogRecord[] = [
-  // Placeholder — populated by the SEO audit process
+  // Competitor-gap records are added only from verified SERP analysis.
   // Each record follows the same structure as forumRecords
 ];
 

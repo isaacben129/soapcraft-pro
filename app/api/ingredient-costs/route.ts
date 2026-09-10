@@ -18,7 +18,7 @@ const UNIT_TO_GRAMS: Record<string, number> = {
   lb: 453.592,
 };
 
-export function normalizeToGrams(costPerUnit: number, unit: string): number {
+function normalizeToGrams(costPerUnit: number, unit: string): number {
   const gramsPerUnit = UNIT_TO_GRAMS[unit];
   if (!gramsPerUnit) {
     throw new Error(`Unknown unit: ${unit}. Supported: g, kg, oz, lb`);
@@ -26,7 +26,7 @@ export function normalizeToGrams(costPerUnit: number, unit: string): number {
   return costPerUnit / gramsPerUnit;
 }
 
-export function normalizeCost(costPerUnit: number, fromUnit: string, toUnit: string): number {
+function normalizeCost(costPerUnit: number, fromUnit: string, toUnit: string): number {
   const costPerGram = normalizeToGrams(costPerUnit, fromUnit);
   const gramsPerTarget = UNIT_TO_GRAMS[toUnit];
   if (!gramsPerTarget) {

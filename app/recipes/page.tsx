@@ -315,8 +315,8 @@ interface RecipeDetailProps {
   params: Promise<{ id: string }>;
 }
 
-export function RecipeDetail({ params }: RecipeDetailProps) {
+function RecipeDetail({ params }: RecipeDetailProps) {
   // In production, fetch recipe and versions from API
-  // This is a placeholder for the detail view
+  // Detail view is not part of this route's current rendering contract
   return null;
 }

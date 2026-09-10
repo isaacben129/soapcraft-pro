@@ -1,1 +1,1 @@
-export default function ComparePage({params}:{params:{slug:string}}){return <main><h1>Compare: {params.slug.replaceAll("-", " ")}</h1><p>SoapCraft Pro focuses on transparent inputs, versioned outputs, and context transfer across the full making workflow.</p></main>}
+export default async function ComparePage({params}:{params:Promise<{slug:string}>}){const {slug}=await params;return <main><h1>Compare: {slug.replaceAll("-", " ")}</h1><p>SoapCraft Pro focuses on transparent inputs, versioned outputs, and context transfer across the full making workflow.</p></main>}

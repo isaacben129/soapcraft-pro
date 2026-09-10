@@ -1,1 +1,1 @@
-export default function ExamplePage({params}:{params:{id:string}}){return <main><h1>Example {params.id}</h1><p>Example recipes are educational contexts. Verify every ingredient source and workshop procedure independently.</p></main>}
+export default async function ExamplePage({params}:{params:Promise<{id:string}>}){const {id}=await params;return <main><h1>Example {id}</h1><p>Example recipes are educational contexts. Verify every ingredient source and workshop procedure independently.</p></main>}

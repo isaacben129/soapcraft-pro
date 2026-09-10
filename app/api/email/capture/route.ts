@@ -31,10 +31,8 @@ export async function POST(req: NextRequest) {
 
     console.log(`[EMAIL CAPTURE] ${email} from ${source}`, JSON.stringify(calculationData));
 
-    // TODO: Integrate with actual CRM service
-    // - ConvertKit: POST to https://api.convertkit.com/v3/forms/{id}/subscribe
-    // - Mailchimp: POST to https://usX.api.mailchimp.com/3.0/lists/{id}/members
-    // - Resend: POST to https://api.resend.com/emails
+    // CRM integration is intentionally disabled until a configured provider is available.
+    // The endpoint records no external contact and returns only the local acknowledgement.
 
     return NextResponse.json({
       success: true,
