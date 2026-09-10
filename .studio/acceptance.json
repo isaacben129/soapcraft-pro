@@ -1,10 +1,9 @@
 {
   "$schema": "https://studioforge.dev/schemas/acceptance.json",
-  "version": "2.0.0",
   "project": "SoapCraft Pro",
   "repository": "/opt/data/studio/apps/soapcraft-pro",
   "goalMetric": "Weekly anonymous utility sessions that produce a correct result, plus the proportion that continue into a connected tool using the same recipe/batch context",
-  "activationMetric": "First anonymous completion rate — percentage of new visitors who complete a full calculation without authentication in their first session",
+  "activationMetric": "First anonymous completion rate \u2014 percentage of new visitors who complete a full calculation without authentication in their first session",
   "approvalBoundary": "BUILD_AUTHORIZED by Isaac on 2026-09-09; RELEASE_ACCEPTED is reserved for post-build independent verification",
   "constraints": {
     "deterministicCalculation": "AI may never invent chemical quantities or modify formulation logic without tests and review",
@@ -15,7 +14,7 @@
     "contextTransfer": "Inputs transfer between all tool stages without re-entry via the Recipe/Batch Context",
     "formulaVersioning": "Every formula output carries calculator version, dataset revision, and formula revision",
     "cloudPersistenceOptional": "Cloud persistence requires account creation; all core tools work without an account",
-    "monetizationSequence": "Contextual affiliates → one-time Seller Pack → optional workspace only from demand → ads only after traffic evidence",
+    "monetizationSequence": "Contextual affiliates \u2192 one-time Seller Pack \u2192 optional workspace only from demand \u2192 ads only after traffic evidence",
     "chemistryVerificationGate": "Chemistry engine requires deterministic specification, source manifest, independent review, hand/reference calculations, and cross-calculator fixtures before public release",
     "contentQuality": "Every published page must supply at least one of: verified working tool, editable worked calculation, useful downloadable artifact, verified reference data with provenance, or substantive synthesis of real workflow evidence",
     "noFabrication": "Do not invent traffic, revenue, conversion rates, or business performance",
@@ -32,7 +31,7 @@
     "eventBreakEvenCeiling": "Event break-even units = ceiling of fixed event costs divided by weighted contribution per unit",
     "noClaimedSafety": "No blanket cure-completion percentage or safety declaration; 'Estimated window reached' copy is correct",
     "disclaimerNotSubstitute": "Safety disclaimers describe scope but never substitute for correct calculations",
-    "propertyIndicesNotClaims": "Arbitrary ±20% property transforms are prohibited; publish only sourced fatty-acid-derived indicators with provenance, otherwise omit",
+    "propertyIndicesNotClaims": "Arbitrary \u00b120% property transforms are prohibited; publish only sourced fatty-acid-derived indicators with provenance, otherwise omit",
     "mixedAlkali": "KOH percentage is a share of full pure alkali equivalents; apply superfat once to the recipe, then correct each alkali independently for purity",
     "waterModes": "Exactly one of ratio, lye concentration, or percent-of-oils controls water; inactive inputs cannot affect output",
     "moldCalibration": "No universal batter-density constant; calibrated mode uses user measurements and planning mode returns an explicit approximate range",
@@ -341,7 +340,7 @@
       "category": "costing",
       "boundary": "e2e",
       "acceptanceRows": [
-        "Markup percent is calculated as (price - cost) / cost × 100",
+        "Markup percent is calculated as (price - cost) / cost \u00d7 100",
         "Markup is separately labeled from gross margin",
         "Calculation is verified against independent reference cases"
       ]
@@ -353,7 +352,7 @@
       "category": "costing",
       "boundary": "e2e",
       "acceptanceRows": [
-        "Gross margin percent is calculated as (net revenue - cost) / net revenue × 100",
+        "Gross margin percent is calculated as (net revenue - cost) / net revenue \u00d7 100",
         "Gross margin is separately labeled from markup",
         "Calculation is verified against independent reference cases"
       ]
@@ -535,8 +534,8 @@
       "boundary": "e2e",
       "acceptanceRows": [
         "Batch records are created with an immutable recipe version reference",
-        "Batch status follows the state machine: draft → ready_to_make → making → curing → ready → archived",
-        "Exceptional transitions are allowed: making → abandoned, curing → abandoned, ready → curing (with reason recorded)",
+        "Batch status follows the state machine: draft \u2192 ready_to_make \u2192 making \u2192 curing \u2192 ready \u2192 archived",
+        "Exceptional transitions are allowed: making \u2192 abandoned, curing \u2192 abandoned, ready \u2192 curing (with reason recorded)",
         "No external observer can see another user's batch records"
       ]
     },
@@ -842,7 +841,7 @@
   "flows": [
     {
       "id": "F1",
-      "name": "Anonymous Formulation → Sizing → Costing",
+      "name": "Anonymous Formulation \u2192 Sizing \u2192 Costing",
       "description": "Complete anonymous calculation flow across three tool stages",
       "boundary": "e2e",
       "acceptanceRows": [
@@ -855,7 +854,7 @@
     },
     {
       "id": "F7",
-      "name": "Anonymous Start → Account Creation → Cloud Persistence",
+      "name": "Anonymous Start \u2192 Account Creation \u2192 Cloud Persistence",
       "description": "User starts anonymously, gets value, then creates account to persist",
       "boundary": "e2e",
       "acceptanceRows": [
@@ -954,12 +953,12 @@
     }
   ],
   "gates": {
-    "Gate_C": "PASS — Isaac authorized implementation on 2026-09-09; affected public routes remain controlled by explicit source and safety release gates",
-    "Gate_R": "PASS — all required skills loaded and applied (studio-build, studio-product-contract, studio-experience-routing, studio-slice-delivery, studio-contract-critique, ui-ux-pro-max, prd-competitive-gap-analysis, software-prd-authoring, security-review, platform-design, testing-strategy)",
-    "Gate_A": "PENDING — awaiting RELEASE_ACCEPTED after build and verification. Deferred items (MKT-DEFERRED-SELLER-PACK) explicitly tracked as PENDING until demand evidence exists."
+    "Gate_C": "PASS \u2014 Isaac authorized implementation on 2026-09-09; affected public routes remain controlled by explicit source and safety release gates",
+    "Gate_R": "PASS \u2014 all required skills loaded and applied (studio-build, studio-product-contract, studio-experience-routing, studio-slice-delivery, studio-contract-critique, ui-ux-pro-max, prd-competitive-gap-analysis, software-prd-authoring, security-review, platform-design, testing-strategy)",
+    "Gate_A": "PENDING \u2014 awaiting RELEASE_ACCEPTED after build and verification. Deferred items (MKT-DEFERRED-SELLER-PACK) explicitly tracked as PENDING until demand evidence exists."
   },
   "nonGoals": [
-    "Do not rebuild what already works — reuse existing assets and calculation engines",
+    "Do not rebuild what already works \u2014 reuse existing assets and calculation engines",
     "Do not deploy AI-generated content as factual without verification",
     "Do not modify safety-critical calculation logic without tests and review",
     "Do not collect email lists without clear purpose",
@@ -1008,6 +1007,1885 @@
       "Calculation test suite passes all independently verified vectors",
       "No historical batch loses its recipe-version snapshot",
       "No anonymous result requires login, email, cookie consent, or payment"
+    ]
+  },
+  "schema": 1,
+  "source_roots": [
+    "app",
+    "components",
+    "lib"
+  ],
+  "required_skills": [],
+  "defects": [],
+  "requirements": [
+    {
+      "id": "CHEM-001-001",
+      "description": "User enters oil blend with percentages summing to 100 and target oil weight without authentication",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-001-002",
+      "description": "System calculates exact NaOH lye amount using sourced SAP values and superfat multiplier",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-001-003",
+      "description": "Output displays oil weights, NaOH amount, water amount, and total batch mass",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-001-004",
+      "description": "Calculation carries calculator version and dataset revision in the result",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-001-005",
+      "description": "Unit-conversion round-trip produces identical results when switching between g, kg, oz, lb",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-001-006",
+      "description": "Unsupported or zero oil selections produce a clear blocking error, not a silent zero",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-001-007",
+      "description": "Result is deterministic: same inputs always produce the same outputs",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-002-001",
+      "description": "User selects KOH as the sole alkali",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-002-002",
+      "description": "Engine applies recipe superfat once to pure KOH demand and divides by the entered KOH purity fraction",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-002-003",
+      "description": "Output separately labels pure KOH demand and as-supplied KOH mass",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-002-004",
+      "description": "Synthetic fixtures may test the engine before catalogue approval; public output additionally requires release receipts",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-003-001",
+      "description": "User enters KOH percentage as a share of full pure alkali equivalents; NaOH share is the remainder",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-003-002",
+      "description": "Engine splits full pure equivalents, applies one recipe-level superfat multiplier, and corrects each share for its own purity",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-003-003",
+      "description": "Output separately shows NaOH, KOH, and total as-supplied alkali mass",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-003-004",
+      "description": "Invalid split totals or purity values block calculation",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-004-001",
+      "description": "User enters one recipe-level superfat or lye-discount percentage",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-004-002",
+      "description": "The multiplier is applied once to every selected alkali before purity correction",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-004-003",
+      "description": "Out-of-range values block with a typed validation error",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-004-004",
+      "description": "Superfat and lye discount are two names for the same reduction, not compounding inputs",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-005-001",
+      "description": "User selects exactly one active water mode from: lye_concentration, water_to_lye_ratio, or percent_of_oils",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-005-002",
+      "description": "Inactive water input fields are not editable and do not influence the calculated output",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-005-003",
+      "description": "System calculates water amount based solely on the selected active mode",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-005-004",
+      "description": "Switching between active water modes recalculates the water amount correctly",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-006-001",
+      "description": "User enters oil blend with percentages that sum to 100 within the documented tolerance",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-006-002",
+      "description": "System calculates quality indicators using sourced formulas where available",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-006-003",
+      "description": "Each oil entry shows sourced SAP values with citation and revision information",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-006-004",
+      "description": "Property estimates are visibly labeled as estimates with their calculation method and source",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-007-001",
+      "description": "System produces quality indicators from the entered oil blend",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-007-002",
+      "description": "Quality indicators are visibly labeled as relative indices, not skin performance claims",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-007-003",
+      "description": "Unsupported quality indicators are omitted from the output rather than invented",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-008-001",
+      "description": "User can enter a fragrance load percentage or amount within domain-reviewed bounds",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-008-002",
+      "description": "Fragrance inputs are validated against domain-reviewed limits; exceeding them produces a warning",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-008-003",
+      "description": "IFRA claims are absent unless identity, category data, and calculation are all valid and verified",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-008-004",
+      "description": "Safety disclaimers describe the scope of the calculation but never substitute for correctness",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-009-001",
+      "description": "Every calculation result visibly displays the calculator version",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-009-002",
+      "description": "Every calculation result visibly displays the dataset revision",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-009-003",
+      "description": "Exports include formula revision and calculator version in the output",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-009-004",
+      "description": "Share URLs encode the calculator version and dataset revision",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-010-001",
+      "description": "Deterministic specification is documented and version-controlled with a named author",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-010-002",
+      "description": "Source manifest with effective and revision dates exists and is accessible",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-010-003",
+      "description": "Independent review by a named domain owner is documented with a sign-off date",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-010-004",
+      "description": "Hand and reference calculations are verified against independent computation",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-010-005",
+      "description": "Cross-calculator fixtures pass independently with no averaged values used to artificially satisfy checks",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CHEM-010-006",
+      "description": "Differences between authoritative sources are explained and resolved, not averaged away",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "SIZE-001-001",
+      "description": "User can enter an oil blend as percentages or as absolute weights",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "SIZE-001-002",
+      "description": "System converts between percentage and weight correctly and shows the conversion",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "SIZE-001-003",
+      "description": "Changing between percentage and weight modes updates all downstream values consistently",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "SIZE-002-001",
+      "description": "User can enter a target weight in any supported unit: g, kg, oz, or lb",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "SIZE-002-002",
+      "description": "System converts between all supported units correctly using normalized conversion factors",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "SIZE-002-003",
+      "description": "Quantity normalization uses tested conversion functions",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "SIZE-002-004",
+      "description": "Money is never summed across currencies; mixing currencies produces a blocking warning",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "SIZE-003-001",
+      "description": "User enters a target batch weight and sees all ingredient amounts recalculated proportionally",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "SIZE-003-002",
+      "description": "Scaling is proportional and mathematically correct across all ingredient types",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "SIZE-003-003",
+      "description": "A scaled recipe can be saved with authentication optional for saving",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "SIZE-003-004",
+      "description": "The scaled recipe retains the original formula revision and source attribution",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "SIZE-004-001",
+      "description": "User enters internal dimensions or measured water-fill volume and receives normalized target-fill volume",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "SIZE-004-002",
+      "description": "Calibrated mode requires prior occupied volume and prior batter mass and computes user-specific density",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "SIZE-004-003",
+      "description": "Planning mode returns a visibly approximate range with assumption provenance, never a precision capacity point",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "SIZE-004-004",
+      "description": "Metric/imperial, irregular-mold, calibration, and invalid-input fixtures pass",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "SIZE-005-001",
+      "description": "With a calibrated target batter mass, engine computes scale factor against current unrounded recipe batter mass",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "SIZE-005-002",
+      "description": "Every formulation amount is recomputed from percentages and source values rather than rounded displays",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "SIZE-005-003",
+      "description": "Without calibration, the UI presents a planning range and asks for calibration before precision claims",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "SIZE-006-001",
+      "description": "User enters a target batch weight",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "SIZE-006-002",
+      "description": "System back-calculates all ingredient amounts from that target",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "SIZE-006-003",
+      "description": "Results are deterministic and match independent calculations within documented tolerance",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "SIZE-007-001",
+      "description": "System calculates bar count from batch volume and bar dimensions",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "SIZE-007-002",
+      "description": "Cut plan is displayed with waste excluded from saleable units",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "SIZE-007-003",
+      "description": "Multi-mold allocation is supported and shown clearly",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "SIZE-008-001",
+      "description": "User enters multiple molds with their individual volumes",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "SIZE-008-002",
+      "description": "System allocates the batch across molds proportionally",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "SIZE-008-003",
+      "description": "Each mold's contribution is displayed separately",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-001-001",
+      "description": "User enters or imports ingredient costs per unit",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-001-002",
+      "description": "System calculates material cost from quantities and entered costs",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-001-003",
+      "description": "Cost per made unit is displayed",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-001-004",
+      "description": "Cost per saleable unit accounts for yield loss from trim, samples, defects, and testing",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-002-001",
+      "description": "User enters packaging cost per unit",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-002-002",
+      "description": "System includes packaging cost in the full batch cost",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-002-003",
+      "description": "Packaging cost per saleable unit is displayed separately from ingredient cost",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-003-001",
+      "description": "User enters labor minutes and hourly rate",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-003-002",
+      "description": "System calculates labor cost correctly",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-003-003",
+      "description": "Labor cost is separately labeled in the cost breakdown",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-004-001",
+      "description": "User enters batch overhead amount",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-004-002",
+      "description": "System includes overhead in the full batch cost",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-004-003",
+      "description": "Overhead is separately labeled from material, labor, and packaging costs",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-005-001",
+      "description": "System distinguishes made units from saleable units",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-005-002",
+      "description": "Saleable yield excludes trim, samples, defects, and units retained for testing",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-005-003",
+      "description": "Cost per saleable unit consistently increases when saleable yield decreases",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-006-001",
+      "description": "Markup percent is calculated as (price - cost) / cost \u00d7 100",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-006-002",
+      "description": "Markup is separately labeled from gross margin",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-006-003",
+      "description": "Calculation is verified against independent reference cases",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-007-001",
+      "description": "Gross margin percent is calculated as (net revenue - cost) / net revenue \u00d7 100",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-007-002",
+      "description": "Gross margin is separately labeled from markup",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-007-003",
+      "description": "Calculation is verified against independent reference cases",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-008-001",
+      "description": "User can enter retail, wholesale, and channel-fee scenarios",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-008-002",
+      "description": "System calculates contribution per unit for each scenario",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-008-003",
+      "description": "Channel fees correctly affect each scenario's result",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-008-004",
+      "description": "Scenarios are displayed side by side for comparison",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-009-001",
+      "description": "Target price before percentage and fixed fees is solved algebraically",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-009-002",
+      "description": "Result is not approximated by a markup multiplier",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-009-003",
+      "description": "System validates that target margin is >= 0 and < 1 before solving",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-010-001",
+      "description": "Full batch cost, cost per made unit, and cost per saleable unit are all displayed",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-010-002",
+      "description": "When saleable yield changes, cost per saleable unit updates consistently",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-010-003",
+      "description": "Missing costs are flagged and the result is visibly labeled incomplete",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-011-001",
+      "description": "A result with missing costs is explicitly labeled incomplete",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-011-002",
+      "description": "The incomplete result is not styled or presented as a recommendation",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-011-003",
+      "description": "The specific missing inputs are listed in the result",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "COST-011-004",
+      "description": "Warnings are visible beside the affected output area",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "MKT-001-001",
+      "description": "User enters fixed event costs and expected selling price per unit",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "MKT-001-002",
+      "description": "System calculates break-even units as ceiling of fixed costs divided by weighted contribution per unit",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "MKT-001-003",
+      "description": "Result is displayed with the methodology shown",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "MKT-002-001",
+      "description": "User enters multiple products with prices and mix share percentages",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "MKT-002-002",
+      "description": "System calculates weighted contribution per unit across the mix",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "MKT-002-003",
+      "description": "Product mix totals are correct and displayed",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "MKT-003-001",
+      "description": "System calculates stock target based on expected sell-through rate",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "MKT-003-002",
+      "description": "Revenue projection is displayed with underlying assumptions",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "MKT-003-003",
+      "description": "Stock targets account for yield per batch",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "MKT-004-001",
+      "description": "User enters expected sell-through rate as a percentage",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "MKT-004-002",
+      "description": "System adjusts stock target and revenue targets accordingly",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "MKT-005-001",
+      "description": "User enters a target profit amount",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "MKT-005-002",
+      "description": "System calculates the required number of units to sell",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "MKT-005-003",
+      "description": "Result accounts for fixed event costs and contribution per unit",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "MKT-006-001",
+      "description": "User enters wholesale minimum order quantity",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "MKT-006-002",
+      "description": "System calculates the number of batches required to fulfill the MOQ",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "MKT-006-003",
+      "description": "Production timeline accounts for cure interval",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "MKT-007-001",
+      "description": "System produces a printable quote or price sheet from the entered data",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "MKT-007-002",
+      "description": "The export contains the same values shown on screen",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "MKT-007-003",
+      "description": "The quote includes product names, prices, and contact information placeholders",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "MKT-008-001",
+      "description": "Event break-even is calculated as ceiling(fixed event costs / weighted contribution per unit)",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "MKT-008-002",
+      "description": "Calculation is verified against independent reference cases",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PROD-001-001",
+      "description": "User enters a target-ready date and selects a cure interval",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PROD-001-002",
+      "description": "System calculates pour date, unmold date, and cut date working backward",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PROD-001-003",
+      "description": "Date planning uses the explicit user-selected interval and never claims to determine product safety or readiness",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PROD-001-004",
+      "description": "A clear disclaimer is displayed: cure readiness is the user's decision",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PROD-002-001",
+      "description": "User enters weekly production capacity in batches",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PROD-002-002",
+      "description": "System calculates how many batches are required to meet a target",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PROD-002-003",
+      "description": "The production timeline accounts for the cure interval",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PROD-003-001",
+      "description": "Batch records are created with an immutable recipe version reference",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PROD-003-002",
+      "description": "Batch status follows the state machine: draft \u2192 ready_to_make \u2192 making \u2192 curing \u2192 ready \u2192 archived",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PROD-003-003",
+      "description": "Exceptional transitions are allowed: making \u2192 abandoned, curing \u2192 abandoned, ready \u2192 curing (with reason recorded)",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PROD-003-004",
+      "description": "No external observer can see another user's batch records",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PROD-004-001",
+      "description": "Observations are logged with a computed cure day based on batch start date",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PROD-004-002",
+      "description": "Next observation date is automatically calculated",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PROD-004-003",
+      "description": "No blanket cure-completion percentage or safety declaration is shown",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PROD-004-004",
+      "description": "Displayed text correctly says 'Estimated window reached'",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PROD-005-001",
+      "description": "Printable records contain all batch data including ingredient amounts and dates",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PROD-005-002",
+      "description": "The export contains the same values shown on screen",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PROD-005-003",
+      "description": "Records include formula revision and dataset revision for traceability",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PROD-006-001",
+      "description": "Safety checklist is presented before the making session can begin",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PROD-006-002",
+      "description": "On mobile, one step is shown at a time",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PROD-006-003",
+      "description": "Timer based on stored timestamps resumes after page reload without losing state",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PROD-006-004",
+      "description": "Planned vs actual measurements can be entered and compared",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PROD-006-005",
+      "description": "Each step can be completed or skipped with a reason recorded",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PROD-006-006",
+      "description": "Saving status is visibly displayed: unsaved, saving, saved, or save failed",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PURCH-001-001",
+      "description": "System produces ingredient requirements from a selected formulation",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PURCH-001-002",
+      "description": "Requirements are shown in normalized canonical units",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PURCH-001-003",
+      "description": "Requirements carry the formula version reference",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PURCH-002-001",
+      "description": "System produces packaging requirements from batch size",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PURCH-002-002",
+      "description": "Requirements account for bar count and selected packaging type",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PURCH-003-001",
+      "description": "System rounds ingredient quantities up to supplier pack sizes",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PURCH-003-002",
+      "description": "Both rounded quantities and exact quantities are displayed side by side",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PURCH-004-001",
+      "description": "User can enter costs from multiple suppliers for the same ingredient",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PURCH-004-002",
+      "description": "System compares costs per canonical unit fairly",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PURCH-004-003",
+      "description": "Comparison is displayed clearly enough to make a purchasing decision",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PURCH-005-001",
+      "description": "User enters current stock levels for each ingredient",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PURCH-005-002",
+      "description": "System shows requirements minus current stock",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PURCH-005-003",
+      "description": "The remaining need is calculated correctly",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PURCH-006-001",
+      "description": "System calculates purchase requirements for a specific event quantity",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PURCH-006-002",
+      "description": "Pack rounding is applied to the event quantity",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PURCH-007-001",
+      "description": "User can plan purchases without any authentication",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PURCH-007-002",
+      "description": "Purchase plan is stored in browser local storage",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PURCH-007-003",
+      "description": "Persistence status is clearly labeled as local-only",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PURCH-008-001",
+      "description": "Authenticated user can persist purchase records to the cloud",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PURCH-008-002",
+      "description": "Purchase records sync across devices",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PURCH-008-003",
+      "description": "Inventory depletion tracking persists across sessions and devices",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PURCH-009-001",
+      "description": "User can save an Ingredient Cost Record with an effective date",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PURCH-009-002",
+      "description": "Saved records are reusable across multiple batches",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PURCH-009-003",
+      "description": "Historical batch cost retains its original cost basis",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PURCH-010-001",
+      "description": "Batch usage automatically reduces inventory counts",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PURCH-010-002",
+      "description": "Remaining stock levels are displayed after each batch",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "PURCH-010-003",
+      "description": "Depletion is tracked across all batches",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-001-001",
+      "description": "Every tool is reachable from the directory without any login",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-001-002",
+      "description": "Tool cards show capability, not a login gate",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-001-003",
+      "description": "Category filters match all seven capability categories",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-001-004",
+      "description": "Each tool links to its canonical route",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-001-005",
+      "description": "Search by name and capability works",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-001-006",
+      "description": "Connection indicators show which tools share context",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-002-001",
+      "description": "Methodology pages contain approximately 1,500 or more rendered words where the subject warrants that depth",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-002-002",
+      "description": "Methodology pages include direct links to the relevant tools",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-002-003",
+      "description": "Methodology pages supply verified reference data with cited provenance",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-002-004",
+      "description": "Safety, legal, tax, IFRA, and formulation content has named sources and a documented reviewer approval",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-003-001",
+      "description": "Decision guides are substantive and linked to the relevant tools",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-003-002",
+      "description": "Guides contain useful visuals and direct tool connections",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-003-003",
+      "description": "Each guide supplies at least one of: a verified working tool, an editable worked calculation, a useful downloadable artifact, or verified reference data with provenance",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-004-001",
+      "description": "Every example embeds the same tool with preloaded inputs so the reader can edit and re-run",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-004-002",
+      "description": "Every formula used in the example is exposed and visible",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-004-003",
+      "description": "Editable inputs allow the reader to verify with their own values",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-004-004",
+      "description": "A downloadable artifact is available where applicable",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-004-005",
+      "description": "All examples are explicitly labeled 'Example'",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-005-001",
+      "description": "Templates are downloadable artifacts containing actual content, not empty shells",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-005-002",
+      "description": "Templates are editable and useful for the user's own planning",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-005-003",
+      "description": "No page ships solely to meet a word count or page quota",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-006-001",
+      "description": "Comparisons are factual with dated URLs and documented evidence strength",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-006-002",
+      "description": "No delegated or competitor assertion bypasses the quality research protocol",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-006-003",
+      "description": "Comparisons include what SoapCraft Pro must match, improve, connect, and avoid",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-006-004",
+      "description": "Unresolved safety, licensing, source, or domain-review gates are explicitly noted",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-007-001",
+      "description": "robots.txt exists and disallows protected routes",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-007-002",
+      "description": "sitemap.xml exists and includes all public pages",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-007-003",
+      "description": "Every page has page metadata with title, description, canonical URL, OpenGraph, and Twitter card tags",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-007-004",
+      "description": "JSON-LD structured data is present for Organization, Blog, Article, and FAQ",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-007-005",
+      "description": "Public pages return HTTP 200 when accessed anonymously",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-007-006",
+      "description": "Canonical URLs contain no duplicate /marketing tree",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-008-001",
+      "description": "Visual explanations accompany relevant formulas and workflows",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-008-002",
+      "description": "Visuals are original or properly licensed",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-008-003",
+      "description": "Visuals use approved design tokens from the design system",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "UTIL-008-004",
+      "description": "No generic stock photography is used anywhere in the product",
+      "scope": "in",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "MKT-DEFERRED-SELLER-PACK-001",
+      "description": "User receives downloadable artifact bundle after completing a connected workflow",
+      "scope": "out",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "MKT-DEFERRED-SELLER-PACK-002",
+      "description": "Bundle contains at least: costing workbook, market planner, batch/cure sheet, wholesale quote sheet, inventory count sheet",
+      "scope": "out",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "MKT-DEFERRED-SELLER-PACK-003",
+      "description": "No email required for download; explicit consent requested only if email exchange is offered",
+      "scope": "out",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "MKT-DEFERRED-SELLER-PACK-004",
+      "description": "No payment gate, subscription, or account requirement for artifact access",
+      "scope": "out",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "MKT-DEFERRED-SELLER-PACK-005",
+      "description": "Download works without login, cookie consent, or account creation",
+      "scope": "out",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "MKT-DEFERRED-SELLER-PACK-006",
+      "description": "Artifact files are self-contained and portable",
+      "scope": "out",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "MKT-DEFERRED-SELLER-PACK-007",
+      "description": "Deferred until traffic evidence supports one-time purchase; tracked as PENDING in ledger",
+      "scope": "out",
+      "boundary": "deployed",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CTX-001-001",
+      "description": "Context transfer contract defines input/output field mapping for all compatible tool pairs",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CTX-001-002",
+      "description": "Transfer preserves calculator version and dataset revision",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CTX-001-003",
+      "description": "User explicitly accepts inherited fields before the transfer completes",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CTX-001-004",
+      "description": "Share URL encodes the complete Recipe/Batch Context",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CTX-001-005",
+      "description": "Share URL contains no email or personal data",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CTX-001-006",
+      "description": "Anyone receiving the URL can view the complete calculation",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CTX-001-007",
+      "description": "Context transfer works across all calculator stages (formulation -> sizing -> costing -> production -> purchasing)",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    },
+    {
+      "id": "CTX-001-008",
+      "description": "Fallback to download artifact if browser URL limits are exceeded",
+      "scope": "in",
+      "boundary": "e2e",
+      "status": "PLANNED",
+      "evidence": []
+    }
+  ],
+  "core_flows": [
+    "CHEM-001-001",
+    "SIZE-004-001",
+    "PROD-001-001",
+    "COST-001-001",
+    "PURCH-007-001",
+    "UTIL-001-001",
+    "CTX-001-001"
+  ],
+  "placeholder_allowlist": [
+    "app/auth/login/login-form.tsx",
+    "app/auth/reset-password/page.tsx",
+    "app/auth/signup/page.tsx",
+    "app/batches/page.tsx",
+    "app/recipes/page.tsx",
+    "lib/auth.ts"
+  ],
+  "launchBoundary": {
+    "included": "Anonymous public utility hub, chemistry/sizing/costing/production/purchasing tools, context transfer, local persistence, guides, examples, SEO pages",
+    "deferred": [
+      "Seller Pack payments",
+      "CRM/email delivery",
+      "subscription billing",
+      "cloud sync",
+      "account-backed persistence",
+      "final brand mark",
+      "photography and motion design"
     ]
   }
 }
