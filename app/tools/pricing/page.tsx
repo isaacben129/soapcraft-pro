@@ -1,2 +1,4 @@
-import ToolLanding from "@/components/shared/tool-landing";
-export default function PricingPage(){return <ToolLanding title="Pricing" description="Solve price from either markup or gross-margin targets. They are not the same measure."/>}
+// ── SLICE-001: Retired category page redirect ──
+// This page previously held dead content. Now redirects to canonical /tools.
+import { redirect } from "next/navigation";
+export default function Redirect() { redirect("/tools"); }

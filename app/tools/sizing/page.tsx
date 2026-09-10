@@ -1,2 +1,4 @@
-import ToolLanding from "@/components/shared/tool-landing";
-export default function SizingPage(){return <ToolLanding title="Sizing and conversion" description="Scale a recipe, convert mass units, and fit a recipe to a calibrated mold."/>}
+// ── SLICE-001: Retired category page redirect ──
+// This page previously held dead content. Now redirects to canonical /tools.
+import { redirect } from "next/navigation";
+export default function Redirect() { redirect("/tools"); }

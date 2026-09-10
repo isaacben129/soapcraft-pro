@@ -1,2 +1,4 @@
-import ToolLanding from "@/components/shared/tool-landing";
-export default function MarketsPage(){return <ToolLanding title="Markets and sales planning" description="Plan craft-fair break-even, product mix, and wholesale quotes."/>}
+// ── SLICE-001: Retired category page redirect ──
+// This page previously held dead content. Now redirects to canonical /tools.
+import { redirect } from "next/navigation";
+export default function Redirect() { redirect("/tools"); }

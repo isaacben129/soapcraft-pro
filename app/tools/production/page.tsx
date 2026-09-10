@@ -1,2 +1,4 @@
-import ToolLanding from "@/components/shared/tool-landing";
-export default function ProductionPage(){return <ToolLanding title="Production and cure" description="Back-plan a pour date, create a batch record, and track cure observations."/>}
+// ── SLICE-001: Retired category page redirect ──
+// This page previously held dead content. Now redirects to canonical /tools.
+import { redirect } from "next/navigation";
+export default function Redirect() { redirect("/tools"); }

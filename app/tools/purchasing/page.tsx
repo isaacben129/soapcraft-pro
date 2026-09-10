@@ -1,2 +1,4 @@
-import ToolLanding from "@/components/shared/tool-landing";
-export default function PurchasingPage(){return <ToolLanding title="Purchasing and inventory" description="Subtract stock from requirements and round purchases to supplier pack sizes."/>}
+// ── SLICE-001: Retired category page redirect ──
+// This page previously held dead content. Now redirects to canonical /tools.
+import { redirect } from "next/navigation";
+export default function Redirect() { redirect("/tools"); }
