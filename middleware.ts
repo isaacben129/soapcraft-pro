@@ -1,18 +1,6 @@
 import { withAuth } from "next-auth/middleware";
 import { NextResponse, type NextRequest } from "next/server";
-
-const retiredRoutes = ["/pricing", "/subscription", "/dashboard", "/marketing"];
-const retiredRoutePrefixes = ["/marketing/", "/calculators/", "/calculators"];
-
-function isRetiredRoute(pathname: string) {
-  if (retiredRoutes.includes(pathname)) return true;
-  for (const prefix of retiredRoutePrefixes) {
-    // Specific legacy calculator paths have canonical tool destinations.
-    if (prefix === "/calculators/" && pathname.startsWith(prefix)) continue;
-    if (pathname.startsWith(prefix)) return true;
-  }
-  return false;
-}
+import { canBypassAuth, isRetiredRoute } from "./lib/routing/public-routes";
 
 export default withAuth(
   function middleware(req: NextRequest) {
@@ -45,39 +33,7 @@ export default withAuth(
     callbacks: {
       authorized({ token, req }) {
         const { pathname } = req.nextUrl;
-
-        const publicRoutes = new Set([
-          "/",
-          "/blog",
-          "/auth/login",
-          "/auth/signup",
-          "/auth/reset-password",
-          "/robots.txt",
-          "/sitemap.xml",
-          "/tools",
-          "/methodology",
-          "/safety",
-          "/privacy",
-          "/terms",
-          "/api/auth",
-          "/api/webhooks",
-        ]);
-        const publicPrefixes = [
-          "/blog/",
-          "/guides/",
-          "/compare/",
-          "/tools/",
-          "/api/auth/",
-        ];
-
-        if (
-          publicRoutes.has(pathname) ||
-          publicPrefixes.some((prefix) => pathname.startsWith(prefix))
-        ) {
-          return true;
-        }
-
-        return Boolean(token);
+        return canBypassAuth(pathname) || Boolean(token);
       },
     },
     pages: {
