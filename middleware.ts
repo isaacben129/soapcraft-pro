@@ -25,10 +25,24 @@ export default withAuth(
           "/auth/login",
           "/auth/signup",
           "/auth/reset-password",
+          "/robots.txt",
+          "/sitemap.xml",
+          "/tools",
+          "/calculators",
+          "/ingredients",
+          "/methodology",
+          "/safety",
           "/api/auth",
           "/api/webhooks",
         ]);
-        const publicPrefixes = ["/blog/", "/api/auth/"];
+        const publicPrefixes = [
+          "/blog/",
+          "/guides/",
+          "/compare/",
+          "/tools/",
+          "/calculators/",
+          "/api/auth/",
+        ];
 
         if (
           publicRoutes.has(pathname) ||
