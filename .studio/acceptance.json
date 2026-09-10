@@ -2874,7 +2874,15 @@
     "app/auth/signup/page.tsx",
     "app/batches/page.tsx",
     "app/recipes/page.tsx",
-    "lib/auth.ts"
+    "lib/auth.ts",
+    "components/recipe-builder/recipe-builder.tsx",
+    "components/shared/batch-costing-form.tsx",
+    "components/shared/command-bar.tsx",
+    "components/shared/craft-fair-break-even-form.tsx",
+    "components/shared/email-capture-modal.tsx",
+    "components/shared/mold-volume-form.tsx",
+    "components/shared/recipe-scaling-form.tsx",
+    "components/shared/wholesale-pricing-form.tsx"
   ],
   "launchBoundary": {
     "included": "Anonymous public utility hub, chemistry/sizing/costing/production/purchasing tools, context transfer, local persistence, guides, examples, SEO pages",
