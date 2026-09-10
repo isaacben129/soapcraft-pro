@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Providers } from "@/app/providers";
-import { Footer, Navbar } from "@/components/shared";
+import { Footer, Navbar, JsonLd } from "@/components/shared";
 import { SITE_URL } from "@/lib/seo/site-url";
+import { organizationSchema, websiteSchema } from "@/lib/seo/structured-data";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -25,6 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="font-sans">
       <body className="min-h-screen bg-background text-foreground antialiased">
+        <JsonLd data={[organizationSchema(), websiteSchema()]} />
         <Navbar />
         <Providers>{children}</Providers>
         <Footer />

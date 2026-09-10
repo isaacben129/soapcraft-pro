@@ -1,6 +1,8 @@
 // ── Shared Operational Primitives ──────────────
 // R2.3: All shared UI primitives for the app shell.
 
+export { JsonLd } from "./json-ld";
+export { JsonLdList } from "./json-ld";
 export { AppRail } from "./app-rail";
 export { MobileNav } from "./mobile-nav";
 export { CommandBar } from "./command-bar";

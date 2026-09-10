@@ -20,6 +20,8 @@ import {
   DollarSign,
   ChevronUp,
 } from "lucide-react";
+import { JsonLd } from "@/components/shared";
+import { faqSchema } from "@/lib/seo/structured-data";
 
 const scrollSections = [
   { href: "#problem", label: "The Problem" },
@@ -642,6 +644,40 @@ export default function HomePage() {
 
       {/* ── FAQ ── */}
       <section id="faq" className="container mx-auto px-4 py-20 md:py-28" aria-label="FAQ">
+        <JsonLd
+          data={faqSchema([
+            {
+              question: "Is SoapCraft Pro a lye calculator?",
+              answer:
+                "It includes a lye calculator, but that is only one part of the system. The calculator is the entry point. The batch record, cure observations, yield, and cost analysis are what make SoapCraft Pro a production workspace, not a standalone tool.",
+            },
+            {
+              question: "How is the calculation different from SoapCalc?",
+              answer:
+                "SoapCraft Pro uses the same SAP dataset and calculation method as SoapCalc. The difference is in the system around it: recipe versioning, batch inheritance, cure tracking, and cost analysis.",
+            },
+            {
+              question: "Does SoapCraft Pro use AI?",
+              answer:
+                "Not in the calculation path. The SAP computation is deterministic and fully auditable. AI may be used in future features for explanation and suggestion, but it will never invent chemical quantities.",
+            },
+            {
+              question: "What happens to my data?",
+              answer:
+                "Your data is private and owned by you. There is no analytics tracking on batch content, no data sharing, and no AI training on your formulations.",
+            },
+            {
+              question: "Can I cancel anytime?",
+              answer:
+                "Yes. Pro subscriptions can be cancelled at any time. You retain access to all Pro features until the current billing period ends.",
+            },
+            {
+              question: "Is there a free trial?",
+              answer:
+                "The Free tier is always available and includes the full calculator with 3 recipes and 1 active batch.",
+            },
+          ])}
+        />
         <div className="max-w-3xl mx-auto">
           <h2 className="font-display text-3xl md:text-4xl font-bold text-ink">
             Common questions.
