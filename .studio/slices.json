@@ -1,855 +1,252 @@
 {
   "$schema": "https://studioforge.dev/schemas/slices.json",
-  "version": "2.0.0",
+  "version": "1.0",
   "project": "SoapCraft Pro",
-  "description": "Comprehensive anonymous utility hub — dependency-ordered slices collectively covering the complete product",
+  "description": "Dependency-ordered thin vertical journeys for anonymous-first free utility hub. No legacy email/subscription slices.",
   "slices": [
     {
       "id": "SLICE-001",
-      "name": "SEO Infrastructure and Public Shell",
-      "description": "Deploy robots.txt, sitemap, metadata system, canonical URLs, schema markup, and the public marketing shell. Foundation for all content and discoverability.",
-      "capabilityIds": [
-        "UTIL-007",
-        "UTIL-001"
-      ],
-      "acceptanceIds": [
-        "UTIL-007"
-      ],
+      "name": "IA Cleanup and Route Normalization",
+      "description": "Resolve dead /tools directory, fix 404 homepage routes, remove exposed pricing/subscription pages from nav/sitemap, normalize legacy /calculators paths. Prerequisite before any routes are exposed.",
+      "capabilityIds": ["IA-CLEANUP"],
+      "acceptanceIds": ["IA-CLEANUP"],
       "dependencies": [],
-      "priority": 1,
-      "states": [
-        "pending"
+      "priority": 0,
+      "states": ["pending"],
+      "files": [
+        "app/tools/page.tsx",
+        "app/tools/batch-economics/page.tsx",
+        "app/tools/markets/page.tsx",
+        "app/tools/pricing/page.tsx",
+        "app/tools/production/page.tsx",
+        "app/tools/purchasing/page.tsx",
+        "app/tools/sizing/page.tsx",
+        "app/robots.ts",
+        "app/sitemap.ts",
+        "app/layout.tsx"
       ],
+      "boundaries": ["deployed"],
+      "verticalSpan": "Dead content removal → 404 fix → retired route cleanup → canonical /tools establishment → mobile overflow fix",
+      "testApproach": "Deployed URL verification, 404 audit, nav/sitemap audit, mobile overflow check",
+      "state": "pending",
+      "note": "Must complete before any other route is exposed. No legacy email/subscription slices."
+    },
+    {
+      "id": "SLICE-002",
+      "name": "Homepage Visual Module Distribution",
+      "description": "Build homepage with 2,000+ words distributed through visual modules: hero → tool discovery/value cards → workflow/timeline → UI/proof panels → use-case modules → safety/trust boundary → FAQ → CTA.",
+      "capabilityIds": ["UTIL-001"],
+      "acceptanceIds": ["UTIL-001"],
+      "dependencies": ["SLICE-001"],
+      "priority": 1,
+      "states": ["pending"],
+      "files": [
+        "app/page.tsx",
+        "app/layout.tsx"
+      ],
+      "boundaries": ["deployed"],
+      "verticalSpan": "IA cleanup complete → homepage visual modules → 2,000+ words → CTA to /tools",
+      "testApproach": "Deployed URL verification, word count verification, visual module audit, mobile responsive check",
+      "state": "pending",
+      "note": "No text walls. All modules must be visual and scannable. No pricing/subscription CTA."
+    },
+    {
+      "id": "SLICE-003",
+      "name": "Tool Catalogue Constrained Layout",
+      "description": "Build /tools as a constrained desktop tool catalogue showing every actual tool with status, input→output promise, and direct action. Mobile stacks with no horizontal overflow.",
+      "capabilityIds": ["UTIL-001"],
+      "acceptanceIds": ["UTIL-001"],
+      "dependencies": ["SLICE-001"],
+      "priority": 1,
+      "states": ["pending"],
+      "files": [
+        "app/tools/page.tsx"
+      ],
+      "boundaries": ["deployed"],
+      "verticalSpan": "Tool catalogue → desktop constrained layout → mobile stack → no horizontal overflow",
+      "testApproach": "Deployed URL verification, desktop/mobile responsive check, tool reachability check",
+      "state": "pending",
+      "note": "One canonical /tools/<tool-slug> per shipped tool. No fake tool routes."
+    },
+    {
+      "id": "SLICE-004",
+      "name": "Batch Cost Calculator — First Proof",
+      "description": "Build the genuinely working batch cost calculator as the first proof vertical. Source audit confirms working implementation with tests. User enters inputs → sees complete deterministic result → local save/export/share → reload/re-entry.",
+      "capabilityIds": ["COST-001", "COST-005", "COST-010", "COST-011", "SIZE-003"],
+      "acceptanceIds": ["COST-001", "COST-005", "COST-010", "COST-011"],
+      "dependencies": ["SLICE-001", "SLICE-002", "SLICE-003"],
+      "priority": 2,
+      "states": ["pending"],
+      "files": [
+        "app/tools/batch-cost/page.tsx",
+        "app/api/calculate/batch-cost/route.ts",
+        "lib/calculations/batch-cost.ts",
+        "lib/calculations/batch-cost.test.ts",
+        "components/shared/batch-costing-form.tsx"
+      ],
+      "boundaries": ["e2e"],
+      "verticalSpan": "Tool catalogue → batch cost tool → complete visible result → local save/export/share → reload/re-entry preserves context",
+      "testApproach": "Unit tests from existing batch-cost.test.ts, E2E anonymous flow, calculation test suite, reload/re-entry test",
+      "state": "pending",
+      "note": "FIRST PROOF vertical. Non-chemistry tool. No safety gate. Must demonstrate visible result, local save/export/context handoff, and reload/re-entry."
+    },
+    {
+      "id": "SLICE-005",
+      "name": "Recipe Scaling Calculator",
+      "description": "Build recipe scaling as the second vertical journey. Context transfers from scaling to batch cost.",
+      "capabilityIds": ["SIZE-003", "SIZE-004"],
+      "acceptanceIds": ["SIZE-003", "SIZE-004"],
+      "dependencies": ["SLICE-001", "SLICE-004"],
+      "priority": 3,
+      "states": ["pending"],
+      "files": [
+        "app/tools/recipe-scaling/page.tsx",
+        "app/api/calculate/recipe-scaling/route.ts",
+        "components/shared/recipe-scaling-form.tsx"
+      ],
+      "boundaries": ["e2e"],
+      "verticalSpan": "Tool catalogue → recipe scaling → complete result → context handoff to batch cost",
+      "testApproach": "Unit tests, context transfer test, reload test",
+      "state": "pending",
+      "note": "Second vertical journey. Context transfer to batch cost demonstrated."
+    },
+    {
+      "id": "SLICE-006",
+      "name": "Additional Non-Chemistry Tools",
+      "description": "Add mold-volume and craft-fair-break-even tools from source audit.",
+      "capabilityIds": ["SIZE-004", "MKT-001"],
+      "acceptanceIds": ["SIZE-004", "MKT-001"],
+      "dependencies": ["SLICE-001", "SLICE-004"],
+      "priority": 3,
+      "states": ["pending"],
+      "files": [
+        "app/tools/mold-volume/page.tsx",
+        "app/tools/craft-fair-break-even/page.tsx",
+        "app/api/calculate/mold-volume/route.ts",
+        "app/api/calculate/craft-fair-break-even/route.ts",
+        "components/shared/mold-volume-form.tsx",
+        "components/shared/craft-fair-break-even-form.tsx"
+      ],
+      "boundaries": ["e2e"],
+      "verticalSpan": "Tool catalogue → additional tools → complete results → context handoff",
+      "testApproach": "Unit tests, E2E anonymous flow",
+      "state": "pending",
+      "note": "Each tool must show status, input→output promise, and direct action."
+    },
+    {
+      "id": "SLICE-007",
+      "name": "Public Support Pages",
+      "description": "Build methodology, safety, privacy, and terms pages as public support routes.",
+      "capabilityIds": ["UTIL-001"],
+      "acceptanceIds": ["UTIL-001"],
+      "dependencies": ["SLICE-001"],
+      "priority": 2,
+      "states": ["pending"],
+      "files": [
+        "app/methodology/page.tsx",
+        "app/safety/page.tsx",
+        "app/privacy/page.tsx",
+        "app/terms/page.tsx"
+      ],
+      "boundaries": ["deployed"],
+      "verticalSpan": "Public support pages → methodology, safety, privacy, terms → all publicly accessible",
+      "testApproach": "Deployed URL verification, public access test",
+      "state": "pending",
+      "note": "All support routes must be public and accessible. No auth gates."
+    },
+    {
+      "id": "SLICE-008",
+      "name": "SEO Infrastructure Update",
+      "description": "Update robots.txt, sitemap, and metadata for canonical public routes only. Remove retired routes from sitemap.",
+      "capabilityIds": ["UTIL-007"],
+      "acceptanceIds": ["UTIL-007"],
+      "dependencies": ["SLICE-001"],
+      "priority": 2,
+      "states": ["pending"],
       "files": [
         "app/robots.ts",
         "app/sitemap.ts",
         "lib/seo/site-url.ts",
-        "lib/seo/metadata.ts",
-        "lib/seo/intent-registry.ts",
-        "lib/seo/json-ld.ts",
-        "lib/seo/content-validator.ts",
-        "app/layout.tsx",
-        "app/page.tsx",
-        ".env.local (NEXT_PUBLIC_SITE_URL)"
+        "lib/seo/metadata.ts"
       ],
-      "boundaries": [
-        "deployed"
-      ],
-      "verticalSpan": "entry UI → SEO metadata → public shell → deployed verification",
-      "testApproach": "Unit tests for metadata generation, integration test for sitemap/robots, deployed verification via public URL",
-      "state": "pending"
+      "boundaries": ["deployed"],
+      "verticalSpan": "Robots/sitemap update → retired route exclusion → canonical URL fix → public page verification",
+      "testApproach": "Deployed URL verification, sitemap audit, robots.txt audit",
+      "state": "pending",
+      "note": "Retired routes (/pricing, /subscription, /marketing/*, /calculators/*) must be excluded from sitemap and robots."
     },
     {
-      "id": "SLICE-002",
-      "name": "Tool Directory and Public Shell Pages",
-      "description": "Build the complete tool directory, homepage, and all public landing pages. Every tool is discoverable from /tools.",
-      "capabilityIds": [
-        "UTIL-001"
-      ],
-      "acceptanceIds": [
-        "UTIL-001"
-      ],
-      "dependencies": [
-        "SLICE-001"
-      ],
-      "priority": 2,
-      "states": [
-        "pending"
-      ],
+      "id": "SLICE-009",
+      "name": "Blog Draft Content",
+      "description": "Prepare /blog as unlaunched/draft content only. Not acquisition scope; no thin SEO expansion.",
+      "capabilityIds": ["UTIL-001"],
+      "acceptanceIds": ["UTIL-001"],
+      "dependencies": ["SLICE-001"],
+      "priority": 4,
+      "states": ["pending"],
       "files": [
-        "app/tools/page.tsx",
-        "app/tools/formulation/page.tsx",
-        "app/tools/sizing/page.tsx",
-        "app/tools/batch-economics/page.tsx",
-        "app/tools/pricing/page.tsx",
-        "app/tools/markets/page.tsx",
-        "app/tools/production/page.tsx",
-        "app/tools/purchasing/page.tsx",
-        "app/guides/[slug]/page.tsx",
-        "app/examples/[id]/page.tsx",
-        "app/compare/[slug]/page.tsx"
+        "app/blog/page.tsx",
+        "app/blog/[slug]/page.tsx"
       ],
-      "boundaries": [
-        "deployed"
-      ],
-      "verticalSpan": "Tool directory → individual tool pages → connection indicators → context transfer readiness",
-      "testApproach": "Deployed URL verification, tool reachability test, connection indicator check",
-      "state": "pending"
+      "boundaries": ["deployed"],
+      "verticalSpan": "Blog as draft content only → not acquisition scope → no thin SEO expansion",
+      "testApproach": "Deployed URL verification, draft status confirmation",
+      "state": "pending",
+      "note": "/blog is draft content only. Not part of acquisition scope. No thin SEO expansion."
     },
     {
-      "id": "SLICE-003",
-      "name": "Formulation and Chemistry Calculator",
-      "description": "Implement the deterministic formulation engine, source-manifest boundary, synthetic fixtures, NaOH/KOH/mixed-alkali semantics, per-alkali purity, recipe-level superfat, three water modes, and production-off release control.",
-      "capabilityIds": [
-        "CHEM-001",
-        "CHEM-002",
-        "CHEM-003",
-        "CHEM-004",
-        "CHEM-005",
-        "CHEM-006",
-        "CHEM-007",
-        "CHEM-008"
-      ],
-      "acceptanceIds": [
-        "CHEM-001",
-        "CHEM-002",
-        "CHEM-003",
-        "CHEM-004",
-        "CHEM-005",
-        "CHEM-006",
-        "CHEM-007",
-        "CHEM-008",
-        "CHEM-009"
-      ],
-      "dependencies": [],
-      "priority": 1,
-      "states": [
-        "implemented-pending-release-verification",
-        "build-authorized",
-        "publication-gated"
-      ],
-      "files": [
-        "app/tools/formulation/page.tsx",
-        "app/api/calculate/formulation/route.ts",
-        "lib/calculations/chemistry.ts",
-        "lib/calculations/chemistry.test.ts",
-        "lib/calculations/fixtures/chemistry.json",
-        "lib/calculations/sap.ts (replacement engine)",
-        "lib/calculations/ingredient-dataset.ts (source manifest)"
-      ],
-      "boundaries": [
-        "e2e",
-        "deployed"
-      ],
-      "verticalSpan": "Formulation input → deterministic calculation → assumptions/warnings → versioned output → context ready for transfer",
-      "testApproach": "TDD from CALCULATION-SPEC §14 synthetic algebra fixtures; property invariants; unit round-trips; typed fail-closed manifest and production-flag tests",
-      "state": "pending"
-    },
-    {
-      "id": "SLICE-004",
+      "id": "SLICE-010",
       "name": "Chemistry Verification Gate",
       "description": "Complete the chemistry verification gate: deterministic specification, source manifest, independent review, hand/reference calculations, cross-calculator fixtures. Required before any chemistry feature becomes public.",
-      "capabilityIds": [
-        "CHEM-010"
-      ],
-      "acceptanceIds": [
-        "CHEM-010"
-      ],
-      "dependencies": [
-        "SLICE-003"
-      ],
-      "priority": 1,
-      "states": [
-        "pending",
-        "release-gate"
-      ],
+      "capabilityIds": ["CHEM-010"],
+      "acceptanceIds": ["CHEM-010"],
+      "dependencies": ["SLICE-001"],
+      "priority": 5,
+      "states": ["pending", "release-gate"],
       "files": [
         "lib/calculations/specification/chemistry-spec.md",
         "lib/calculations/sources/manifest.json",
         "lib/calculations/fixtures/cross-calculator.json",
-        "lib/calculations/review/domain-review.md",
-        "lib/calculations/hand-calculations/reference.pdf"
+        "lib/calculations/review/domain-review.md"
       ],
-      "boundaries": [
-        "deployed"
-      ],
+      "boundaries": ["deployed"],
       "verticalSpan": "Deterministic spec → source manifest → independent review → fixtures → public release gate",
       "testApproach": "Independent fixture verification, domain owner review sign-off, cross-calculator comparison",
-      "state": "pending"
-    },
-    {
-      "id": "SLICE-005",
-      "name": "Sizing and Conversion Calculator",
-      "description": "Build sizing, unit conversion, recipe scaling, mold sizing, bar-count planning, and multi-mold allocation. Receives context from formulation via Recipe/Batch Context.",
-      "capabilityIds": [
-        "SIZE-001",
-        "SIZE-002",
-        "SIZE-003",
-        "SIZE-004",
-        "SIZE-005",
-        "SIZE-006",
-        "SIZE-007",
-        "SIZE-008"
-      ],
-      "acceptanceIds": [
-        "SIZE-001",
-        "SIZE-002",
-        "SIZE-003",
-        "SIZE-004",
-        "SIZE-005",
-        "SIZE-006",
-        "SIZE-007",
-        "SIZE-008"
-      ],
-      "dependencies": [
-        "SLICE-003",
-        "SLICE-001"
-      ],
-      "priority": 3,
-      "states": [
-        "pending"
-      ],
-      "files": [
-        "app/tools/sizing/page.tsx",
-        "app/api/calculate/sizing/route.ts",
-        "lib/calculations/sizing.ts",
-        "lib/calculations/sizing.test.ts",
-        "context/transfer/sizing-formulation.ts"
-      ],
-      "boundaries": [
-        "e2e"
-      ],
-      "verticalSpan": "Formulation context → sizing input → deterministic output → context transfer → sizing ready for costing",
-      "testApproach": "Unit tests, boundary tests, context transfer tests, unit-conversion round-trip tests",
-      "state": "pending"
-    },
-    {
-      "id": "SLICE-006",
-      "name": "Costing and Pricing Calculator",
-      "description": "Build ingredient, packaging, labor, overhead, waste, and yield costing; markup and gross margin; retail/wholesale/channel scenarios; minimum viable price.",
-      "capabilityIds": [
-        "COST-001",
-        "COST-002",
-        "COST-003",
-        "COST-004",
-        "COST-005",
-        "COST-006",
-        "COST-007",
-        "COST-008",
-        "COST-009",
-        "COST-010",
-        "COST-011"
-      ],
-      "acceptanceIds": [
-        "COST-001",
-        "COST-002",
-        "COST-003",
-        "COST-004",
-        "COST-005",
-        "COST-006",
-        "COST-007",
-        "COST-008",
-        "COST-009",
-        "COST-010",
-        "COST-011"
-      ],
-      "dependencies": [
-        "SLICE-005",
-        "SLICE-001"
-      ],
-      "priority": 3,
-      "states": [
-        "pending"
-      ],
-      "files": [
-        "app/tools/batch-economics/page.tsx",
-        "app/tools/pricing/page.tsx",
-        "app/api/calculate/economics/route.ts",
-        "lib/calculations/economics.ts",
-        "lib/calculations/economics.test.ts",
-        "lib/calculations/fixtures/economics.json",
-        "context/transfer/costing-sizing.ts"
-      ],
-      "boundaries": [
-        "e2e"
-      ],
-      "verticalSpan": "Sizing context → cost inputs → full batch cost → markup/margin → scenarios → context ready for markets",
-      "testApproach": "Unit tests, verified reference cases, markup vs gross margin distinction tests, missing-cost warning tests",
-      "state": "pending"
-    },
-    {
-      "id": "SLICE-007",
-      "name": "Markets and Sales Planning",
-      "description": "Build craft-fair break-even, product mix, stock/revenue/sell-through planning, target-profit, wholesale MOQ, and quote/price-sheet output.",
-      "capabilityIds": [
-        "MKT-001",
-        "MKT-002",
-        "MKT-003",
-        "MKT-004",
-        "MKT-005",
-        "MKT-006",
-        "MKT-007",
-        "MKT-008"
-      ],
-      "acceptanceIds": [
-        "MKT-001",
-        "MKT-002",
-        "MKT-003",
-        "MKT-004",
-        "MKT-005",
-        "MKT-006",
-        "MKT-007",
-        "MKT-008"
-      ],
-      "dependencies": [
-        "SLICE-006",
-        "SLICE-001"
-      ],
-      "priority": 4,
-      "states": [
-        "pending"
-      ],
-      "files": [
-        "app/tools/markets/page.tsx",
-        "app/tools/markets/craft-fair-break-even/page.tsx",
-        "app/tools/pricing/quote/page.tsx",
-        "lib/calculations/markets.ts",
-        "lib/calculations/markets.test.ts",
-        "context/transfer/markets-costing.ts"
-      ],
-      "boundaries": [
-        "e2e"
-      ],
-      "verticalSpan": "Costing context → market inputs → break-even → stock targets → quote output → context ready for purchasing",
-      "testApproach": "Unit tests, break-even reference cases, event fee impact tests",
-      "state": "pending"
-    },
-    {
-      "id": "SLICE-008",
-      "name": "Production and Cure Planning",
-      "description": "Build production date planning, capacity back-planning, batch/lot records, cure tracking, Making Mode workflow, and printable records.",
-      "capabilityIds": [
-        "PROD-001",
-        "PROD-002",
-        "PROD-003",
-        "PROD-004",
-        "PROD-005",
-        "PROD-006"
-      ],
-      "acceptanceIds": [
-        "PROD-001",
-        "PROD-002",
-        "PROD-003",
-        "PROD-004",
-        "PROD-005",
-        "PROD-006"
-      ],
-      "dependencies": [
-        "SLICE-003",
-        "SLICE-001"
-      ],
-      "priority": 4,
-      "states": [
-        "pending"
-      ],
-      "files": [
-        "app/tools/production/ready-by-planner/page.tsx",
-        "app/batches/page.tsx",
-        "app/batches/[batchId]/page.tsx",
-        "app/batches/[batchId]/making/page.tsx",
-        "app/cure/page.tsx",
-        "app/api/batches/*/route.ts",
-        "lib/calculations/production.ts",
-        "lib/calculations/production.test.ts",
-        "context/transfer/production-formulation.ts"
-      ],
-      "boundaries": [
-        "e2e"
-      ],
-      "verticalSpan": "Formulation context → production planning → batch creation → Making Mode → cure tracking → printable records",
-      "testApproach": "Unit tests, Making Mode timer resume tests, batch state machine tests, cure observation tests",
-      "state": "pending"
-    },
-    {
-      "id": "SLICE-009",
-      "name": "Purchasing and Inventory Planning",
-      "description": "Build ingredient/packaging requirements, pack rounding, supplier comparison, requirements minus stock, event counts, anonymous local planning, and optional-account persistence.",
-      "capabilityIds": [
-        "PURCH-001",
-        "PURCH-002",
-        "PURCH-003",
-        "PURCH-004",
-        "PURCH-005",
-        "PURCH-006",
-        "PURCH-007",
-        "PURCH-008",
-        "PURCH-009",
-        "PURCH-010"
-      ],
-      "acceptanceIds": [
-        "PURCH-001",
-        "PURCH-002",
-        "PURCH-003",
-        "PURCH-004",
-        "PURCH-005",
-        "PURCH-006",
-        "PURCH-007",
-        "PURCH-008",
-        "PURCH-009",
-        "PURCH-010"
-      ],
-      "dependencies": [
-        "SLICE-003",
-        "SLICE-006",
-        "SLICE-001"
-      ],
-      "priority": 5,
-      "states": [
-        "pending"
-      ],
-      "files": [
-        "app/tools/purchasing/page.tsx",
-        "app/ingredients/page.tsx",
-        "app/api/purchasing/*/route.ts",
-        "app/api/ingredients/*/route.ts",
-        "lib/calculations/purchasing.ts",
-        "lib/calculations/purchasing.test.ts",
-        "lib/calculations/fixtures/ingredients.json",
-        "context/transfer/purchasing-formulation.ts"
-      ],
-      "boundaries": [
-        "e2e"
-      ],
-      "verticalSpan": "Formulation context → requirements → pack rounding → supplier comparison → stock tracking → inventory depletion",
-      "testApproach": "Unit tests, pack rounding tests, requirements-minus-stock tests, supplier comparison tests",
-      "state": "pending"
-    },
-    {
-      "id": "SLICE-010",
-      "name": "Context Transfer and Share System",
-      "description": "Context transfer between calculators, share URLs with full recipe context, methodology pages. Cross-cutting capability CTX-001 enables F14 (Share URL Context Transfer) and F18 (Generic Context Transfer). Users share formulated plans without re-entry.",
-      "capabilityIds": [
-        "CHEM-009",
-        "SIZE-001",
-        "COST-010"
-      ],
-      "acceptanceIds": [
-        "CHEM-009",
-        "SIZE-001",
-        "COST-010",
-        "CTX-001"
-      ],
-      "dependencies": [
-        "SLICE-003",
-        "SLICE-005",
-        "SLICE-006",
-        "SLICE-007",
-        "SLICE-008",
-        "SLICE-009"
-      ],
-      "priority": 6,
-      "states": [
-        "pending"
-      ],
-      "files": [
-        "context/RecipeBatchContext.ts",
-        "context/transfer/contextTransfer.ts",
-        "context/transfer/shareUrl.ts",
-        "context/transfer/versionChain.ts",
-        "context/transfer/contextTransfer.test.ts",
-        "lib/calculations/versioning.ts"
-      ],
-      "boundaries": [
-        "e2e"
-      ],
-      "verticalSpan": "Tool output → context capture → version chain → context transfer → share URL → reload/decode",
-      "testApproach": "Context transfer integration tests, share URL encode/decode tests, version chain tests, reload tests",
-      "state": "pending"
-    },
-    {
-      "id": "SLICE-011",
-      "name": "Account and Cloud Persistence",
-      "description": "Optional account creation, cloud persistence for recipes/batches, cross-device sync. Account is NEVER required for core tools.",
-      "capabilityIds": [],
-      "acceptanceIds": [
-        "UTIL-004",
-        "UTIL-005"
-      ],
-      "dependencies": [
-        "SLICE-003",
-        "SLICE-005",
-        "SLICE-006",
-        "SLICE-007",
-        "SLICE-008",
-        "SLICE-009",
-        "SLICE-010"
-      ],
-      "priority": 7,
-      "states": [
-        "pending"
-      ],
-      "files": [
-        "app/auth/login/page.tsx",
-        "app/auth/signup/page.tsx",
-        "app/dashboard/page.tsx",
-        "app/recipes/page.tsx",
-        "app/recipes/[recipeId]/page.tsx",
-        "app/batches/page.tsx",
-        "app/batches/[batchId]/page.tsx",
-        "app/cure/page.tsx",
-        "app/costing/page.tsx",
-        "app/ingredients/page.tsx",
-        "app/settings/page.tsx",
-        "lib/auth/nextauth.ts",
-        "lib/persistence/cloudSync.ts",
-        "lib/persistence/storage.ts"
-      ],
-      "boundaries": [
-        "e2e"
-      ],
-      "verticalSpan": "Account creation → cloud sync → full authenticated lifecycle → data persistence → cross-device sync",
-      "testApproach": "E2E test for full authenticated flow, sync tests, ownership verification tests, security tests",
-      "state": "pending"
-    },
-    {
-      "id": "SLICE-012",
-      "name": "Utility-Support System: Content, Guides, Examples",
-      "description": "Methodology pages, decision guides, factual comparisons, visual explanations. Content provides depth and SEO without gating core tools.",
-      "capabilityIds": [
-        "UTIL-002",
-        "UTIL-003",
-        "UTIL-004",
-        "UTIL-005",
-        "UTIL-006",
-        "UTIL-008"
-      ],
-      "acceptanceIds": [
-        "UTIL-002",
-        "UTIL-003",
-        "UTIL-006",
-        "UTIL-008"
-      ],
-      "dependencies": [
-        "SLICE-001",
-        "SLICE-003",
-        "SLICE-006"
-      ],
-      "priority": 5,
-      "states": [
-        "pending"
-      ],
-      "files": [
-        "app/guides/[slug]/page.tsx",
-        "app/examples/[id]/page.tsx",
-        "app/templates/*/page.tsx",
-        "app/methodology/page.tsx",
-        "app/compare/[slug]/page.tsx",
-        "lib/blog.ts",
-        "lib/blog-data.json",
-        "lib/blog-contract.ts",
-        "lib/seo/content/guides.json",
-        "lib/seo/content/examples.json"
-      ],
-      "boundaries": [
-        "deployed"
-      ],
-      "verticalSpan": "SEO shell → content page → embedded tool or worked calculation → download artifact → tool connection",
-      "testApproach": "Content quality validation, pageMetadata() verification, embedded tool functionality test",
-      "state": "pending"
-    },
-    {
-      "id": "SLICE-013",
-      "name": "Seller Pack Delivery",
-      "description": "Build one-time Seller Pack artifact delivery (costing workbook, market planner, batch/cure sheet, wholesale quote sheet, inventory count sheet). After value delivered, optional email exchange with explicit consent. BLOCKED-004: Requires payment infrastructure specification.",
-      "capabilityIds": [],
-      "acceptanceIds": [
-        "MKT-DEFERRED-SELLER-PACK"
-      ],
-      "dependencies": [
-        "SLICE-006",
-        "SLICE-007",
-        "SLICE-008",
-        "SLICE-009"
-      ],
-      "priority": 8,
-      "states": [
-        "pending"
-      ],
-      "files": [
-        "app/seller-pack/page.tsx",
-        "app/api/seller-pack/route.ts",
-        "lib/seller-pack/generator.ts",
-        "lib/seller-pack/templates/",
-        "lib/email/delivery.ts"
-      ],
-      "boundaries": [
-        "integration"
-      ],
-      "verticalSpan": "Tool result → Seller Pack request → explicit consent → artifact delivery → no subscription created",
-      "testApproach": "Integration test for artifact delivery, consent verification, no-subscription check",
       "state": "pending",
-      "note": "DEFERRED (BLOCKER-004): Seller Pack delivery requires payment infrastructure specification. Acceptance rows present (MKT-DEFERRED-SELLER-PACK) but implementation blocked until payment integration is specified. Cannot start until SLICE-006 through SLICE-009 complete."
-    },
-    {
-      "id": "SLICE-014",
-      "name": "E2E and Deployment Verification",
-      "description": "Comprehensive E2E testing, anonymous mobile/desktop verification, deployment checks, and full acceptance gate validation across all slices. Covers all 63 capability IDs and 9 core flows (F1, F7, F8, F10, F14, F15, F16, F17, F18).",
-      "capabilityIds": [
-        "CHEM-001",
-        "CHEM-002",
-        "CHEM-003",
-        "CHEM-004",
-        "CHEM-005",
-        "CHEM-006",
-        "CHEM-007",
-        "CHEM-008",
-        "CHEM-009",
-        "CHEM-010",
-        "SIZE-001",
-        "SIZE-002",
-        "SIZE-003",
-        "SIZE-004",
-        "SIZE-005",
-        "SIZE-006",
-        "SIZE-007",
-        "SIZE-008",
-        "COST-001",
-        "COST-002",
-        "COST-003",
-        "COST-004",
-        "COST-005",
-        "COST-006",
-        "COST-007",
-        "COST-008",
-        "COST-009",
-        "COST-010",
-        "COST-011",
-        "MKT-001",
-        "MKT-002",
-        "MKT-003",
-        "MKT-004",
-        "MKT-005",
-        "MKT-006",
-        "MKT-007",
-        "MKT-008",
-        "PROD-001",
-        "PROD-002",
-        "PROD-003",
-        "PROD-004",
-        "PROD-005",
-        "PROD-006",
-        "PURCH-001",
-        "PURCH-002",
-        "PURCH-003",
-        "PURCH-004",
-        "PURCH-005",
-        "PURCH-006",
-        "PURCH-007",
-        "PURCH-008",
-        "PURCH-009",
-        "PURCH-010",
-        "UTIL-001",
-        "UTIL-002",
-        "UTIL-003",
-        "UTIL-004",
-        "UTIL-005",
-        "UTIL-006",
-        "UTIL-007",
-        "UTIL-008",
-        "CTX-001"
-      ],
-      "acceptanceIds": [
-        "CHEM-001",
-        "CHEM-002",
-        "CHEM-003",
-        "CHEM-004",
-        "CHEM-005",
-        "CHEM-006",
-        "CHEM-007",
-        "CHEM-008",
-        "CHEM-009",
-        "CHEM-010",
-        "SIZE-001",
-        "SIZE-002",
-        "SIZE-003",
-        "SIZE-004",
-        "SIZE-005",
-        "SIZE-006",
-        "SIZE-007",
-        "SIZE-008",
-        "COST-001",
-        "COST-002",
-        "COST-003",
-        "COST-004",
-        "COST-005",
-        "COST-006",
-        "COST-007",
-        "COST-008",
-        "COST-009",
-        "COST-010",
-        "COST-011",
-        "MKT-001",
-        "MKT-002",
-        "MKT-003",
-        "MKT-004",
-        "MKT-005",
-        "MKT-006",
-        "MKT-007",
-        "MKT-008",
-        "PROD-001",
-        "PROD-002",
-        "PROD-003",
-        "PROD-004",
-        "PROD-005",
-        "PROD-006",
-        "PURCH-001",
-        "PURCH-002",
-        "PURCH-003",
-        "PURCH-004",
-        "PURCH-005",
-        "PURCH-006",
-        "PURCH-007",
-        "PURCH-008",
-        "PURCH-009",
-        "PURCH-010",
-        "UTIL-001",
-        "UTIL-002",
-        "UTIL-003",
-        "UTIL-004",
-        "UTIL-005",
-        "UTIL-006",
-        "UTIL-007",
-        "UTIL-008",
-        "CTX-001",
-        "F1",
-        "F7",
-        "F8",
-        "F10",
-        "F14",
-        "F15",
-        "F16",
-        "F17",
-        "F18",
-        "MKT-DEFERRED-SELLER-PACK"
-      ],
-      "dependencies": [
-        "SLICE-001",
-        "SLICE-002",
-        "SLICE-003",
-        "SLICE-004",
-        "SLICE-005",
-        "SLICE-006",
-        "SLICE-007",
-        "SLICE-008",
-        "SLICE-009",
-        "SLICE-010",
-        "SLICE-011",
-        "SLICE-012",
-        "SLICE-013"
-      ],
-      "priority": 9,
-      "states": [
-        "pending"
-      ],
-      "files": [
-        "e2e/anonymous-flow.spec.ts",
-        "e2e/context-transfer.spec.ts",
-        "e2e/account-persistence.spec.ts",
-        "e2e/making-mode.spec.ts",
-        "e2e/chemistry-calculation.spec.ts",
-        "e2e/costing.spec.ts",
-        "e2e/share-url.spec.ts",
-        "e2e/save-failure.spec.ts",
-        "tests/calculation-round-trip.test.ts",
-        "tests/formula-versioning.test.ts",
-        "tests/security-ownership.test.ts"
-      ],
-      "boundaries": [
-        "e2e",
-        "deployed"
-      ],
-      "verticalSpan": "All slices → anonymous E2E → deployed verification → acceptance gate → comprehensive release",
-      "testApproach": "Full E2E anonymous flow, deployed URL verification, calculation test suite, security verification",
-      "state": "pending"
+      "note": "GATED. Chemistry is never first proof. No real formulation output is advertised as usable or considered released until verification passes."
     }
   ],
   "dependencies": {
     "SLICE-001": [],
-    "SLICE-002": [
-      "SLICE-001"
-    ],
-    "SLICE-003": [],
-    "SLICE-004": [
-      "SLICE-003"
-    ],
-    "SLICE-005": [
-      "SLICE-003",
-      "SLICE-001"
-    ],
-    "SLICE-006": [
-      "SLICE-005",
-      "SLICE-001"
-    ],
-    "SLICE-007": [
-      "SLICE-006",
-      "SLICE-001"
-    ],
-    "SLICE-008": [
-      "SLICE-003",
-      "SLICE-001"
-    ],
-    "SLICE-009": [
-      "SLICE-003",
-      "SLICE-006",
-      "SLICE-001"
-    ],
-    "SLICE-010": [
-      "SLICE-003",
-      "SLICE-005",
-      "SLICE-006",
-      "SLICE-007",
-      "SLICE-008",
-      "SLICE-009"
-    ],
-    "SLICE-011": [
-      "SLICE-003",
-      "SLICE-005",
-      "SLICE-006",
-      "SLICE-007",
-      "SLICE-008",
-      "SLICE-009",
-      "SLICE-010"
-    ],
-    "SLICE-012": [
-      "SLICE-001",
-      "SLICE-003",
-      "SLICE-006"
-    ],
-    "SLICE-013": [
-      "SLICE-006",
-      "SLICE-007",
-      "SLICE-008",
-      "SLICE-009"
-    ],
-    "SLICE-014": [
-      "SLICE-001",
-      "SLICE-002",
-      "SLICE-003",
-      "SLICE-004",
-      "SLICE-005",
-      "SLICE-006",
-      "SLICE-007",
-      "SLICE-008",
-      "SLICE-009",
-      "SLICE-010",
-      "SLICE-011",
-      "SLICE-012",
-      "SLICE-013"
-    ]
+    "SLICE-002": ["SLICE-001"],
+    "SLICE-003": ["SLICE-001"],
+    "SLICE-004": ["SLICE-001", "SLICE-002", "SLICE-003"],
+    "SLICE-005": ["SLICE-001", "SLICE-004"],
+    "SLICE-006": ["SLICE-001", "SLICE-004"],
+    "SLICE-007": ["SLICE-001"],
+    "SLICE-008": ["SLICE-001"],
+    "SLICE-009": ["SLICE-001"],
+    "SLICE-010": ["SLICE-001"]
   },
   "executionOrder": [
-    "SLICE-003",
     "SLICE-001",
     "SLICE-002",
-    "SLICE-004",
-    "SLICE-005",
-    "SLICE-006",
+    "SLICE-003",
     "SLICE-007",
     "SLICE-008",
     "SLICE-009",
-    "SLICE-012",
-    "SLICE-010",
-    "SLICE-011",
-    "SLICE-013",
-    "SLICE-014"
+    "SLICE-004",
+    "SLICE-005",
+    "SLICE-006",
+    "SLICE-010"
   ],
   "gateDefinitions": {
     "Gate_C": {
-      "description": "Stop implementation until user approves scope/behavior and every core flow has a high-boundary acceptance row",
+      "description": "Stop implementation until IA cleanup complete and every core flow has a high-boundary acceptance row",
       "status": "PASS",
       "scopeApproved": true,
       "everyCoreFlowHasHighBoundaryRow": true,
-      "note": "Isaac authorized implementation on 2026-09-09. External evidence remains a fail-closed release gate for affected public routes."
+      "note": "Isaac authorized implementation on 2026-09-09. IA cleanup must complete before routes are exposed."
     },
     "Gate_R": {
       "description": "No slice starts when a required skill is missing, unloadable, unapplied, or unreceipted",
@@ -860,7 +257,8 @@
     "Gate_A": {
       "description": "Only literal RELEASE_ACCEPTED permits completion claim",
       "status": "PENDING",
-      "note": "Awaiting RELEASE_ACCEPTED after build and verification. Deferred items (MKT-DEFERRED-SELLER-PACK) tracked as PENDING until demand evidence exists."
+      "note": "Awaiting RELEASE_ACCEPTED after build and verification. Chemistry features are gated until verification gate passes."
     }
-  }
+  },
+  "note": "No legacy email/subscription slices. No pricing/subscription/marketing slices. All slices are dependency-ordered thin vertical journeys based on user-visible, dependency-ready journeys."
 }

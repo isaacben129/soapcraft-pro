@@ -1,39 +1,64 @@
 # SoapCraft Pro — System Architecture
 
-**Version:** 2.0 — Utility hub model
+**Version:** 1.0 — Anonymous-First Utility Hub Architecture
 **Companion to:** `product/PRD.md`, `product/DESIGN.md`, `product/FLOWS.md`
-**Approved direction:** `product/PRODUCT-CONTRACT-UTILITY-HUB.md` (approved by Isaac, 2026-09-09)
-**Date:** 2026-09-09
+**Approved direction:** Isaac, 2026-09-09 — anonymous-first, free, tool-first utility hub
+**Date:** 2026-09-10
 
 ---
 
-## 1. Vercel Deployment Configuration
+## 1. Canonical route taxonomy
 
-```json
-{
-  "projectId": "prj_J12YtoRr3q5dmazDWsqs2jXLpOqy",
-  "orgId": "team_gYtaSveuJSflpubmwIGhFD6Y",
-  "projectName": "soapcraft-pro"
-}
+A single canonical public route taxonomy. Legacy URLs are redirect/removal decisions, never parallel product IA.
+
+### 1.1 Active public routes
+
+```text
+/                           → Public homepage (marketing/entry → real tools)
+/tools                      → Canonical all-tools catalogue
+/tools/<tool-slug>          → One canonical route per shipped tool
+/methodology                → Public methodology documentation
+/safety                     → Public safety information
+/privacy                    → Public privacy policy
+/terms                      → Public terms of service
+/blog                       → Unlaunched/draft content only
 ```
 
-Deployment platform: Vercel. Build command: `next build`. Dev command: `next dev`. Output: `.next`. Framework: Next.js.
+### 1.2 Retired routes (future cleanup slice)
+
+```text
+/pricing                    → Retired from nav/sitemap
+/subscription               → Retired from nav/sitemap
+/dashboard                  → Retired from nav/sitemap
+/marketing/*                → Retired from nav/sitemap
+/calculators/*              → Legacy; redirect or remove
+/pinterest/*                → Retired from nav/sitemap
+/tiktok/*                   → Retired from nav/sitemap
+```
+
+### 1.3 Route rules
+
+- One canonical `/tools/<tool-slug>` per shipped tool; no fake tool route exposed
+- `/blog` is draft content only; not acquisition scope; no thin SEO expansion
+- Pricing, subscription, marketing, email/CRM, social campaign pages are retired from nav/sitemap
+- Implementation removal is a future cleanup slice; do not treat retired routes as parallel product IA
+- IA cleanup must complete before any routes are exposed
 
 ---
 
 ## 2. System Boundary Map
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                    PUBLIC LAYER (no auth required)                         │
 │                                                                             │
 │  ┌──────────────┐  ┌───────────────┐  ┌───────────────┐  ┌──────────┐ │
-│  │ Homepage &    │  │ Public Tools  │  │ Guides/Blog/  │  │ Content  │ │
-│  │ Tool Directory│  │ (calculators, │  │ Examples/     │  │ Pages    │ │
-│  │               │  │  sizing, cost,│  │ Templates     │  │          │ │
-│  │ /             │  │  markets)     │  │               │  │ /blog/*  │ │
-│  │ /tools        │  │ /calculators/*│  │ /guides/*     │  │ /        │ │
-│  │ /tools/*      │  │               │  │ /examples/*   │  │ /tools   │ │
+│  │ Homepage &    │  │ Public Tools  │  │ Support       │  │ Content  │ │
+│  │ Tool Directory│  │ Catalogue     │  │ Pages         │  │ Pages    │ │
+│  │               │  │               │  │               │  │          │ │
+│  │ /             │  │ /tools        │  │ /methodology  │  │ /safety  │ │
+│  │ /tools        │  │ /tools/*      │  │ /privacy      │  │ /terms   │ │
+│  │ /blog (draft) │  │               │  │ /terms        │  │ /blog/*  │ │
 │  └──────┬───────┘  └───────┬───────┘  └───────┬───────┘  └────┬─────┘ │
 │         │                  │                   │               │         │
 │         └──────────────────┼───────────────────┼───────────────┘         │
@@ -47,12 +72,10 @@ Deployment platform: Vercel. Build command: `next build`. Dev command: `next dev
 │                                                                             │
 │  ┌──────────────┐  ┌───────────────┐  ┌───────────────┐  ┌──────────┐ │
 │  │ Auth          │  │ App Shell     │  │ API Routes    │  │ Analytics│ │
-│  │               │  │ (workspace)   │  │ (REST)        │  │          │ │
-│  │ /auth/*       │  │ /dashboard    │  │               │  │ /api/     │ │
-│  │ NextAuth      │  │ /recipes/*    │  │ All scoped by │  │ analytics │ │
-│  │ JWT session   │  │ /batches/*    │  │ userId        │  │          │ │
-│  │               │  │ /cure/*       │  │               │  │ Aggregate │ │
-│  │               │  │ /costing/*    │  │               │  │ events    │ │
+│  │ (optional)    │  │               │  │               │  │          │ │
+│  │ /auth/*       │  │ /app-shell    │  │ All scoped by │  │ /api/    │ │
+│  │ NextAuth      │  │               │  │ userId        │  │ analytics │ │
+│  │               │  │               │  │               │  │          │ │
 │  └──────┬───────┘  └───────┬───────┘  └───────┬───────┘  └────┬─────┘ │
 │         │                  │                   │               │         │
 ├─────────┼──────────────────┼───────────────────┼───────────────┼───────┤
@@ -63,19 +86,14 @@ Deployment platform: Vercel. Build command: `next build`. Dev command: `next dev
 │  │  ┌──────────────┐  ┌───────────────┐  ┌───────────────┐  ┌──────────┐│ │
 │  │  │ Neon/Drizzle │  │ Browser local  │  │ Dodo one-time │  │ PostHog  ││ │
 │  │  │ PostgreSQL   │  │ state           │  │ purchase       │  │ (events) ││ │
-│  │  │               │  │               │  │ (Seller Pack) │  │          ││ │
-│  │  │ • Users       │  │ • Tool state  │  │ • Checkout    │  │ Aggregate││ │
-│  │  │ • Recipes     │  │ • Timers      │  │ • Webhooks    │  │ events   ││ │
-│  │  │ • Batches     │  │ • Exports     │  │ • Entitlement │  │ no PII   ││ │
-│  │  │ • Batch       │  │               │  │ • Plan        │  │          ││ │
-│  │  │   versions    │  │               │  │               │  │          ││ │
-│  │  • Costs        │  │               │  │               │  │          ││ │
-│  │  • Ingredients  │  │               │  │               │  │          ││ │
-│  │  • Content      │  │               │  │               │  │          ││ │
-│  │  • Inventory    │  │               │  │               │  │          ││ │
-│  │  • Suppliers    │  │               │  │               │  │          ││ │
-│  └──────────────┘  └───────────────┘  └───────────────┘  └──────────┘│ │
-│                                                                             │
+│  │  │               │  │ (future)        │  │ (future)       │  │ Aggregate││ │
+│  │  │ • Users       │  │ • Tool state  │  │ (future)       │  │ no PII   ││ │
+│  │  │ • Recipes     │  │ • Exports     │  │                │  │          ││ │
+│  │  │ • Batches     │  │ • Share URLs  │  │                │  │          ││ │
+│  │  │ • Costs       │  │               │  │                │  │          ││ │
+│  │  │ • Content     │  │               │  │                │  │          ││ │
+│  │  └──────────────┘  └───────────────┘  └───────────────┘  └──────────┘│ │
+│  │                                                                           │ │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -89,26 +107,16 @@ Deployment platform: Vercel. Build command: `next build`. Dev command: `next dev
 
 **Routes:**
 - `/` — Homepage with tool directory and featured content
-- `/tools` — Complete utility tool directory
-- `/tools/formulation/*` — Formulation and chemistry tools
-- `/tools/sizing/*` — Sizing and conversion tools
-- `/tools/batch-economics` — Batch economics calculator
-- `/tools/pricing/*` — Pricing and margin tools
-- `/tools/markets/craft-fair-break-even` — Market planning tool
-- `/tools/production/ready-by-planner` — Production/cure planning
-- `/tools/purchasing/*` — Purchasing and inventory tools
-- `/guides/*` — Substantive decision guides
-- `/examples/*` — Editable worked calculations
-- `/blog/*` — SEO blog content
-- `/templates/*` — Downloadable templates (no auth, no email gate — direct download)
-- `/compare/*` — Comparison pages
-- `/pricing` — Pricing page
-- `/pinterest/*` — Pinterest-optimized content
-- `/tiktok/*` — TikTok content hub
+- `/tools` — Complete utility tool catalogue
+- `/tools/<tool-slug>` — Individual functional tools (one canonical route per shipped tool)
+- `/methodology` — Public methodology documentation
+- `/safety` — Public safety information
+- `/privacy` — Public privacy policy
+- `/terms` — Public terms of service
+- `/blog` — Unlaunched/draft content only
 
 **Interfaces:**
 - Public tool API: `GET /api/calculate/*` — public, no auth, rate-limited
-- Email capture: `POST /api/email/capture` — **DEPRECATED per approved product direction** — currently exists in codebase but NOT the approved primary conversion path. Email capture may only be used for specific delivered artifacts with explicit consent (see PRD non-goals)
 - Blog content: `GET /api/blog/*` — public, cached
 - Content metadata: `GET /api/content/*` — public
 - SEO: `GET /robots.txt`, `GET /sitemap.xml` — public
@@ -119,83 +127,58 @@ Deployment platform: Vercel. Build command: `next build`. Dev command: `next dev
 **Failure modes:**
 - Rate limiting on calculator API prevents abuse (public, anonymous usage)
 - CDN caching for static pages and public API responses
-- Email capture degrades gracefully if CRM is unavailable (store locally, sync later) — **deprecated per approved product direction**
 - Share URL service degrades: tool loads with empty state if URL decoder fails
 
 **Currently exists vs planned:**
-- Currently exists: `/calculators/*` (legacy tool paths), `/blog/*`, `/compare/*`, basic calculator components
-- Planned: `/tools/*` directory structure, `/examples/*`, `/guides/*`, `/tools/purchasing/*`, `/tools/production/*` as comprehensive utility hub routes
+- Currently exists: `/calculators/*` (legacy tool paths), `/blog/*`, `/compare/*`
+- Planned: `/tools/*` directory structure, `/methodology`, `/safety`, `/privacy`, `/terms` as public support routes
 
----
+### 3.2 Application Layer (Authenticated — future slice)
 
-### 3.2 Application Layer (Authenticated)
+**Responsibility:** Account management, cloud persistence, recipe/batch tracking, and optional account features. Account is optional — these features are persistence layers, not gates.
 
-**Responsibility:** Production workspace, recipe management, batch tracking, cure, costing, inventory, and account management. Account is optional — these features are persistence layers, not gates.
+**Routes (future):**
+- `/dashboard` — Production workspace (auth required, future slice)
+- `/recipes/*` — Recipe creation, versioning, and history (future slice)
+- `/batches/*` — Batch tracking and Making Mode (future slice)
+- `/costing` — Cost analysis (future slice)
+- `/ingredients` — Ingredient inventory (future slice)
+- `/settings` — Account settings (future slice)
+- `/auth/*` — Authentication (future slice)
 
-**Routes:**
-- `/dashboard` — Production workspace with attention queue and active pipeline (auth required)
-- `/recipes/*` — Recipe creation, versioning, and history (auth required)
-- `/batches/*` — Batch tracking, Making Mode, cure (auth required)
-- `/curing` — Cure tracker and observation management (auth required)
-- `/costing` — Cost analysis and margin calculation (auth required)
-- `/ingredients` — Ingredient inventory and cost records (auth required)
-- `/library` — Recipe library with version history (auth required)
-- `/subscription` — Pro subscription management (auth required)
-- `/settings` — Account settings (auth required)
-- `/auth/*` — Authentication (signup, login, reset, OAuth)
-
-**Interfaces:**
-- Authentication: reuse the existing NextAuth configuration and session strategy; do not introduce a second auth system.
-- Persistence: reuse Neon PostgreSQL through the existing Drizzle schema/migration path.
-- API routes: every authenticated read and mutation derives `userId` from the server-validated session; request-supplied ownership fields are ignored.
-- Middleware separates public and private routes but never substitutes for per-resource ownership checks.
-- Making Mode timers persist locally for anonymous use; authenticated persistence uses ordinary versioned REST mutations. Real-time/WebSocket infrastructure is not required.
-
-**Failure modes:**
-- Session expiry preserves the local Recipe/Batch Context and asks the user to authenticate before cloud persistence.
-- API/database errors leave local state intact, show an explicit unsaved status, and offer retry/export; the UI never claims a cloud save succeeded.
-- Concurrent updates use optimistic concurrency (`version`/`updatedAt`). A stale write returns `409 Conflict` with both versions; no silent last-write-wins.
-- Cloud unavailability cannot block anonymous calculators.
-
-**Currently exists vs planned:**
-- Reuse: NextAuth auth/session code, Neon serverless connection, Drizzle ORM/schema, existing recipe/batch components, and dashboard shell.
-- Build: explicit ownership columns/checks, immutable recipe versions, optimistic concurrency, inventory/supplier records, and local-to-cloud import. Multi-device sync means server-backed reads/writes, not real-time infrastructure.
-
----
+**Note:** Account and cloud persistence are future vertical journeys. Current launch is anonymous-first with local state only.
 
 ### 3.3 Calculation Engine
 
 **Responsibility:** Deterministic soap formulation and economic calculations. No AI invention.
 
 **Core modules:**
-- `lib/calculations/sap.ts` — Saponification value calculations (NaOH, KOH, mixed alkali)
-- `lib/calculations/batch-cost.ts` — Cost per bar, full batch economics
-- `lib/calculations/mold.ts` — Mold volume and capacity calculations
-- `lib/calculations/ingredient-cost.ts` — Ingredient cost aggregation and supplier comparison
-- `lib/calculations/scale.ts` — Recipe scaling and proportion calculations
-- `lib/calculations/production.ts` — Production planning and back-planning calculations
-- `lib/calculations/market.ts` — Break-even, margin, contribution calculations
+- `lib/calculations/batch-cost.ts` — Batch cost calculation (FIRST PROOF)
+- `lib/calculations/sizing.ts` — Sizing, unit conversion, recipe scaling
+- `lib/calculations/sap.ts` — Saponification value calculations (GATED)
+- `lib/calculations/economics.ts` — Economic calculations (markup, margin)
+- `lib/calculations/markets.ts` — Market planning (future)
+- `lib/calculations/production.ts` — Production planning (future)
+- `lib/calculations/purchasing.ts` — Purchasing planning (future)
+- `lib/calculations/versioning.ts` — Formula and data versioning
 
 **Rules:**
 - All calculations are deterministic (no AI invention)
 - Calculations accept unit inputs and return precise results
 - Calculation tests use RED fixtures for verification
-- Calculations are exposed via public API for calculators and private API for workspace
 - Safety-critical calculations (lye, water ratios) have validated input ranges
 - Formula revision numbers are explicit and included in exports
 - Money must never be summed across currencies
 - Quantities normalized by tested conversion functions
 - Rounding is display-only until the final monetary output
 
-**Currently exists vs planned:**
-- Currently exists: `lib/calculations/batch-cost.ts`, `lib/calculations/sap.ts` with test fixtures
-- Planned: Full formulation engine (chemistry subject to verification gate), sizing/conversion engine, market planning engine, production back-planning engine
+**FIRST PROOF modules:** `lib/calculations/batch-cost.ts` with `lib/calculations/batch-cost.test.ts` — confirmed working with test fixtures from source audit.
 
----
+**GATED modules:** `lib/calculations/sap.ts` and all chemistry-related calculations — not publicly released until verification gate passes.
 
 ### 3.4 Content Layer
 
-**Responsibility:** SEO blog, guides, examples, templates, and visual content. Every page must supply at least a verified working tool, an editable worked calculation, a useful downloadable artifact, verified reference data, or substantive synthesis.
+**Responsibility:** SEO blog, guides, examples, templates, and visual content. Every page must supply at least one quality bar item.
 
 **Modules:**
 - `lib/blog.ts` / `lib/blog-data.json` — Blog data management
@@ -207,53 +190,28 @@ Deployment platform: Vercel. Build command: `next build`. Dev command: `next dev
 
 **Rules:**
 - All blog posts have SEO metadata, content, review status
-- Content validated against `blog-contract.ts` (banned phrases, category rules)
+- Content validated against `blog-contract.ts`
 - Every page has `pageMetadata()` with title, description, path, OpenGraph, Twitter
 - Sitemap auto-generates from pages and blog posts
 - Robots.txt disallows `/api/`, `/auth/`, `/recipes/`, `/batches/`, `/dashboard/`, `/subscription/`
 - No page ships solely to meet a word/page quota
-- Guide pages should generally provide approximately 1,500+ rendered words where subject warrants
-- No automated content publication
-
-**Currently exists vs planned:**
-- Currently exists: `lib/blog-contract.ts`, `lib/blog-data.json`, `lib/blog.ts`, `lib/seo/*` directory, `robots.ts`, `sitemap.ts`
-- Planned: Comprehensive guide content, example pages, tool documentation pages, substantive editorial content
-
----
+- `/blog` is unlaunched/draft content only
 
 ### 3.5 Integration Layer
 
-**Responsibility:** Third-party services, distribution channels, and payment processing.
+**Responsibility:** Third-party services and distribution channels.
 
 **Services:**
-- **Dodo Payments — one-time Seller Pack only:** reuse the existing integration through a narrow `SellerPackPaymentProvider` interface. Subscription billing remains deferred unless repeat-workspace demand is observed and separately approved.
-- **Neon + Drizzle:** existing canonical persistence stack for optional accounts.
-- **NextAuth:** existing authentication/session boundary.
-- **PostHog:** aggregate product events only; never recipe, cost, or personally identifying payloads.
-- **Vercel / GitHub:** deployment and source control.
-- **Email:** transactional delivery only for an explicitly requested artifact/receipt or account operation; no exit-intent capture or unconsented drip.
-
-**Seller Pack payment interface:**
-1. `POST /api/seller-pack/checkout` accepts a server-known pack ID; price, currency, product mapping, and success URL come from server configuration, never the client.
-2. The adapter creates a Dodo one-time checkout and returns only the redirect URL/session identifier.
-3. `POST /api/webhooks/dodo` verifies the raw-body signature before parsing or mutating state.
-4. Webhook processing is idempotent on provider event ID and transaction ID. Only a verified paid/completed event grants the immutable Seller Pack entitlement.
-5. The success page polls server entitlement; the browser redirect alone never grants access.
-6. Fulfilment is a versioned download artifact with entitlement checks and an auditable delivery record.
-7. Missing Dodo configuration disables checkout visibly; it never simulates success.
-
-**Provider seam:**
-```ts
-interface SellerPackPaymentProvider {
-  createOneTimeCheckout(input: { packId: string; purchaserId?: string }): Promise<{ checkoutId: string; redirectUrl: string }>;
-  verifyWebhook(rawBody: Uint8Array, headers: Headers): Promise<VerifiedPaymentEvent>;
-}
-```
+- **Neon + Drizzle:** existing canonical persistence stack for optional accounts (future slice)
+- **NextAuth:** existing authentication/session boundary (future slice)
+- **PostHog:** aggregate product events only; never recipe, cost, or personally identifying payloads
+- **Vercel / GitHub:** deployment and source control
+- **Email:** transactional delivery only for an explicitly requested artifact/receipt (future slice)
+- **Dodo Payments:** one-time Seller Pack only (future slice — deferred until demand observed)
 
 **Currently exists vs planned:**
-- Reuse: Dodo client/configuration code, Neon connection, Drizzle, NextAuth, Vercel, GitHub, and current PostHog adapter after payload review.
-- Build: the one-time checkout adapter, entitlement/order tables, raw-body webhook verification, idempotency, server-side fulfilment, and transactional receipt path.
-- Deferred: subscription plans, workspace billing, CRM sequences, Redis, queues, and real-time/WebSocket infrastructure.
+- Reuse: Dodo client/configuration code, Neon connection, Drizzle, NextAuth, Vercel, GitHub
+- Deferred: subscription plans, workspace billing, CRM sequences, Redis, queues, real-time/WebSocket infrastructure
 
 ---
 
@@ -263,173 +221,97 @@ Each domain object has a single canonical owner. Other modules read from or refe
 
 | Domain Object | Canonical Owner | Access Pattern |
 |----------------|-----------------|----------------|
-| User profile | Users table | User CRUD, self-service |
-| Recipe | Recipes table | User CRUD, versioned |
-| RecipeVersion | RecipeVersion table | Immutable after creation; linked to Recipe |
-| Batch | Batches table | User CRUD; linked to RecipeVersion |
-| BatchObservation | Observations table | User CRUD; linked to Batch |
-| Cost record | Costs table | User CRUD; linked to Batch |
-| Ingredient | Ingredients table | User CRUD; linked to User |
-| Supplier | Suppliers table | User CRUD; linked to User |
-| Inventory record | Inventory table | User CRUD; linked to User |
-| Production plan | Production table | User CRUD; linked to Batch |
+| User profile | Users table | User CRUD, self-service (future) |
+| Recipe | Recipes table | User CRUD, versioned (future) |
+| RecipeVersion | RecipeVersion table | Immutable after creation (future) |
+| Batch | Batches table | User CRUD; linked to RecipeVersion (future) |
+| Cost record | Costs table | User CRUD; linked to Batch (future) |
 | Blog post | Content table | Content team CRUD; public read |
 | Guide | Content table | Content team CRUD; public read |
 | Share URL | Share table | Generated from calculation state; public read; no auth |
-| Email capture | CRM | **DEPRECATED** — Public capture; consent-based; not approved primary path |
 | Analytics event | PostHog | Aggregate; no PII; no recipe data |
-| Seller Pack order/entitlement | Neon tables via Drizzle | Webhook-owned immutable payment state; server-checked download |
-| Session | Existing NextAuth strategy | Server-validated identity; no Redis dependency |
+| Session | Existing NextAuth strategy | Server-validated identity (future) |
 
 ### Data ownership rules
 
 1. **Single writer principle:** Each domain object has exactly one table/module that writes to it
-2. **Immutable versions:** RecipeVersion records are immutable once created; they are snapshots, not references
-3. **Foreign key integrity:** Batches reference RecipeVersion IDs, not Recipe IDs (versions are the working unit)
+2. **Immutable versions:** RecipeVersion records are immutable once created (future)
+3. **Foreign key integrity:** Batches reference RecipeVersion IDs, not Recipe IDs
 4. **No cross-module writes:** The Cost module reads from Batch and Ingredient tables but never writes to them
-5. **Public data separation:** Blog, guides, and examples live in content tables with public-read access; no user data contamination
+5. **Public data separation:** Blog, guides, and examples live in content tables with public-read access
 6. **Share URL state:** Share URLs contain only calculation state; no email, name, or any personal data
 
 ---
 
-## 5. Formula and Data Versioning Strategy
-
-### 5.1 Recipe versioning
-
-Every recipe edit creates a new immutable `RecipeVersion`. The chain is:
-
-```
-Recipe v1 → Recipe v2 → Recipe v3
-  (immutable)  (immutable)  (immutable)
-```
-
-- RecipeVersion contains: full formulation snapshot, SAP values, lye/water amounts, assumptions, warnings, formula revision number, source manifest
-- RecipeVersion is created on explicit "Save" action — never auto-saved
-- RecipeVersion is referenced by Batches; a batch always uses a specific version
-- Formula revision number is explicit and included in all exports and share URLs
-- Version diff shows: ingredient added/removed, percentage/weight change, water/superfat/lye change, changed outputs/warnings
-
-### 5.2 Batch versioning
-
-Batches are created from a specific RecipeVersion:
-
-```
-RecipeVersion v3 → Batch #024 (inherits v3 state) → BatchObservation → Cost record
-```
-
-- Batch records actual measurements, observations, yield, and cost
-- Batch inherits from RecipeVersion at creation time
-- Actual measurements may differ from planned (plan vs actual visible)
-- Batch is immutable once archived; observations can be corrected before archival
-
-### 5.3 Formula versioning
-
-Formula changes are tracked at the RecipeVersion level:
-
-- Each RecipeVersion records the formula revision used (e.g., "SAP table 2024-01-15")
-- Source manifest: oils, SAP values, and data sources are recorded per version
-- If a source dataset is updated, existing RecipeVersions are NOT modified; new versions use the updated source
-- Deterministic: same inputs + same formula revision = same outputs, always
-
-### 5.4 Content versioning
-
-- Blog posts and guides have draft/revision/published states
-- Content validation via `blog-contract.ts` before publishing
-- Content revisions tracked with timestamps and editor identity
-- No automated publication; human review required
-
----
-
-## 6. Local/Share URL vs Cloud Persistence
+## 5. Local State vs Cloud Persistence
 
 ### Architecture principle
 
-The utility hub operates on a **local-first, cloud-optional** model.
+The utility hub operates on a **local-first** model. Cloud persistence is a future slice.
 
-```
-Anonymous user:
+```text
+Anonymous user (current launch):
   Local state → Share URL (state encoded in URL) → Ephemeral
+  Local state preserved across browser reloads
 
-Account user:
+Account user (future slice):
   Local state → Cloud sync (PostgreSQL) → Multi-device persistence
 ```
 
-### Share URL (anonymous path)
+### Local state (current launch)
 
-- **What it carries:** Calculation state only — ingredient amounts, percentages, target weights, formula revision, assumptions, warnings
-- **What it never carries:** Email, name, address, any personal data, analytics identifiers
-- **Encoding:** URL parameters with serialization; compressed to avoid excessive length
-- **Lifespan:** Until the URL is closed or the browser is cleared; bookmarkable
-- **Access:** Public; anyone with the URL can view/modify the state
-- **No server storage:** Share URL state is client-encoded; server does not store share URL data (stateless)
-- **Security:** No authentication needed; no personal data exposure
+- Browser localStorage and sessionStorage preserve tool inputs and results
+- Share URLs encode calculation state as URL parameters
+- No server-side storage for anonymous users
+- Local state is browser-scoped and clearly labeled as local-only
+- Export preserves data beyond the session
 
-### Cloud persistence (account path)
+### Cloud persistence (future slice)
 
-- **What it stores:** Full Recipe/Batch Context — recipes, versions, batches, observations, costs, inventory, supplier records, production plans
-- **Storage:** Existing Neon PostgreSQL connection through Drizzle ORM and versioned migrations
-- **Sync:** Explicit server-backed reads/writes; no WebSocket or background queue dependency
-- **Concurrency:** Optimistic version check; stale mutations receive `409 Conflict` and require explicit user reconciliation
-- **Offline behavior:** Anonymous/local editing and export remain available, but the UI visibly marks cloud changes unsaved until a successful server response
-- **Data retention:** User data persists until account deletion; exported data is available before deletion
-- **Security:** Every query/mutation is scoped by session-derived `userId`; repository-owned authorization tests cover cross-user denial
-
-### Transition from share URL to account
-
-1. User opens share URL → tool loads with state
-2. User clicks "Save to account" → account creation/login flow
-3. After auth: calculation state is saved to user's account as a new Recipe/Batch Context
-4. The share URL remains valid and shows the original state (not the modified account copy)
-5. No personal data from the share URL is associated with the account beyond what the user explicitly enters during signup
+- Full Recipe/Batch Context persisted in Neon PostgreSQL through Drizzle ORM
+- Explicit server-backed reads/writes
+- Optimistic version check; stale mutations receive `409 Conflict`
+- Requires account creation; never required for core tools
 
 ---
 
-## 7. Auth and Security Model
+## 6. Auth and Security Model
 
-### Principle: Anonymous reads, optional account writes
+### Principle: Anonymous reads, optional account writes (future)
 
-```
+```text
 Public route → No auth check → Serve content
 Public route + calculation → No auth → Compute locally or via public API
-Public route + email capture → **DEPRECATED** Explicit consent → CRM integration (not approved primary path)
-Auth route → NextAuth check → Session valid → Serve user data
-Auth route + no session → Redirect to /auth/login
-API route → Session check → userId derived → Scope data by userId
+Auth route → NextAuth check → Session valid → Serve user data (future)
+API route → Session check → userId derived → Scope data by userId (future)
 ```
 
-### Authentication
+### Authentication (future)
 
 - **Method:** NextAuth.js with credentials + OAuth providers
 - **Session:** JWT-based with server-side validation
 - **Anonymous access:** Full read and calculation access without authentication
-- **Account creation:** Optional; email + password or OAuth; no mandatory gates
+- **Account creation:** Optional; email + password or OAuth; never a gate
 
-### Authorization
+### Authorization (future)
 
-- **Row-level security:** Every database query scoped by `userId`; users can only access their own data
+- **Row-level security:** Every database query scoped by `userId`
 - **API middleware:** Public routes have no auth check; private routes validate session
 - **Ownership checks:** Every resource access verifies `resource.userId === session.userId`
-- **Role-based access:** User (standard) and Admin (content management); no other roles planned
 
 ### Security practices
 
-- **No PII in analytics:** PostHog events omit email, name, recipe data, and addresses
-- **No PII in share URLs:** Share URL state contains only calculation values
-- **Email consent:** Email is exchanged only for a specific delivered artifact with explicit consent
-- **Data minimization:** Collect only what is needed for the function
-- **GDPR-ready:** Account deletion removes all user data; export available before deletion
-- **Environment secrets:** `NEXTAUTH_SECRET`, `DATABASE_URL`, `DODO_PAYMENTS_SECRET` in `.env.local`; never committed
-- **Content security:** robots.txt disallows protected routes; sitemap excludes private paths
-- **CORS:** API routes configured for same-origin; no cross-origin exposure of private data
-
-### Currently exists vs planned
-
-- Currently exists: NextAuth scaffolding, `.env.local` with secrets, `lib/auth.ts`, `lib/auth-guards.ts`
-- Planned: Full row-level security policies, complete OAuth integration, account deletion flow, data export endpoint, GDPR compliance audit
+- No PII in analytics: PostHog events omit email, name, recipe data, and addresses
+- No PII in share URLs: Share URL state contains only calculation values
+- Email consent: Email is exchanged only for a specific delivered artifact with explicit consent (future)
+- Data minimization: Collect only what is needed for the function
+- Environment secrets: `NEXTAUTH_SECRET`, `DATABASE_URL`, `DODO_PAYMENTS_SECRET` in `.env.local`; never committed
+- Content security: robots.txt disallows protected routes; sitemap excludes private paths
+- CORS: API routes configured for same-origin; no cross-origin exposure of private data
 
 ---
 
-## 8. Content and SEO Architecture
+## 7. Content and SEO Architecture
 
 ### Public content surface
 
@@ -437,9 +319,9 @@ Every public page must be:
 - Indexable by search engines
 - Have complete metadata (title, description, OpenGraph, Twitter, canonical URL, JSON-LD)
 - Reachable from the homepage and/or tool directory
-- Substantive (minimum quality bar per `product/PRODUCT-CONTRACT-UTILITY-HUB.md` §9)
+- Substantive (meet the quality bar)
 
-### SEO infrastructure (currently exists)
+### SEO infrastructure
 
 - `app/robots.ts` — Disallows protected routes, points to sitemap
 - `app/sitemap.ts` — Generates sitemap from static pages and blog posts
@@ -448,47 +330,40 @@ Every public page must be:
 - `lib/seo/intent-registry.ts` — Programmatic SEO page registry
 - `lib/seo/json-ld.ts` — Structured data serialization
 - `lib/seo/content-validator.ts` — Content validation rules
-- `lib/seo/content/` — Content metadata for intent pages
 
 ### Content structure
 
 | Content Type | Route Pattern | Auth | Purpose |
 |--------------|---------------|------|---------|
 | Homepage | `/` | None | Tool discovery, featured content |
-| Tool directory | `/tools` | None | Complete tool listing |
+| Tool catalogue | `/tools` | None | Complete tool listing |
 | Individual tools | `/tools/*` | None | Functional calculators |
-| Examples | `/examples/*` | None | Editable worked calculations |
-| Guides | `/guides/*` | None | Substantive decision guides |
-| Blog | `/blog/*` | None | SEO content, editorial |
-| Templates | `/templates/*` | None | Downloadable artifacts |
-| Compare | `/compare/*` | None | Factual comparisons |
-| Pricing | `/pricing` | None | Subscription information |
+| Blog | `/blog/*` | None | Unlaunched/draft content only |
+| Methodology | `/methodology` | None | Substantive methodology |
+| Safety | `/safety` | None | Public safety information |
+| Privacy | `/privacy` | None | Public privacy policy |
+| Terms | `/terms` | None | Public terms of service |
 
 ### Content rules
 
-- Every page supplies at least one of: verified tool, editable calculation, downloadable artifact, verified reference data, or substantive synthesis
+- Every page supplies at least one of: verified working tool, editable worked calculation, downloadable artifact, verified reference data, or substantive synthesis
 - No page ships solely to meet word count
-- Guide pages should be approximately 1,500+ words where subject warrants
-- Safety, legal, tax, IFRA, and formulation content requires named sources and reviewer approval
+- `/blog` is unlaunched/draft content only; no thin SEO expansion
 - Pages with overlapping intent are merged, redirected, or canonicalized
 - Canonical URLs contain no duplicate `/marketing` tree
-
-### Currently exists vs planned
-
-- Currently exists: `robots.ts`, `sitemap.ts`, `lib/seo/*` directory, `lib/blog-contract.ts`, `lib/blog-data.json`, `lib/blog.ts`
-- Planned: Full `/tools/*` route structure, `/examples/*`, substantive `/guides/*`, `/blog/*` expansion, editorial module on homepage
+- Safety, legal, tax, IFRA, and formulation content requires named sources and reviewer approval
 
 ---
 
-## 9. Analytics Architecture
+## 8. Analytics Architecture
 
 ### Principle: Aggregate events, no recipe data
 
 Analytics track user behavior at the aggregate level. No recipe data, notes, addresses, or any PII is ever collected.
 
-### Event contract (approved)
+### Event contract
 
-Required events from `product/PRODUCT-CONTRACT-UTILITY-HUB.md` §11:
+Required events:
 
 | Event | Trigger | Properties (no PII) |
 |-------|---------|---------------------|
@@ -498,134 +373,66 @@ Required events from `product/PRODUCT-CONTRACT-UTILITY-HUB.md` §11:
 | `connected_tool_opened` | User moved to connected tool | from_tool, to_tool |
 | `plan_exported` | Print/export/share action | tool_id, export_type |
 | `share_link_created` | Share URL generated | tool_id |
-| `email_delivery_confirmed` | Artifact delivered to email | consent_given |
-| `affiliate_link_clicked` | Affiliate link clicked | link_id |
-| `account_save_requested` | User clicked save/create account | tool_id |
-| `workspace_interest_submitted` | User expressed workspace interest | — |
+| `account_save_requested` | User clicked save | tool_id (future) |
+| `workspace_interest_submitted` | User expressed workspace interest | tool_id (future) |
 
-### Implementation
-
-- **Provider:** PostHog (via `lib/analytics/posthog.ts`)
-- **Anonymous ID:** `localStorage.getItem("soapcraft-analytics-id")` — `crypto.randomUUID()` if not present
-- **No pageview auto-capture:** Explicit events only (`capture_pageview: false`)
-- **No PII:** Events never contain email, name, recipe data, notes, or addresses
-- **Error logging:** Does not expose user-entered recipe or contact data
-- **Privacy-safe:** Compliant with analytics privacy requirements
-
-### Currently exists vs planned
-
-- Currently exists: `lib/analytics/analytics.ts` with event names defined, `lib/analytics/posthog.ts` client stub, `AnalyticsEvents` constant object
-- Planned: Full PostHog initialization, complete event forwarding pipeline, dashboard queries, cohort analysis
+**Privacy constraint:** Analytics contain no recipes, notes, addresses, or any PII. PostHog events follow the approved event contract and omit sensitive values.
 
 ---
 
-## 10. Failure Behavior and Recovery
+## 9. First proof architecture (Journey 1)
 
-| Failure | Detection | Recovery |
-|---------|-----------|----------|
-| Calculator engine error | Typed calculation error | Preserve inputs and prior result; show exact blocking field/reason; never substitute |
-| Public API rate limit | `429` response | Retry with bounded backoff or use the same deterministic client engine |
-| Transactional email unavailable | Delivery failure | Keep paid entitlement and offer authenticated/manual re-download; never claim delivery |
-| Database connection lost | Failed server mutation | Keep local state, mark cloud save failed, and offer retry/export; no unimplemented queue claim |
-| Stale cloud write | Version mismatch | Return `409 Conflict`; present both versions for explicit reconciliation |
-| Deployment fails | Vercel build error | Block promotion or roll back to previous verified deployment |
-| Dodo webhook fails verification | Invalid signature/event | Reject without state change and log a redacted correlation ID |
-| Duplicate Dodo webhook | Known event/transaction ID | Return success idempotently without duplicating entitlement |
-| Content validation fails | Contract check fails | Block publication and show validation errors |
-| Share URL decode fails | Malformed/unsupported payload | Preserve no data from it; load empty tool with an explicit message |
-| PostHog unavailable | Analytics request fails | Drop the optional event; never block product use or retain sensitive local payloads |
-| Save fails | Server error | Display “Save failed — Retry”; preserve all local user data |
+The first vertical journey (batch cost) must demonstrate a genuinely working, non-chemistry tool.
 
-### Degradation priorities
+### Architecture for first proof
 
-1. Core deterministic tools remain available locally when optional services fail.
-2. Public content remains available through static/CDN delivery.
-3. Account failures preserve local state and state the unsaved condition truthfully.
-4. Payment failures never grant or revoke entitlement from an unverified browser redirect.
-5. Analytics and email are optional and never block product use.
+1. **Homepage (`/`)** — Visual modules distributed with 2,000+ words; hero → tool discovery/value cards → workflow/timeline → UI/proof panels → use-case modules → safety/trust boundary → FAQ → CTA
+2. **Tool catalogue (`/tools`)** — Constrained desktop tool catalogue; mobile stacks with no horizontal overflow
+3. **Batch Cost tool (`/tools/batch-cost`)** — Genuinely working calculator with:
+   - Deterministic calculation from `lib/calculations/batch-cost.ts`
+   - Test verification from `lib/calculations/batch-cost.test.ts`
+   - Real calculation API route (`app/api/calculate/batch-cost/route.ts`)
+   - Visible result with assumptions, warnings, and formula revision
+   - Local save, export, and share URL
+   - Reload/re-entry preserves context
+4. **IA cleanup** — Dead `/tools` directory content removed; empty category pages fixed; pricing/subscription pages removed from nav/sitemap; legacy `/calculators` paths normalized
 
----
+### What must be true for first proof
 
-## 11. Migration and Recovery from Existing Production Data
-
-### Current state
-
-The repository at `/opt/data/studio/apps/soapcraft-pro` contains existing production data from a previous development phase:
-
-- `app/` directory with Next.js App Router pages and components
-- `lib/` directory with calculation modules, blog data, SEO infrastructure, analytics
-- `components/` directory with recipe builder, batch cost, cure tracker, making mode, and other UI components
-- `src/` directory with `globals.css` containing the approved design token system
-- `product/` directory with existing documentation
-- `public/` directory with static assets
-
-### Migration approach
-
-1. **Code migration:** Existing `app/` components and `lib/` modules are the starting point; new utility hub routes (`/tools/*`, `/examples/*`, `/guides/*`) are added alongside existing routes (`/calculators/*`, `/blog/*`)
-2. **Design token migration:** `src/globals.css` design tokens are the current approved baseline; mapped to `app/globals.css` Tailwind `@theme` block
-3. **Data migration:** Existing database schema migrated to support immutable RecipeVersion chain, inventory tables, supplier tables, and production planning tables
-4. **Route migration:** Legacy calculator routes (`/calculators/*`) preserved during transition; new `/tools/*` routes added; `/marketing/*` tree canonicalized
-5. **SEO migration:** Existing `lib/seo/*` infrastructure extended; `robots.ts` and `sitemap.ts` updated for new routes
-
-### Recovery procedures
-
-1. **Baseline recovery:** Credential rotation, branch/worktree/stash backup, deployed commit identified
-2. **Git recovery:** `.git/index.lock` cleanup if needed; stash recovery via `git stash list`
-3. **Database recovery:** Drizzle migrations applied in order; rollback via `drizzle-kit rollback`
-4. **Deployment recovery:** Vercel rollback to previous successful deployment; preview deployments for PR validation
-5. **Data integrity:** Formula fixtures verify calculation accuracy; RED fixture tests validate against reference cases
-6. **Build recovery:** `pnpm install` or clean reinstall if node modules corrupted; `next build` validates production build
-
-### Currently exists vs planned
-
-- Currently exists: Working Next.js app with components, `lib/calculations/batch-cost.ts` and `sap.ts` with tests, `lib/blog-contract.ts`, `lib/seo/*`, `lib/auth.ts`, `lib/auth-guards.ts`, `lib/analytics/analytics.ts`, `lib/analytics/posthog.ts`, `app/globals.css` with design tokens
-- Planned: Full utility hub route expansion, inventory/supplier modules, production planning engine, cloud sync infrastructure, complete authentication flow with account management
+- Anonymous user completes the full flow in a fresh browser with no login, email, cookie consent, or payment
+- Complete result is visible immediately
+- Local save, export, and share URL work
+- Reload/re-entry preserves context
+- No chemistry is advertised as released
+- No pricing or subscription path is visible
 
 ---
 
-## 12. Infrastructure Notes
+## 10. Chemistry architecture (gated later)
 
-### What currently exists
+Chemistry implementation remains a **gated later journey, never first proof**.
 
-| Component | Status | Details |
-|-----------|--------|---------|
-| Vercel deployment | Active | Project: `prj_J12YtoRr3q5dmazDWsqs2jXLpOqy`, Org: `team_gYtaSveuJSflpubmwIGhFD6Y` |
-| Next.js App Router | Active | `app/` directory with layout, providers, route handlers |
-| PostgreSQL (Neon) | Connected | `DATABASE_URL` in `.env.local`, Drizzle ORM |
-| Dodo payments | Existing integration to reuse | One-time Seller Pack checkout only; subscription billing deferred |
-| PostHog | Existing adapter | Activation/continuation events only after payload review |
-| Design tokens | Active | `app/globals.css` with `@theme` block and CSS custom properties |
-| SEO infrastructure | Active | `lib/seo/*`, `robots.ts`, `sitemap.ts` |
-| Blog system | Active | `lib/blog-contract.ts`, `lib/blog-data.json`, `lib/blog.ts` |
-| Calculation engine | Partial | `lib/calculations/batch-cost.ts` and `sap.ts` exist; full chemistry engine pending verification gate |
-| Auth | Scaffold | `lib/auth.ts`, `lib/auth-guards.ts` exist; full flow pending |
-
-### What is planned
-
-| Component | Priority | Dependencies |
-|-----------|----------|-------------|
-| Full `/tools/*` route structure | High | Calculation engine completion |
-| Immutable RecipeVersion chain | High | Database schema migration |
-| Cloud persistence and multi-device access | Medium | Existing NextAuth + Neon/Drizzle; optimistic concurrency |
-| Inventory and supplier management | Medium | Database schema, ownership checks, UI components |
-| Production/cure planning engine | Medium | Deterministic date tests |
-| Seller Pack one-time purchase | Medium | Dodo adapter, webhook signature/idempotency, entitlement records |
-| PostHog activation pipeline | Medium | Payload validation and privacy tests |
-| Subscription workspace billing | Deferred | Observed demand plus separate approval |
-
-### Do NOT invent unavailable infrastructure
-
-- No AI-powered calculation engines (deterministic only)
-- No automated content publication
-- No community/forum features
-- No display ad integration
-- No general e-commerce catalogue, marketplace, fulfilment system, or bookkeeping suite beyond the single Seller Pack entitlement flow
-- No IFRA compliance claims
-- No fragrance recommendation engine (subject to verification gate)
-- No universal SAP/KOH/mold-density logic (subject to verification gate)
+- No existing SAP, KOH, mold-density, fragrance, or IFRA logic is made public by middleware-only changes
+- Chemistry cannot become public until its deterministic specification, source manifest, effective/revision dates, independent review, hand/reference calculations, and cross-calculator fixtures pass
+- The model may research, derive, explain, implement and test chemistry logic, but model output is never the authoritative source of a safety-critical constant or formula
+- Differences between authoritative sources must be explained and resolved; values must not be averaged merely to make tests pass
+- **No real formulation output is advertised as usable or considered released**
 
 ---
 
-*Document version 2.0 — Utility hub model. Replaces traffic-first architecture v1.0.*
-*Companion to: `product/PRODUCT-CONTRACT-UTILITY-HUB.md`, `product/PRD.md`, `product/DESIGN.md`, `product/FLOWS.md`*
-*Vercel config: `{ "projectId": "prj_J12YtoRr3q5dmazDWsqs2jXLpOqy", "orgId": "team_gYtaSveuJSflpubmwIGhFD6Y", "projectName": "soapcraft-pro" }`*
+## 11. Technical requirements
+
+- Typecheck, lint, unit tests, production build, and anonymous mobile/desktop E2E all pass
+- Public page/API responses are 200; sitemap and robots are 200 and correct
+- Canonical URLs contain no duplicate `/marketing` tree
+- PostHog events follow the approved event contract and omit sensitive values
+- No endpoint reports email delivery, save, export, or payment success unless the side effect is verified
+- Formula/data revisions are explicit and included in exports
+- Error logging does not expose user-entered recipe or contact data
+- Pure calculation modules have unit, boundary, property, and unit-conversion round-trip tests
+- Independent spreadsheet/reference cases are reviewed before release
+
+---
+
+*Document version 1.0 — Anonymous-first utility hub architecture.*
+*Companion to: `product/PRD.md`, `product/DESIGN.md`, `product/FLOWS.md`*
