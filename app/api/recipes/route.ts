@@ -9,6 +9,7 @@ import { authOptions } from "@/lib/auth";
 import { db } from "@/db/schema";
 import { recipes, recipeVersions, activityEvents } from "@/db/schema";
 import { calculateFormulation } from "@/lib/calculations/sap";
+import { MANIFEST_REVISION } from "@/lib/calculations/ingredient-dataset";
 import { eq } from "drizzle-orm";
 
 // ── POST /api/recipes ──────────────────────────
@@ -32,7 +33,6 @@ export async function POST(req: NextRequest) {
       lyeConcentrationPercent,
       waterToLyeRatio,
       fragranceLoadPercent,
-      propertyRanges,
       idempotencyKey,
     } = body as {
       name: string;
@@ -43,7 +43,6 @@ export async function POST(req: NextRequest) {
       lyeConcentrationPercent: number;
       waterToLyeRatio: number;
       fragranceLoadPercent?: number;
-      propertyRanges?: Record<string, { min: number; max: number }>;
       idempotencyKey?: string;
     };
 
@@ -150,9 +149,8 @@ export async function POST(req: NextRequest) {
       calculatedLyeKOH: calculated.lyeKOH,
       calculatedWater: calculated.water,
       calculatedFragranceLoad: calculated.fragranceLoad,
-      propertyRanges: propertyRanges ?? calculated.propertyRanges,
       warnings: calculated.warnings,
-      datasetRevision: "1.0.0",
+      datasetRevision: MANIFEST_REVISION,
     });
 
     // 7. Append activity event

@@ -170,7 +170,6 @@ export function RecipeBuilder() {
           oilWeightTotal: result.oilWeightTotal,
           lyeWeightTotal: result.lyeWeightTotal,
           totalWeight: result.totalWeight,
-          propertyRanges: result.propertyRanges,
           warnings: result.warnings,
         },
       });
@@ -554,25 +553,6 @@ export function RecipeBuilder() {
                 </div>
               </div>
 
-              {/* Property ranges */}
-              {result.propertyRanges && (
-                <div className="space-y-2">
-                  <h3 className="text-sm font-medium">Property Ranges</h3>
-                  <div className="grid grid-cols-2 gap-2 text-sm">
-                    {Object.entries(result.propertyRanges).map(([key, range]) => (
-                      <div
-                        key={key}
-                        className="flex justify-between p-2 bg-muted/50 rounded"
-                      >
-                        <span className="capitalize">{key}</span>
-                        <span className="font-medium tabular-nums">
-                          {range.min} – {range.max}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
 
               {/* Warnings — persistent summary */}
               {result.warnings.length > 0 && (

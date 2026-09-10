@@ -9,6 +9,7 @@ import { authOptions } from "@/lib/auth";
 import { db } from "@/db/schema";
 import { recipes, recipeVersions, activityEvents } from "@/db/schema";
 import { calculateFormulation, type FormulationInput } from "@/lib/calculations/sap";
+import { MANIFEST_REVISION } from "@/lib/calculations/ingredient-dataset";
 
 interface SaveRecipeInput {
   name: string;
@@ -30,7 +31,6 @@ interface SaveRecipeInput {
     oilWeightTotal: number;
     lyeWeightTotal: number;
     totalWeight: number;
-    propertyRanges: Record<string, { min: number; max: number }>;
     warnings: Array<{ type: string; message: string }>;
   };
 }
@@ -100,9 +100,8 @@ export async function saveRecipe(input: SaveRecipeInput) {
     calculatedLyeKOH: serverResult.lyeKOH,
     calculatedWater: serverResult.water,
     calculatedFragranceLoad: serverResult.fragranceLoad,
-    propertyRanges: input.calculatedResult.propertyRanges,
     warnings: serverResult.warnings,
-    datasetRevision: "1.0.0",
+    datasetRevision: MANIFEST_REVISION,
   });
 
   // Append activity event

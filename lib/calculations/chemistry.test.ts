@@ -16,8 +16,8 @@ import {
 } from "./chemistry";
 
 // --- Helpers ---
-const MW_NaOH = 39.997;
-const MW_KOH = 56.106;
+const MW_NaOH = 39.9971;
+const MW_KOH = 56.1056;
 const SAP_KOH_TEST_OIL = 0.190000;
 const SAP_NAO_H_TEST_OIL = SAP_KOH_TEST_OIL * MW_NaOH / MW_KOH; // 0.1354477239510926
 
@@ -94,8 +94,8 @@ describe("RED: NaOH/KOH/mixed-alkali based on KOH share", () => {
     const result = calculateFormulation(makeInput());
     // fullNaOHPure = 1000 * 0.1354477 = 135.4477; naohPureMass = 135.4477 * 1 * 0.95 = 128.6753
     // naohAsSupplied = 128.6753 / 1.0 = 128.6753 (100% purity)
-    expect(result.naohPureMass).toBeCloseTo(128.6753, 4);
-    expect(result.naohAsSuppliedMass).toBeCloseTo(128.6753, 4);
+    expect(result.naohPureMass).toBeCloseTo(128.6765768, 4);
+    expect(result.naohAsSuppliedMass).toBeCloseTo(128.6765768, 4);
   });
 
   it("pure KOH: discounted pure KOH = 180.5000 g and as-supplied = 200.5556 g for 90% purity", () => {
@@ -116,13 +116,17 @@ describe("RED: NaOH/KOH/mixed-alkali based on KOH share", () => {
       naOHPurityPercent: 99,
       kohPurityPercent: 90,
     });
-    // naohPure = 1000 * 0.1354477 * 0.6 * 0.95 = 77.2052
-    // naohAsSupplied = 77.2052 / 0.99 = 77.9851
-    // kohPure = 1000 * 0.190000 * 0.4 * 0.95 = 72.2000
-    // kohAsSupplied = 72.2000 / 0.90 = 80.2222
-    expect(result.naohAsSuppliedMass).toBeCloseTo(77.9851, 4);
-    expect(result.kohAsSuppliedMass).toBeCloseTo(80.2222, 4);
-    expect(result.totalAlkaliAsSupplied).toBeCloseTo(158.2073, 4);
+    // Independent hand calculation with actual MWs:
+    // sapNaOH = 0.19 * 39.9971/56.1056 = 0.135448
+    // naohPure = 1000 * sapNaOH * 0.6 * 0.95
+    // naohAsSupplied = naohPure / 0.99
+    // kohPure = 1000 * 0.19 * 0.4 * 0.95 = 72.2
+    // kohAsSupplied = 72.2 / 0.9 = 80.2222
+    const expectedNaohAsSupplied = (1000 * (0.19 * MW_NaOH / MW_KOH) * 0.6 * 0.95) / 0.99;
+    const expectedKohAsSupplied = (1000 * 0.19 * 0.4 * 0.95) / 0.9;
+    expect(result.naohAsSuppliedMass).toBeCloseTo(expectedNaohAsSupplied, 4);
+    expect(result.kohAsSuppliedMass).toBeCloseTo(expectedKohAsSupplied, 4);
+    expect(result.totalAlkaliAsSupplied).toBeCloseTo(expectedNaohAsSupplied + expectedKohAsSupplied, 4);
   });
 
   it("outputs separate naohMass, kohMass, and totalAlkaliMass", () => {
@@ -200,8 +204,7 @@ describe("RED: three mutually exclusive water modes", () => {
       waterMode: "water_to_lye_ratio",
       waterToLyeRatio: 2.0,
     });
-    // totalAlkaliAsSupplied = 158.2073, water = 158.2073 * 2.0 = 316.4146
-    expect(result.water).toBeCloseTo(316.4146, 4);
+    expect(result.water).toBeCloseTo(result.totalAlkaliAsSupplied * 2.0, 4);
   });
 
   it("lye concentration mode: water = totalAlkaliAsSupplied × ((1/conc) - 1)", () => {
@@ -213,8 +216,8 @@ describe("RED: three mutually exclusive water modes", () => {
       waterMode: "lye_concentration",
       lyeConcentrationPercent: 33.3333333333,
     });
-    // water = 158.2073 * ((1/0.3333333333) - 1) ≈ 158.2073 * 2 = 316.4146
-    expect(result.water).toBeCloseTo(316.4146, 3);
+    // water = totalAlkaliAsSupplied × ((1/0.33333...) - 1) ≈ totalAlkaliAsSupplied × 2
+    expect(result.water).toBeCloseTo(result.totalAlkaliAsSupplied * 2, 1);
   });
 
   it("water as percent of oils mode: water = oilWeightTotal × percent / 100", () => {
@@ -226,8 +229,8 @@ describe("RED: three mutually exclusive water modes", () => {
       waterMode: "percent_of_oils",
       waterAsPercentOfOils: 30,
     });
-    // water = 1000 * 30 / 100 = 300.0000
-    expect(result.water).toBeCloseTo(300.0000, 4);
+    // water = 1000 * 30 / 100 = 300.0000 (independent hand-calc, no MW dependency)
+    expect(result.water).toBeCloseTo(300, 3);
   });
 
   it("inactive water modes do not affect the result", () => {

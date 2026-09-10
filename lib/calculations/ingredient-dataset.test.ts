@@ -6,6 +6,11 @@ import {
   isAvailable,
   isPubliclyUsable,
   isVerified,
+  LEGACY_OILS,
+  SYNTHETIC_OIL,
+  MW_NaOH,
+  MW_KOH,
+  type IngredientRecord,
 } from "./ingredient-dataset";
 
 describe("ingredient-dataset", () => {
@@ -18,9 +23,27 @@ describe("ingredient-dataset", () => {
     const sap = getSapKOH("test-oil-a");
     expect(sap).toBe(0.19);
   });
-  it("should derive NaOH", () => {
+  it("should derive NaOH from KOH using molecular weights", () => {
+    const expectedNaOH = 0.19 * MW_NaOH / MW_KOH;
     const naoh = derivNaOH(0.19);
-    expect(naoh).toBeCloseTo(0.1354477239510926, 10);
+    expect(naoh).toBeCloseTo(expectedNaOH, 10);
+  });
+
+  it("every legacy record has subtype and sapKOHRange", () => {
+    for (const oil of LEGACY_OILS) {
+      expect(oil.subtype).toBeDefined();
+      expect(oil.sapKOHRange).not.toBeNull();
+      expect(oil.sapKOHRange!.min).toBeLessThanOrEqual(oil.sapKOH);
+      expect(oil.sapKOHRange!.max).toBeGreaterThanOrEqual(oil.sapKOH);
+    }
+  });
+
+  it("coconut-oil has explicit note that 0.273 is NOT an approved ordinary value", () => {
+    const coconut = LEGACY_OILS.find(o => o.id === "coconut-oil");
+    expect(coconut).toBeDefined();
+    expect(coconut?.sourceMethod).toContain("rejected");
+    expect(coconut?.status).toBe("estimated");
+    expect(coconut?.reviewerState).toBe("pending");
   });
 
   it("keeps synthetic, estimated, and unknown records out of public chemistry", () => {
@@ -33,5 +56,22 @@ describe("ingredient-dataset", () => {
     expect(isPubliclyUsable("test-oil-a")).toBe(false);
     expect(isPubliclyUsable("olive-oil")).toBe(false);
     expect(isPubliclyUsable("missing-oil")).toBe(false);
+  });
+
+  it("SYNTHETIC_OIL has subtype 'synthetic' and null sapKOHRange", () => {
+    expect(SYNTHETIC_OIL.subtype).toBe("synthetic");
+    expect(SYNTHETIC_OIL.sapKOHRange).toBeNull();
+  });
+
+  it("all records have required provenance fields", () => {
+    const allRecords: IngredientRecord[] = [...LEGACY_OILS, SYNTHETIC_OIL];
+    for (const oil of allRecords) {
+      expect(oil.sourceTitle).toBeTruthy();
+      expect(oil.sourceUrl).toBeTruthy();
+      expect(oil.publicationDate).toBeTruthy();
+      expect(oil.retrievalDate).toBeTruthy();
+      expect(oil.status).toBeTruthy();
+      expect(oil.reviewerState).toBeTruthy();
+    }
   });
 });

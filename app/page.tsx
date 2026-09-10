@@ -1,937 +1,185 @@
-// ── Homepage ──────────────────
-// Conversion-optimized editorial layout.
-// Every section serves a conversion purpose:
-// trust → value → proof → pricing → action.
-// No filler. No generic feature cards. No emoji brand.
-// DESIGN.md §4 visual system, §7 marketing spec.
-
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
-  Check,
-  ChevronRight,
   ArrowRight,
-  Scale,
   Beaker,
-  Calculator,
   BookOpen,
-  Shield,
-  Clock,
-  DollarSign,
-  ChevronUp,
+  Check,
+  ClipboardList,
+  Coins,
+  FlaskConical,
+  LineChart,
+  ShieldCheck,
+  Scale,
 } from "lucide-react";
 import { JsonLd } from "@/components/shared";
 import { faqSchema } from "@/lib/seo/structured-data";
-
-const scrollSections = [
-  { href: "#problem", label: "The Problem" },
-  { href: "#system", label: "The System" },
-  { href: "#pricing", label: "Pricing" },
-  { href: "#faq", label: "FAQ" },
-];
+import { SITE_URL } from "@/lib/seo/site-url";
 
 export const metadata: Metadata = {
-  title: "SoapCraft Pro — Recipe, Batch & Profitability Workspace",
+  title: "SoapCraft Pro | Soap Recipe Calculator, Batch Tracker & Cost Tools",
   description:
-    "Deterministic lye calculations, guided batch production, cure tracking, and cost-per-bar analysis for serious soap makers. Start free — no signup required.",
+    "Free soapmaking tools for formulation, lye calculations, batch planning, cure tracking, ingredient costing, and selling-price decisions. Start without an account.",
+  keywords: [
+    "soap recipe calculator",
+    "lye calculator",
+    "soap batch tracker",
+    "soap cost per bar calculator",
+    "cold process soapmaking tools",
+  ],
+  alternates: { canonical: SITE_URL },
   openGraph: {
-    title: "SoapCraft Pro — The Soap Maker's Workspace",
+    title: "SoapCraft Pro | A clearer way to make, track, and cost soap",
     description:
-      "Verified calculations, batch tracking, and cost analysis. Start free with the calculator — no signup required.",
+      "Formulate, calculate, plan, cure, cost, and review soap batches in one connected workspace. Free tools, no account required to start.",
     type: "website",
-    url: "https://soapcraft-pro.vercel.app",
+    url: SITE_URL,
     siteName: "SoapCraft Pro",
   },
   twitter: {
     card: "summary_large_image",
-    title: "SoapCraft Pro — The Soap Maker's Workspace",
+    title: "SoapCraft Pro | Soapmaking tools that keep the batch together",
     description:
-      "Deterministic lye calculations, guided batch production, cure tracking, and cost-per-bar analysis.",
+      "Free formulation, lye, batch, cure, inventory, and cost tools for soap makers.",
   },
   robots: { index: true, follow: true },
-  alternates: {
-    canonical: "https://soapcraft-pro.vercel.app",
-  },
 };
+
+const faqs = [
+  {
+    question: "Is SoapCraft Pro a free soap recipe calculator?",
+    answer:
+      "Yes. SoapCraft Pro is being launched as an anonymous-first free utility hub. You can use the public tools without creating an account. The tools are designed to cover more than lye arithmetic: formulate a blend, size a batch, estimate cost per bar, plan production, and carry the context into the next decision.",
+  },
+  {
+    question: "Can I use SoapCraft Pro instead of SoapCalc?",
+    answer:
+      "SoapCalc is a useful reference for lye calculations. SoapCraft Pro is designed around the work that comes before and after the calculation: recipe versions, batch quantities, actual measurements, cure observations, yield, inventory, and cost. It is not presented as a claim that every calculation source is identical; chemistry records remain source-reviewed and fail-closed until approved.",
+  },
+  {
+    question: "Does SoapCraft Pro require an account?",
+    answer:
+      "No account is required to begin with the public tools. The current launch is intentionally anonymous-first. Local persistence and shareable context can support a working session, while account sync and cloud persistence remain separate capabilities that will only be introduced when their security and product boundaries are ready.",
+  },
+  {
+    question: "How does SoapCraft Pro handle lye safety?",
+    answer:
+      "The product treats lye calculation as a safety-sensitive function. Inputs are validated, purity and water modes are explicit, and unapproved chemistry data is not allowed to silently power public calculations. You remain responsible for checking your materials, protective equipment, workspace, method, and finished soap before use.",
+  },
+  {
+    question: "What can I calculate besides lye?",
+    answer:
+      "The utility hub includes batch sizing, unit conversion, oil and ingredient economics, price and margin calculations, break-even analysis, production planning, cure planning, purchasing, inventory, recipe versions, and shareable recipe context. Each tool is intended to be useful on its own and more useful when connected to the others.",
+  },
+  {
+    question: "Does the calculator use AI to invent a recipe?",
+    answer:
+      "No. AI may help maintain the product, explain documentation, or identify missing evidence, but it should not invent chemical quantities. The calculation path is deterministic: the same approved inputs and dataset revision should produce the same result, with warnings shown rather than hidden.",
+  },
+];
+
+const toolGroups = [
+  {
+    icon: FlaskConical,
+    title: "Formulate with context",
+    text: "Start with oils, percentages, target oil weight, superfat or lye discount, alkali choice, purity, water mode, fragrance, and additives. The point is not to bury you in settings. It is to make the assumptions visible before you commit a batch to paper or a scale.",
+    links: [
+      ["Soap recipe calculator", "/tools/recipe-calculator"],
+      ["Lye calculator", "/tools/lye-calculator"],
+      ["Oil percentage calculator", "/tools/oil-percentage-calculator"],
+    ],
+  },
+  {
+    icon: Scale,
+    title: "Size without rebuilding",
+    text: "A formula is not finished when the percentages add to one hundred. You still need weights for a mold, a target oil mass, a bar count, or a production run. SoapCraft Pro lets you carry the blend into a batch size and keeps the relationship between the formulation and the resulting weights readable.",
+    links: [
+      ["Batch size calculator", "/tools/batch-size-calculator"],
+      ["Unit converter", "/tools/unit-converter"],
+      ["Mold volume calculator", "/tools/mold-volume-calculator"],
+    ],
+  },
+  {
+    icon: Coins,
+    title: "Know the economics",
+    text: "Ingredient cost is not the same as selling price, and markup is not the same as margin. Use the cost tools to separate total batch cost, saleable yield, cost per bar, contribution, markup, gross margin, and target price. That separation makes a small soap business easier to reason about.",
+    links: [
+      ["Soap cost per bar calculator", "/calculators/soap-cost-calculator"],
+      ["Selling price calculator", "/tools/selling-price-calculator"],
+      ["Break-even calculator", "/tools/break-even-calculator"],
+    ],
+  },
+  {
+    icon: ClipboardList,
+    title: "Carry the batch through production",
+    text: "A plan becomes useful when it survives contact with the workbench. Record what you intended to weigh, what you actually weighed, which version produced the batch, when the batch entered cure, and what you observed. This is the difference between a recipe file and a production record.",
+    links: [
+      ["Production planner", "/tools/production-planner"],
+      ["Cure planner", "/tools/cure-planner"],
+      ["Inventory planner", "/tools/inventory-planner"],
+    ],
+  },
+];
 
 export default function HomePage() {
   return (
-    <main className="flex flex-col min-h-screen">
-      {/* ── Hero ── */}
-      <section id="hero" className="container mx-auto px-4 py-20 md:py-28" aria-label="Hero">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-center max-w-6xl mx-auto">
-          {/* Left: copy */}
+    <main className="min-h-screen bg-background text-foreground">
+      <JsonLd data={faqSchema(faqs)} />
+
+      <section className="border-b border-border bg-background" aria-labelledby="hero-title">
+        <div className="mx-auto grid max-w-6xl gap-14 px-6 py-20 md:px-10 md:py-28 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
           <div>
-            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-ink leading-[1.05]">
-              From formulation to finished bar, in one production record.
-            </h1>
-            <p className="mt-6 text-lg text-ink-muted max-w-xl leading-relaxed">
-              Calculate a recipe, make the batch, record the cure, and know the
-              real cost without rebuilding your work in four different tools.
-              SoapCraft Pro is a deterministic workspace — not a calculator, not
-              a spreadsheet, not a timer. One system for the entire batch
-              lifecycle.
-            </p>
+            <p className="mb-6 text-sm font-semibold uppercase tracking-[0.18em] text-primary">Soapmaking tools for the whole batch</p>
+            <h1 id="hero-title" className="max-w-4xl text-5xl font-semibold leading-[1.02] tracking-tight text-foreground md:text-7xl">Make the recipe once. Keep the batch together.</h1>
+            <p className="mt-8 max-w-2xl text-xl leading-9 text-muted-foreground">SoapCraft Pro is a free, anonymous-first workspace for people who formulate, make, cure, price, and learn from their own soap. Use the calculator when you need the math. Use the connected tools when you need the record to survive the rest of the process.</p>
             <div className="mt-10 flex flex-wrap gap-4">
-              <Link
-                href="/recipes/new"
-                className="inline-flex items-center gap-2 px-7 py-3.5 bg-action text-action-text rounded-md font-medium hover:bg-action-hover transition-colors text-sm"
-              >
-                Start a recipe
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                href="/batches/new"
-                className="inline-flex items-center gap-2 px-7 py-3.5 border border-rule bg-sheet text-ink rounded-md font-medium hover:bg-ledger transition-colors text-sm"
-              >
-                Start a batch
-              </Link>
+              <Link href="/tools" className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3.5 font-semibold text-primary-foreground transition hover:opacity-90">Explore the free tools <ArrowRight className="h-4 w-4" /></Link>
+              <Link href="/tools/recipe-calculator" className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-6 py-3.5 font-semibold text-foreground transition hover:bg-muted">Start a recipe</Link>
             </div>
-            <p className="mt-5 text-meta text-ink-muted">
-              Free tier includes the calculator, 3 recipes, and 1 active batch.
-              No credit card required.
-            </p>
-
-            {/* Smooth-scroll section links */}
-            <nav
-              className="mt-8 flex flex-wrap gap-1 text-sm"
-              aria-label="Quick navigation"
-            >
-              {scrollSections.map((section) => (
-                <a
-                  key={section.href}
-                  href={section.href}
-                  className="text-ink-muted hover:text-action transition-colors"
-                >
-                  {section.label}
-                </a>
-              ))}
-            </nav>
+            <p className="mt-5 text-sm text-muted-foreground">No account required to begin. No credit card. No need to hand your formulation to an AI just to get a number.</p>
           </div>
-
-          {/* Right: proof artifact */}
-          <div className="bg-sheet rounded-lg border border-rule p-6 space-y-4">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-label text-ink-muted">Example</span>
-              <span className="inline-flex items-center gap-1.5 text-label text-success">
-                <Check className="h-3.5 w-3.5" />
-                Live calculation
-              </span>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div>
-                <span className="font-display font-semibold text-ink">
-                  Recipe v3
-                </span>
-                <span className="text-meta text-ink-muted ml-2">
-                  Cedar Bar — Cold Process
-                </span>
-              </div>
-              <span className="text-label bg-clay text-ink px-2.5 py-1 rounded-full">
-                Draft
-              </span>
-            </div>
-
-            <div className="grid grid-cols-3 gap-4 pt-3 border-t border-rule">
-              <div>
-                <span className="text-meta text-ink-muted">Batch</span>
-                <p className="font-mono text-sm text-ink mt-0.5">#024</p>
-              </div>
-              <div>
-                <span className="text-meta text-ink-muted">Cure day</span>
-                <p className="font-mono text-sm text-ink mt-0.5">18 / 42</p>
-              </div>
-              <div>
-                <span className="text-meta text-ink-muted">Cost / bar</span>
-                <p className="font-mono text-sm text-ink mt-0.5">$2.14</p>
-              </div>
-            </div>
-
-            <div className="pt-3 border-t border-rule">
-              <p className="text-label text-ink-muted mb-2.5">Plan vs Actual</p>
-              <div className="space-y-2">
-                {[
-                  { label: "Olive oil", planned: "400.0 g", actual: "398.5 g" },
-                  { label: "Coconut oil", planned: "250.0 g", actual: "251.2 g" },
-                  { label: "Lye NaOH", planned: "134.0 g", actual: "134.0 g" },
-                  { label: "Lye KOH", planned: "192.0 g", actual: "191.8 g" },
-                  { label: "Water", planned: "335.0 g", actual: "336.1 g" },
-                ].map((row) => (
-                  <div
-                    key={row.label}
-                    className="flex justify-between text-sm"
-                  >
-                    <span className="text-ink">{row.label}</span>
-                    <span className="font-mono text-ink-muted">
-                      {row.planned} → {row.actual}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="pt-3 border-t border-rule flex justify-between text-sm">
-              <span className="text-ink-muted">Total cost</span>
-              <span className="font-mono font-medium text-ink">$12.50</span>
-            </div>
+          <div className="rounded-2xl border border-border bg-card p-7 shadow-sm" aria-label="A connected batch record example">
+            <div className="flex items-center justify-between border-b border-border pb-5"><span className="text-sm font-semibold text-foreground">Batch record 024</span><span className="rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">Cold process</span></div>
+            <div className="grid grid-cols-3 gap-4 border-b border-border py-6 text-sm"><div><span className="block text-muted-foreground">Recipe</span><strong>Version 3</strong></div><div><span className="block text-muted-foreground">Cure</span><strong>Day 18 / 42</strong></div><div><span className="block text-muted-foreground">Yield</span><strong>10 bars</strong></div></div>
+            <div className="space-y-4 py-6 text-sm"><div className="flex justify-between"><span>Oil blend</span><span className="font-mono text-muted-foreground">1,000 g</span></div><div className="flex justify-between"><span>Lye and water</span><span className="font-mono text-muted-foreground">planned</span></div><div className="flex justify-between"><span>Actual measurements</span><span className="font-mono text-muted-foreground">recorded</span></div><div className="flex justify-between"><span>Cost per bar</span><span className="font-mono font-semibold">$1.25</span></div></div>
+            <div className="flex items-center gap-2 border-t border-border pt-5 text-sm text-muted-foreground"><ShieldCheck className="h-4 w-4 text-primary" /> Inputs, assumptions, and changes stay visible.</div>
           </div>
         </div>
       </section>
 
-      {/* ── The Problem ── */}
-      <section id="problem" className="bg-canvas py-20 md:py-28" aria-label="The problem">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-ink">
-            Soap makers do not need another calculator.
-          </h2>
-          <p className="mt-5 text-body text-ink-muted max-w-2xl leading-relaxed">
-            A serious cold-process batch requires a formulation, a production
-            record, cure observations, and a cost analysis. Four different tools
-            means four places where context gets lost. A lye calculator does not
-            remember what oils you used last time. A spreadsheet does not tell
-            you when a batch is due for observation. A notebook does not compute
-            the SAP values.
-          </p>
+      <article className="mx-auto max-w-6xl px-6 md:px-10">
+        <section className="grid gap-10 border-b border-border py-20 md:grid-cols-[0.7fr_1.3fr] md:py-28" aria-labelledby="problem-title">
+          <div><p className="text-sm font-semibold uppercase tracking-[0.18em] text-primary">The problem</p><h2 id="problem-title" className="mt-4 text-4xl font-semibold leading-tight tracking-tight">A soap batch is more than a recipe.</h2></div>
+          <div className="space-y-6 text-lg leading-9 text-muted-foreground"><p>A recipe tells you what you planned to do. It does not automatically tell you what happened. It does not remember which version you used after you changed the coconut percentage. It does not preserve the actual oil weight when the scale stopped at 998 grams. It does not remind you which batch needs an observation, which bars survived the cure, or whether your selling price covers the real yield.</p><p>That missing continuity is where the practical work becomes fragile. Makers copy numbers between a lye calculator, a notebook, a spreadsheet, a timer, an inventory list, and a pricing formula. Every handoff is an opportunity to lose a unit, forget a purity assumption, overwrite a recipe, or mistake a markup for a margin. The tools may each be useful. The system around them is what is usually missing.</p><p>SoapCraft Pro is built around that gap. It treats formulation, production, cure, yield, and economics as connected stages of one batch lifecycle. You can still use a single calculator and leave. But if you keep going, the next tool starts with the context you already created instead of asking you to reconstruct it.</p></div>
+        </section>
 
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="flex gap-4">
-              <div className="flex-shrink-0 w-10 h-10 rounded-md bg-danger/10 flex items-center justify-center">
-                <Scale className="h-5 w-5 text-danger" />
-              </div>
-              <div>
-                <h3 className="font-display font-semibold text-ink mb-1">
-                  Fragmented data
-                </h3>
-                <p className="text-sm text-ink-muted leading-relaxed">
-                  When the recipe lives in one tool, the batch in another, and
-                  the cost in a third, the connections between them are manual
-                  and error-prone. A change to the formulation does not propagate
-                  to the batch plan.
-                </p>
-              </div>
-            </div>
+        <section className="border-b border-border py-20 md:py-28" aria-labelledby="tools-title">
+          <div className="max-w-3xl"><p className="text-sm font-semibold uppercase tracking-[0.18em] text-primary">The free utility hub</p><h2 id="tools-title" className="mt-4 text-4xl font-semibold leading-tight tracking-tight">One place for the decisions around the calculation.</h2><p className="mt-6 text-lg leading-9 text-muted-foreground">The homepage is not a wall of disconnected features. Each group below answers a different question in the soapmaking workflow. Open the tool you need now, then carry the result into the next decision.</p></div>
+          <div className="mt-14 grid gap-6 md:grid-cols-2">{toolGroups.map((group) => { const Icon = group.icon; return <section key={group.title} className="rounded-xl border border-border bg-card p-7" aria-labelledby={group.title.replaceAll(" ", "-")}><Icon className="h-7 w-7 text-primary" /><h3 id={group.title.replaceAll(" ", "-")} className="mt-6 text-2xl font-semibold">{group.title}</h3><p className="mt-4 leading-8 text-muted-foreground">{group.text}</p><ul className="mt-6 space-y-3">{group.links.map(([label, href]) => <li key={href}><Link className="inline-flex items-center gap-2 font-medium text-primary hover:underline" href={href}>{label}<ArrowRight className="h-4 w-4" /></Link></li>)}</ul></section>; })}</div>
+        </section>
 
-            <div className="flex gap-4">
-              <div className="flex-shrink-0 w-10 h-10 rounded-md bg-warning/10 flex items-center justify-center">
-                <Clock className="h-5 w-5 text-warning" />
-              </div>
-              <div>
-                <h3 className="font-display font-semibold text-ink mb-1">
-                  Lost context
-                </h3>
-                <p className="text-sm text-ink-muted leading-relaxed">
-                  Every batch carries decisions from the recipe version that
-                  created it. When that context is not preserved, you cannot
-                  compare planned versus actual, trace a quality issue back to
-                  its source, or use prior results to improve the next version.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+        <section className="grid gap-12 border-b border-border py-20 md:grid-cols-2 md:py-28" aria-labelledby="calculation-title">
+          <div><p className="text-sm font-semibold uppercase tracking-[0.18em] text-primary">Calculation discipline</p><h2 id="calculation-title" className="mt-4 text-4xl font-semibold leading-tight tracking-tight">The number should explain its assumptions.</h2><div className="mt-8 space-y-5 text-lg leading-9 text-muted-foreground"><p>Lye calculation is not a place for a hidden default. The oil mass, oil percentages, saponification data, alkali selection, purity, discount, and water mode all affect the result. SoapCraft Pro is designed so those inputs can be inspected rather than inferred after the fact.</p><p>NaOH-only, KOH-only, and mixed-alkali recipes are treated as distinct choices. A mixed-alkali control describes the KOH share of pure alkali equivalents, not a casual percentage of the final weighed powders. Purity correction happens after the lye discount. Water can be expressed as a ratio, a concentration, or a percentage of oils, but only the selected mode is allowed to determine the result.</p><p>That is a product behavior, not marketing language. The engine validates boundaries, computes deterministically, and exposes warnings when the inputs cannot support a trustworthy answer.</p></div></div>
+          <div className="rounded-xl border border-border bg-muted p-8"><div className="flex items-center gap-3"><Beaker className="h-6 w-6 text-primary" /><h3 className="text-xl font-semibold">A transparent release boundary</h3></div><ul className="mt-8 space-y-5 text-muted-foreground"><li className="flex gap-3"><Check className="mt-1 h-5 w-5 shrink-0 text-primary" /><span>Ingredient records carry source, method, date, status, and reviewer state.</span></li><li className="flex gap-3"><Check className="mt-1 h-5 w-5 shrink-0 text-primary" /><span>Standards-based ranges are kept separate from nominal computational values.</span></li><li className="flex gap-3"><Check className="mt-1 h-5 w-5 shrink-0 text-primary" /><span>Unapproved chemistry remains blocked instead of quietly falling back to a legacy estimate.</span></li><li className="flex gap-3"><Check className="mt-1 h-5 w-5 shrink-0 text-primary" /><span>Independent fixtures test conversion, purity, mixed alkali, and all water modes.</span></li></ul><Link href="/methodology" className="mt-8 inline-flex items-center gap-2 font-medium text-primary hover:underline">Read the calculation methodology <ArrowRight className="h-4 w-4" /></Link></div>
+        </section>
 
-      {/* ── The System ── */}
-      <section id="system" className="container mx-auto px-4 py-20 md:py-28" aria-label="The system">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-ink">
-            One system for the complete batch lifecycle.
-          </h2>
-          <p className="mt-5 text-body text-ink-muted max-w-2xl leading-relaxed">
-            SoapCraft Pro connects every stage of production. A recipe version
-            locks the formulation. A batch inherits that version and carries the
-            plan forward. Making Mode records what actually happened. Cure
-            observations feed the evidence record. Final yield and cost per bar
-            complete the picture — and become the basis for the next recipe
-            version.
-          </p>
+        <section className="grid gap-12 border-b border-border py-20 md:grid-cols-[1.2fr_0.8fr] md:py-28" aria-labelledby="record-title">
+          <div><p className="text-sm font-semibold uppercase tracking-[0.18em] text-primary">From plan to evidence</p><h2 id="record-title" className="mt-4 text-4xl font-semibold leading-tight tracking-tight">A production record is how your next batch gets better.</h2><div className="mt-8 space-y-6 text-lg leading-9 text-muted-foreground"><p>When you make soap regularly, memory becomes an unreliable database. You remember that a batch was soft, but not whether it was cut on day two or day four. You remember that the scent was strong, but not how much fragrance you actually used. You remember a bar that sold well, but not whether the price covered packaging and the bars that never made it to the table.</p><p>SoapCraft Pro gives those observations a place beside the formulation. A recipe version can be treated as the plan. A batch can inherit that plan without being rewritten when the recipe changes later. Actual measurements can be recorded against planned measurements. Cure observations can be structured around dates, hardness, temperature, appearance, and notes. Final yield can feed cost per bar rather than leaving economics based on an optimistic theoretical count.</p><p>The goal is not to turn a creative craft into paperwork. The goal is to make the paperwork useful enough that it returns value. A production record should help you repeat what worked, identify what changed, and make the next decision with evidence instead of a vague memory.</p></div></div>
+          <div className="space-y-4"><div className="rounded-xl border border-border p-6"><BookOpen className="h-6 w-6 text-primary" /><h3 className="mt-4 text-xl font-semibold">Cure observations</h3><p className="mt-3 leading-7 text-muted-foreground">Track what you saw and when you saw it. A reminder is not a safety verdict, and the maker remains responsible for evaluating the finished soap.</p></div><div className="rounded-xl border border-border p-6"><LineChart className="h-6 w-6 text-primary" /><h3 className="mt-4 text-xl font-semibold">Cost from actual yield</h3><p className="mt-3 leading-7 text-muted-foreground">Separate batch cost, saleable units, cost per unit, markup, contribution, and gross margin so your price decision has a clear basis.</p></div><div className="rounded-xl border border-border p-6"><ShieldCheck className="h-6 w-6 text-primary" /><h3 className="mt-4 text-xl font-semibold">Visible uncertainty</h3><p className="mt-3 leading-7 text-muted-foreground">If the source or status is not ready, the product should say so. Confidence is earned through evidence, not through a polished number.</p></div></div>
+        </section>
 
-          <div className="mt-14 space-y-10">
-            {/* Stage 1 */}
-            <div className="flex gap-6 items-start">
-              <div className="flex-shrink-0 w-12 h-12 rounded-md bg-action/10 flex items-center justify-center">
-                <Calculator className="h-6 w-6 text-action" />
-              </div>
-              <div>
-                <span className="text-label text-action font-medium">
-                  Stage 1 — Formulate
-                </span>
-                <h3 className="font-display text-xl font-bold text-ink mt-1">
-                  Design with deterministic calculations
-                </h3>
-                <p className="mt-3 text-sm text-ink-muted leading-relaxed">
-                  Build a recipe with identity, target mass, oil blend, lye
-                  settings, and additives. The SAP computation runs server-side
-                  using a single authoritative method with NaOH/KOH dual-lye
-                  support, water mode selection, and IFRA compliance checks.
-                  Client totals are ignored — the server always recomputes.
-                  Unknown or missing SAP values block the calculation with a
-                  clear warning, never a silent guess.
-                </p>
-                <p className="mt-3 text-sm text-ink-muted leading-relaxed">
-                  Warnings are factual and specific: single oil above 80%, low
-                  superfat, high fragrance load. Each warning explains the
-                  consequence and leaves the decision to you.
-                </p>
-              </div>
-            </div>
+        <section className="border-b border-border py-20 md:py-28" aria-labelledby="economics-title">
+          <div className="max-w-3xl"><p className="text-sm font-semibold uppercase tracking-[0.18em] text-primary">The economics of a bar</p><h2 id="economics-title" className="mt-4 text-4xl font-semibold leading-tight tracking-tight">Price from reality, not from ingredient cost alone.</h2><div className="mt-8 space-y-6 text-lg leading-9 text-muted-foreground"><p>Many soap pricing mistakes begin with a true number used in the wrong place. The oils cost $12, so the batch is priced from $12. The batch produces ten bars, so the cost is divided by ten. The maker adds twenty percent, calls it margin, and discovers later that packaging, failed bars, market fees, labor, and unsold inventory were never in the model.</p><p>SoapCraft Pro keeps these concepts separate. Ingredient and additive costs form the batch basis. Actual or expected saleable yield determines cost per bar. A markup answers one question: how much is added to cost. A gross margin answers another: what share of the selling price remains after cost. A break-even calculation answers a third: how many units or dollars are required before the fixed costs are recovered.</p><p>That separation does not tell you what your soap must cost. It gives you a better surface on which to make the decision. You can choose a price based on your market, positioning, packaging, labor, and customer relationship while seeing exactly what the price does to contribution and margin.</p></div></div>
+        </section>
 
-            {/* Stage 2 */}
-            <div className="flex gap-6 items-start">
-              <div className="flex-shrink-0 w-12 h-12 rounded-md bg-action/10 flex items-center justify-center">
-                <Beaker className="h-6 w-6 text-action" />
-              </div>
-              <div>
-                <span className="text-label text-action font-medium">
-                  Stage 2 — Produce
-                </span>
-                <h3 className="font-display text-xl font-bold text-ink mt-1">
-                  Start a batch from a locked recipe version
-                </h3>
-                <p className="mt-3 text-sm text-ink-muted leading-relaxed">
-                  A batch is created from a specific recipe version — not the
-                  current draft. The planned measurement snapshot is immutable.
-                  Later recipe edits do not alter the batch plan. Safety
-                  acknowledgement is required before making begins, and the
-                  Making Mode checklist gates each step in order.
-                </p>
-                <p className="mt-3 text-sm text-ink-muted leading-relaxed">
-                  Actual measurements are recorded against the plan as you work.
-                  The comparison is factual: what you weighed versus what the
-                  recipe called for. Variance is shown with sign and unit, not
-                  color alone.
-                </p>
-              </div>
-            </div>
+        <section className="border-b border-border py-20 md:py-28" aria-labelledby="safety-title"><div className="mx-auto max-w-4xl"><div className="flex items-center gap-3"><ShieldCheck className="h-7 w-7 text-primary" /><p className="text-sm font-semibold uppercase tracking-[0.18em] text-primary">Safety and responsibility</p></div><h2 id="safety-title" className="mt-5 text-4xl font-semibold leading-tight tracking-tight">A calculator is an instrument, not permission.</h2><div className="mt-8 space-y-6 text-lg leading-9 text-muted-foreground"><p>SoapCraft Pro can make arithmetic clearer. It cannot inspect your bottle of lye, verify that an oil is what its label says, judge whether your workspace is ventilated, or decide whether a finished bar is ready for use. Sodium hydroxide and potassium hydroxide are corrosive materials. Water and lye generate heat. A result on a screen does not replace protective equipment, careful weighing, correct storage, labeling, or a method appropriate to your experience.</p><p>The product therefore treats safety as a boundary around the calculation. Input validation is explicit. Chemistry status is visible. Public release is gated on evidence. When a record is not ready, the correct behavior is to block or label it, not to fill the gap with an authoritative-looking guess. Read the safety guidance before using a result, and independently check every formula against your materials and method.</p><Link href="/safety" className="inline-flex items-center gap-2 font-medium text-primary hover:underline">Read the soapmaking safety guidance <ArrowRight className="h-4 w-4" /></Link></div></div></section>
 
-            {/* Stage 3 */}
-            <div className="flex gap-6 items-start">
-              <div className="flex-shrink-0 w-12 h-12 rounded-md bg-action/10 flex items-center justify-center">
-                <BookOpen className="h-6 w-6 text-action" />
-              </div>
-              <div>
-                <span className="text-label text-action font-medium">
-                  Stage 3 — Cure
-                </span>
-                <h3 className="font-display text-xl font-bold text-ink mt-1">
-                  Record observations with structured fields
-                </h3>
-                <p className="mt-3 text-sm text-ink-muted leading-relaxed">
-                  Cure observations use structured fields — temperature, hardness,
-                  visual notes — not free-form timestamps. The dashboard shows
-                  due and overdue batches so nothing falls through the cracks.
-                  Mark a batch ready when cure is complete. The system does not
-                  auto-declare safety; that decision stays with you.
-                </p>
-              </div>
-            </div>
+        <section className="border-b border-border py-20 md:py-28" aria-labelledby="faq-title"><div className="max-w-3xl"><p className="text-sm font-semibold uppercase tracking-[0.18em] text-primary">Questions before you start</p><h2 id="faq-title" className="mt-4 text-4xl font-semibold leading-tight tracking-tight">A practical tool should be clear about what it is.</h2><div className="mt-10 divide-y divide-border border-y border-border">{faqs.map((faq) => <details key={faq.question} className="group py-6"><summary className="cursor-pointer list-none pr-8 text-lg font-semibold marker:hidden">{faq.question}</summary><p className="mt-4 max-w-2xl leading-8 text-muted-foreground">{faq.answer}</p></details>)}</div></div></section>
 
-            {/* Stage 4 */}
-            <div className="flex gap-6 items-start">
-              <div className="flex-shrink-0 w-12 h-12 rounded-md bg-action/10 flex items-center justify-center">
-                <DollarSign className="h-6 w-6 text-action" />
-              </div>
-              <div>
-                <span className="text-label text-action font-medium">
-                  Stage 4 — Analyze
-                </span>
-                <h3 className="font-display text-xl font-bold text-ink mt-1">
-                  Finalize yield and cost per bar
-                </h3>
-                <p className="mt-3 text-sm text-ink-muted leading-relaxed">
-                  Record final yield and ingredient costs. Cost per bar uses the
-                  actual batch weight and inherited ingredient costs from the
-                  recipe version. Missing cost basis is always visible — never
-                  hidden. The cost portfolio tracks batch economics so you can
-                  compare margins across recipes and batches over time.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+        <section className="py-20 text-center md:py-28" aria-labelledby="cta-title"><p className="text-sm font-semibold uppercase tracking-[0.18em] text-primary">Start with one useful decision</p><h2 id="cta-title" className="mx-auto mt-5 max-w-3xl text-4xl font-semibold leading-tight tracking-tight md:text-5xl">Calculate the batch you are actually about to make.</h2><p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">Open the free tools, choose the task in front of you, and keep the assumptions visible. You can start anonymously and decide later whether you need a longer-lived record.</p><div className="mt-9 flex flex-wrap justify-center gap-4"><Link href="/tools" className="inline-flex items-center gap-2 rounded-md bg-primary px-7 py-3.5 font-semibold text-primary-foreground hover:opacity-90">Browse all tools <ArrowRight className="h-4 w-4" /></Link><Link href="/methodology" className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-7 py-3.5 font-semibold hover:bg-muted">See how the calculations work</Link></div></section>
+      </article>
 
-      {/* ── Deterministic Calculation ── */}
-      <section id="trust" className="bg-canvas py-20 md:py-28" aria-label="Calculation trust">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-ink">
-            Deterministic, auditable, and traceable.
-          </h2>
-          <p className="mt-5 text-body text-ink-muted max-w-2xl leading-relaxed">
-            Every calculation in SoapCraft Pro uses a single authoritative SAP
-            method. The dataset is versioned. The result is reproducible. There
-            is no AI in the calculation path, no network call, and no silent
-            fallback.
-          </p>
-
-          <div className="mt-10 bg-sheet rounded-lg border border-rule p-6">
-            <div className="flex items-center gap-2 mb-5">
-              <Shield className="h-5 w-5 text-success" />
-              <span className="text-label font-medium text-ink">
-                Calculation contract
-              </span>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-ink-muted">
-              <div className="flex items-start gap-2.5">
-                <Check className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                Single-method SAP calculation from a versioned dataset
-              </div>
-              <div className="flex items-start gap-2.5">
-                <Check className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                NaOH and KOH dual-lye support in one unified engine
-              </div>
-              <div className="flex items-start gap-2.5">
-                <Check className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                One active water mode at a time; inactive modes cannot influence
-                results
-              </div>
-              <div className="flex items-start gap-2.5">
-                <Check className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                Superfat and IFRA compliance checks with specific thresholds
-              </div>
-              <div className="flex items-start gap-2.5">
-                <Check className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                Variance thresholds enforced; unknown SAP blocks the calculation
-              </div>
-              <div className="flex items-start gap-2.5">
-                <Check className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                All numeric boundaries validated before computation begins
-              </div>
-            </div>
-          </div>
-
-          <p className="mt-6 text-sm text-ink-muted leading-relaxed">
-            The calculation engine is the single source of truth. Client-side
-            totals are for display only. The server always recomputes. This is
-            not a design preference — it is the contract that makes every batch
-            record trustworthy.
-          </p>
-        </div>
-      </section>
-
-      {/* ── Plan vs Actual Evidence ── */}
-      <section className="container mx-auto px-4 py-20 md:py-28" aria-label="Evidence">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-ink">
-            Plan vs actual — one coherent example.
-          </h2>
-          <p className="mt-5 text-body text-ink-muted max-w-2xl leading-relaxed">
-            Every batch carries the planned snapshot from its recipe version.
-            Actual measurements are entered during Making Mode. The comparison
-            below is a complete worked example showing how the system tracks
-            variance across a real cold-process batch.
-          </p>
-
-          <div className="mt-8 bg-sheet rounded-lg border border-rule overflow-hidden">
-            <div className="grid grid-cols-3 gap-4 px-6 py-3 border-b border-rule bg-ledger">
-              <span className="text-label text-ink-muted">Ingredient</span>
-              <span className="text-label text-ink-muted text-right">Planned</span>
-              <span className="text-label text-ink-muted text-right">Actual</span>
-            </div>
-            <div className="divide-y divide-rule">
-              {[
-                {
-                  label: "Olive oil (70%)",
-                  planned: "400.0 g",
-                  actual: "398.5 g",
-                  variance: "-0.4%",
-                  negative: true,
-                },
-                {
-                  label: "Coconut oil (20%)",
-                  planned: "250.0 g",
-                  actual: "251.2 g",
-                  variance: "+0.5%",
-                  negative: false,
-                },
-                {
-                  label: "Palm oil (10%)",
-                  planned: "200.0 g",
-                  actual: "199.8 g",
-                  variance: "-0.1%",
-                  negative: true,
-                },
-                {
-                  label: "Lye NaOH",
-                  planned: "134.0 g",
-                  actual: "134.0 g",
-                  variance: "0.0%",
-                  negative: false,
-                },
-                {
-                  label: "Lye KOH",
-                  planned: "192.0 g",
-                  actual: "191.8 g",
-                  variance: "-0.1%",
-                  negative: true,
-                },
-                {
-                  label: "Water",
-                  planned: "335.0 g",
-                  actual: "336.1 g",
-                  variance: "+0.3%",
-                  negative: false,
-                },
-              ].map((row) => (
-                <div
-                  key={row.label}
-                  className="grid grid-cols-3 gap-4 px-6 py-3 text-sm"
-                >
-                  <span className="text-ink">{row.label}</span>
-                  <span className="font-mono text-ink-muted text-right">
-                    {row.planned}
-                  </span>
-                  <div className="flex items-center justify-end gap-3">
-                    <span className="font-mono text-ink">{row.actual}</span>
-                    <span
-                      className={`text-xs font-medium ${
-                        row.negative ? "text-danger" : "text-success"
-                      }`}
-                    >
-                      {row.variance}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="px-6 py-3 border-t border-rule bg-ledger flex justify-between text-sm">
-              <span className="text-ink-muted">Total cost</span>
-              <span className="font-mono font-medium text-ink">$12.50</span>
-            </div>
-            <div className="px-6 pb-4 border-t border-rule bg-ledger flex justify-between text-sm">
-              <span className="text-ink-muted">Cost per bar (10 bars)</span>
-              <span className="font-mono font-medium text-ink">$1.25</span>
-            </div>
-          </div>
-
-          <p className="mt-5 text-meta text-ink-muted">
-            * Example record — synthetic data, clearly labelled until real
-            consented data exists. All values are deterministic and reproducible
-            from the recipe version.
-          </p>
-        </div>
-      </section>
-
-      {/* ── What's Included ── */}
-      <section id="pricing" className="bg-canvas py-20 md:py-28" aria-label="What is included">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-ink">
-            What SoapCraft Pro includes.
-          </h2>
-          <p className="mt-5 text-body text-ink-muted max-w-2xl leading-relaxed">
-            The Free tier gives you the calculator and a starting point. Pro
-            adds the full production workspace. No feature is hidden behind a
-            paywall that you need before you can evaluate the product.
-          </p>
-
-          <div className="mt-12 space-y-8">
-            {/* Free tier */}
-            <div className="border border-rule rounded-lg p-6 bg-sheet">
-              <div className="flex items-center justify-between mb-5">
-                <h3 className="font-display text-xl font-bold text-ink">
-                  Free
-                </h3>
-                <span className="text-label font-medium text-ink-muted">
-                  $0 / month
-                </span>
-              </div>
-              <p className="text-sm text-ink-muted mb-5">
-                Everything you need to evaluate the product and start building
-                recipes.
-              </p>
-              <ul className="space-y-3 text-sm text-ink">
-                <li className="flex items-start gap-2.5">
-                  <Check className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                  Lye calculator (NaOH + KOH)
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <Check className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                  3 recipes with version history
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <Check className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                  1 active batch per recipe
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <Check className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                  Curated recipe library with verified formulations
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <Check className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                  SAP calculations from versioned dataset
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <Check className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                  Property ranges and IFRA compliance checks
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <Check className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                  Deterministic calculation engine
-                </li>
-              </ul>
-            </div>
-
-            {/* Pro tier */}
-            <div className="border-2 border-action rounded-lg p-6 bg-sheet relative">
-              <div className="absolute -top-3 left-6 bg-action text-action-text text-label font-medium px-3 py-1 rounded-full">
-                Pro
-              </div>
-              <div className="flex items-center justify-between mb-5">
-                <h3 className="font-display text-xl font-bold text-ink">
-                  Pro
-                </h3>
-                <div>
-                  <span className="text-4xl font-bold text-ink">$12</span>
-                  <span className="text-sm text-ink-muted">/month</span>
-                </div>
-              </div>
-              <p className="text-sm text-ink-muted mb-5">
-                The full production workspace for serious soap makers.
-              </p>
-              <ul className="space-y-3 text-sm text-ink mb-6">
-                <li className="flex items-start gap-2.5">
-                  <Check className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                  Everything in Free
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <Check className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                  Unlimited recipes and versions
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <Check className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                  Unlimited active batches
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <Check className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                  Cure Tracker with structured observations
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <Check className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                  Cost per batch and cost per bar
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <Check className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                  Target margin pricing
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <Check className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                  Mold volume calculator
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <Check className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                  Making Mode — guided cold-process production
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <Check className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                  Template recipes with pre-verified formulations
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <Check className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                  Priority support
-                </li>
-              </ul>
-              <Link
-                href="/api/subscription/upgrade"
-                className="block text-center rounded-md px-6 py-3 bg-action text-action-text font-medium hover:bg-action-hover transition-colors text-sm"
-              >
-                Upgrade to Pro
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── FAQ ── */}
-      <section id="faq" className="container mx-auto px-4 py-20 md:py-28" aria-label="FAQ">
-        <JsonLd
-          data={faqSchema([
-            {
-              question: "Is SoapCraft Pro a lye calculator?",
-              answer:
-                "It includes a lye calculator, but that is only one part of the system. The calculator is the entry point. The batch record, cure observations, yield, and cost analysis are what make SoapCraft Pro a production workspace, not a standalone tool.",
-            },
-            {
-              question: "How is the calculation different from SoapCalc?",
-              answer:
-                "SoapCraft Pro uses the same SAP dataset and calculation method as SoapCalc. The difference is in the system around it: recipe versioning, batch inheritance, cure tracking, and cost analysis.",
-            },
-            {
-              question: "Does SoapCraft Pro use AI?",
-              answer:
-                "Not in the calculation path. The SAP computation is deterministic and fully auditable. AI may be used in future features for explanation and suggestion, but it will never invent chemical quantities.",
-            },
-            {
-              question: "What happens to my data?",
-              answer:
-                "Your data is private and owned by you. There is no analytics tracking on batch content, no data sharing, and no AI training on your formulations.",
-            },
-            {
-              question: "Can I cancel anytime?",
-              answer:
-                "Yes. Pro subscriptions can be cancelled at any time. You retain access to all Pro features until the current billing period ends.",
-            },
-            {
-              question: "Is there a free trial?",
-              answer:
-                "The Free tier is always available and includes the full calculator with 3 recipes and 1 active batch.",
-            },
-          ])}
-        />
-        <div className="max-w-3xl mx-auto">
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-ink">
-            Common questions.
-          </h2>
-
-          <div className="mt-10 space-y-6">
-            <div className="border-b border-rule pb-6">
-              <h3 className="font-display text-lg font-bold text-ink">
-                Is SoapCraft Pro a lye calculator?
-              </h3>
-              <p className="mt-2 text-sm text-ink-muted leading-relaxed">
-                It includes a lye calculator, but that is only one part of the
-                system. The calculator is the entry point. The batch record, cure
-                observations, yield, and cost analysis are what make SoapCraft Pro
-                a production workspace, not a standalone tool.
-              </p>
-            </div>
-
-            <div className="border-b border-rule pb-6">
-              <h3 className="font-display text-lg font-bold text-ink">
-                How is the calculation different from SoapCalc?
-              </h3>
-              <p className="mt-2 text-sm text-ink-muted leading-relaxed">
-                SoapCraft Pro uses the same SAP dataset and calculation method as
-                SoapCalc. The difference is in the system around it: recipe
-                versioning, batch inheritance, cure tracking, and cost analysis.
-                The calculation is the same; the record is connected.
-              </p>
-            </div>
-
-            <div className="border-b border-rule pb-6">
-              <h3 className="font-display text-lg font-bold text-ink">
-                Does SoapCraft Pro use AI?
-              </h3>
-              <p className="mt-2 text-sm text-ink-muted leading-relaxed">
-                Not in the calculation path. The SAP computation is deterministic
-                and fully auditable. AI may be used in future features for
-                explanation and suggestion, but it will never invent chemical
-                quantities or silently modify a formulation.
-              </p>
-            </div>
-
-            <div className="border-b border-rule pb-6">
-              <h3 className="font-display text-lg font-bold text-ink">
-                What happens to my data?
-              </h3>
-              <p className="mt-2 text-sm text-ink-muted leading-relaxed">
-                Your data is private and owned by you. There is no analytics
-                tracking on batch content, no data sharing, and no AI training on
-                your formulations. The database is scoped to your user account and
-                your account only.
-              </p>
-            </div>
-
-            <div className="border-b border-rule pb-6">
-              <h3 className="font-display text-lg font-bold text-ink">
-                Can I cancel anytime?
-              </h3>
-              <p className="mt-2 text-sm text-ink-muted leading-relaxed">
-                Yes. Pro subscriptions can be cancelled at any time. You retain
-                access to all Pro features until the current billing period ends.
-                No cancellation fees, no data deletion, no lock-in.
-              </p>
-            </div>
-
-            <div className="pb-6">
-              <h3 className="font-display text-lg font-bold text-ink">
-                Is there a free trial?
-              </h3>
-              <p className="mt-2 text-sm text-ink-muted leading-relaxed">
-                The Free tier is always available and includes the full calculator
-                with 3 recipes and 1 active batch. You can evaluate the product
-                without any commitment. Upgrade to Pro when you need unlimited
-                recipes, batches, and the full production workspace.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Final CTA ── */}
-      <section className="bg-canvas py-20 md:py-28" aria-label="Final CTA">
-        <div className="container mx-auto px-4 max-w-3xl text-center">
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-ink">
-            Start your first production record.
-          </h2>
-          <p className="mt-5 text-body text-ink-muted leading-relaxed">
-            Build a recipe, run the calculation, start a batch, and track it
-            through cure to cost. One system. One record. No rebuilding.
-          </p>
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <Link
-              href="/recipes/new"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-action text-action-text rounded-md font-medium hover:bg-action-hover transition-colors text-sm"
-            >
-              Start a recipe
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link
-              href="/marketing/pricing"
-              className="inline-flex items-center gap-2 px-8 py-4 border border-rule bg-sheet text-ink rounded-md font-medium hover:bg-ledger transition-colors text-sm"
-            >
-              See pricing
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Resources ── */}
-      <section className="container mx-auto px-4 py-20 md:py-28" aria-label="Resources">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-ink">
-            Resources for serious soap makers.
-          </h2>
-          <p className="mt-5 text-body text-ink-muted max-w-2xl leading-relaxed">
-            Free tools and guides that help you calculate, formulate, track,
-            and price your soap — whether you use SoapCraft Pro or not.
-          </p>
-          <div className="mt-10 grid gap-6 md:grid-cols-2">
-            <a
-              href="/calculators/soap-cost-calculator"
-              className="block border border-rule rounded-lg p-6 bg-sheet hover:shadow-elevation-1 transition-shadow"
-            >
-              <h3 className="font-display text-lg font-bold text-ink">
-                Soap Cost Per Bar Calculator
-              </h3>
-              <p className="mt-2 text-sm text-ink-muted leading-relaxed">
-                Calculate the real cost per bar from ingredient costs and
-                actual yield. Set a target margin and get a suggested selling
-                price.
-              </p>
-            </a>
-            <a
-              href="/compare/soapcalc-alternative"
-              className="block border border-rule rounded-lg p-6 bg-sheet hover:shadow-elevation-1 transition-shadow"
-            >
-              <h3 className="font-display text-lg font-bold text-ink">
-                SoapCalc Alternative
-              </h3>
-              <p className="mt-2 text-sm text-ink-muted leading-relaxed">
-                SoapCalc handles lye math. SoapCraft Pro adds versioned
-                recipes, tracked batches, cure monitoring, and cost analysis.
-              </p>
-            </a>
-            <a
-              href="/soap-recipe-management-software"
-              className="block border border-rule rounded-lg p-6 bg-sheet hover:shadow-elevation-1 transition-shadow"
-            >
-              <h3 className="font-display text-lg font-bold text-ink">
-                Soap Recipe Management Software
-              </h3>
-              <p className="mt-2 text-sm text-ink-muted leading-relaxed">
-                Versioned recipes that never rewrite historical batch records.
-                Track formulations, not just formulas.
-              </p>
-            </a>
-            <a
-              href="/soap-batch-tracking-software"
-              className="block border border-rule rounded-lg p-6 bg-sheet hover:shadow-elevation-1 transition-shadow"
-            >
-              <h3 className="font-display text-lg font-bold text-ink">
-                Soap Batch Tracking Software
-              </h3>
-              <p className="mt-2 text-sm text-ink-muted leading-relaxed">
-                From recipe to finished bar — planned vs actual measurements,
-                cure observations, yield, and cost in one record.
-              </p>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Footer ── */}
-      <footer className="border-t border-rule py-14" aria-label="Footer">
-        <div className="container mx-auto px-4 max-w-6xl">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-            <div className="md:col-span-2">
-              <h3 className="font-display text-lg font-bold text-ink">
-                SoapCraft Pro
-              </h3>
-              <p className="mt-3 text-sm text-ink-muted leading-relaxed max-w-md">
-                Deterministic calculations, not AI guesswork. The soap maker
-                workspace for recipe, batch, and profitability.
-              </p>
-            </div>
-            <div>
-              <h4 className="text-label font-semibold text-ink mb-4">
-                Product
-              </h4>
-              <ul className="space-y-2.5 text-sm text-ink-muted">
-                <li>
-                  <a href="/" className="hover:text-ink transition-colors">
-                    Homepage
-                  </a>
-                </li>
-                <li>
-                  <a href="/marketing/pricing" className="hover:text-ink transition-colors">
-                    Pricing
-                  </a>
-                </li>
-                <li>
-                  <a href="/marketing/blog" className="hover:text-ink transition-colors">
-                    Blog
-                  </a>
-                </li>
-                <li>
-                  <a href="/calculators/soap-cost-calculator" className="hover:text-ink transition-colors">
-                    Cost Calculator
-                  </a>
-                </li>
-                <li>
-                  <a href="/compare/soapcalc-alternative" className="hover:text-ink transition-colors">
-                    SoapCalc Alternative
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-label font-semibold text-ink mb-4">
-                Account
-              </h4>
-              <ul className="space-y-2.5 text-sm text-ink-muted">
-                <li>
-                  <a href="/auth/login" className="hover:text-ink transition-colors">
-                    Log in
-                  </a>
-                </li>
-                <li>
-                  <a href="/auth/signup" className="hover:text-ink transition-colors">
-                    Sign up
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-rule pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-meta text-ink-muted">
-              &copy; {new Date().getFullYear()} SoapCraft Pro. All rights reserved.
-            </p>
-            <p className="text-meta text-ink-muted">
-              Deterministic calculations, not AI guesswork.
-            </p>
-          </div>
-        </div>
-      </footer>
-
-      {/* Back to Top */}
-      <a
-        href="#hero"
-        className="fixed bottom-6 right-6 z-40 flex items-center justify-center w-10 h-10 rounded-full bg-action text-action-text shadow-elevation-2 hover:bg-action-hover transition-colors opacity-0 hover:opacity-100 group"
-        aria-label="Back to top"
-      >
-        <ChevronUp className="h-5 w-5 group-hover:translate-y-[-2px] transition-transform" />
-      </a>
+      <footer className="border-t border-border bg-muted"><div className="mx-auto grid max-w-6xl gap-10 px-6 py-14 md:grid-cols-[1.4fr_0.6fr_0.6fr] md:px-10"><div><p className="text-xl font-semibold">SoapCraft Pro</p><p className="mt-4 max-w-md leading-7 text-muted-foreground">Free soapmaking tools for formulation, production, cure, inventory, and cost. Built to keep the batch understandable from the first percentage to the last bar.</p></div><div><p className="font-semibold">Tools</p><ul className="mt-4 space-y-3 text-sm text-muted-foreground"><li><Link href="/tools">All tools</Link></li><li><Link href="/tools/recipe-calculator">Recipe calculator</Link></li><li><Link href="/calculators/soap-cost-calculator">Cost per bar</Link></li><li><Link href="/tools/production-planner">Production planner</Link></li></ul></div><div><p className="font-semibold">Learn</p><ul className="mt-4 space-y-3 text-sm text-muted-foreground"><li><Link href="/methodology">Methodology</Link></li><li><Link href="/safety">Safety</Link></li><li><Link href="/blog">Articles</Link></li><li><Link href="/privacy">Privacy</Link></li></ul></div></div><div className="mx-auto flex max-w-6xl flex-col gap-3 border-t border-border px-6 py-6 text-sm text-muted-foreground md:flex-row md:justify-between md:px-10"><span>© {new Date().getFullYear()} SoapCraft Pro</span><span>Deterministic calculations. Visible assumptions. Human responsibility.</span></div></footer>
     </main>
   );
 }

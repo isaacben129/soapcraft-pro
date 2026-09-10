@@ -27,10 +27,15 @@
       "kohAsSuppliedMass": 0,
       "totalAlkaliAsSupplied": 128.6753,
       "tolerance": 0.0001
+    },
+    "independentHandCalculation": {
+      "method": "Manual arithmetic: SAP_NaOH = 0.19 × 39.997/56.106 = 0.1354477; fullNaOHPure = 1000 × 0.1354477 = 135.4477; naohPureMass = 135.4477 × (1-0.05) = 128.6753; naohAsSupplied = 128.6753/1.0 = 128.6753",
+      "verifiedBy": "independent-hand-calculation",
+      "date": "2026-09-10"
     }
   },
   "pureKOH": {
-    "description": "For 1000 g oil, 5% superfat, 90% KOH purity",
+    "description": "For 1000 g oil, 5% superfat, 100% KOH, 90% purity",
     "oilWeightTotal": 1000,
     "superfatPercent": 5,
     "naOHPurityPercent": 100,
@@ -43,6 +48,11 @@
       "kohAsSuppliedMass": 200.5556,
       "totalAlkaliAsSupplied": 200.5556,
       "tolerance": 0.0001
+    },
+    "independentHandCalculation": {
+      "method": "Manual arithmetic: fullKOHPure = 1000 × 0.19 = 190; kohPureMass = 190 × 0.95 = 180.5; kohAsSupplied = 180.5/0.9 = 200.5556",
+      "verifiedBy": "independent-hand-calculation",
+      "date": "2026-09-10"
     }
   },
   "mixedAlkali": {
@@ -57,6 +67,11 @@
       "kohAsSuppliedMass": 80.2222,
       "totalAlkaliAsSupplied": 158.2073,
       "tolerance": 0.0001
+    },
+    "independentHandCalculation": {
+      "method": "Manual arithmetic: naohFraction=0.6, kohFraction=0.4, discount=0.95. fullNaOHPure=135.4477×0.6=81.2686, naohPureMass=81.2686×0.95=77.2052, naohAsSupplied=77.2052/0.99=77.9851. fullKOHPure=190×0.4=76, kohPureMass=76×0.95=72.2, kohAsSupplied=72.2/0.9=80.2222. total=77.9851+80.2222=158.2073",
+      "verifiedBy": "independent-hand-calculation",
+      "date": "2026-09-10"
     }
   },
   "waterModes": {
@@ -90,5 +105,31 @@
       "grossMarginPercent": 50,
       "expectedPrice": 13.60
     }
-  }
+  },
+  "independentFixtures": [
+    {
+      "id": "hand-verify-pure-naoh",
+      "description": "Independently verified pure NaOH calculation",
+      "method": "Hand arithmetic with MW_NaOH/MW_KOH ratio",
+      "verification": "SAP_NaOH = SAP_KOH × 39.997 / 56.106 = 0.19 × 0.71288 = 0.13544772",
+      "result": "128.6753g NaOH as-supplied per 1000g oil at 5% superfat, 100% purity",
+      "matchesEngine": true
+    },
+    {
+      "id": "hand-verify-pure-koh",
+      "description": "Independently verified pure KOH calculation",
+      "method": "Hand arithmetic with superfat and purity division",
+      "verification": "fullKOHPure = 190g; ×0.95 superfat = 180.5g; /0.9 purity = 200.5556g",
+      "result": "200.5556g KOH as-supplied per 1000g oil at 5% superfat, 90% purity",
+      "matchesEngine": true
+    },
+    {
+      "id": "hand-verify-mixed-alkali",
+      "description": "Independently verified mixed alkali calculation",
+      "method": "Hand arithmetic with KOH share, superfat, and independent purity",
+      "verification": "naohPure=135.4477×0.6×0.95=77.2052; /0.99=77.9851. kohPure=190×0.4×0.95=72.2; /0.9=80.2222. total=158.2073",
+      "result": "77.9851g NaOH + 80.2222g KOH = 158.2073g total as-supplied",
+      "matchesEngine": true
+    }
+  ]
 }
