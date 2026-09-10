@@ -2,6 +2,8 @@
 // Persistent navigation rail for the app shell.
 // Uses Lucide icons per DESIGN.md §4.5 (no emoji brand).
 
+"use client";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LayoutDashboard, BookOpen, Package, Leaf, DollarSign } from "lucide-react";

@@ -1,1 +1,3 @@
-export const SITE_URL = "https://soapcraft-pro.vercel.app";
+export const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
+  "https://soapcraft-pro.vercel.app";

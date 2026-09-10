@@ -18,7 +18,15 @@ import {
   Shield,
   Clock,
   DollarSign,
+  ChevronUp,
 } from "lucide-react";
+
+const scrollSections = [
+  { href: "#problem", label: "The Problem" },
+  { href: "#system", label: "The System" },
+  { href: "#pricing", label: "Pricing" },
+  { href: "#faq", label: "FAQ" },
+];
 
 export const metadata: Metadata = {
   title: "SoapCraft Pro — Recipe, Batch & Profitability Workspace",
@@ -48,7 +56,7 @@ export default function HomePage() {
   return (
     <main className="flex flex-col min-h-screen">
       {/* ── Hero ── */}
-      <section className="container mx-auto px-4 py-20 md:py-28" aria-label="Hero">
+      <section id="hero" className="container mx-auto px-4 py-20 md:py-28" aria-label="Hero">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-center max-w-6xl mx-auto">
           {/* Left: copy */}
           <div>
@@ -81,6 +89,22 @@ export default function HomePage() {
               Free tier includes the calculator, 3 recipes, and 1 active batch.
               No credit card required.
             </p>
+
+            {/* Smooth-scroll section links */}
+            <nav
+              className="mt-8 flex flex-wrap gap-1 text-sm"
+              aria-label="Quick navigation"
+            >
+              {scrollSections.map((section) => (
+                <a
+                  key={section.href}
+                  href={section.href}
+                  className="text-ink-muted hover:text-action transition-colors"
+                >
+                  {section.label}
+                </a>
+              ))}
+            </nav>
           </div>
 
           {/* Right: proof artifact */}
@@ -154,7 +178,7 @@ export default function HomePage() {
       </section>
 
       {/* ── The Problem ── */}
-      <section className="bg-canvas py-20 md:py-28" aria-label="The problem">
+      <section id="problem" className="bg-canvas py-20 md:py-28" aria-label="The problem">
         <div className="container mx-auto px-4 max-w-4xl">
           <h2 className="font-display text-3xl md:text-4xl font-bold text-ink">
             Soap makers do not need another calculator.
@@ -207,7 +231,7 @@ export default function HomePage() {
       </section>
 
       {/* ── The System ── */}
-      <section className="container mx-auto px-4 py-20 md:py-28" aria-label="The system">
+      <section id="system" className="container mx-auto px-4 py-20 md:py-28" aria-label="The system">
         <div className="max-w-4xl mx-auto">
           <h2 className="font-display text-3xl md:text-4xl font-bold text-ink">
             One system for the complete batch lifecycle.
@@ -327,7 +351,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Deterministic Calculation ── */}
-      <section className="bg-canvas py-20 md:py-28" aria-label="Calculation trust">
+      <section id="trust" className="bg-canvas py-20 md:py-28" aria-label="Calculation trust">
         <div className="container mx-auto px-4 max-w-4xl">
           <h2 className="font-display text-3xl md:text-4xl font-bold text-ink">
             Deterministic, auditable, and traceable.
@@ -488,7 +512,7 @@ export default function HomePage() {
       </section>
 
       {/* ── What's Included ── */}
-      <section className="bg-canvas py-20 md:py-28" aria-label="What is included">
+      <section id="pricing" className="bg-canvas py-20 md:py-28" aria-label="What is included">
         <div className="container mx-auto px-4 max-w-4xl">
           <h2 className="font-display text-3xl md:text-4xl font-bold text-ink">
             What SoapCraft Pro includes.
@@ -617,7 +641,7 @@ export default function HomePage() {
       </section>
 
       {/* ── FAQ ── */}
-      <section className="container mx-auto px-4 py-20 md:py-28" aria-label="FAQ">
+      <section id="faq" className="container mx-auto px-4 py-20 md:py-28" aria-label="FAQ">
         <div className="max-w-3xl mx-auto">
           <h2 className="font-display text-3xl md:text-4xl font-bold text-ink">
             Common questions.
@@ -863,6 +887,15 @@ export default function HomePage() {
           </div>
         </div>
       </footer>
+
+      {/* Back to Top */}
+      <a
+        href="#hero"
+        className="fixed bottom-6 right-6 z-40 flex items-center justify-center w-10 h-10 rounded-full bg-action text-action-text shadow-elevation-2 hover:bg-action-hover transition-colors opacity-0 hover:opacity-100 group"
+        aria-label="Back to top"
+      >
+        <ChevronUp className="h-5 w-5 group-hover:translate-y-[-2px] transition-transform" />
+      </a>
     </main>
   );
 }

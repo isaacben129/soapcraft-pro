@@ -6,9 +6,12 @@ export default [
   {
     ignores: [
       ".next/**",
+      "coverage/**",
       "components/ui/**",
       "node_modules/**",
+      "node_modules.bak/**",
       "out/**",
+      "references/**",
       "next-env.d.ts",
       "tsconfig.tsbuildinfo",
     ],

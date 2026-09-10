@@ -1,0 +1,297 @@
+"use client";
+// ── Batch Costing Form ───────────────────
+// Interactive client-side calculator. Used on both
+// /calculators/batch-costing and /calculators/soap-cost-calculator.
+// No auth required.
+
+import { useState } from "react";
+import { Calculator, Plus, Trash2, AlertTriangle } from "lucide-react";
+import { EmailCaptureModal } from "@/components/shared/email-capture-modal";
+
+interface IngredientRow {
+  name: string;
+  costPerUnit: string;
+  unit: string;
+  quantity: string;
+}
+
+export function BatchCostingForm() {
+  const [ingredients, setIngredients] = useState<IngredientRow[]>([
+    { name: "", costPerUnit: "", unit: "g", quantity: "" },
+  ]);
+  const [fragranceCost, setFragranceCost] = useState("");
+  const [otherCosts, setOtherCosts] = useState("");
+  const [batchYieldBars, setBatchYieldBars] = useState("");
+  const [targetMargin, setTargetMargin] = useState("40");
+  const [result, setResult] = useState<{
+    totalCost: number;
+    costPerBar: number;
+    suggestedPrice: number;
+    ingredientCostTotal: number;
+  } | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [showEmailCapture, setShowEmailCapture] = useState(false);
+
+  const addIngredient = () => {
+    setIngredients([...ingredients, { name: "", costPerUnit: "", unit: "g", quantity: "" }]);
+  };
+
+  const removeIngredient = (index: number) => {
+    if (ingredients.length > 1) {
+      setIngredients(ingredients.filter((_, i) => i !== index));
+    }
+  };
+
+  const updateIngredient = (index: number, field: keyof IngredientRow, value: string) => {
+    const updated = [...ingredients];
+    updated[index] = { ...updated[index], [field]: value };
+    setIngredients(updated);
+  };
+
+  const calculate = async () => {
+    const validIngredients = ingredients.filter((ing) => ing.name && ing.costPerUnit && ing.quantity);
+    if (validIngredients.length === 0) {
+      setError("Add at least one ingredient with name, cost, and quantity");
+      return;
+    }
+    if (!batchYieldBars || Number(batchYieldBars) <= 0) {
+      setError("Enter a valid batch yield (number of bars)");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+    setResult(null);
+
+    try {
+      const response = await fetch("/api/calculate/batch-cost", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ingredientCosts: validIngredients.map((ing) => ({
+            name: ing.name,
+            costPerUnit: Number(ing.costPerUnit),
+            unit: ing.unit,
+            quantity: Number(ing.quantity),
+          })),
+          fragranceCost: Number(fragranceCost) || 0,
+          otherCosts: Number(otherCosts) || 0,
+          batchYieldBars: Number(batchYieldBars),
+          targetMargin: Number(targetMargin) || 0,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setResult({
+          totalCost: data.totalCost,
+          costPerBar: data.costPerBar,
+          suggestedPrice: data.suggestedPrice,
+          ingredientCostTotal: data.ingredientCostTotal,
+        });
+      } else {
+        const err = await response.json();
+        setError(err.error || "Calculation failed");
+      }
+    } catch {
+      setError("Network error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSaveResults = () => {
+    setShowEmailCapture(true);
+  };
+
+  return (
+    <>
+      <div className="bg-canvas rounded-lg border border-rule p-6 space-y-6">
+        {/* Ingredient rows */}
+        <div>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-display font-semibold text-foreground">Ingredients</h3>
+            <button
+              type="button"
+              onClick={addIngredient}
+              className="flex items-center gap-1 text-sm text-action hover:text-action-hover transition-colors"
+            >
+              <Plus className="h-4 w-4" /> Add ingredient
+            </button>
+          </div>
+          <div className="space-y-3">
+            {ingredients.map((ing, index) => (
+              <div key={index} className="flex gap-2 items-start">
+                <input
+                  type="text"
+                  placeholder="Ingredient name"
+                  value={ing.name}
+                  onChange={(e) => updateIngredient(index, "name", e.target.value)}
+                  className="flex-1 px-3 py-2 bg-sheet border border-rule rounded-md text-foreground placeholder-muted-foreground text-sm focus:outline-none focus:border-action"
+                />
+                <input
+                  type="number"
+                  placeholder="Cost"
+                  value={ing.costPerUnit}
+                  onChange={(e) => updateIngredient(index, "costPerUnit", e.target.value)}
+                  className="w-28 px-3 py-2 bg-sheet border border-rule rounded-md text-foreground placeholder-muted-foreground text-sm focus:outline-none focus:border-action"
+                />
+                <select
+                  value={ing.unit}
+                  onChange={(e) => updateIngredient(index, "unit", e.target.value)}
+                  className="w-20 px-3 py-2 bg-sheet border border-rule rounded-md text-foreground text-sm focus:outline-none focus:border-action"
+                >
+                  <option value="g">g</option>
+                  <option value="kg">kg</option>
+                  <option value="oz">oz</option>
+                  <option value="lb">lb</option>
+                </select>
+                <input
+                  type="number"
+                  placeholder="Qty"
+                  value={ing.quantity}
+                  onChange={(e) => updateIngredient(index, "quantity", e.target.value)}
+                  className="w-20 px-3 py-2 bg-sheet border border-rule rounded-md text-foreground placeholder-muted-foreground text-sm focus:outline-none focus:border-action"
+                />
+                {ingredients.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => removeIngredient(index)}
+                    className="p-2 text-muted-foreground hover:text-destructive transition-colors"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Fragrance & other costs */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label className="text-sm text-muted-foreground block mb-1">Fragrance cost ($)</label>
+            <input
+              type="number"
+              placeholder="0"
+              value={fragranceCost}
+              onChange={(e) => setFragranceCost(e.target.value)}
+              className="w-full px-3 py-2 bg-sheet border border-rule rounded-md text-foreground placeholder-muted-foreground text-sm focus:outline-none focus:border-action"
+            />
+          </div>
+          <div>
+            <label className="text-sm text-muted-foreground block mb-1">Other costs ($)</label>
+            <input
+              type="number"
+              placeholder="0"
+              value={otherCosts}
+              onChange={(e) => setOtherCosts(e.target.value)}
+              className="w-full px-3 py-2 bg-sheet border border-rule rounded-md text-foreground placeholder-muted-foreground text-sm focus:outline-none focus:border-action"
+            />
+          </div>
+          <div>
+            <label className="text-sm text-muted-foreground block mb-1">Batch yield (bars)</label>
+            <input
+              type="number"
+              placeholder="42"
+              value={batchYieldBars}
+              onChange={(e) => setBatchYieldBars(e.target.value)}
+              className="w-full px-3 py-2 bg-sheet border border-rule rounded-md text-foreground placeholder-muted-foreground text-sm focus:outline-none focus:border-action"
+            />
+          </div>
+        </div>
+
+        {/* Target margin */}
+        <div>
+          <label className="text-sm text-muted-foreground block mb-1">Target margin (%)</label>
+          <input
+            type="number"
+            placeholder="40"
+            value={targetMargin}
+            onChange={(e) => setTargetMargin(e.target.value)}
+            className="w-32 px-3 py-2 bg-sheet border border-rule rounded-md text-foreground placeholder-muted-foreground text-sm focus:outline-none focus:border-action"
+          />
+        </div>
+
+        {/* Error */}
+        {error && (
+          <div className="flex items-center gap-2 text-sm text-destructive">
+            <AlertTriangle className="h-4 w-4 flex-shrink-0" />
+            {error}
+          </div>
+        )}
+
+        {/* Calculate button */}
+        <button
+          type="button"
+          onClick={calculate}
+          disabled={loading}
+          className="w-full px-6 py-3 bg-action text-action-text rounded-md font-medium hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-2"
+        >
+          {loading ? (
+            <span className="flex items-center gap-2">
+              <svg className="h-5 w-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>
+              Calculating...
+            </span>
+          ) : (
+            <span className="flex items-center gap-2">
+              <Calculator className="h-5 w-5" />
+              Calculate Cost Per Bar
+            </span>
+          )}
+        </button>
+
+        {/* Results */}
+        {result && (
+          <div className="bg-ledger rounded-lg border border-rule p-6 space-y-4">
+            <h3 className="font-display text-lg font-bold text-foreground">Results</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="bg-canvas rounded-md p-4">
+                <p className="text-sm text-muted-foreground">Total ingredient cost</p>
+                <p className="font-mono text-xl font-bold text-ink">${result.ingredientCostTotal.toFixed(2)}</p>
+              </div>
+              <div className="bg-canvas rounded-md p-4">
+                <p className="text-sm text-muted-foreground">Cost per bar</p>
+                <p className="font-mono text-xl font-bold text-action">${result.costPerBar.toFixed(2)}</p>
+              </div>
+              <div className="bg-canvas rounded-md p-4">
+                <p className="text-sm text-muted-foreground">Suggested selling price</p>
+                <p className="font-mono text-xl font-bold text-success">${result.suggestedPrice.toFixed(2)}</p>
+              </div>
+              <div className="bg-canvas rounded-md p-4">
+                <p className="text-sm text-muted-foreground">Total batch cost</p>
+                <p className="font-mono text-xl font-bold text-ink">${result.totalCost.toFixed(2)}</p>
+              </div>
+            </div>
+            <div className="flex gap-4 pt-2">
+              <button
+                onClick={handleSaveResults}
+                className="px-6 py-2.5 bg-action text-action-text rounded-md font-medium text-sm hover:opacity-90 transition-opacity"
+              >
+                Save results & get worksheet
+              </button>
+              <button
+                onClick={() => setResult(null)}
+                className="px-6 py-2.5 border border-rule rounded-md font-medium text-sm hover:bg-ledger transition-colors"
+              >
+                Recalculate
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Email capture modal */}
+      <EmailCaptureModal
+        isOpen={showEmailCapture}
+        onClose={() => setShowEmailCapture(false)}
+        calculationData={result ? {
+          costPerBar: result.costPerBar,
+          suggestedPrice: result.suggestedPrice,
+          totalCost: result.totalCost,
+        } : undefined}
+      />
+    </>
+  );
+}

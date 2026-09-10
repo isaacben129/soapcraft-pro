@@ -136,9 +136,9 @@ Guardrails:
 
 1. The deterministic calculator is authoritative.
 2. AI is deferred from the rescue MVP and cannot invent or override recipe quantities.
-3. Dodo Payments is the provider. Do not substitute Stripe.
+3. Subscription billing (DEFERRED): Payment infrastructure is not in initial build scope. May be added only after observed demand for workspace features. One-time Seller Pack may be implemented when payment integration is specified.
 4. Community/social features are outside v1.
-5. Do not implement inventory, marketplace, ecommerce integrations, or a native app.
+5. Do not implement marketplace, ecommerce integrations, or a native app. Inventory and purchasing planning are in scope (see capability IDs PURCH-001 through PURCH-010).
 6. Cure readiness is an explicit user decision, never an automated safety declaration.
 7. Missing cost basis stays visible; it never silently becomes zero.
 8. Test mode uses the production schema and production-shaped records, not parallel demo types.

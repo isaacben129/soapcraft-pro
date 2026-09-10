@@ -1,24 +1,32 @@
-# SoapCraft Pro Product Requirements Document
+# SoapCraft Pro — Product Requirements Document
 
-**Version:** 3.0 — Rescue specification
-**Baseline audited:** `ed27e22`
-**Status:** Ready for decomposition, not ready to claim MVP completion
+**Version:** 1.0 — Comprehensive Anonymous Utility Hub Contract
+**Supersedes:** `product/PRD.md` v3.0 (traffic-first/rescue specification), v4.0 traffic-first artifacts
+**Approved direction:** `product/PRODUCT-CONTRACT-UTILITY-HUB.md` — approved by Isaac on 2026-09-09
+**Status:** Comprehensive contract for the connected public soapmaking utility system
 **Companion documents:**
-
+- `product/PRODUCT-CONTRACT-UTILITY-HUB.md` — approved direction contract
+- `product/FLOWS.md` — numbered anonymous and optional-account end-to-end flows
+- `product/ARCHITECTURE.md` — module boundaries, data ownership, versioning
+- `product/DESIGN.md` — visual system, states, interaction patterns
+- `product/TOOL-QUALITY-RESEARCH-PROTOCOL.md` — tool-quality and evidence grading
+- `product/TOOL-MARKET-REQUIREMENTS.md` — tool-by-tool market requirements matrix
+- `product/UTILITY-HUB-RESEARCH-DECISION.md` — research, audit, and decision package
 - `product/CODE-PRD-AUDIT.md` — evidence-based implementation baseline
-- `product/DESIGN.md` — page anatomy, interaction, visual system, and states
-- `flowchart/product-flow.md` — route, object, lifecycle, and error-state maps
-- `build-order.md` — dependency-ordered implementation plan
+- `product/PRD_CRITIQUE.md` — independent adversarial critique
+- `product/CONTRACT-CRITIQUE.md` — fresh independent reviewer perspective
 
 ---
 
 ## 1. Product definition
 
-SoapCraft Pro is a private recipe-to-profitability operating system for serious soapmakers. It keeps formulation, production, curing, yield, and unit economics in one traceable production record.
+SoapCraft Pro is the comprehensive connected public soapmaking utility system: formulate, size, cost, make, cure, price, purchase, inventory, and plan sales — without repeated recipe entry and without mandatory account creation.
+
+Core tool answers are public and anonymous. Account value is persistence, sync, history, and inventory only.
 
 ### Product promise
 
-A soapmaker can move from an authoritative saved formulation to a real batch, record what actually happened, track cure evidence, finalize yield, and understand cost per bar without re-entering the same information across disconnected tools.
+A soapmaker can move from formulation through sizing, costing, production, cure, pricing, and sales planning in one connected workflow, carrying relevant context forward instead of rebuilding the same data in another calculator or spreadsheet. No login is required to receive any core result.
 
 ### Product rule
 
@@ -26,20 +34,21 @@ A soapmaker can move from an authoritative saved formulation to a real batch, re
 
 ### Product model
 
-SoapCraft Pro is **not** four tools. It is one connected lifecycle:
+SoapCraft Pro is **not** a gated SaaS dashboard. It is a comprehensive public utility system with optional connected persistence:
 
 ```text
-Recipe
-  → immutable Recipe Version
-  → Batch
-  → Making Record
-  → Cure Observations
-  → Final Yield
-  → Cost Record
-  → evidence for the next Recipe Version
+Anonymous Tool Result
+  → Recipe / Batch Context (local, versioned)
+  → Continue to compatible tool without re-entry
+  → Optional account for cloud persistence, sync, history, inventory
+  → Optional paid artifact (Seller Pack) after value delivered
 ```
 
-The **Batch** is the central operational object. Cure and cost are batch views, not orphan calculators.
+The **Recipe/Batch Context** is the central shared object. Every tool reads from and writes to this context, carrying forward only the fields the user entered or explicitly accepted. Cure and cost are views of batch context, not orphan calculators.
+
+### Core distinction from traffic-first model
+
+The traffic-first model framed SoapCraft Pro around email capture, CRM drip sequences, subscriptions, and gated content. This contract replaces that framing entirely: the product is a comprehensive public utility system where core calculations are always free and anonymous, account value is persistence only, and monetization follows a contextual-affiliates-first sequence gated by observed demand.
 
 ---
 
@@ -47,256 +56,197 @@ The **Batch** is the central operational object. Cure and cost are batch views, 
 
 ### Primary goal metric
 
-**Connected batch completion rate:** percentage of activated users who move one saved recipe version through:
-
-```text
-batch started → making completed → cure marked ready → yield finalized → cost per bar available
-```
+**Weekly anonymous utility sessions that produce a correct result, plus the proportion that continue into a connected tool using the same recipe/batch context.**
 
 Initial product target is to establish a measured baseline. Do not invent a target before real traffic exists.
 
 ### Activation metric
 
-**First verified recipe save rate:** percentage of new users who create, calculate, review warnings, name, and save a valid recipe version in their first session.
+**First anonymous completion rate:** percentage of new visitors who complete a full calculation and receive a complete result without authentication in their first session.
 
 ### Supporting metrics
 
-- recipe save → batch start conversion
-- batch start → Making Mode completion
-- Making Mode completion → first cure observation
-- cure marked ready → yield finalized
-- yield finalized → cost record complete
-- percentage of dashboard visits resulting in a due action completed
-- D7 return rate for users with an active batch
-- calculation-error recovery rate
-- save-failure recovery rate
+- `calculation_started` → `calculation_completed` rate
+- `calculation_completed` → `connected_tool_opened` rate
+- Connected session depth (number of tools used per session)
+- `plan_exported` / `share_link_created` rate
+- `account_save_requested` rate
+- `workspace_interest_submitted` rate
+- Returning anonymous visitor rate
+- Calculation test suite passes all independently verified vectors
 
 ### Guardrail metrics
 
-- zero unauthorized cross-user data access
-- zero marketing claims for unimplemented behavior
-- zero silent save failures
-- zero chemical quantity generated by AI
-- calculation test suite passes all independently verified vectors
-- no historical batch loses its recipe-version snapshot
+- Zero unauthorized cross-user data access
+- Zero marketing claims for unimplemented behavior
+- Zero silent save failures
+- Zero chemical quantity generated by AI
+- Calculation test suite passes all independently verified vectors
+- No historical batch loses its recipe-version snapshot
+- No anonymous result requires login, email, cookie consent, or payment
+
+### Monetization guardrails
+
+- Core calculations remain free forever
+- First paid test is a one-time Seller Pack, not a subscription
+- Paid workspace only after repeat demand observed
+- Ads only after traffic evidence exists
+- Affiliate links contextual, disclosed, editorially selected
 
 ---
 
 ## 3. Users and jobs
 
-### Primary: serious hobbyist
+### Primary: selling-curious / early commercial soapmaker
 
-- Has multiple formulations and repeats batches.
-- Needs trustworthy calculations, version history, and batch outcomes.
-- Job: “Help me repeat what worked and understand what changed.”
+- Produces approximately 1–20 batches monthly.
+- Planning a market stall or first wholesale order.
+- Has natural next-step demand for templates, supplies, labels, packaging.
+- Job: "When I formulate or resize a recipe, calculate every dependent amount correctly and show me the assumptions. When I plan a batch for sale, help me know what it truly costs, what each saleable bar must earn, how many I need to sell, and when I must make it."
 
-### Secondary: micro-business soapmaker
-
-- Produces batches for sale.
-- Needs actual yield and cost basis, not just formula estimates.
-- Job: “Help me know what this batch cost and what price protects my margin.”
-
-### Tertiary: careful beginner
+### Secondary: careful beginner / hobbyist
 
 - Needs strong safety boundaries and a clear first workflow.
-- Job: “Help me prepare a valid formulation and keep a complete record without hiding risk.”
+- May repeat batches occasionally.
+- Job: "Help me prepare a valid formulation and keep a complete record without hiding risk."
+
+### Tertiary: experienced soapmaker replacing spreadsheets
+
+- Already has formulations and workflows.
+- Needs better tooling than spreadsheets and printed sheets.
+- Job: "Help me move from recipe to mold, purchasing, production, cure, pricing, or a sales event without re-entering the same data."
 
 ### Explicit user constraints
 
 - Calculations must be immediate and explainable.
-- Mobile Making Mode must work with wet/gloved hands and large controls.
+- Core results work without login, email, cookie consent, or payment.
+- Account must never be required to reveal a core result.
 - The interface must not imply a save occurred when data is only local.
 - Cure readiness remains a user decision; the product provides elapsed time and observations, not a safety declaration.
+- Mobile tool use must work with wet/gloved hands and large controls.
 
 ---
 
-## 4. Scope
+## 4. Stable capability IDs
 
-### Rescue MVP scope
+Every in-scope capability has a stable ID that persists across planning, build, and acceptance cycles.
 
-1. Authentication and private data ownership
-2. Verified deterministic formulation engine
-3. Recipe and immutable version management
-4. Batch creation from a recipe version
-5. Persistent Making Mode
-6. Cure observation and user-controlled readiness
-7. Ingredient cost records, final yield, and cost per bar
-8. Operational dashboard
-9. Personal recipe and batch portfolios
-10. Logged-out marketing homepage with integrated blog/editorial content
-11. Settings required for units, profile, safety, data, and billing
-12. Dodo subscription lifecycle after the core workflow is working
+### 4.1 Formulation and chemistry (`CHEM-*`)
 
-### Deferred until core lifecycle works
+| ID | Capability | Description |
+|----|-----------|-------------|
+| CHEM-001 | NaOH formulation | Calculate lye required for NaOH-only formulations using sourced SAP values |
+| CHEM-002 | KOH formulation | Calculate lye required for KOH formulations (bar/milled soap) |
+| CHEM-003 | Mixed-alkali formulation | Calculate lye split for NaOH/KOH blends with proper semantics |
+| CHEM-004 | Superfat / lye discount | Apply superfat or lye discount with explicit warnings |
+| CHEM-005 | Water mode calculation | Support lye concentration, water-to-lye ratio, and percent-of-oils modes |
+| CHEM-006 | Oil/fatty-acid profiles | Accept oil blend percentages with sourced SAP values and properties |
+| CHEM-007 | Quality indicators | Calculate hardness, condition, iodine, and other quality metrics |
+| CHEM-008 | Bounded additives/fragrance | Accept bounded additive and fragrance inputs with safety disclaimers |
+| CHEM-009 | Versioned source provenance | Every formula output carries calculator version and dataset revision |
+| CHEM-010 | Chemistry verification gate | Deterministic spec, source manifest, independent review, cross-calculator fixtures required before public release |
 
-- AI formulation assistant
-- recipe percentage generation of any kind
-- public community, ratings, comments, follows, or public profiles
-- prediction from aggregated community data
-- inventory depletion and purchase ordering
-- marketplace comparison
-- Etsy/Shopify integration
-- native mobile applications
-- multi-language support
-- advanced compliance reports
-- automated declaration that soap is safe or cured
+### 4.2 Sizing and conversion (`SIZE-*`)
 
-### Rescue sequencing rule
+| ID | Capability | Description |
+|----|-----------|-------------|
+| SIZE-001 | Percentage/weight conversion | Convert between percentage and weight inputs |
+| SIZE-002 | Unit conversion | Convert g, kg, oz, lb with tested conversion functions |
+| SIZE-003 | Recipe scaling | Scale recipes to target batch weights proportionally |
+| SIZE-004 | Mold volume/capacity | Calculate mold capacity from volume or dimensions |
+| SIZE-005 | Recipe-to-mold sizing | Size a recipe to fit a specific mold |
+| SIZE-006 | Target batch weight | Back-calculate ingredient amounts from target weight |
+| SIZE-007 | Bar-count / cut planning | Plan bar counts and cuts from batch volume |
+| SIZE-008 | Multi-mold allocation | Allocate a batch across multiple molds |
+| SIZE-009 | Masterbatch calculations | Approved masterbatch scaling |
 
-No new broad feature may be added while the lifecycle has an empty/demo/console-only handoff. Integration depth wins over feature count.
+### 4.3 Costing and pricing (`COST-*`)
+
+| ID | Capability | Description |
+|----|-----------|-------------|
+| COST-001 | Ingredient costing | Calculate material cost from ingredient costs and quantities |
+| COST-002 | Packaging costing | Calculate packaging cost per saleable unit |
+| COST-003 | Labor costing | Calculate labor cost from minutes and rate |
+| COST-004 | Overhead costing | Allocate batch overhead |
+| COST-005 | Waste and yield adjustment | Account for waste, trim, samples, defects |
+| COST-006 | Markup calculation | Calculate markup % from cost and price |
+| COST-007 | Gross margin calculation | Calculate gross margin % (separate from markup) |
+| COST-008 | Retail/wholesale/channel scenarios | Compare multiple selling scenarios |
+| COST-009 | Minimum viable price | Solve algebraic target price before fees |
+| COST-010 | Cost per made/saleable unit | Separate cost per made unit and cost per saleable unit |
+| COST-011 | Missing-cost warnings | Flag incomplete economics explicitly |
+
+### 4.4 Markets and sales (`MKT-*`)
+
+| ID | Capability | Description |
+|----|-----------|-------------|
+| MKT-001 | Craft-fair break-even | Calculate break-even units for a craft fair |
+| MKT-002 | Product mix planning | Plan multiple products with mix shares and contributions |
+| MKT-003 | Stock and revenue planning | Plan stock targets and projected revenue |
+| MKT-004 | Sell-through planning | Plan for expected sell-through rates |
+| MKT-005 | Target-profit planning | Calculate required units for target profit |
+| MKT-006 | Wholesale MOQ planning | Calculate production requirements for wholesale minimums |
+| MKT-007 | Quote/price-sheet output | Generate printable quote or price sheet |
+| MKT-008 | Event break-even units | Ceiling of fixed event costs ÷ weighted contribution per unit |
+
+### 4.5 Production and cure (`PROD-*`)
+
+| ID | Capability | Description |
+|----|-----------|-------------|
+| PROD-001 | Pour date calculation | Calculate pour date from ready-by date and cure interval |
+| PROD-002 | Unmold/cut date calculation | Calculate unmold and cut dates |
+| PROD-003 | Target-ready date | Back-plan from target-ready date |
+| PROD-004 | Capacity back-planning | Calculate batches needed per week to meet demand |
+| PROD-005 | Batch/lot records | Create and track batch/lot records |
+| PROD-006 | Cure tracking | Log cure observations with computed cure day |
+| PROD-007 | Printable records | Generate printable batch and cure records |
+| PROD-008 | Making session workflow | Step-by-step production with checklist and timer |
+
+### 4.6 Purchasing and inventory (`PURCH-*`)
+
+| ID | Capability | Description |
+|----|-----------|-------------|
+| PURCH-001 | Ingredient requirements | Calculate ingredient requirements from a formulation |
+| PURCH-002 | Packaging requirements | Calculate packaging requirements |
+| PURCH-003 | Pack rounding | Round to supplier pack sizes |
+| PURCH-004 | Supplier comparison | Compare costs across suppliers |
+| PURCH-005 | Requirements minus stock | Show remaining need after accounting for existing stock |
+| PURCH-006 | Event counts | Calculate purchase needs for specific event quantities |
+| PURCH-007 | Anonymous local planning | Local purchase planning without account |
+| PURCH-008 | Optional-account persistence | Account-backed purchase records with sync |
+| PURCH-009 | Reusable supplier/item cost records | Save and reuse supplier and cost records |
+| PURCH-010 | Inventory depletion tracking | Track inventory depletion across batches |
+
+### 4.7 Utility-support system (`UTIL-*`)
+
+| ID | Capability | Description |
+|----|-----------|-------------|
+| UTIL-001 | Homepage and tool directory | Complete index of all public utilities |
+| UTIL-002 | Methodology pages | Substantive methodology documentation |
+| UTIL-003 | Decision guides | Substantive decision guides linked to tools |
+| UTIL-004 | Editable examples | Worked examples with editable inputs |
+| UTIL-005 | Templates | Downloadable artifacts (costing workbook, planner, etc.) |
+| UTIL-006 | Factual comparisons | Verified tool comparisons with provenance |
+| UTIL-007 | Canonical SEO architecture | robots.txt, sitemap, metadata, schema, canonical URLs |
+| UTIL-008 | Visual explanations | Relevant visual aids for formulas and workflows |
 
 ---
 
-## 5. Information architecture
+## 5. Complete states
 
-### Route shells
-
-The application must have three non-overlapping shells.
-
-| Shell | Routes | Navigation |
-|---|---|---|
-| Marketing | `/`, `/pricing`, `/blog`, `/blog/[slug]`, `/guides/[slug]`, `/legal/privacy`, `/legal/terms`, `/legal/safety` | Product, Pricing, Guides, Blog, Log in, Start a recipe |
-| Auth | `/auth/login`, `/auth/signup`, `/auth/reset-password`, `/auth/reset-password/[token]` | Brand, minimal help/legal links; no app navigation |
-| App | `/dashboard`, `/recipes/**`, `/batches/**`, `/cure`, `/costing`, `/ingredients`, `/settings/**` | Overview, Recipes, Batches, Curing, Costs, Ingredients, Guides, Settings |
-
-### Root behavior
-
-- Logged-out request to `/` renders the marketing homepage.
-- Logged-in request to `/` redirects to `/dashboard`.
-- Successful login redirects to validated `callbackUrl`, otherwise `/dashboard`.
-- Successful signup signs the user in, then routes to first-use setup or `/recipes/new` with a starter state.
-- App logo routes to `/dashboard`; marketing logo routes to `/`.
-
-### Canonical routes
+### 5.1 Recipe states
 
 ```text
-/
-/pricing
-/blog
-/blog/[slug]
-/guides/[slug]
-
-/dashboard
-/recipes
-/recipes/new
-/recipes/[recipeId]
-/recipes/[recipeId]/versions/[versionId]
-/batches
-/batches/new?recipeVersionId=...
-/batches/[batchId]
-/batches/[batchId]/making
-/cure
-/costing
-/ingredients
-/settings/profile
-/settings/preferences
-/settings/billing
-/settings/data
+draft → validating → ready → versioned → archived
 ```
 
-### Route rules
+- **draft**: Incomplete, not yet validated
+- **validating**: Being checked against domain rules
+- **ready**: All blocking validations passed; ready to create a version
+- **versioned**: An immutable RecipeVersion was created
+- **archived**: No longer active; historical references preserved
 
-- No nested `<html>` or `<body>` outside the root layout.
-- No duplicate headers.
-- No public navigation that exposes private module links as if they are usable without auth.
-- Every private detail route resolves ownership before returning data.
-- `/cure` and `/costing` are portfolio summaries; edits occur in a batch context.
-- Breadcrumbs show object lineage, e.g. `Recipes / Lavender Bar / v3 / Batch #024`.
-
----
-
-## 6. Core domain and data contracts
-
-### User
-
-Required fields:
-
-- id
-- email
-- name
-- password hash or provider identity
-- preferred weight unit
-- preferred temperature unit
-- currency
-- experience level, optional
-- primary goal, optional
-- safety acknowledgement timestamp/version
-- onboarding completion timestamp
-- subscription status and entitlement projection
-- created/updated timestamps
-
-### Ingredient
-
-Required fields:
-
-- id
-- canonical name and aliases
-- ingredient class: base oil, butter, alkali, liquid, fragrance, additive, packaging
-- authoritative SAP values where applicable
-- source citation and source revision date
-- system-defined vs user-defined
-- owner userId when private
-- active/archived state
-
-A system ingredient must not require an arbitrary `createdBy` string.
-
-### Recipe
-
-Required fields:
-
-- id
-- userId
-- name
-- method
-- notes
-- currentVersionId
-- archivedAt
-- created/updated timestamps
-
-### Recipe Version
-
-A recipe version is immutable after creation.
-
-Required snapshot:
-
-- id, recipeId, sequential version number
-- target oil weight and canonical storage unit
-- lye type and split where supported
-- oil ingredients with percentage and exact weight
-- superfat
-- water mode and value
-- alkali purity where supported
-- fragrance identity/load where supported
-- mold inputs where used
-- deterministic outputs
-- calculator version
-- ingredient/SAP dataset revision
-- warnings and blocking errors at save time
-- creator and timestamp
-
-A batch referencing a version prevents destructive deletion of that version.
-
-If approved launch templates exist, the UI may offer a verified-template path with provenance and approval metadata. Otherwise all template controls are omitted and the builder starts blank. A coding agent must not promote the current hard-coded templates to verified status.
-
-### Batch
-
-Required fields:
-
-- id
-- userId
-- immutable recipeVersionId
-- human-readable batch number/name
-- status
-- planned measurement snapshot owned canonically by the Batch and copied once from the immutable Recipe Version
-- actual measurement line items owned canonically by the Batch; Making Session steps reference and mutate those line items rather than storing a second editable copy
-- method
-- started/completed timestamps
-- cure started/ready timestamps
-- final yield quantity and unit
-- notes
-- created/updated timestamps
-
-Required status state machine:
+### 5.2 Batch states
 
 ```text
 draft → ready_to_make → making → curing → ready → archived
@@ -307,777 +257,507 @@ Allowed exceptional transitions:
 ```text
 making → abandoned
 curing → abandoned
-ready → curing     only with reason and audit event
+ready → curing (only with reason and audit event)
 ```
 
-Statuses cannot be skipped silently.
+- **draft**: Batch created but not yet started
+- **ready_to_make**: All preparations complete; safety checklist pending
+- **making**: Production in progress; Making Session active
+- **curing**: Batch poured and in cure; observations being logged
+- **ready**: Cure complete; yield recorded; cost calculable
+- **archived**: Finalized and stored historically
+- **abandoned**: Batch discontinued at making or cure stage
 
-### Making Session
-
-Required fields:
-
-- batchId
-- safety checklist acknowledgements and timestamp
-- active/completed/skipped steps
-- skip reasons
-- timer origin, accumulated duration, running/paused state
-- planned and actual measurements
-- trace/temperature/condition observations
-- save revision and lastSavedAt
-
-### Cure Observation
-
-Required fields:
-
-- id, batchId, observedAt
-- computed cure day at observation time
-- optional weight, pH, hardness method/value, appearance, scent, and notes
-- observer userId
-- created/updated timestamps
-
-### Ingredient Cost Record
-
-Required fields:
-
-- id, userId, ingredientId
-- purchase quantity and unit
-- purchase price and currency
-- normalized cost per canonical unit
-- supplier/label, optional
-- effective date
-- archivedAt
-
-Historical batch cost must retain the cost basis used for calculation.
-
-### Batch Cost Record
-
-Required fields:
-
-- batchId
-- ingredient cost line items with quantity, cost record, and normalized cost
-- packaging costs, optional
-- labor and overhead, optional and separately labelled
-- waste adjustment, optional
-- actual yield
-- total batch cost
-- cost per sellable unit
-- target gross margin
-- suggested price
-- calculation version and calculatedAt
-
-Formula:
+### 5.3 Calculation states
 
 ```text
-suggested price = cost per unit / (1 - target margin decimal)
+input → computing → result → warning → blocking_error
 ```
 
-Validate target margin as greater than or equal to 0 and less than 1.
+- **input**: User has entered some inputs
+- **computing**: Deterministic calculation in progress (immediate)
+- **result**: Complete calculation with outputs
+- **warning**: Result has informational or review-level warnings
+- **blocking_error**: Calculation cannot complete; user must fix inputs
 
-### Storage and measurement contract
+### 5.4 Persistence states
 
-- Planned batch values are immutable, versioned JSON snapshots only when preserving the full historical calculator result; each snapshot carries a schema version and calculator/dataset revision.
-- Queryable ingredient measurements use normalized line items keyed by stable ingredient ID, quantity in canonical storage units, display unit, planned/actual role, and source step.
-- Batch owns actual measurement truth. Making Session owns workflow state and references Batch measurement IDs; it must not contain independently editable duplicate quantities.
-- Recipe Version owns formula truth. Batch owns the copied historical plan. Recipe edits never rewrite the Batch snapshot.
-- Cost line items reference a Batch measurement and an Ingredient Cost Record revision while also retaining the normalized quantity/rate used for historical reproducibility.
-- Enforce one current recipe version per recipe, unique sequential version numbers per recipe, one active Making Session per batch, and one current Batch Cost revision per batch.
-- Deliberate JSON snapshots require explicit schema-version parsing and migration tests. Do not preserve the current untyped JSON blobs by default merely because they already exist.
+```text
+unsaved → saving → saved → save_failed
+```
 
-### Activity Event
+- **unsaved**: Local-only, not persisted
+- **saving**: Persistence in progress
+- **saved**: Confirmed persisted (local or cloud)
+- **save_failed**: Persistence failed; user input preserved
 
-Required fields:
+### 5.5 Purchase planning states
 
-- userId
-- actor
-- object type/id
-- event type
-- factual summary
-- timestamp
-- safe metadata
+```text
+requirements → pack_rounded → supplier_compared → purchased → depleted
+```
 
-Used for the dashboard ledger and auditability. Never store secrets or full sensitive payloads.
+- **requirements**: Calculated need from formulation
+- **pack_rounded**: Rounded to supplier pack sizes
+- **supplier_compared**: Compared across suppliers
+- **purchased**: Order placed or cost recorded
+- **depleted**: Inventory reduced by batch usage
+
+### 5.6 Monetization states
+
+```text
+free_user → seller_pack_requested → seller_pack_delivered → workspace_interest_submitted → workspace_activated
+```
+
+- **free_user**: Using core tools anonymously or with account, no payment
+- **seller_pack_requested**: Requested one-time Seller Pack artifact
+- **seller_pack_delivered**: Artifact delivered with explicit consent
+- **workspace_interest_submitted**: Expressed interest in paid workspace after demand observed
+- **workspace_activated**: Workspace activated only after repeat demand evidence
+
+### 5.7 Account states (optional)
+
+```text
+no_account → account_created → email_verified → persisted → synced
+```
+
+- **no_account**: Anonymous usage; all data local
+- **account_created**: Account exists; may have no persisted data yet
+- **email_verified**: Email confirmed for delivery artifacts
+- **persisted**: Data synced to cloud
+- **synced**: Multi-device sync active
 
 ---
 
-## 7. Security and ownership requirements
+## 6. Non-goals
 
-- Exact route visibility is enforced by middleware or server layouts.
-- Every API route and server action independently retrieves the authenticated user.
+- **Automatic cure-safety prediction** — cure readiness is the user's decision; the product provides elapsed time and observations only
+- **Universal fragrance recommendations** or claims of IFRA compliance certification
+- **Regulatory/legal compliance guarantees** — business outputs are planning aids, not advice
+- **Bookkeeping, tax filing, e-commerce, or full ERP features**
+- **Display-ad integration** as a primary revenue model before traffic evidence
+- **Community/forum creation** — ratings, comments, follows, or public profiles
+- **Automated publication of content** — every page must pass content acceptance criteria
+- **Mandatory account creation** for any core calculation
+- **Exit-intent email capture** or fake case studies
+- **Gated workspace** as the primary product framing
+- **Subscription lifecycle** as core entitlement model
+- **AI-generated chemical quantities** — AI may explain deterministic output; it must never invent quantities
+- **Priced subscription tiers** before repeat demand is observed
+- **Native mobile applications** (responsive web is the target)
+- **Multi-language support**
+- **Advanced compliance reports**
+- **Automated declaration that soap is safe or cured**
+- **CRM drip sequences** or generic newsletter gates
+- **Email capture as primary conversion path** for core tools
+
+---
+
+## 7. Safety and account boundaries
+
+### 7.1 Anonymous-first safety
+
+- Public tool routes must not require authentication. Every public API route must serve anonymous requests.
 - Every private query includes user ownership in the database predicate.
 - Child-object access verifies ownership through its parent batch/recipe.
 - Client-supplied `userId`, `createdBy`, totals, tier, and price calculations are never trusted.
-- Production startup fails if required auth secret is missing; no production fallback secret.
-- Password reset uses single-use expiring tokens, non-enumerating responses, and actual email delivery.
-- Rate-limit auth and expensive mutation paths.
-- Recipe reads never return all users’ data.
-- Subscription webhooks are signature verified and idempotent.
-- Export/delete operations require recent authentication. Before account-deletion implementation, product/legal owners approve whether deletion is immediate, scheduled, or anonymizing; which billing/tax records must be retained; what happens to active Dodo subscriptions; and the recovery window. The coding agent must not invent retention policy.
+- Rate-limit mutation paths, including anonymous calculation endpoints.
+- Recipe reads never return all users' data.
 
-Acceptance test: User A cannot read, update, observe, cost, or delete any object owned by User B, even by guessing IDs.
+### 7.2 Account boundaries
 
----
+- An account must never be required to reveal a core result.
+- Account value is limited to: cloud persistence, sync, history, inventory, batch/lot records.
+- Account creation is opt-in and never gates a calculation.
+- Email is exchanged only for a specific delivered artifact with explicit consent.
+- Share state contains no email/personal data. Analytics contain no recipes, notes, or addresses.
 
-## 8. Deterministic calculation requirements
+### 7.3 Chemistry safety boundary
 
-### Safety boundary
+- No existing SAP, KOH, mold-density, fragrance, or IFRA logic is made public by middleware-only changes.
+- Chemistry is in the approved build scope, but it cannot become public until its deterministic specification, source manifest, effective/revision dates, independent review, hand/reference calculations, and cross-calculator fixtures pass.
+- The model may research, derive, explain, implement and test chemistry logic, but model output is never the authoritative source of a safety-critical constant or formula.
+- Differences between authoritative sources or credible calculators must be explained and resolved; values must not be averaged merely to make tests pass.
+- Disclaimers describe scope but never substitute for correct calculations.
 
-The engine is not accepted because its output resembles another calculator. It is accepted only after the formula contract, ingredient sources, and independent fixtures are documented and verified.
+### 7.4 Business output boundary
 
-### Mandatory human/domain approval gate
-
-The calculation-contract ticket is a human/domain-review decision ticket, not an autonomous coding ticket. The implementation agent must stop until a named product/domain owner approves a version-controlled contract covering:
-
-- supported soap methods and alkalis
-- dual-lye semantics, if supported
-- active water modes and alkali-purity behavior
-- source citations and dataset revision
-- numeric input boundaries and precision
-- planned-vs-actual variance policy for alkali by type, water, total oils, and fragrance where supported
-- severity thresholds and whether each result informs, requires confirmation, or blocks continuation
-- confirmation/audit language for accepted deviations
-
-Unsupported combinations remain absent from the UI and API. A coding agent must never infer thresholds from generic internet guidance.
-
-### Required inputs
-
-- method
-- target oil mass
-- display/storage unit
-- oil blend percentages or weights
-- lye type: NaOH, KOH, or explicitly supported dual-lye split
-- superfat
-- one active water mode:
-  - lye concentration, or
-  - water:lye ratio, or
-  - percent of oils if product/domain review approves it
-- alkali purity if supported
-- fragrance identity and load if supported
-
-Inactive water inputs must not appear editable or influence output.
-
-### Required outputs
-
-- exact oil weights
-- alkali amount by type
-- water amount
-- fragrance amount
-- total planned batch mass
-- warnings and blocking errors
-- property estimates labelled as estimates with method/source
-- calculator version and dataset revision on save
-
-### Validation
-
-- oil percentages sum to 100 within documented tolerance
-- no negative/NaN/infinite input
-- target mass greater than zero
-- superfat and water inputs within domain-reviewed boundaries
-- selected ingredients have required authoritative data
-- unsupported lye/method combinations block calculation
-- fragrance/IFRA claims are absent unless identity/category data and calculation are valid
-- blocking errors prevent save/start-batch
-- warnings remain visible beside affected output and in review summary
-
-Planned-vs-actual comparisons normalize units before comparison and use only the approved variance contract. Boundary, missing-value, and supported alkali-mode cases require tests. Until that contract is approved, the UI may show factual numeric variance but must not label it safe, acceptable, or dangerous.
-
-### Test acceptance
-
-Fixtures must cover:
-
-- single and multi-oil blends
-- scaling across target weights and supported units
-- NaOH, KOH, and dual lye if shipped
-- each supported water mode
-- purity if shipped
-- rounding/display precision vs internal precision
-- malformed input and boundary values
-- known vectors independently cross-checked against authoritative references
-
-No AI or network call may sit in the quantity-calculation path.
+- Business outputs are planning aids, not tax/legal/regulatory advice.
+- Cure readiness is always the user's decision; the product provides elapsed time and observations, never a safety declaration.
+- Costing outputs with missing inputs are explicitly incomplete and cannot be styled as recommendations.
 
 ---
 
-## 9. Page-level requirements
+## 8. Central shared Recipe/Batch Context
 
-### 9.1 Marketing homepage `/`
+The **Recipe/Batch Context** is the central shared object that carries forward between tools. It contains only the fields the user entered or explicitly accepted. Every tool reads from and writes to this context.
 
-**Job:** Prove connected workflow value and route qualified visitors to first recipe or educational content.
-
-Required anatomy:
-
-1. left-aligned proof-led hero
-2. real rendering of production application components populated with production-shaped synthetic data clearly labelled “Example,” not KPI cards or fabricated customer activity
-3. connected lifecycle artifact showing inherited data
-4. calculation trust section with exact numbers and warnings
-5. planned-vs-actual batch example
-6. featured article plus three latest articles
-7. category links using the canonical blog filter URLs `/blog?category=calculations`, `/blog?category=recipes`, `/blog?category=guides`, and `/blog?category=troubleshooting`
-8. pricing teaser
-9. safety/legal/footer
-
-Required states:
-
-- one or more valid repository posts: render featured/latest content
-- zero valid posts: homepage still renders with a bounded editorial empty state; malformed repository content blocks the build during content validation rather than becoming a runtime fallback
-- authenticated request redirects before marketing rendering
-
-Acceptance:
-
-- no four-card feature grid
-- no emoji branding
-- no claims for unimplemented behavior
-- blog cards use real images or deliberate original illustrations with alt text
-- all CTAs resolve to valid routes
-
-### 9.2 Blog index `/blog`
-
-**Job:** Help soapmakers solve real problems and move contextually into product actions.
-
-Required:
-
-- featured article
-- category filter with real URL/query state
-- latest articles
-- readable excerpts, dates, reading time, images
-- optional context CTA such as “Open calculator” only where capability is live
-- pagination or bounded initial list
-
-### 9.3 Article `/blog/[slug]`
-
-Required:
-
-- canonical metadata and OpenGraph image
-- title, date, category, reading time, author/editorial attribution
-- semantic article rendering
-- table of contents for long articles
-- safety callout where chemistry is discussed
-- related articles
-- product CTA aligned to article intent
-- Article JSON-LD and breadcrumbs
-
-Content must not claim user data, predictions, or functionality that does not exist.
-
-### 9.4 Dashboard `/dashboard`
-
-**Job:** Answer what is happening, what needs attention, and what changed.
-
-Required regions in priority order:
-
-1. **Needs attention queue** — ordered actionable rows
-2. **Active production pipeline** — one row per active batch across lifecycle stages
-3. **Recent recipes and outcomes** — formulation plus latest result
-4. **Activity ledger** — chronological events
-5. **Single New command** — recipe, batch from recipe, ingredient cost
-
-Every operational row includes:
-
-- object name/type
-- parent relationship
-- status/time
-- reason for attention
-- one primary action
-- secondary overflow actions
-
-Never use the dashboard’s primary area as cards linking to tools.
-
-Empty state:
-
-- one guided first production record
-- blank recipe choice; show a template choice only if approved launch templates exist with provenance
-- visible example of the eventual pipeline
-- no fake user data
-
-### 9.5 Recipes `/recipes`
-
-Required:
-
-- user-owned active recipes
-- if approved launch templates exist, show them in a clearly separate section/filter with provenance; otherwise omit templates entirely
-- search by name and ingredient
-- filters for method, warning state, last made
-- sort by updated, created, last made, name
-- table/list default on desktop; dense records, not equal marketing cards
-- empty state with Build recipe; add Use verified template only if approved templates exist
-
-### 9.6 Recipe Builder `/recipes/new`
-
-Flow:
-
-```text
-identity → target/method → oil blend → lye/water settings → additives/fragrance → calculate → review → save
+```ts
+type RecipeBatchContext = {
+  recipeId?: string;
+  recipeVersionId?: string;
+  batchId?: string;
+  recipeName?: string;
+  method?: string;
+  targetOilWeight?: number;
+  storageUnit?: string;
+  oilBlend?: Array<{
+    ingredientId: string;
+    canonicalName: string;
+    percentage: number;
+    exactWeight?: number;
+  }>;
+  superfat?: number;
+  lyeType?: "NaOH" | "KOH" | "dual";
+  lyeAmount?: number;
+  waterAmount?: number;
+  waterMode?: "lye_concentration" | "water_to_lye_ratio" | "percent_of_oils";
+  fragranceIdentity?: string;
+  fragranceLoad?: number;
+  additiveInputs?: Array<{ ingredientId: string; amount: number }>;
+  moldInputs?: { volume?: number; dimensions?: string };
+  calculationOutputs?: {
+    oilWeights: Array<{ ingredientId: string; weight: number; unit: string }>;
+    alkaliAmount: number;
+    waterAmount: number;
+    fragranceAmount: number;
+    totalBatchMass: number;
+    warnings: Array<{ severity: "info" | "review" | "blocking"; message: string }>;
+    calculatorVersion: string;
+    datasetRevision: string;
+  };
+  economics?: BatchEconomicsResult;
+  sellingScenario?: SellingScenarioResult;
+  productionPlan?: ProductionRequirement;
+  readyByPlan?: ReadyByPlanResult;
+};
 ```
 
-Required:
+### Context transfer rules
 
-- recipe name before save
-- target oil weight and unit
-- one active water mode
-- planned exact quantities beside percentages
-- persistent warning summary
-- saved/unsaved/error states
-- Save recipe action
-- after save: View recipe and Start batch from vN
-
-A mold calculator may set target oil weight only after validated unit conversion. It cannot estimate lye independently of the selected formulation.
-
-### 9.7 Recipe detail `/recipes/[recipeId]`
-
-Required:
-
-- current version and safety status
-- formula table
-- deterministic output and warnings
-- version history with diff
-- batches made from each version
-- latest outcomes and cost per bar
-- actions: Create new version, Duplicate, Start batch, Archive
-
-Editing creates a new version; it never mutates a version used by a batch.
-
-### 9.8 Batches `/batches`
-
-Required:
-
-- active and historical batch list
-- filters by lifecycle status, recipe, date, incomplete data
-- columns: batch, recipe version, status, started, current day/step, yield, cost status, next action
-- Start batch requires selecting a valid saved recipe version
-
-### 9.9 Batch detail `/batches/[batchId]`
-
-This is the central record.
-
-Required sections:
-
-- Overview
-- Making record
-- Cure
-- Cost
-- Notes and activity
-
-Header shows batch number/name, exact recipe version, lifecycle state, dates, and one primary next action.
-
-Overview shows planned vs actual measurements, active step/cure day, latest observation, yield, cost status, and event timeline.
-
-### 9.10 Making Mode `/batches/[batchId]/making`
-
-Required:
-
-- safety checklist before start
-- one step at a time on mobile
-- persistent timer based on stored timestamps, not interval memory alone
-- planned vs actual measurement entry
-- inline variance and domain-reviewed warnings
-- step complete/skip with reason
-- saving/saved/failed status
-- exact resume after reload/navigation
-- completion review before transition to curing
-
-### 9.11 Curing portfolio `/cure`
-
-Required:
-
-- batches grouped factually as overdue observation, due observation, curing, estimated window reached, and completed
-- cure day/window, last observation, next observation date
-- Log observation action deep-links to batch context
-- no blanket cure-completion percentage or safety declaration
-
-“Estimated window reached” is derived only from elapsed time against the configured window and is displayed as: “Estimated window reached — review observations; only you can mark ready.” It is not a scientific or safety status.
-
-Batch cure section supports observation CRUD and user-controlled Mark ready with confirmation/final notes. Observation photos are deferred from the rescue MVP; adding them requires a separate object-storage, authorization, retention, export, and deletion contract.
-
-### 9.12 Cost portfolio `/costing`
-
-Required:
-
-- batches missing cost data
-- cost per unit by batch and recipe version
-- margin status
-- ingredient cost changes over time
-- direct link to batch cost section
-
-Batch cost section inherits actual quantities and yield. Users choose cost records rather than entering arbitrary “Oil ID” strings.
-
-### 9.13 Ingredients `/ingredients`
-
-Required:
-
-- authoritative formulation ingredient catalogue, read-only where system-owned
-- private cost records and user-defined ingredients
-- add/edit/archive purchase cost
-- normalized cost preview
-- source and effective date
-
-### 9.14 Settings
-
-Required:
-
-- profile
-- units/currency/method preferences
-- notification preferences and quiet hours if reminders ship
-- safety acknowledgement
-- billing and subscription status
-- data export
-- account deletion
-- logout
+1. Only fields the user entered or explicitly accepted are carried forward.
+2. Calculation outputs are copied as immutable snapshots.
+3. Each tool may add to the context but must not overwrite another tool's outputs without explicit user action.
+4. Context carries a version chain so provenance is traceable.
+5. Local context is browser-scoped; account context is cloud-synced.
+6. Context must never contain email, personal data, or analytics identifiers.
 
 ---
 
-## 10. Cross-module interface contracts
+## 9. Page and content inventory
 
-### Recipe Version → Batch
-
-Preconditions:
-
-- user owns recipe
-- version exists and passes all blocking validation
-- entitlement permits starting batch
-
-Handoff:
-
-- batch stores immutable recipeVersionId
-- planned measurement snapshot is copied
-- subsequent recipe versions do not change batch plan
-
-Postcondition:
-
-- batch appears immediately in dashboard pipeline and batch list
-
-### Making completion → Cure
-
-Preconditions:
-
-- safety checklist acknowledged
-- required making steps complete or explicitly skipped with reasons
-- actual measurements saved
-
-Handoff:
-
-- batch status changes to curing
-- cureStartedAt is stored
-- first observation due date is calculated according to configured cadence, not a fabricated readiness claim
-- activity event is written
-
-### Cure ready → Yield/Cost
-
-Preconditions:
-
-- user explicitly marks ready
-- final yield requested if absent
-
-Handoff:
-
-- batch status changes to ready
-- costing recalculates from actual quantities, selected cost records, and final yield
-- missing cost bases create attention items rather than zero-cost assumptions
-
-### Cost change → Dashboard
-
-- cost record changes recompute affected non-final/draft estimates or mark them stale according to policy
-- finalized historical records retain their original cost basis unless user explicitly recalculates
-- dashboard reflects complete/incomplete/margin status
-
----
-
-## 11. Save, loading, error, and empty states
-
-Every persistent mutation must expose:
+### 9.1 Public tool pages
 
 ```text
-idle → saving → saved
-              ↘ failed → retrying → saved/failed
+/tools                          — Complete tool directory
+/tools/formulation/*            — Formulation calculators (NaOH, KOH, mixed)
+/tools/sizing/*                 — Sizing and conversion tools
+/tools/batch-economics          — Cost and pricing calculator
+/tools/pricing/*                — Pricing scenario tools
+/tools/markets/craft-fair-break-even — Craft fair break-even calculator
+/tools/production/ready-by-planner — Production back-planning tool
+/tools/purchasing/*             — Purchase planning tools
 ```
 
-Rules:
-
-- Preserve user input on failure.
-- Show last successful save time.
-- Never display “auto-saved” for transient state.
-- Warn before leaving dirty high-value forms.
-- Use skeleton rows that preserve layout, not whole-page generic spinners.
-- Field errors appear at fields; blocking summary appears at commit action.
-- Deterministic calculation warnings use information / review / blocking severity.
-- Empty states are object-specific and have one meaningful next action.
-
----
-
-## 12. Visual and interaction direction
-
-The complete system is in `product/DESIGN.md`.
-
-Product metaphor: **chemist’s production ledger**.
-
-Required direction:
-
-- dark umber/charcoal application rail
-- warm mineral-paper workspace
-- ledger rows, ruled separators, timelines, and comparison tables
-- pale clay calculation surfaces and desaturated sage cure surfaces
-- white reserved for editable sheets/dialogs, not the entire app
-- DM Sans application UI; JetBrains Mono/tabular numerals for measurements, timers, batch IDs, temperatures, and currency
-- Playfair reserved for marketing display and rare object titles
-- 2–4px radius by default
-- Lucide icons and a real brand mark; no emoji branding
-
-Banned:
-
-- dashboard tool-link card grid
-- equal icon/heading/copy card grids as section structure
-- pure-white page plus white cards as default
-- `rounded-lg` as a universal grammar
-- hero KPI tiles
-- generic “AI-powered” copy
-- decorative gradients/glassmorphism
-- unverified semantic color classes
-
----
-
-## 13. Marketing, SEO, and editorial requirements
-
-### Content source
-
-For rescue MVP, structured repository content is acceptable if the content contract supports title, slug, description, category, date, author, reading time, image, alt text, body, related slugs, and contextual CTA. A CMS is not required before the owner has an operational need for it.
-
-### Technical SEO
-
-- canonical URLs
-- sitemap and robots routes
-- Article and Breadcrumb JSON-LD
-- OpenGraph images
-- valid heading hierarchy
-- image dimensions and alt text
-- no broken `/marketing` route
-- redirect old `/marketing/blog/**` URLs if public slugs move
-
-### Content quality
-
-- No invented user data.
-- No claims of verification against another calculator without documented fixtures.
-- No advice framed as safety certification.
-- Programmatic pages must contain unique, useful calculations/explanations; no thin oil-combination spam.
-
----
-
-## 14. Billing and entitlement requirements
-
-**Provider decision:** Dodo Payments. Stripe references are removed from the authoritative plan.
-
-Billing is implemented only after the core private lifecycle is integrated.
-
-Required states:
+### 9.2 Content pages
 
 ```text
-free
-trialing
-active
-past_due
-cancel_at_period_end
-canceled
-payment_pending
+/                              — Homepage (proof-led utility overview)
+/blog                          — Blog index
+/blog/[slug]                   — Individual articles
+/guides/[slug]                 — Substantive decision guides
+/examples/*                    — Editable worked examples
+/templates/*                   — Downloadable artifacts
+/compare/*                     — Factual comparisons
 ```
 
-Required provider data:
+### 9.3 Account pages (optional)
 
-- Dodo customer ID
-- Dodo subscription ID
-- product/price ID
-- current period dates
-- cancellation state
-- last verified webhook event ID
+```text
+/dashboard                     — Production overview
+/recipes                       — Recipe portfolio
+/recipes/[recipeId]            — Recipe detail
+/recipes/[recipeId]/versions/[versionId] — Version history
+/batches                       — Batch portfolio
+/batches/[batchId]             — Batch detail
+/batches/[batchId]/making      — Making Session
+/cure                          — Cure portfolio
+/costing                       — Cost portfolio
+/ingredients                   — Ingredient inventory
+/settings/*                    — Profile, preferences, billing, data
+```
 
-Rules:
+### 9.4 Legal and safety pages
 
-- checkout does not directly grant entitlement
-- verified webhook projects provider state into app entitlement
-- webhook processing is idempotent
-- cancellation at period end retains access until period end
-- expired users retain readable/exportable historical data according to explicit policy
-- all limits are enforced server-side, with matching UI explanation
+```text
+/legal/privacy                 — Privacy policy
+/legal/terms                   — Terms of service
+/legal/safety                  — Safety disclaimer
+```
 
-Pricing and trial policy must be one documented truth before billing implementation. Until then, do not advertise an unimplemented trial.
+### 9.5 Content quality rules
 
----
+Every published page must supply at least one of:
+- A verified working tool
+- An editable worked calculation
+- A useful downloadable artifact
+- Verified reference data with provenance
+- Substantive synthesis of real workflow evidence
 
-## 15. Analytics events
-
-Instrument only after persistent flows exist.
-
-Minimum events:
-
-- `signup_completed`
-- `onboarding_completed`
-- `recipe_calculated`
-- `recipe_validation_blocked`
-- `recipe_saved`
-- `batch_created`
-- `batch_ready_to_make`
-- `batch_started`
-- `making_resumed`
-- `making_step_completed`
-- `making_completed`
-- `cure_observation_added`
-- `batch_marked_ready`
-- `yield_finalized`
-- `cost_completed`
-- `dashboard_attention_actioned`
-- `save_failed`
-- `save_recovered`
-- `upgrade_started`
-- `subscription_activated`
-
-Event payloads use IDs/statuses and non-sensitive metadata. Never log formulations, passwords, payment details, or free-form private notes to analytics by default.
+No page ships solely to meet a word/page quota. Guide pages should generally provide approximately 1,500+ rendered words where the subject warrants depth, plus useful visuals and direct tool connections. Safety, legal, tax, IFRA, and formulation content needs named sources and reviewer approval.
 
 ---
 
-## 16. Accessibility and responsive requirements
+## 10. Success metrics and release standard
 
-- WCAG 2.2 AA target
-- keyboard operation for all controls
-- visible focus states
-- semantic tables with row headers and mobile list alternative
-- statuses conveyed by icon/text, not color alone
-- 44×44px targets in Making Mode and mobile primary actions
-- `aria-live` for calculation and save results
-- reduced-motion support
-- 200% zoom without content loss
-- numeric inputs use appropriate input mode and explicit units
-- safety information remains reachable and does not obscure content
+### 10.1 Technical release standard
 
-Mobile priorities:
+All of the following must pass:
 
-1. Needs attention
-2. Resume Making Mode
-3. Log cure observation
-4. Start batch from recipe
-5. Review/save calculation
+1. Anonymous user completes the full flow in a fresh browser with no login, email, cookie consent dependency, or payment.
+2. Inputs transfer between all tool stages without re-entry.
+3. Results show formulas, definitions, assumptions, rounding policy, and missing-cost warnings.
+4. Markup and gross margin are separately labeled and verified against reference cases.
+5. Saleable yield changes cost-per-bar and all downstream outputs consistently.
+6. Event fees, percentage fees, fixed transaction fees, labor, and target profit affect results correctly.
+7. Date planning uses an explicit user-selected interval and never claims to determine product safety/readiness.
+8. Share state contains no email/personal data; analytics contain no recipes, notes, or addresses.
+9. Export contains the same values/formula revision as the screen.
+10. Error states are accessible and preserve valid inputs.
+11. Typecheck, lint, unit tests, production build, and anonymous mobile/desktop E2E all pass.
+12. Public page/API responses are 200; sitemap and robots are 200 and correct.
+13. Canonical URLs contain no duplicate `/marketing` tree.
+14. PostHog events follow the approved event contract and omit sensitive values.
+15. No endpoint reports email delivery, save, export, or payment success unless the side effect is verified.
+16. Formula/data revisions are explicit and included in exports.
+17. Error logging does not expose user-entered recipe or contact data.
+18. Pure calculation modules have unit, boundary, property, and unit-conversion round-trip tests.
+19. Independent spreadsheet/reference cases are reviewed before release.
 
-Desktop tables become grouped mobile records; do not horizontally squeeze every column.
+### 10.2 Safety release standard
 
----
+All of the following must be true before any chemistry feature becomes public:
 
-## 17. Performance and reliability
+1. Deterministic specification documented and version-controlled.
+2. Source manifest with effective/revision dates.
+3. Independent review by a named domain owner.
+4. Hand/reference calculations verified.
+5. Cross-calculator fixtures passing independently.
+6. No averaged values to make tests pass.
+7. Differences between authoritative sources explained and resolved.
 
-- deterministic calculation response: under 100ms on supported client hardware
-- no network dependency for quantity calculation
-- dashboard useful-content server response target: under 1 second at p75 excluding cold start
-- Core Web Vitals target: green at p75
-- timer resumes from server timestamps after reload
-- mutations are idempotent where retries are likely: client supplies a mutation UUID unique within user + operation; the database enforces uniqueness; a payload-hash mismatch on key reuse returns conflict; an exact replay returns the original outcome. Provider webhook event ID is the billing idempotency key.
-- no zero-value fallback that appears to be real cost/data
-- production errors use observability without exposing secrets or user notes
+### 10.3 Content release standard
 
----
+All of the following must be true before content goes live:
 
-## 18. Definition of MVP done
+1. Every page supplies at least one of: verified working tool, editable worked calculation, useful downloadable artifact, verified reference data with provenance, or substantive synthesis of real workflow evidence.
+2. No page ships solely to meet a word/page quota.
+3. SEO infrastructure (robots.txt, sitemap, metadata, schema) exists before any content publishes.
+4. Canonical URLs are correct and consistent.
 
-The rescue MVP is done only when a clean test user can:
+### 10.4 Utility signal milestones
 
-1. Sign up and remain authenticated.
-2. Create a valid recipe using a verified calculation engine.
-3. Save it as recipe version 1.
-4. See it in Recipes and open its detail page.
-5. Start a batch from that exact version.
-6. See the batch in the dashboard pipeline.
-7. Enter Making Mode, acknowledge safety, save measurements, pause/resume timer, reload, and continue at the same step.
-8. Complete Making Mode and see the same batch enter Curing.
-9. Add and edit cure observations.
-10. Mark the batch ready by explicit user choice.
-11. Finalize actual yield.
-12. Select ingredient cost records and receive a persisted cost per bar and suggested price from target margin.
-13. See the completed lifecycle and activity on dashboard and detail pages.
-14. Log out and confirm another account cannot access any object by URL or API ID.
-15. Visit the logged-out homepage and see the product workflow plus real blog content without duplicate shells, broken links, false claims, or transparent semantic fills.
+1. **Technical release gate:** 100% of selected public pages return 200 anonymously; zero high-severity formula failures; sitemap/robots public; lint/typecheck/tests/build/E2E pass.
+2. **Utility signal:** collect at least 100 genuine completed utility sessions before judging downstream behavior.
+3. **Workflow signal:** at least 15% of completed sessions continue to a connected result. If lower, revise the seam and relevant tool handoff.
+4. **Repeat signal:** observe meaningful returning-tool usage over four weeks; segment by use case rather than using a vanity visitor count.
+5. **Offer signal:** measure worksheet delivery and paid-resource interest; build a workspace only if save/multi-batch/inventory requests recur.
+6. **SEO signal:** review index coverage, query-page fit, impressions, clicks, and pages with zero impressions after sufficient crawl time; consolidate rather than endlessly publish.
+
+These thresholds are internal falsification criteria. They are not revenue forecasts.
+
+### 10.5 Definition of done
+
+The comprehensive utility hub is done only when a clean test user can:
+
+1. Visit the homepage and see the connected workflow without authentication.
+2. Use any public tool and receive a complete result without login, email, cookie consent, or payment.
+3. View formulas, assumptions, warnings, and methodology.
+4. Continue between connected tools without re-entry.
+5. Create a local, versioned Recipe/Batch Context containing only entered/accepted fields.
+6. Print/export/share the current plan locally.
+7. Optionally create an account for cloud persistence, sync, history, or inventory.
+8. Optionally request a Seller Pack after receiving the useful result.
+9. See all calculations verified against independently reviewed reference cases.
+10. Confirm that no anonymous flow requires authentication to reveal a core result.
+11. Log out and confirm no cross-user data access.
+12. Visit public pages and confirm they return 200, are indexable, and have correct sitemap/robots.
 
 A route, component, database table, static card, alert, console log, or demo record does not satisfy these acceptance criteria.
 
 ---
 
-## 19. Release gates
+## 11. Monetization contract
 
-### Trust gate
+### Revenue sequence
 
-- calculation contract and source citations reviewed
-- independent fixture suite green
-- safety copy reviewed
+1. **Contextual affiliate links** — after a result, only where the product/use case is genuinely relevant; disclosed and editorially selected.
+2. **One-time Seller Pack** — editable costing workbook, market planner, batch/cure sheet, wholesale quote sheet, and inventory count sheet; first paid test, not a subscription.
+3. **Optional email sequence** — tied to a specific delivered artifact with explicit consent; never a generic newsletter gate.
+4. **Display ads** — only after enough traffic exists to assess user impact and network eligibility; no revenue claim is made now.
+5. **Paid workspace** — only after users demonstrate recurring save, multi-batch, inventory, or lot-tracking behaviour.
 
-### Data gate
+### Core rules
 
-- migrations committed
-- ownership tests green
-- immutable history tests green
-- seed/test mode uses the live data model, not parallel mock types
+- Core calculations remain free forever.
+- An account must never be required to reveal a core result.
+- No subscription prompt until repeat-use evidence exists.
+- Paid workspace only after repeat saving/multi-batch/inventory demand is observed.
+- Ads require a separate UX/performance decision after traffic evidence.
+- Email is exchanged only for a specific delivered artifact with explicit consent.
+- Affiliate links are contextual, disclosed, and editorially selected.
+- No fake case studies, fabricated testimonials, or invented earnings claims.
 
-### UX gate
+### Superseded billing artifacts
 
-- approved mockups for marketing homepage, dashboard, recipe detail/builder, batch detail/Making Mode, cure portfolio, and costing
-- computed styles visually inspected
-- no tool-card dashboard
-- all save/loading/error/empty states exercised
-- mobile Making Mode exercised on a real viewport
+The following traffic-first billing artifacts are superseded and must not be implemented as product authority:
 
-### Engineering gate
+- Dodo subscription lifecycle as core entitlement model
+- Free tier: Calculator + 3 recipes + 1 active batch
+- Pro tier: $12/month or $99/year
+- Trial: "Not available in v1" (replaced: no trial gate for core tools)
+- Subscription billing (DEFERRED): Only after observed demand for workspace features
+- Subscription state machine as primary entitlement
 
-- lint, typecheck, tests, and production build green
-- no hard-coded production secret fallback
-- no placeholder TODO on a user-visible success path
-- no demo data in production routes
-- no false marketing copy
-
-### Billing gate
-
-- checkout/webhook/cancel/renewal test matrix green
-- Dodo webhook signature and idempotency verified
-- server-side entitlements tested
+These artifacts are retained as historical audit evidence only. They are not the approved product direction.
 
 ---
 
-## 20. Open decisions that must be resolved before their tickets
+## 12. Measurement contract
 
-1. Authoritative SAP/property source set and review owner.
-2. Supported lye types and water modes for first release.
-3. Trial policy and free-tier limits.
-4. Whether labor/overhead are included in rescue MVP costing or visibly deferred.
-5. Cure observation cadence defaults by method.
-6. Image/content ownership for blog and homepage.
-7. Whether system templates ship at launch and who verifies each formulation.
+### Required events
 
-## §8 Open decisions — RESOLVED
+- `tool_viewed`
+- `calculation_started`
+- `calculation_completed`
+- `connected_tool_opened`
+- `plan_exported`
+- `share_link_created`
+- `email_delivery_confirmed`
+- `affiliate_link_clicked`
+- `account_save_requested`
+- `workspace_interest_submitted`
 
-### Decision 1: Calculation contract (R1.1) — APPROVED
+### Event properties
 
-The calculation contract has been frozen based on the existing `lib/calculations/sap.ts` implementation and PRD §8 requirements. See `tasks.json` R1.1 `decision.contract` for the full version-controlled contract.
+Properties: tool, source page, device class, new/returning, anonymous flow ID, and validation/error category. Do not send ingredient notes, email addresses, or full recipes to analytics. Analytics contain no recipes, notes, or addresses.
 
-Key terms:
-- **Methods**: Cold process only
-- **Alkalis**: NaOH and KOH with dual-lye split support
-- **Water mode**: Water-to-lye ratio (0.5–3.0); lye concentration inactive but supported; percent-of-oils deferred until product/domain review approves
-- **Purity**: Not supported in v1
-- **Source manifest**: `DEFAULT_OILS` in `sap.ts` — 20 oils, SAP values from SoapCalc-compatible authoritative sources, dataset revision 1.0.0
-- **Precision**: 4 decimal places internal, 4 decimal places display
-- **Variance policy**: Planned vs actual uses the same deterministic engine; factual numeric difference only; no automatic safety declaration
-- **Warning thresholds**: Single oil >80% (danger), superfat <5% or >15% (warning), lye concentration <20% (warning), water:lye >2 (warning), fragrance >6% (danger)
-- **Blocking outcomes**: Unknown oil, oil percentages don't sum to 100%, negative/NaN/infinite input, target mass ≤ 0, unsupported lye/method combination
+### Measurement validation
 
-### Decision 2: Pricing/trial policy (R9.2) — APPROVED
-
-Pricing and trial policy documented in `tasks.json` R9.2 `decision.policy`.
-
-Key terms:
-- **Free tier**: Calculator + 3 recipes + 1 active batch
-- **Pro tier**: $12/month or $99/year (12 months, ideal duration with openness to review later)
-- **Trial**: Not available in v1 (PRD §14: "do not advertise an unimplemented trial")
-- **Provider**: Dodo Payments (4% + 40¢ per transaction, no monthly fees)
-- **Post-cancellation**: Users retain readable/exportable historical data
-- **Entitlement**: Server-side enforcement with matching UI explanation
-- **Pricing content**: Blocked on R9.3 (Dodo lifecycle) implementation
-
-### Variance policy (R1.1) — APPROVED
-
-Planned-vs-actual comparisons normalize units before comparison and use only the approved variance contract. Boundary, missing-value, and supported alkali-mode cases require tests. The UI may show factual numeric variance but must not label it safe, acceptable, or dangerous.
+Initial validation needs at least 100 genuine completed utility sessions. A working hypothesis is that 15% or more continue to a connected output; below that, revise the seam and relevant tool handoff. This measurement improves the comprehensive hub after release; it is not a gate that postpones the approved initial tool/content architecture.
 
 ---
 
-*These decisions were resolved during StudioForge S3 planning and recorded in `tasks.json` R1.1 and R9.2 before implementation began.*
+## 13. Tool-quality and market-research contract
 
+Before a tool implementation is accepted, its specification must be grounded in direct inspection of the strongest current alternatives for that exact job. The audit must record:
 
-These decisions must not block auth, ownership, shell separation, dashboard specification, or lifecycle persistence.
+- Supported inputs, modes, settings, and units
+- Formulas, terminology, rounding, and visible assumptions
+- Source datasets and provenance where discoverable
+- Result depth, warnings, error handling, and mobile behavior
+- Local/cloud saving, export, sharing, and cross-tool handoffs
+- User complaints, spreadsheet/manual workarounds, and switching costs
+- What SoapCraft Pro must match, must improve, uniquely connects, and must avoid
+- Unresolved safety, licensing, source, or domain-review gates
+
+The result is a tool-by-tool market requirements matrix with dated URLs and evidence strength. Generic competitor summaries do not satisfy this requirement. A route or calculator name cannot enter the final acceptance ledger until its matrix row and deterministic behavior contract exist.
+
+Research and evidence grading are governed by `product/TOOL-QUALITY-RESEARCH-PROTOCOL.md`; no delegated or competitor assertion may bypass that protocol.
+
+---
+
+## 14. Technical requirements
+
+### 14.1 Calculation modules
+
+- Pure calculation modules have unit, boundary, property, and unit-conversion round-trip tests.
+- Independent spreadsheet/reference cases are reviewed before release.
+- No AI or network call may sit in the quantity-calculation path.
+- Formula/data revisions are explicit and included in exports.
+- Money must never be summed across currencies.
+- Quantities must be normalized by tested conversion functions.
+- Rounding is display-only until the final monetary output.
+- Error logging does not expose user-entered recipe or contact data.
+
+### 14.2 Application quality
+
+- Typecheck, lint, unit tests, production build, and anonymous mobile/desktop E2E all pass.
+- Public page/API responses are 200; sitemap and robots are 200 and correct.
+- Canonical URLs contain no duplicate `/marketing` tree.
+- PostHog events follow the approved event contract and omit sensitive values.
+- No endpoint reports email delivery, save, export, or payment success unless the side effect is verified.
+- Formula/data revisions are explicit and included in exports.
+- Error logging does not expose user-entered recipe or contact data.
+
+### 14.3 Performance and reliability
+
+- Deterministic calculation response: under 100ms on supported client hardware.
+- No network dependency for quantity calculation.
+- Dashboard useful-content server response target: under 1 second at p75 excluding cold start.
+- Core Web Vitals target: green at p75.
+- Timer resumes from server timestamps after reload.
+- Mutations are idempotent where retries are likely: client supplies a mutation UUID unique within user + operation; the database enforces uniqueness; a payload-hash mismatch on key reuse returns conflict; an exact replay returns the original outcome.
+- No zero-value fallback that appears to be real cost/data.
+- Production errors use observability without exposing secrets or user notes.
+
+### 14.4 Accessibility and responsive
+
+- WCAG 2.2 AA target.
+- Keyboard operation for all controls.
+- Visible focus states.
+- Semantic tables with row headers and mobile list alternative.
+- Statuses conveyed by icon/text, not color alone.
+- 44×44px targets in Making Mode and mobile primary actions.
+- `aria-live` for calculation and save results.
+- Reduced-motion support.
+- 200% zoom without content loss.
+- Numeric inputs use appropriate input mode and explicit units.
+- Safety information remains reachable and does not obscure content.
+
+### 14.5 Local/share URL/cloud persistence
+
+- Local state is browser-scoped and clearly labeled as local-only.
+- Share URLs encode the full context as a URL-safe snapshot; contain no email or personal data.
+- Cloud persistence requires account creation; syncs across devices.
+- Share URLs and local state must be distinguishable from account-backed data.
+- Local state survives page reload within the browser session; explicit export preserves data beyond the session.
+
+---
+
+## 15. Approval gates
+
+1. **Product direction:** approved by Isaac on 2026-09-09, including comprehensive scope, current expansion, and chemistry subject to verification.
+2. **Baseline recovery:** credential rotated, branch/worktree/stash backed up, deployed commit identified.
+3. **Market/tool specification:** detailed direct-source benchmark and tool-quality matrix completed.
+4. **Formula specification:** chemistry, sizing, and economic formulas plus reference fixtures reviewed.
+5. **Chemistry verification gate:** deterministic specification, source manifest, effective/revision dates, independent review, hand/reference calculations, and cross-calculator fixtures all pass before any chemistry feature becomes public.
+6. **Comprehensive release:** all approved functional, technical, safety, content, and SEO acceptance criteria pass through independent acceptance gate.
+7. **Post-release improvement:** individual tools are iterated from observed use, search, support, and competitive evidence.
+8. **Spending/publishing:** explicit approval for ads, paid traffic, partnerships, chemistry features, and bulk publication.
+
+---
+
+## 16. Superseded artifacts register
+
+The following items from traffic-first planning are superseded evidence, not authority:
+
+| Traffic-first artifact | Status | Superseded by |
+|----------------------|--------|---------------|
+| Email capture with false "Welcome email sent" | Superseded | Email only for specific delivered artifact with consent |
+| Exit-intent email capture | Superseded | No exit-intent capture |
+| CRM drip sequence | Superseded | Optional email tied to specific delivered artifact |
+| Four-tool MVP scope | Superseded | Comprehensive seven-category scope |
+| Gated workspace as primary framing | Superseded | Anonymous utility hub with optional persistence |
+| Free tier / Pro tier pricing ($12/mo, $99/yr) | Superseded | Core calculations free; paid after demand observed |
+| Subscription state machine as entitlement | Superseded | Utility-first; account for persistence only |
+| `/marketing` route tree | Superseded | Canonical `/blog`, `/guides`, `/tools` tree |
+| Pricing page as public priority | Superseded | Tool directory as public priority |
+| SaaS-first homepage framing | Superseded | Proof-led utility homepage |
+| Pinterest/TikTok as primary distribution | Superseded | SEO-first discoverability; social as supplementary |
+
+These artifacts are retained for historical audit only. They must not be used as authority for any product decision going forward.
+
+---
+
+*This document replaces `product/PRD.md` v3.0 and v4.0 traffic-first artifacts. The approved direction from `product/PRODUCT-CONTRACT-UTILITY-HUB.md` governs all product decisions. The chemistry engine remains subject to the verification gate in §7.3 before any public release.*

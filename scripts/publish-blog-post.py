@@ -1,139 +1,163 @@
 #!/usr/bin/env python3
-"""publish-blog-post.py — Publish a validated blog post to the content store.
+"""Confirmation-gated, atomic publishing for agent-authored blog records."""
 
-This script is PLUMBING ONLY — it moves data and posts on confirm.
-All creative/editorial judgment is the AGENT's job, done in-session.
-
-Usage:
-  # Validate first
-  python3 scripts/validate-seo-content.py gtm/draft-post.json
-
-  # Publish on explicit confirm
-  python3 scripts/publish-blog-post.py gtm/draft-post.json --confirm
-
-  # Dry run (validate only, don't publish)
-  python3 scripts/publish-blog-post.py gtm/draft-post.json --dry-run
-
-The --confirm flag is required for actual publishing. Without it, the script
-only validates and reports what would happen.
-"""
-
+import argparse
+import fcntl
+import importlib.util
 import json
-import sys
 import os
-import shutil
+import sys
+import tempfile
+from datetime import datetime, timezone
 from pathlib import Path
-from datetime import datetime
 
 ROOT = Path(__file__).resolve().parent.parent
+DEFAULT_STORE = ROOT / "lib" / "blog-data.json"
+DEFAULT_AUDIT = ROOT / "gtm" / "publish-audit.jsonl"
 
-# ── Publish ────────────────────────────────────────────────────
 
-def publish_post(post_path: Path, confirm: bool = False, dry_run: bool = False):
-    """Publish a blog post to the content store."""
+def _load_validator():
+    path = ROOT / "scripts" / "validate-seo-content.py"
+    spec = importlib.util.spec_from_file_location("validate_seo_content", path)
+    assert spec is not None
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(module)
+    return module.validate_post
 
-    # Load the post
+
+validate_post = _load_validator()
+
+
+def _atomic_write_json(path: Path, value: object) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, temp_name = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as handle:
+            json.dump(value, handle, indent=2)
+            handle.write("\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temp_name, path)
+    except Exception:
+        try:
+            os.unlink(temp_name)
+        except FileNotFoundError:
+            pass
+        raise
+
+
+def _stage_audit(path: Path, event: dict) -> str:
+    """Durably stage the complete next audit file without touching the store."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if path.exists() and not path.is_file():
+        raise OSError(f"Audit destination is not a file: {path}")
+    fd, temp_name = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
+    try:
+        with os.fdopen(fd, "wb") as staged:
+            if path.exists():
+                with path.open("rb") as current:
+                    while chunk := current.read(1024 * 1024):
+                        staged.write(chunk)
+            staged.write((json.dumps(event) + "\n").encode("utf-8"))
+            staged.flush()
+            os.fsync(staged.fileno())
+        return temp_name
+    except Exception:
+        try:
+            os.unlink(temp_name)
+        except FileNotFoundError:
+            pass
+        raise
+
+
+def publish_post(
+    post_path: Path,
+    confirm: bool = False,
+    dry_run: bool = False,
+    blog_data_path: Path = DEFAULT_STORE,
+    audit_path: Path = DEFAULT_AUDIT,
+) -> bool:
+    """Validate and optionally publish exactly one approved record."""
     if not post_path.exists():
-        print(f"Error: file not found: {post_path}", file=sys.stderr)
-        sys.exit(1)
+        raise ValueError(f"File not found: {post_path}")
 
-    with open(post_path) as f:
-        post = json.load(f)
+    post = json.loads(post_path.read_text())
+    if not isinstance(post, dict):
+        raise ValueError("Post must be a JSON object")
+    if post.get("reviewStatus") != "approved":
+        raise ValueError("Publication requires reviewStatus: approved")
 
-    # Validate first
-    print(f"Validating {post_path}...")
-    result = validate_post(post)
+    final_post = dict(post)
+    final_post["reviewStatus"] = "published"
+    final_post["publishedAt"] = final_post.get("publishedAt") or datetime.now(
+        timezone.utc
+    ).date().isoformat()
 
+    result = validate_post(final_post)
     if not result["valid"]:
-        print("VALIDATION FAILED — not publishing:")
-        for error in result["errors"]:
-            print(f"  ERROR: {error}")
-        for warning in result["warnings"]:
-            print(f"  WARNING: {warning}")
-        sys.exit(1)
-
-    print(f"Validation passed ({result['wordCount']} words)")
+        raise ValueError(f"Validation failed: {'; '.join(result['errors'])}")
 
     if dry_run:
-        print("DRY RUN — would publish:")
-        print(f"  slug: {post.get('slug')}")
-        print(f"  title: {post.get('title')}")
-        print(f"  category: {post.get('category')}")
-        print(f"  reviewStatus: published")
-        return
-
+        print(json.dumps({"valid": True, "dryRun": True, "slug": final_post["slug"],
+                          "title": final_post["title"], "wordCount": result["wordCount"]}, indent=2))
+        return True
     if not confirm:
-        print("Use --confirm to publish, or --dry-run to see what would happen.")
-        sys.exit(0)
+        print("Validated. Use --confirm to publish, or --dry-run to inspect.")
+        return True
 
-    # ── ACTUAL PUBLISH ──────────────────────────────────────
-    # 1. Update reviewStatus to "published"
-    post["reviewStatus"] = "published"
-    post["lastReviewed"] = datetime.utcnow().isoformat()
+    blog_data_path.parent.mkdir(parents=True, exist_ok=True)
+    lock_path = Path(str(blog_data_path) + ".lock")
+    # Keep the lock inode persistent. Unlinking it allows another publisher to
+    # lock a new inode while a process still owns the old inode's flock.
+    with lock_path.open("a+") as lock_handle:
+        fcntl.flock(lock_handle, fcntl.LOCK_EX)
+        blog_data = json.loads(blog_data_path.read_text()) if blog_data_path.exists() else []
+        if not isinstance(blog_data, list) or not all(isinstance(item, dict) for item in blog_data):
+            raise ValueError("Blog store must be a JSON array of objects")
+        if any(item.get("slug") == final_post["slug"] for item in blog_data):
+            raise ValueError(f"Slug already exists: {final_post['slug']}")
 
-    # 2. Write to the blog data file
-    blog_data_path = ROOT / "lib" / "blog-data.json"
+        blog_data.append(final_post)
+        event = {
+            "event": "blog_post_published",
+            "slug": final_post["slug"],
+            "reviewer": final_post["reviewer"],
+            "publishedAt": final_post["publishedAt"],
+            "recordedAt": datetime.now(timezone.utc).isoformat(),
+        }
+        staged_audit = _stage_audit(audit_path, event)
+        try:
+            # Complete the fallible audit write before replacing the content store.
+            os.replace(staged_audit, audit_path)
+            _atomic_write_json(blog_data_path, blog_data)
+        finally:
+            try:
+                os.unlink(staged_audit)
+            except FileNotFoundError:
+                pass
 
-    with open(blog_data_path) as f:
-        blog_data = json.load(f)
-
-    # Check for duplicate slug
-    existing_slugs = {p.get("slug") for p in blog_data}
-    if post.get("slug") in existing_slugs:
-        print(f"WARNING: slug '{post['slug']}' already exists — overwriting")
-
-    # Add or replace the post
-    blog_data = [p for p in blog_data if p.get("slug") != post.get("slug")]
-    blog_data.append(post)
-
-    with open(blog_data_path, "w") as f:
-        json.dump(blog_data, f, indent=2)
-
-    # 3. Log the publication
-    print(f"Published: {post.get('slug')} → lib/blog-data.json")
-    print(f"  Title: {post.get('title')}")
-    print(f"  Words: {result['wordCount']}")
-    print(f"  Category: {post.get('category')}")
-
-    # 4. Track the publication event
-    # (The analytics route will receive this via the SEO funnel)
-
+    print(f"Published {final_post['slug']} to {blog_data_path}")
     return True
 
 
-def validate_post(post: dict) -> dict:
-    """Run the same validation as validate-seo-content.py."""
-    import subprocess
-
-    # Write post to temp file for validation
-    temp_path = ROOT / "gtm" / "_temp_validate.json"
-    os.makedirs(ROOT / "gtm", exist_ok=True)
-    with open(temp_path, "w") as f:
-        json.dump(post, f, indent=2)
-
-    result = subprocess.run(
-        [sys.executable, str(ROOT / "scripts" / "validate-seo-content.py"), str(temp_path)],
-        capture_output=True,
-        text=True,
-    )
-
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("post", type=Path)
+    action = parser.add_mutually_exclusive_group()
+    action.add_argument("--confirm", action="store_true")
+    action.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--store", type=Path, default=DEFAULT_STORE)
+    parser.add_argument("--audit", type=Path, default=DEFAULT_AUDIT)
+    args = parser.parse_args()
     try:
-        return json.loads(result.stdout)
-    except json.JSONDecodeError:
-        return {"valid": False, "errors": [f"Validation output parse error: {result.stdout}"], "warnings": [], "wordCount": 0}
-
-
-def main():
-    if len(sys.argv) < 2:
-        print("Usage: publish-blog-post.py <path-to-post.json> [--confirm] [--dry-run]", file=sys.stderr)
-        sys.exit(1)
-
-    post_path = Path(sys.argv[1])
-    confirm = "--confirm" in sys.argv
-    dry_run = "--dry-run" in sys.argv
-
-    publish_post(post_path, confirm=confirm, dry_run=dry_run)
+        publish_post(args.post, confirm=args.confirm, dry_run=args.dry_run,
+                     blog_data_path=args.store, audit_path=args.audit)
+        return 0
+    except (ValueError, json.JSONDecodeError, OSError) as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        return 1
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

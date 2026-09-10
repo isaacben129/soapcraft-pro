@@ -1,17 +1,20 @@
 // ── Soap Cost Per Bar Calculator ──────────
 // Intent: commercial — micro-business sellers pricing their product
 // Primary keyword: "soap cost per bar calculator"
-// Product bridge: SoapCraft Pro auto-calculates cost per batch and cost per bar,
-//   with target margin pricing and suggested selling price.
+// Product bridge: Free interactive calculator → email capture → Pro offer.
+// SEO landing page with embedded interactive calculator.
+// This is a Server Component — metadata export is allowed here.
+// BatchCostingForm is a Client Component imported below.
 
 import { Metadata } from "next";
 import Link from "next/link";
 import { pageMetadata } from "@/lib/seo/metadata";
+import { BatchCostingForm } from "@/components/shared/batch-costing-form";
 
 export const metadata: Metadata = pageMetadata({
   title: "Soap Cost Per Bar Calculator — Price Your Handmade Soap",
   description:
-    "Calculate the real cost per bar of handmade soap. Includes ingredient costs, batch yield, target margin pricing, and suggested selling price.",
+    "Calculate the real cost per bar of handmade soap. Enter ingredient costs, batch yield, and target margin. Free, no signup required.",
   path: "/calculators/soap-cost-calculator",
 });
 
@@ -19,33 +22,33 @@ export default function SoapCostCalculatorPage() {
   return (
     <main className="flex flex-col min-h-screen">
       <article className="container mx-auto px-4 py-16 md:py-20">
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-4xl mx-auto">
+          {/* ── Breadcrumb ── */}
           <nav aria-label="Breadcrumb" className="mb-4">
             <ol className="flex items-center gap-1 text-sm text-muted-foreground">
-              <li>
-                <Link href="/" className="hover:text-foreground transition-colors">
-                  Home
-                </Link>
-              </li>
+              <li><Link href="/" className="hover:text-foreground transition-colors">Home</Link></li>
               <li aria-hidden="true" className="mx-1">/</li>
-              <li>
-                <Link href="/calculators/soap-cost-calculator" className="hover:text-foreground transition-colors">
-                  Soap Cost Calculator
-                </Link>
-              </li>
+              <li><Link href="/calculators/soap-cost-calculator" className="hover:text-foreground transition-colors">Soap Cost Calculator</Link></li>
             </ol>
           </nav>
 
+          {/* ── Hero ── */}
           <h1 className="font-display text-3xl md:text-4xl font-bold text-foreground">
             Soap Cost Per Bar Calculator
           </h1>
           <p className="mt-4 text-lg text-muted-foreground leading-relaxed">
-            Know exactly what each bar costs before you price it. SoapCraft Pro
-            auto-calculates cost per batch and cost per bar from your ingredient
-            costs and actual yield, so you can set a target margin and publish a
-            price with confidence.
+            Know exactly what each bar costs before you price it. Enter your
+            ingredient costs, batch yield, and target margin. Get real-time
+            results — no signup, no account, no credit card.
           </p>
 
+          {/* ── Interactive Calculator ── */}
+          <section className="mt-8" aria-labelledby="calculator">
+            <h2 id="calculator" className="sr-only">Calculate your cost per bar</h2>
+            <BatchCostingForm />
+          </section>
+
+          {/* ── How It Works ── */}
           <section className="mt-10" aria-labelledby="how-it-works">
             <h2 id="how-it-works" className="font-display text-2xl font-bold text-foreground">
               How Cost Per Bar Works
@@ -72,12 +75,12 @@ export default function SoapCostCalculatorPage() {
               </li>
               <li>
                 <strong className="text-foreground">Target margin</strong> = The
-                percentage above cost you need to cover packaging, labor, and
-                profit
+                percentage above cost you need to cover packaging, labor, and profit
               </li>
             </ul>
           </section>
 
+          {/* ── Why Accurate Yield Matters ── */}
           <section className="mt-10" aria-labelledby="why-accurate">
             <h2 id="why-accurate" className="font-display text-2xl font-bold text-foreground">
               Why Accurate Yield Matters
@@ -89,6 +92,7 @@ export default function SoapCostCalculatorPage() {
             </p>
           </section>
 
+          {/* ── Product Bridge ── */}
           <section className="mt-10" aria-labelledby="product-bridge">
             <h2 id="product-bridge" className="font-display text-2xl font-bold text-foreground">
               Try It in SoapCraft Pro
@@ -108,40 +112,31 @@ export default function SoapCostCalculatorPage() {
             </div>
           </section>
 
+          {/* ── FAQ ── */}
           <section className="mt-12" aria-labelledby="faq">
             <h2 id="faq" className="font-display text-2xl font-bold text-foreground">
               Frequently Asked Questions
             </h2>
             <div className="mt-4 space-y-6 text-muted-foreground">
               <div>
+                <h3 className="font-semibold text-foreground">Do I need an account to use this calculator?</h3>
+                <p className="mt-1">No. This calculator works entirely without signup. Enter your costs and get results immediately.</p>
+              </div>
+              <div>
                 <h3 className="font-semibold text-foreground">Should I include labor in the cost per bar?</h3>
-                <p className="mt-1">
-                  That is a business decision, not a calculation one. SoapCraft Pro
-                  gives you the ingredient cost baseline so you can decide how to
-                  allocate labor separately.
-                </p>
+                <p className="mt-1">That is a business decision, not a calculation one. This calculator gives you the ingredient cost baseline so you can allocate labor separately.</p>
               </div>
               <div>
                 <h3 className="font-semibold text-foreground">What if my batch yields less than expected?</h3>
-                <p className="mt-1">
-                  SoapCraft Pro tracks actual yield so the cost per bar reflects
-                  what you actually produced, not what you planned.
-                </p>
+                <p className="mt-1">Adjust the batch yield input to match your actual result. The calculator updates in real time.</p>
               </div>
               <div>
                 <h3 className="font-semibold text-foreground">Can I compare margins across recipes?</h3>
-                <p className="mt-1">
-                  Yes. SoapCraft Pro maintains a cost portfolio so you can compare
-                  batch economics and margins across recipes.
-                </p>
+                <p className="mt-1">Yes. SoapCraft Pro maintains a cost portfolio so you can compare batch economics and margins across recipes.</p>
               </div>
               <div>
                 <h3 className="font-semibold text-foreground">Does SoapCraft Pro handle packaging costs?</h3>
-                <p className="mt-1">
-                  Ingredient cost is the baseline. You can add packaging as a
-                  separate line item in your cost analysis to get a fully loaded
-                  cost per bar.
-                </p>
+                <p className="mt-1">Ingredient cost is the baseline. You can add packaging as a separate line item in your cost analysis to get a fully loaded cost per bar.</p>
               </div>
             </div>
           </section>

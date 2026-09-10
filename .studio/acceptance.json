@@ -1,0 +1,1013 @@
+{
+  "$schema": "https://studioforge.dev/schemas/acceptance.json",
+  "version": "2.0.0",
+  "project": "SoapCraft Pro",
+  "repository": "/opt/data/studio/apps/soapcraft-pro",
+  "goalMetric": "Weekly anonymous utility sessions that produce a correct result, plus the proportion that continue into a connected tool using the same recipe/batch context",
+  "activationMetric": "First anonymous completion rate — percentage of new visitors who complete a full calculation without authentication in their first session",
+  "approvalBoundary": "BUILD_AUTHORIZED by Isaac on 2026-09-09; RELEASE_ACCEPTED is reserved for post-build independent verification",
+  "constraints": {
+    "deterministicCalculation": "AI may never invent chemical quantities or modify formulation logic without tests and review",
+    "safetyCritical": "Lye, water, and fragrance calculations must be grounded in verified formulas with safety disclaimers",
+    "anonymousFirst": "Calculators must work without authentication. No email capture required for core results",
+    "noExitIntent": "No exit-intent email capture or fake case studies anywhere in the product",
+    "noMandatoryGates": "Account creation must never be required to reveal a core result",
+    "contextTransfer": "Inputs transfer between all tool stages without re-entry via the Recipe/Batch Context",
+    "formulaVersioning": "Every formula output carries calculator version, dataset revision, and formula revision",
+    "cloudPersistenceOptional": "Cloud persistence requires account creation; all core tools work without an account",
+    "monetizationSequence": "Contextual affiliates → one-time Seller Pack → optional workspace only from demand → ads only after traffic evidence",
+    "chemistryVerificationGate": "Chemistry engine requires deterministic specification, source manifest, independent review, hand/reference calculations, and cross-calculator fixtures before public release",
+    "contentQuality": "Every published page must supply at least one of: verified working tool, editable worked calculation, useful downloadable artifact, verified reference data with provenance, or substantive synthesis of real workflow evidence",
+    "noFabrication": "Do not invent traffic, revenue, conversion rates, or business performance",
+    "noUnavailableInfrastructure": "Do not invent unavailable infrastructure; reference only existing project artifacts",
+    "exampleLabelling": "All examples, synthetic data, and proof artifacts are explicitly labelled 'Example'",
+    "affiliateDisclosure": "Affiliate links are visibly disclosed as affiliate/sponsored before click",
+    "makingModeAnonymous": "Making Mode timer resume works for anonymous sessions via browser Local Storage",
+    "shareUrlSize": "Share URL encoding tested for maximum context size; fallback to download artifact if browser limits exceeded",
+    "localStorageQuota": "Local storage usage monitored; export available before storage limits reached",
+    "moneyNeverCrossesCurrencies": "Money is never summed across currencies; all monetary values in a single calculation must share the same currency code",
+    "saleableYieldDefinition": "Saleable yield excludes trim, samples, defects, and units retained for testing",
+    "markupVsMargin": "Markup and gross margin are separately labeled and verified against reference cases",
+    "targetPriceAlgebraic": "Target price before percentage/fixed fees is solved algebraically, not approximated by markup multiplier",
+    "eventBreakEvenCeiling": "Event break-even units = ceiling of fixed event costs divided by weighted contribution per unit",
+    "noClaimedSafety": "No blanket cure-completion percentage or safety declaration; 'Estimated window reached' copy is correct",
+    "disclaimerNotSubstitute": "Safety disclaimers describe scope but never substitute for correct calculations",
+    "propertyIndicesNotClaims": "Arbitrary ±20% property transforms are prohibited; publish only sourced fatty-acid-derived indicators with provenance, otherwise omit",
+    "mixedAlkali": "KOH percentage is a share of full pure alkali equivalents; apply superfat once to the recipe, then correct each alkali independently for purity",
+    "waterModes": "Exactly one of ratio, lye concentration, or percent-of-oils controls water; inactive inputs cannot affect output",
+    "moldCalibration": "No universal batter-density constant; calibrated mode uses user measurements and planning mode returns an explicit approximate range",
+    "existingInfrastructure": "Reuse existing NextAuth, Neon/Drizzle, and Dodo integration; do not assume Redis, WebSockets, queues, or a second stack",
+    "buildVsRelease": "Missing external source, domain, legal, or asset evidence blocks publication of the affected route, not implementation behind a production-off flag"
+  },
+  "capabilities": [
+    {
+      "id": "CHEM-001",
+      "name": "NaOH formulation",
+      "description": "Calculate lye required for NaOH-only formulations using sourced SAP values",
+      "category": "formulation",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "User enters oil blend with percentages summing to 100 and target oil weight without authentication",
+        "System calculates exact NaOH lye amount using sourced SAP values and superfat multiplier",
+        "Output displays oil weights, NaOH amount, water amount, and total batch mass",
+        "Calculation carries calculator version and dataset revision in the result",
+        "Unit-conversion round-trip produces identical results when switching between g, kg, oz, lb",
+        "Unsupported or zero oil selections produce a clear blocking error, not a silent zero",
+        "Result is deterministic: same inputs always produce the same outputs"
+      ]
+    },
+    {
+      "id": "CHEM-002",
+      "name": "KOH formulation",
+      "description": "Calculate lye required for KOH formulations (bar/milled soap)",
+      "category": "formulation",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "User selects KOH as the sole alkali",
+        "Engine applies recipe superfat once to pure KOH demand and divides by the entered KOH purity fraction",
+        "Output separately labels pure KOH demand and as-supplied KOH mass",
+        "Synthetic fixtures may test the engine before catalogue approval; public output additionally requires release receipts"
+      ]
+    },
+    {
+      "id": "CHEM-003",
+      "name": "Mixed-alkali formulation",
+      "description": "Calculate lye split for NaOH/KOH blends with proper semantics",
+      "category": "formulation",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "User enters KOH percentage as a share of full pure alkali equivalents; NaOH share is the remainder",
+        "Engine splits full pure equivalents, applies one recipe-level superfat multiplier, and corrects each share for its own purity",
+        "Output separately shows NaOH, KOH, and total as-supplied alkali mass",
+        "Invalid split totals or purity values block calculation"
+      ]
+    },
+    {
+      "id": "CHEM-004",
+      "name": "Superfat and lye discount",
+      "description": "Apply superfat or lye discount with explicit warnings",
+      "category": "formulation",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "User enters one recipe-level superfat or lye-discount percentage",
+        "The multiplier is applied once to every selected alkali before purity correction",
+        "Out-of-range values block with a typed validation error",
+        "Superfat and lye discount are two names for the same reduction, not compounding inputs"
+      ]
+    },
+    {
+      "id": "CHEM-005",
+      "name": "Water mode calculation",
+      "description": "Support lye concentration, water-to-lye ratio, and percent-of-oils modes",
+      "category": "formulation",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "User selects exactly one active water mode from: lye_concentration, water_to_lye_ratio, or percent_of_oils",
+        "Inactive water input fields are not editable and do not influence the calculated output",
+        "System calculates water amount based solely on the selected active mode",
+        "Switching between active water modes recalculates the water amount correctly"
+      ]
+    },
+    {
+      "id": "CHEM-006",
+      "name": "Oil and fatty-acid profiles",
+      "description": "Accept oil blend percentages with sourced SAP values and quality indicators",
+      "category": "formulation",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "User enters oil blend with percentages that sum to 100 within the documented tolerance",
+        "System calculates quality indicators using sourced formulas where available",
+        "Each oil entry shows sourced SAP values with citation and revision information",
+        "Property estimates are visibly labeled as estimates with their calculation method and source"
+      ]
+    },
+    {
+      "id": "CHEM-007",
+      "name": "Quality indicators",
+      "description": "Calculate hardness, condition, iodine, and other quality metrics",
+      "category": "formulation",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "System produces quality indicators from the entered oil blend",
+        "Quality indicators are visibly labeled as relative indices, not skin performance claims",
+        "Unsupported quality indicators are omitted from the output rather than invented"
+      ]
+    },
+    {
+      "id": "CHEM-008",
+      "name": "Bounded additives and fragrance",
+      "description": "Accept bounded additive and fragrance inputs with safety disclaimers",
+      "category": "formulation",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "User can enter a fragrance load percentage or amount within domain-reviewed bounds",
+        "Fragrance inputs are validated against domain-reviewed limits; exceeding them produces a warning",
+        "IFRA claims are absent unless identity, category data, and calculation are all valid and verified",
+        "Safety disclaimers describe the scope of the calculation but never substitute for correctness"
+      ]
+    },
+    {
+      "id": "CHEM-009",
+      "name": "Versioned source provenance",
+      "description": "Every formula output carries calculator version and dataset revision",
+      "category": "formulation",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "Every calculation result visibly displays the calculator version",
+        "Every calculation result visibly displays the dataset revision",
+        "Exports include formula revision and calculator version in the output",
+        "Share URLs encode the calculator version and dataset revision"
+      ]
+    },
+    {
+      "id": "CHEM-010",
+      "name": "Chemistry verification gate",
+      "description": "Deterministic specification, source manifest, independent review, cross-calculator fixtures required before public release",
+      "category": "formulation",
+      "boundary": "deployed",
+      "acceptanceRows": [
+        "Deterministic specification is documented and version-controlled with a named author",
+        "Source manifest with effective and revision dates exists and is accessible",
+        "Independent review by a named domain owner is documented with a sign-off date",
+        "Hand and reference calculations are verified against independent computation",
+        "Cross-calculator fixtures pass independently with no averaged values used to artificially satisfy checks",
+        "Differences between authoritative sources are explained and resolved, not averaged away"
+      ]
+    },
+    {
+      "id": "SIZE-001",
+      "name": "Percentage/weight conversion",
+      "description": "Convert between percentage and weight inputs",
+      "category": "sizing",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "User can enter an oil blend as percentages or as absolute weights",
+        "System converts between percentage and weight correctly and shows the conversion",
+        "Changing between percentage and weight modes updates all downstream values consistently"
+      ]
+    },
+    {
+      "id": "SIZE-002",
+      "name": "Unit conversion",
+      "description": "Convert g, kg, oz, lb with tested conversion functions",
+      "category": "sizing",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "User can enter a target weight in any supported unit: g, kg, oz, or lb",
+        "System converts between all supported units correctly using normalized conversion factors",
+        "Quantity normalization uses tested conversion functions",
+        "Money is never summed across currencies; mixing currencies produces a blocking warning"
+      ]
+    },
+    {
+      "id": "SIZE-003",
+      "name": "Recipe scaling",
+      "description": "Scale recipes to target batch weights proportionally",
+      "category": "sizing",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "User enters a target batch weight and sees all ingredient amounts recalculated proportionally",
+        "Scaling is proportional and mathematically correct across all ingredient types",
+        "A scaled recipe can be saved with authentication optional for saving",
+        "The scaled recipe retains the original formula revision and source attribution"
+      ]
+    },
+    {
+      "id": "SIZE-004",
+      "name": "Mold volume/capacity",
+      "description": "Calculate target-fill volume and calibrated batter mass without a universal density claim",
+      "category": "sizing",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "User enters internal dimensions or measured water-fill volume and receives normalized target-fill volume",
+        "Calibrated mode requires prior occupied volume and prior batter mass and computes user-specific density",
+        "Planning mode returns a visibly approximate range with assumption provenance, never a precision capacity point",
+        "Metric/imperial, irregular-mold, calibration, and invalid-input fixtures pass"
+      ]
+    },
+    {
+      "id": "SIZE-005",
+      "name": "Recipe-to-mold sizing",
+      "description": "Size a recipe to fit a specific mold",
+      "category": "sizing",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "With a calibrated target batter mass, engine computes scale factor against current unrounded recipe batter mass",
+        "Every formulation amount is recomputed from percentages and source values rather than rounded displays",
+        "Without calibration, the UI presents a planning range and asks for calibration before precision claims"
+      ]
+    },
+    {
+      "id": "SIZE-006",
+      "name": "Target batch weight",
+      "description": "Back-calculate ingredient amounts from target weight",
+      "category": "sizing",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "User enters a target batch weight",
+        "System back-calculates all ingredient amounts from that target",
+        "Results are deterministic and match independent calculations within documented tolerance"
+      ]
+    },
+    {
+      "id": "SIZE-007",
+      "name": "Bar-count and cut planning",
+      "description": "Plan bar counts and cuts from batch volume",
+      "category": "sizing",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "System calculates bar count from batch volume and bar dimensions",
+        "Cut plan is displayed with waste excluded from saleable units",
+        "Multi-mold allocation is supported and shown clearly"
+      ]
+    },
+    {
+      "id": "SIZE-008",
+      "name": "Multi-mold allocation",
+      "description": "Allocate a batch across multiple molds",
+      "category": "sizing",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "User enters multiple molds with their individual volumes",
+        "System allocates the batch across molds proportionally",
+        "Each mold's contribution is displayed separately"
+      ]
+    },
+    {
+      "id": "COST-001",
+      "name": "Ingredient costing",
+      "description": "Calculate material cost from ingredient costs and quantities",
+      "category": "costing",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "User enters or imports ingredient costs per unit",
+        "System calculates material cost from quantities and entered costs",
+        "Cost per made unit is displayed",
+        "Cost per saleable unit accounts for yield loss from trim, samples, defects, and testing"
+      ]
+    },
+    {
+      "id": "COST-002",
+      "name": "Packaging costing",
+      "description": "Calculate packaging cost per saleable unit",
+      "category": "costing",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "User enters packaging cost per unit",
+        "System includes packaging cost in the full batch cost",
+        "Packaging cost per saleable unit is displayed separately from ingredient cost"
+      ]
+    },
+    {
+      "id": "COST-003",
+      "name": "Labor costing",
+      "description": "Calculate labor cost from minutes and rate",
+      "category": "costing",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "User enters labor minutes and hourly rate",
+        "System calculates labor cost correctly",
+        "Labor cost is separately labeled in the cost breakdown"
+      ]
+    },
+    {
+      "id": "COST-004",
+      "name": "Overhead costing",
+      "description": "Allocate batch overhead",
+      "category": "costing",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "User enters batch overhead amount",
+        "System includes overhead in the full batch cost",
+        "Overhead is separately labeled from material, labor, and packaging costs"
+      ]
+    },
+    {
+      "id": "COST-005",
+      "name": "Waste and yield adjustment",
+      "description": "Account for waste, trim, samples, defects",
+      "category": "costing",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "System distinguishes made units from saleable units",
+        "Saleable yield excludes trim, samples, defects, and units retained for testing",
+        "Cost per saleable unit consistently increases when saleable yield decreases"
+      ]
+    },
+    {
+      "id": "COST-006",
+      "name": "Markup calculation",
+      "description": "Calculate markup % from cost and price",
+      "category": "costing",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "Markup percent is calculated as (price - cost) / cost × 100",
+        "Markup is separately labeled from gross margin",
+        "Calculation is verified against independent reference cases"
+      ]
+    },
+    {
+      "id": "COST-007",
+      "name": "Gross margin calculation",
+      "description": "Calculate gross margin % (separate from markup)",
+      "category": "costing",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "Gross margin percent is calculated as (net revenue - cost) / net revenue × 100",
+        "Gross margin is separately labeled from markup",
+        "Calculation is verified against independent reference cases"
+      ]
+    },
+    {
+      "id": "COST-008",
+      "name": "Retail/wholesale/channel scenarios",
+      "description": "Compare multiple selling scenarios",
+      "category": "costing",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "User can enter retail, wholesale, and channel-fee scenarios",
+        "System calculates contribution per unit for each scenario",
+        "Channel fees correctly affect each scenario's result",
+        "Scenarios are displayed side by side for comparison"
+      ]
+    },
+    {
+      "id": "COST-009",
+      "name": "Minimum viable price",
+      "description": "Solve algebraic target price before fees",
+      "category": "costing",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "Target price before percentage and fixed fees is solved algebraically",
+        "Result is not approximated by a markup multiplier",
+        "System validates that target margin is >= 0 and < 1 before solving"
+      ]
+    },
+    {
+      "id": "COST-010",
+      "name": "Cost per made/saleable unit",
+      "description": "Separate cost per made unit and cost per saleable unit",
+      "category": "costing",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "Full batch cost, cost per made unit, and cost per saleable unit are all displayed",
+        "When saleable yield changes, cost per saleable unit updates consistently",
+        "Missing costs are flagged and the result is visibly labeled incomplete"
+      ]
+    },
+    {
+      "id": "COST-011",
+      "name": "Missing-cost warnings",
+      "description": "Flag incomplete economics explicitly",
+      "category": "costing",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "A result with missing costs is explicitly labeled incomplete",
+        "The incomplete result is not styled or presented as a recommendation",
+        "The specific missing inputs are listed in the result",
+        "Warnings are visible beside the affected output area"
+      ]
+    },
+    {
+      "id": "MKT-001",
+      "name": "Craft-fair break-even",
+      "description": "Calculate break-even units for a craft fair",
+      "category": "markets",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "User enters fixed event costs and expected selling price per unit",
+        "System calculates break-even units as ceiling of fixed costs divided by weighted contribution per unit",
+        "Result is displayed with the methodology shown"
+      ]
+    },
+    {
+      "id": "MKT-002",
+      "name": "Product mix planning",
+      "description": "Plan multiple products with mix shares and contributions",
+      "category": "markets",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "User enters multiple products with prices and mix share percentages",
+        "System calculates weighted contribution per unit across the mix",
+        "Product mix totals are correct and displayed"
+      ]
+    },
+    {
+      "id": "MKT-003",
+      "name": "Stock and revenue planning",
+      "description": "Plan stock targets and projected revenue",
+      "category": "markets",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "System calculates stock target based on expected sell-through rate",
+        "Revenue projection is displayed with underlying assumptions",
+        "Stock targets account for yield per batch"
+      ]
+    },
+    {
+      "id": "MKT-004",
+      "name": "Sell-through planning",
+      "description": "Plan for expected sell-through rates",
+      "category": "markets",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "User enters expected sell-through rate as a percentage",
+        "System adjusts stock target and revenue targets accordingly"
+      ]
+    },
+    {
+      "id": "MKT-005",
+      "name": "Target-profit planning",
+      "description": "Calculate required units for target profit",
+      "category": "markets",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "User enters a target profit amount",
+        "System calculates the required number of units to sell",
+        "Result accounts for fixed event costs and contribution per unit"
+      ]
+    },
+    {
+      "id": "MKT-006",
+      "name": "Wholesale MOQ planning",
+      "description": "Calculate production requirements for wholesale minimums",
+      "category": "markets",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "User enters wholesale minimum order quantity",
+        "System calculates the number of batches required to fulfill the MOQ",
+        "Production timeline accounts for cure interval"
+      ]
+    },
+    {
+      "id": "MKT-007",
+      "name": "Quote/price-sheet output",
+      "description": "Generate printable quote or price sheet",
+      "category": "markets",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "System produces a printable quote or price sheet from the entered data",
+        "The export contains the same values shown on screen",
+        "The quote includes product names, prices, and contact information placeholders"
+      ]
+    },
+    {
+      "id": "MKT-008",
+      "name": "Event break-even units",
+      "description": "Ceiling of fixed event costs divided by weighted contribution per unit",
+      "category": "markets",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "Event break-even is calculated as ceiling(fixed event costs / weighted contribution per unit)",
+        "Calculation is verified against independent reference cases"
+      ]
+    },
+    {
+      "id": "PROD-001",
+      "name": "Production date planning",
+      "description": "Calculate pour, unmold, cut, and target-ready dates using user-selected cure intervals",
+      "category": "production",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "User enters a target-ready date and selects a cure interval",
+        "System calculates pour date, unmold date, and cut date working backward",
+        "Date planning uses the explicit user-selected interval and never claims to determine product safety or readiness",
+        "A clear disclaimer is displayed: cure readiness is the user's decision"
+      ]
+    },
+    {
+      "id": "PROD-002",
+      "name": "Capacity back-planning",
+      "description": "Calculate batches needed per week to meet demand",
+      "category": "production",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "User enters weekly production capacity in batches",
+        "System calculates how many batches are required to meet a target",
+        "The production timeline accounts for the cure interval"
+      ]
+    },
+    {
+      "id": "PROD-003",
+      "name": "Batch/lot records",
+      "description": "Create and track batch/lot records",
+      "category": "production",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "Batch records are created with an immutable recipe version reference",
+        "Batch status follows the state machine: draft → ready_to_make → making → curing → ready → archived",
+        "Exceptional transitions are allowed: making → abandoned, curing → abandoned, ready → curing (with reason recorded)",
+        "No external observer can see another user's batch records"
+      ]
+    },
+    {
+      "id": "PROD-004",
+      "name": "Cure tracking",
+      "description": "Log cure observations with computed cure day",
+      "category": "production",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "Observations are logged with a computed cure day based on batch start date",
+        "Next observation date is automatically calculated",
+        "No blanket cure-completion percentage or safety declaration is shown",
+        "Displayed text correctly says 'Estimated window reached'"
+      ]
+    },
+    {
+      "id": "PROD-005",
+      "name": "Printable records",
+      "description": "Generate printable batch and cure records",
+      "category": "production",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "Printable records contain all batch data including ingredient amounts and dates",
+        "The export contains the same values shown on screen",
+        "Records include formula revision and dataset revision for traceability"
+      ]
+    },
+    {
+      "id": "PROD-006",
+      "name": "Making session workflow",
+      "description": "Step-by-step production with checklist and timer",
+      "category": "production",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "Safety checklist is presented before the making session can begin",
+        "On mobile, one step is shown at a time",
+        "Timer based on stored timestamps resumes after page reload without losing state",
+        "Planned vs actual measurements can be entered and compared",
+        "Each step can be completed or skipped with a reason recorded",
+        "Saving status is visibly displayed: unsaved, saving, saved, or save failed"
+      ]
+    },
+    {
+      "id": "PURCH-001",
+      "name": "Ingredient requirements",
+      "description": "Calculate ingredient requirements from a formulation",
+      "category": "purchasing",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "System produces ingredient requirements from a selected formulation",
+        "Requirements are shown in normalized canonical units",
+        "Requirements carry the formula version reference"
+      ]
+    },
+    {
+      "id": "PURCH-002",
+      "name": "Packaging requirements",
+      "description": "Calculate packaging requirements",
+      "category": "purchasing",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "System produces packaging requirements from batch size",
+        "Requirements account for bar count and selected packaging type"
+      ]
+    },
+    {
+      "id": "PURCH-003",
+      "name": "Pack rounding",
+      "description": "Round to supplier pack sizes",
+      "category": "purchasing",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "System rounds ingredient quantities up to supplier pack sizes",
+        "Both rounded quantities and exact quantities are displayed side by side"
+      ]
+    },
+    {
+      "id": "PURCH-004",
+      "name": "Supplier comparison",
+      "description": "Compare costs across suppliers",
+      "category": "purchasing",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "User can enter costs from multiple suppliers for the same ingredient",
+        "System compares costs per canonical unit fairly",
+        "Comparison is displayed clearly enough to make a purchasing decision"
+      ]
+    },
+    {
+      "id": "PURCH-005",
+      "name": "Requirements minus stock",
+      "description": "Show remaining need after accounting for existing stock",
+      "category": "purchasing",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "User enters current stock levels for each ingredient",
+        "System shows requirements minus current stock",
+        "The remaining need is calculated correctly"
+      ]
+    },
+    {
+      "id": "PURCH-006",
+      "name": "Event counts",
+      "description": "Calculate purchase needs for specific event quantities",
+      "category": "purchasing",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "System calculates purchase requirements for a specific event quantity",
+        "Pack rounding is applied to the event quantity"
+      ]
+    },
+    {
+      "id": "PURCH-007",
+      "name": "Anonymous local planning",
+      "description": "Local purchase planning without authentication",
+      "category": "purchasing",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "User can plan purchases without any authentication",
+        "Purchase plan is stored in browser local storage",
+        "Persistence status is clearly labeled as local-only"
+      ]
+    },
+    {
+      "id": "PURCH-008",
+      "name": "Optional-account persistence",
+      "description": "Account-backed purchase records with sync",
+      "category": "purchasing",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "Authenticated user can persist purchase records to the cloud",
+        "Purchase records sync across devices",
+        "Inventory depletion tracking persists across sessions and devices"
+      ]
+    },
+    {
+      "id": "PURCH-009",
+      "name": "Reusable supplier cost records",
+      "description": "Save and reuse supplier and cost records",
+      "category": "purchasing",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "User can save an Ingredient Cost Record with an effective date",
+        "Saved records are reusable across multiple batches",
+        "Historical batch cost retains its original cost basis"
+      ]
+    },
+    {
+      "id": "PURCH-010",
+      "name": "Inventory depletion tracking",
+      "description": "Track inventory depletion across batches",
+      "category": "purchasing",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "Batch usage automatically reduces inventory counts",
+        "Remaining stock levels are displayed after each batch",
+        "Depletion is tracked across all batches"
+      ]
+    },
+    {
+      "id": "UTIL-001",
+      "name": "Homepage and tool directory",
+      "description": "Complete index of all public utilities",
+      "category": "utility-support",
+      "boundary": "deployed",
+      "acceptanceRows": [
+        "Every tool is reachable from the directory without any login",
+        "Tool cards show capability, not a login gate",
+        "Category filters match all seven capability categories",
+        "Each tool links to its canonical route",
+        "Search by name and capability works",
+        "Connection indicators show which tools share context"
+      ]
+    },
+    {
+      "id": "UTIL-002",
+      "name": "Methodology pages",
+      "description": "Substantive methodology documentation",
+      "category": "utility-support",
+      "boundary": "deployed",
+      "acceptanceRows": [
+        "Methodology pages contain approximately 1,500 or more rendered words where the subject warrants that depth",
+        "Methodology pages include direct links to the relevant tools",
+        "Methodology pages supply verified reference data with cited provenance",
+        "Safety, legal, tax, IFRA, and formulation content has named sources and a documented reviewer approval"
+      ]
+    },
+    {
+      "id": "UTIL-003",
+      "name": "Decision guides",
+      "description": "Substantive decision guides linked to relevant tools",
+      "category": "utility-support",
+      "boundary": "deployed",
+      "acceptanceRows": [
+        "Decision guides are substantive and linked to the relevant tools",
+        "Guides contain useful visuals and direct tool connections",
+        "Each guide supplies at least one of: a verified working tool, an editable worked calculation, a useful downloadable artifact, or verified reference data with provenance"
+      ]
+    },
+    {
+      "id": "UTIL-004",
+      "name": "Editable examples",
+      "description": "Worked examples with editable inputs",
+      "category": "utility-support",
+      "boundary": "deployed",
+      "acceptanceRows": [
+        "Every example embeds the same tool with preloaded inputs so the reader can edit and re-run",
+        "Every formula used in the example is exposed and visible",
+        "Editable inputs allow the reader to verify with their own values",
+        "A downloadable artifact is available where applicable",
+        "All examples are explicitly labeled 'Example'"
+      ]
+    },
+    {
+      "id": "UTIL-005",
+      "name": "Templates",
+      "description": "Downloadable artifacts (costing workbook, planner, etc.)",
+      "category": "utility-support",
+      "boundary": "deployed",
+      "acceptanceRows": [
+        "Templates are downloadable artifacts containing actual content, not empty shells",
+        "Templates are editable and useful for the user's own planning",
+        "No page ships solely to meet a word count or page quota"
+      ]
+    },
+    {
+      "id": "UTIL-006",
+      "name": "Factual comparisons",
+      "description": "Verified tool comparisons with provenance",
+      "category": "utility-support",
+      "boundary": "deployed",
+      "acceptanceRows": [
+        "Comparisons are factual with dated URLs and documented evidence strength",
+        "No delegated or competitor assertion bypasses the quality research protocol",
+        "Comparisons include what SoapCraft Pro must match, improve, connect, and avoid",
+        "Unresolved safety, licensing, source, or domain-review gates are explicitly noted"
+      ]
+    },
+    {
+      "id": "UTIL-007",
+      "name": "Canonical SEO architecture",
+      "description": "robots.txt, sitemap, metadata, schema, canonical URLs",
+      "category": "utility-support",
+      "boundary": "deployed",
+      "acceptanceRows": [
+        "robots.txt exists and disallows protected routes",
+        "sitemap.xml exists and includes all public pages",
+        "Every page has page metadata with title, description, canonical URL, OpenGraph, and Twitter card tags",
+        "JSON-LD structured data is present for Organization, Blog, Article, and FAQ",
+        "Public pages return HTTP 200 when accessed anonymously",
+        "Canonical URLs contain no duplicate /marketing tree"
+      ]
+    },
+    {
+      "id": "UTIL-008",
+      "name": "Visual explanations",
+      "description": "Relevant visual aids for formulas and workflows",
+      "category": "utility-support",
+      "boundary": "deployed",
+      "acceptanceRows": [
+        "Visual explanations accompany relevant formulas and workflows",
+        "Visuals are original or properly licensed",
+        "Visuals use approved design tokens from the design system",
+        "No generic stock photography is used anywhere in the product"
+      ]
+    },
+    {
+      "id": "MKT-DEFERRED-SELLER-PACK",
+      "name": "Seller Pack artifact delivery",
+      "description": "One-time downloadable artifact bundle (costing workbook, market planner, batch/cure sheet, wholesale quote sheet, inventory count sheet). Delivered after value is proven. Optional email exchange with explicit consent only.",
+      "category": "markets",
+      "boundary": "deployed",
+      "status": "DEFERRED",
+      "acceptanceRows": [
+        "User receives downloadable artifact bundle after completing a connected workflow",
+        "Bundle contains at least: costing workbook, market planner, batch/cure sheet, wholesale quote sheet, inventory count sheet",
+        "No email required for download; explicit consent requested only if email exchange is offered",
+        "No payment gate, subscription, or account requirement for artifact access",
+        "Download works without login, cookie consent, or account creation",
+        "Artifact files are self-contained and portable",
+        "Deferred until traffic evidence supports one-time purchase; tracked as PENDING in ledger"
+      ]
+    },
+    {
+      "id": "CTX-001",
+      "name": "Cross-cutting Context Transfer",
+      "description": "Transfer of Recipe/Batch Context between all compatible tools via share URLs and version chains. This is a cross-cutting capability that enables F14 (Share URL Context Transfer) and F18 (Generic Context Transfer).",
+      "category": "context-transfer",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "Context transfer contract defines input/output field mapping for all compatible tool pairs",
+        "Transfer preserves calculator version and dataset revision",
+        "User explicitly accepts inherited fields before the transfer completes",
+        "Share URL encodes the complete Recipe/Batch Context",
+        "Share URL contains no email or personal data",
+        "Anyone receiving the URL can view the complete calculation",
+        "Context transfer works across all calculator stages (formulation -> sizing -> costing -> production -> purchasing)",
+        "Fallback to download artifact if browser URL limits are exceeded"
+      ]
+    }
+  ],
+  "flows": [
+    {
+      "id": "F1",
+      "name": "Anonymous Formulation → Sizing → Costing",
+      "description": "Complete anonymous calculation flow across three tool stages",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "An anonymous user completes the full flow in a fresh browser with no login, email, cookie consent, or payment",
+        "Inputs transfer between formulation, sizing, and costing without re-entry",
+        "Results show formulas, definitions, assumptions, rounding policy, and missing-cost warnings",
+        "The user can export or share the complete plan as a local URL",
+        "The share URL contains no email or personal data"
+      ]
+    },
+    {
+      "id": "F7",
+      "name": "Anonymous Start → Account Creation → Cloud Persistence",
+      "description": "User starts anonymously, gets value, then creates account to persist",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "User completes calculation anonymously without any authentication",
+        "Account creation is optional and never required",
+        "Local context uploads to cloud on account creation",
+        "Context transitions from local-only to synced",
+        "User can access from another device after sync completes"
+      ]
+    },
+    {
+      "id": "F8",
+      "name": "Account Batch Lifecycle Completion",
+      "description": "Authenticated user moves batch through full lifecycle",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "User can create a recipe, save an immutable version, and start a batch from that version",
+        "Making Mode guides production with checklist and timers",
+        "Timer resumes from server timestamps after reload",
+        "Cure observations are logged at intervals",
+        "Yield is recorded and cost per bar is calculated",
+        "All data is scoped to the authenticated user",
+        "Recipe versions are immutable after creation",
+        "Batch status machine follows the defined transitions"
+      ]
+    },
+    {
+      "id": "F10",
+      "name": "Seller Pack Delivery",
+      "description": "One-time artifact delivery after value received",
+      "boundary": "integration",
+      "acceptanceRows": [
+        "Core result is delivered before any Seller Pack request",
+        "Email is exchanged only for a specific delivered artifact with explicit consent",
+        "No subscription is created",
+        "No generic newsletter or drip sequence begins",
+        "User can decline and continue using free tools"
+      ]
+    },
+    {
+      "id": "F14",
+      "name": "Share URL Context Transfer",
+      "description": "Full context encoded in share URL",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "Share URL encodes the complete Recipe/Batch Context",
+        "Share URL contains no email or personal data",
+        "Anyone receiving the URL can view the complete calculation",
+        "Export contains the same values and formula revision as shown on screen",
+        "Local-only vs account-backed data is clearly distinguished"
+      ]
+    },
+    {
+      "id": "F15",
+      "name": "Local State Reload",
+      "description": "Browser reload restores local context",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "All user-entered inputs are preserved on reload",
+        "Calculation results re-compute identically (deterministic)",
+        "Save state is restored: unsaved, saving, saved, or save_failed",
+        "Local state is lost if browser storage is cleared, and this is documented"
+      ]
+    },
+    {
+      "id": "F16",
+      "name": "Batch to Costing Re-analysis",
+      "description": "Return from batch to costing with actual measurements",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "User can return from batch detail to costing with actual measurements",
+        "Costing recalculates from actual quantities and yield",
+        "Historical cost basis is preserved"
+      ]
+    },
+    {
+      "id": "F17",
+      "name": "Purchasing to Formulation Adjustment",
+      "description": "Return from purchasing to formulation with new ingredient data",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "User can return from purchasing to formulation with updated ingredient costs",
+        "Formulation recalculates with the new cost data"
+      ]
+    },
+    {
+      "id": "F18",
+      "name": "Generic Context Transfer",
+      "description": "Any tool can transfer compatible context to any other compatible tool",
+      "boundary": "e2e",
+      "acceptanceRows": [
+        "Context transfer contract defines input/output field mapping for all compatible tool pairs",
+        "Transfer preserves calculator version and dataset revision",
+        "User explicitly accepts inherited fields before the transfer completes"
+      ]
+    }
+  ],
+  "gates": {
+    "Gate_C": "PASS — Isaac authorized implementation on 2026-09-09; affected public routes remain controlled by explicit source and safety release gates",
+    "Gate_R": "PASS — all required skills loaded and applied (studio-build, studio-product-contract, studio-experience-routing, studio-slice-delivery, studio-contract-critique, ui-ux-pro-max, prd-competitive-gap-analysis, software-prd-authoring, security-review, platform-design, testing-strategy)",
+    "Gate_A": "PENDING — awaiting RELEASE_ACCEPTED after build and verification. Deferred items (MKT-DEFERRED-SELLER-PACK) explicitly tracked as PENDING until demand evidence exists."
+  },
+  "nonGoals": [
+    "Do not rebuild what already works — reuse existing assets and calculation engines",
+    "Do not deploy AI-generated content as factual without verification",
+    "Do not modify safety-critical calculation logic without tests and review",
+    "Do not collect email lists without clear purpose",
+    "Do not create Discord/forum without validating user need",
+    "Do not spend money on paid distribution without explicit approval and stop conditions",
+    "Do not claim unimplemented features in marketing copy",
+    "Do not invent chemistry formulas or safety claims",
+    "Do not require account creation for core calculations",
+    "Do not implement exit-intent email capture",
+    "Do not implement CRM drip sequences",
+    "Do not implement subscription lifecycle as core entitlement",
+    "Do not deploy unavailable infrastructure",
+    "Do not implement automatic cure-safety prediction",
+    "Do not make universal fragrance recommendations or IFRA compliance claims",
+    "Do not provide regulatory/legal compliance guarantees",
+    "Do not implement bookkeeping, tax filing, e-commerce, or full ERP features",
+    "Do not integrate display advertising",
+    "Do not create community/forum features",
+    "Do not automate content publication",
+    "Do not invent traffic, revenue, or conversion data",
+    "Do not require account creation to reveal any core calculation result",
+    "Do not use averaged values to make chemistry tests pass",
+    "Do not display safety disclaimers as substitutes for correct calculations"
+  ],
+  "measurementContract": {
+    "requiredEvents": [
+      "tool_viewed",
+      "calculation_started",
+      "calculation_completed",
+      "connected_tool_opened",
+      "plan_exported",
+      "share_link_created",
+      "email_delivery_confirmed",
+      "affiliate_link_clicked",
+      "account_save_requested",
+      "workspace_interest_submitted"
+    ],
+    "initialValidationNeed": "At least 100 genuine completed utility sessions",
+    "workingHypothesis": "15% or more continue to a connected output; below that, revise the seam and relevant tool handoff",
+    "note": "This measurement improves the comprehensive hub after release; it is not a gate that postpones the approved initial tool/content architecture",
+    "guardrailMetrics": [
+      "Zero unauthorized cross-user data access",
+      "Zero marketing claims for unimplemented behavior",
+      "Zero silent save failures",
+      "Zero chemical quantity generated by AI",
+      "Calculation test suite passes all independently verified vectors",
+      "No historical batch loses its recipe-version snapshot",
+      "No anonymous result requires login, email, cookie consent, or payment"
+    ]
+  }
+}

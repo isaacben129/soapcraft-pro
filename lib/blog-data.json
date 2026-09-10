@@ -33,7 +33,8 @@
     "source": null,
     "sourceRevision": null,
     "lastReviewed": "2026-07-15",
-    "reviewer": "editor"
+    "reviewer": "editor",
+    "imageAlt": "Cold process soap calculator showing oil blend and lye ratio calculations"
   },
   {
     "slug": "soap-recipes-for-beginners",
@@ -70,7 +71,8 @@
     "source": null,
     "sourceRevision": null,
     "lastReviewed": "2026-07-20",
-    "reviewer": "editor"
+    "reviewer": "editor",
+    "imageAlt": "Beginner soap recipes with verified formulations for cold process soap making"
   },
   {
     "slug": "how-to-make-cold-process-soap",
@@ -106,7 +108,8 @@
     "source": null,
     "sourceRevision": null,
     "lastReviewed": "2026-07-25",
-    "reviewer": "editor"
+    "reviewer": "editor",
+    "imageAlt": "Complete guide to cold process soap making from oil selection to cure tracking"
   },
   {
     "slug": "soap-didnt-trace",
@@ -143,7 +146,8 @@
     "source": null,
     "sourceRevision": null,
     "lastReviewed": "2026-08-01",
-    "reviewer": "editor"
+    "reviewer": "editor",
+    "imageAlt": "Troubleshooting cold process soap that didn't trace properly"
   },
   {
     "slug": "soap-making-calculator-vs-soapcalc",
@@ -177,7 +181,8 @@
     "source": null,
     "sourceRevision": null,
     "lastReviewed": "2026-08-05",
-    "reviewer": "editor"
+    "reviewer": "editor",
+    "imageAlt": "Comparing SoapCraft Pro calculator with SoapCalc"
   },
   {
     "slug": "soap-recipes-for-selling",
@@ -214,7 +219,8 @@
     "source": null,
     "sourceRevision": null,
     "lastReviewed": "2026-08-10",
-    "reviewer": "editor"
+    "reviewer": "editor",
+    "imageAlt": "Soap recipes for selling on Etsy and Shopify with cost analysis"
   },
   {
     "slug": "soap-making-safety-guide",
@@ -251,7 +257,8 @@
     "source": null,
     "sourceRevision": null,
     "lastReviewed": "2026-08-15",
-    "reviewer": "editor"
+    "reviewer": "editor",
+    "imageAlt": "Safety equipment and workspace setup for soap making"
   },
   {
     "slug": "soap-soda-ash-fix",
@@ -287,6 +294,663 @@
     "source": null,
     "sourceRevision": null,
     "lastReviewed": "2026-08-20",
+    "reviewer": "editor",
+    "imageAlt": "White soda ash residue on cold process soap bars"
+  },
+  {
+    "slug": "batch-costing-for-soapmakers",
+    "title": "Batch Costing for Soapmakers \u2014 How to Calculate Cost Per Bar",
+    "description": "Learn how to calculate cost per bar for your cold process soap. Covers ingredient costs, overhead allocation, break-even pricing, and margin analysis.",
+    "category": "Business",
+    "tags": [
+      "batch costing",
+      "cost per bar",
+      "soap pricing",
+      "break-even",
+      "soap business",
+      "pricing strategy",
+      "ingredient costs"
+    ],
+    "publishedAt": "2026-08-25",
+    "author": "SoapCraft Pro",
+    "readingTime": 9,
+    "image": "/blog/batch-costing.jpg",
+    "imageAlt": "Batch costing calculation for soapmakers showing ingredient costs and profit margins",
+    "seo": {
+      "title": "Batch Costing for Soapmakers \u2014 Cost Per Bar & Break-Even Analysis",
+      "description": "Learn how to calculate cost per bar for your cold process soap. Covers ingredient costs, overhead allocation, break-even pricing, and margin analysis.",
+      "keywords": [
+        "batch costing soap",
+        "cost per bar soap",
+        "break-even pricing soap",
+        "soap ingredient cost",
+        "soapmaking business costs",
+        "cost analysis soap"
+      ]
+    },
+    "content": "Understanding your true cost per bar is the foundation of any profitable soap business. Without accurate costing, you're essentially guessing whether you're making money or losing it on every batch. Batch costing removes the guesswork and gives you deterministic numbers you can act on.\n\n## What Is Batch Costing?\n\nBatch costing is the process of determining the total cost of producing a single batch of soap and dividing that by the number of bars produced. The result is your cost per bar \u2014 the minimum price at which you must sell to avoid losing money.\n\nMany soap makers focus only on ingredient costs, but the real cost includes ingredients, packaging, labor, overhead, and shipping. A comprehensive batch costing approach accounts for all of these.\n\n## Step 1: Calculate Ingredient Costs\n\nStart by determining the cost of each ingredient in your recipe. For every oil, butter, lye, fragrance, and additive, calculate the cost per batch based on your recipe quantities and your purchase price per unit.\n\nFor example, if your recipe uses 500g of olive oil at $0.018 per gram, that ingredient costs $9.00 per batch.\n\n## Step 2: Add Packaging Costs\n\nPackaging includes wrappers, boxes, labels, rubber bands, tissue paper, and any other materials that go into presenting your finished bars.\n\n## Step 3: Factor in Labor\n\nLabor is often underestimated. A typical batch takes 1-2 hours from start to finish. If you value your time at $20/hour, that adds $20-40 per batch.\n\n## Step 4: Allocate Overhead\n\nOverhead includes rent, utilities, insurance, equipment depreciation, and other fixed costs.\n\n## Step 5: Calculate Cost Per Bar\n\nCost Per Bar = (Ingredient Cost + Packaging Cost + Labor + Overhead) / Number of Bars\n\n## Break-Even Pricing\n\nYour break-even price equals your cost per bar. A common approach is to apply a 2x to 3x markup.\n\n## Using SoapCraft Pro for Batch Costing\n\nSoapCraft Pro automates batch costing by letting you input ingredient prices, batch size, and overhead estimates.",
+    "reviewStatus": "published",
+    "source": null,
+    "sourceRevision": null,
+    "lastReviewed": "2026-08-25",
     "reviewer": "editor"
+  },
+  {
+    "slug": "how-to-plan-soap-production-for-craft-fair",
+    "title": "How to Plan Soap Production for a Craft Fair",
+    "description": "A comprehensive guide to planning soap production for craft fairs. Covers booth costs, inventory planning, pricing strategy, and cash flow management.",
+    "category": "Business",
+    "tags": [
+      "craft fair",
+      "soap production planning",
+      "booth costs",
+      "inventory planning",
+      "pricing strategy",
+      "cash flow",
+      "soap business"
+    ],
+    "publishedAt": "2026-08-28",
+    "author": "SoapCraft Pro",
+    "readingTime": 10,
+    "image": "/blog/craft-fair-planning.jpg",
+    "imageAlt": "Planning soap production for a craft fair with inventory and booth layout",
+    "seo": {
+      "title": "How to Plan Soap Production for a Craft Fair \u2014 Inventory & Pricing",
+      "description": "A comprehensive guide to planning soap production for craft fairs. Covers booth costs, inventory planning, pricing strategy, and cash flow management.",
+      "keywords": [
+        "craft fair soap",
+        "soap production planning",
+        "booth costs craft fair",
+        "inventory planning soap",
+        "pricing strategy soap",
+        "craft fair business"
+      ]
+    },
+    "content": "Craft fairs are a proven channel for handmade soap sales, but they require careful planning to be profitable. From booth fees to inventory management, every decision impacts your bottom line.\n\n## Understanding Booth Costs\n\nBooth fees vary widely - typically $50-$500 per day. Popular fairs charge $300-$500 for a 10x10 foot space.\n\n## Inventory Planning\n\nEstimate expected foot traffic and conversion rate (typically 2-5%). Bring 20-30% extra inventory.\n\n## Pricing Strategy\n\nPrice each bar at 3-5x your cost per bar. Offer bundle deals.\n\n## Cash Flow Management\n\nTrack all costs before the fair. Set minimum revenue targets.\n\n## Production Timeline\n\nPlan production 2-3 weeks before the fair with proper cure tracking.",
+    "reviewStatus": "published",
+    "source": null,
+    "sourceRevision": null,
+    "lastReviewed": "2026-08-28",
+    "reviewer": "editor"
+  },
+  {
+    "slug": "understanding-lye-safety-in-cold-process-soap",
+    "title": "Understanding Lye Safety in Cold Process Soap \u2014 Protocols and Emergency Handling",
+    "description": "A thorough guide to lye safety in cold process soap making. Covers proper dilution techniques, protective equipment, workspace protocols, and emergency handling procedures.",
+    "category": "Safety",
+    "tags": [
+      "lye safety",
+      "cold process safety",
+      "sodium hydroxide",
+      "protective equipment",
+      "emergency handling",
+      "lye dilution",
+      "soap making safety"
+    ],
+    "publishedAt": "2026-09-01",
+    "author": "SoapCraft Pro",
+    "readingTime": 11,
+    "image": "/blog/lye-safety-guide.jpg",
+    "imageAlt": "Lye safety protocols for cold process soap making with protective equipment",
+    "seo": {
+      "title": "Understanding Lye Safety in Cold Process Soap \u2014 Complete Safety Guide",
+      "description": "A thorough guide to lye safety in cold process soap making. Covers proper dilution, protective equipment, workspace protocols, and emergency handling.",
+      "keywords": [
+        "lye safety cold process",
+        "sodium hydroxide safety",
+        "lye dilution protocol",
+        "protective equipment soap making",
+        "emergency handling lye",
+        "soap making safety protocols"
+      ]
+    },
+    "content": "Lye safety is the most critical aspect of cold process soap making. Sodium hydroxide (NaOH) is a caustic substance that can cause severe chemical burns.\n\n## The Chemistry of Lye\n\nSodium hydroxide is a strong base with a pH of approximately 14 when dissolved in water. The exothermic reaction between lye and water can generate temperatures up to 80-90C.\n\n## Proper Dilution Techniques\n\nThe Golden Rule: Always add lye to water, never water to lye.\n\n1. Measure cold water in a heat-safe, non-aluminum container\n2. Weigh lye separately in a dry container\n3. Add lye to water in small increments\n4. Stir gently and allow to cool to 40-50C\n\n## Protective Equipment\n\n- Chemical splash goggles\n- Nitrile gloves\n- Long sleeves and closed-toe shoes\n- Dedicated lye mixing area\n\n## Emergency Handling Procedures\n\nSkin Contact: Flush with running water for 15 minutes.\nEye Contact: Flush eyes for 15 minutes, seek medical attention.\nSpills: Neutralize with baking soda, then clean with vinegar-water solution.\n\n## Workspace Protocols\n\nAlways have a first aid kit nearby. Never leave lye unattended.",
+    "reviewStatus": "published",
+    "source": null,
+    "sourceRevision": null,
+    "lastReviewed": "2026-09-01",
+    "reviewer": "editor"
+  },
+  {
+    "slug": "mold-selection-guide-for-cold-process-soap",
+    "title": "Mold Selection Guide for Cold Process Soap \u2014 Silicone vs Wood vs PVC",
+    "description": "A comprehensive guide to selecting the right mold for cold process soap. Compares silicone, wood, and PVC molds with sizing calculations and batch yield estimates.",
+    "category": "Ingredients",
+    "tags": [
+      "mold selection",
+      "soap molds",
+      "silicone mold",
+      "wood mold",
+      "PVC mold",
+      "cold process mold",
+      "batch yield"
+    ],
+    "publishedAt": "2026-09-03",
+    "author": "SoapCraft Pro",
+    "readingTime": 8,
+    "image": "/blog/mold-selection-guide.jpg",
+    "imageAlt": "Comparing silicone, wood, and PVC soap molds for cold process soap making",
+    "seo": {
+      "title": "Mold Selection Guide for Cold Process Soap \u2014 Silicone vs Wood vs PVC",
+      "description": "A comprehensive guide to selecting the right mold for cold process soap. Compares silicone, wood, and PVC molds with sizing calculations and yield estimates.",
+      "keywords": [
+        "cold process soap mold",
+        "silicone soap mold",
+        "wood soap mold",
+        "PVC mold soap",
+        "mold sizing calculation",
+        "batch yield soap mold"
+      ]
+    },
+    "content": "The mold you choose affects the shape, size, texture, and ease of unmolding of your bars.\n\n## Silicone Molds\n\nFlexible and easy unmolding. Heat-resistant and durable. Non-stick surface. More expensive than wood.\n\n## Wood Molds\n\nInexpensive and widely available. Rigid and stable. Require lining. Rustic appearance.\n\n## PVC Molds\n\nRigid and dimensionally stable. Translucent material allows monitoring trace. Less widely available.\n\n## Sizing Calculations\n\nCalculate total batter weight: oil weight x (1 + water ratio). Account for 10-15% expansion.\n\nBatch yield is typically 95-98% of batter weight after curing.",
+    "reviewStatus": "published",
+    "source": null,
+    "sourceRevision": null,
+    "lastReviewed": "2026-09-03",
+    "reviewer": "editor"
+  },
+  {
+    "slug": "superfat-explained-why-5-vs-8-matters",
+    "title": "Superfat Explained \u2014 Why 5% vs 8% Matters for Your Soap",
+    "description": "A detailed guide to superfat calculation, skin benefits, lye calculator settings, and how the superfat percentage impacts your soap recipe.",
+    "category": "Formulation",
+    "tags": [
+      "superfat",
+      "soap formulation",
+      "lye calculator",
+      "skin benefits",
+      "soap recipe",
+      "unsaponified oils",
+      "soap chemistry"
+    ],
+    "publishedAt": "2026-09-05",
+    "author": "SoapCraft Pro",
+    "readingTime": 9,
+    "image": "/blog/superfat-explained.jpg",
+    "imageAlt": "Comparing 5% and 8% superfat levels in cold process soap bars",
+    "seo": {
+      "title": "Superfat Explained \u2014 Why 5% vs 8% Matters for Your Soap",
+      "description": "A detailed guide to superfat calculation, skin benefits, lye calculator settings, and how the superfat percentage impacts your soap recipe.",
+      "keywords": [
+        "superfat percentage",
+        "5% vs 8% superfat",
+        "superfat calculation",
+        "unsaponified oils soap",
+        "lye calculator superfat",
+        "soap skin benefits"
+      ]
+    },
+    "content": "Superfat is one of the most important variables in cold process soap formulation. It determines how much oil remains unsaponified after saponification.\n\n## What Is Superfat?\n\nSuperfat refers to the percentage of oils that remain unreacted. By intentionally using less lye than the total SAP value, some oils remain to provide moisturizing benefits.\n\n## Why 5% vs 8% Matters\n\n5% Superfat: Harder bars, faster cure, more cleansing, less moisturizing.\n8% Superfat: Softer bars, longer cure, more moisturizing, gentler on dry skin.\n\n## How Superfat Is Calculated\n\nLye Amount = (Total SAP Value x (100% - Superfat%)) / 100\n\n## Practical Recommendations\n\nStart with 5% superfat as a beginner. Always verify with a lye calculator.",
+    "reviewStatus": "published",
+    "source": null,
+    "sourceRevision": null,
+    "lastReviewed": "2026-09-05",
+    "reviewer": "editor"
+  },
+  {
+    "slug": "from-batch-to-shelf-tracking-soap-production",
+    "title": "From Batch to Shelf \u2014 Tracking Soap Production from Recipe to Sale",
+    "description": "A comprehensive guide to tracking soap production through batch records, cure tracking, inventory management, and production planning systems.",
+    "category": "Production",
+    "tags": [
+      "batch tracking",
+      "production planning",
+      "inventory management",
+      "cure tracking",
+      "soap production",
+      "batch records",
+      "soap business"
+    ],
+    "publishedAt": "2026-09-08",
+    "author": "SoapCraft Pro",
+    "readingTime": 10,
+    "image": "/blog/production-tracking.jpg",
+    "imageAlt": "Tracking soap production from batch to shelf with batch records and inventory management",
+    "seo": {
+      "title": "From Batch to Shelf \u2014 Tracking Soap Production from Recipe to Sale",
+      "description": "A comprehensive guide to tracking soap production through batch records, cure tracking, inventory management, and production planning.",
+      "keywords": [
+        "soap production tracking",
+        "batch records soap",
+        "cure tracking system",
+        "inventory management soap",
+        "production planning soap business"
+      ]
+    },
+    "content": "Tracking soap production from batch to shelf is essential for any serious soap maker.\n\n## Batch Records\n\nEvery batch should have detailed records including recipe formulation, actual measurements, trace temperature, and observations.\n\n## Cure Tracking\n\nLog observations during curing: hardness, scent, appearance. Track pH levels. Note when bars are ready for sale.\n\n## Inventory Management\n\nTrack finished goods, raw materials, and packaging supplies separately.\n\n## Production Planning\n\nConnect sales forecasts with manufacturing capacity. Account for cure time.\n\n## Systems and Tools\n\nUse dedicated software for batch logging, cure tracking, and inventory management.",
+    "reviewStatus": "published",
+    "source": null,
+    "sourceRevision": null,
+    "lastReviewed": "2026-09-08",
+    "reviewer": "editor"
+  },
+  {
+    "slug": "cold-process-vs-hot-process-soap",
+    "title": "Cold Process vs Hot Process Soap \u2014 Which Should You Make?",
+    "description": "A detailed comparison of cold process and hot process soap making techniques, including advantages, disadvantages, and when to use each method.",
+    "category": "Formulation",
+    "tags": [
+      "cold process vs hot process",
+      "hot process soap",
+      "cold process soap",
+      "soap techniques",
+      "saponification",
+      "soap making methods",
+      "CP vs HP"
+    ],
+    "publishedAt": "2026-09-10",
+    "author": "SoapCraft Pro",
+    "readingTime": 10,
+    "image": "/blog/cp-vs-hp-comparison.jpg",
+    "imageAlt": "Side by side comparison of cold process and hot process soap bars",
+    "seo": {
+      "title": "Cold Process vs Hot Process Soap \u2014 Detailed Comparison Guide",
+      "description": "A detailed comparison of cold process and hot process soap making techniques. Includes advantages, disadvantages, and when to use each method.",
+      "keywords": [
+        "cold process vs hot process soap",
+        "hot process soap making",
+        "cold process soap technique",
+        "CP vs HP soap",
+        "soap making comparison"
+      ]
+    },
+    "content": "Cold process and hot process are the two primary methods of making soap from scratch.\n\n## What Is Cold Process Soap?\n\nCold process involves mixing oils with a lye solution at room temperature. Saponification occurs naturally over 24-48 hours.\n\n## What Is Hot Process Soap?\n\nHot process uses external heat to accelerate saponification. The soap is fully saponified during cooking.\n\n## Detailed Comparison\n\nCold process gives more precise control. Hot process produces rustic bars with no curing time.\n\n## When to Use Each\n\nCold process: Maximum formulation control, premium bars, intricate designs.\nHot process: Immediate sale, rustic appearance, faster turnaround.",
+    "reviewStatus": "published",
+    "source": null,
+    "sourceRevision": null,
+    "lastReviewed": "2026-09-10",
+    "reviewer": "editor"
+  },
+  {
+    "slug": "fragrance-oil-vs-essential-oil-for-soap",
+    "title": "Fragrance Oil vs Essential Oil for Soap \u2014 A Practical Guide",
+    "description": "A comprehensive guide comparing fragrance oils and essential oils for cold process soap making. Covers IFRA guidelines, usage rates, cost, and safety considerations.",
+    "category": "Ingredients",
+    "tags": [
+      "fragrance oil",
+      "essential oil",
+      "soap fragrance",
+      "IFRA guidelines",
+      "usage rates",
+      "soap safety",
+      "scent comparison"
+    ],
+    "publishedAt": "2026-09-12",
+    "author": "SoapCraft Pro",
+    "readingTime": 11,
+    "image": "/blog/fragrance-vs-essential.jpg",
+    "imageAlt": "Comparing fragrance oils and essential oils for cold process soap making",
+    "seo": {
+      "title": "Fragrance Oil vs Essential Oil for Soap \u2014 Practical Guide",
+      "description": "A comprehensive guide comparing fragrance oils and essential oils for cold process soap making. Covers IFRA guidelines, usage rates, cost, and safety.",
+      "keywords": [
+        "fragrance oil vs essential oil",
+        "IFRA guidelines soap",
+        "essential oil usage rate",
+        "fragrance oil safety soap"
+      ]
+    },
+    "content": "Choosing between fragrance oils and essential oils is a consequential decision in soap formulation.\n\n## Fragrance Oils\n\nSynthetic or nature-identical scent compounds. More affordable. Wider scent range. Can accelerate trace.\n\n## Essential Oils\n\nConcentrated plant extracts. Generally considered safer and more natural. More expensive.\n\n## IFRA Guidelines\n\nThe International Fragrance Association sets safety standards. Use at IFRA-recommended percentages.\n\n## Usage Rates\n\nFragrance oil: 3-6% of total oil weight. Essential oil: 2-5% of total oil weight.\n\n## Safety Considerations\n\nCheck IFRA certificates. Some essential oils are phototoxic or skin sensitizers.",
+    "reviewStatus": "published",
+    "source": null,
+    "sourceRevision": null,
+    "lastReviewed": "2026-09-12",
+    "reviewer": "editor"
+  },
+  {
+    "slug": "how-to-price-your-soap-for-wholesale",
+    "title": "How to Price Your Soap for Wholesale \u2014 Formulas, Margins, and Orders",
+    "description": "A comprehensive guide to wholesale soap pricing. Covers pricing formulas, profit margins, minimum orders, distributor relationships, and negotiation strategies.",
+    "category": "Business",
+    "tags": [
+      "wholesale pricing",
+      "soap pricing formula",
+      "margins",
+      "minimum orders",
+      "distributor relationships",
+      "soap wholesale business"
+    ],
+    "publishedAt": "2026-09-15",
+    "author": "SoapCraft Pro",
+    "readingTime": 10,
+    "image": "/blog/wholesale-pricing-guide.jpg",
+    "imageAlt": "Wholesale soap pricing strategies for distributors and retail relationships",
+    "seo": {
+      "title": "How to Price Your Soap for Wholesale \u2014 Formulas and Margins Guide",
+      "description": "A comprehensive guide to wholesale soap pricing. Covers pricing formulas, margins, minimum orders, and distributor relationships.",
+      "keywords": [
+        "wholesale soap pricing",
+        "soap pricing formula wholesale",
+        "soap profit margins"
+      ]
+    },
+    "content": "Pricing soap for wholesale is fundamentally different from retail pricing.\n\n## Wholesale Pricing Mechanics\n\nThe standard wholesale discount is 50% off retail.\n\n## The Wholesale Pricing Formula\n\nWholesale Price = Cost Per Bar / (1 - Target Margin)\n\nFor example, cost per bar $1.25 at 50% margin = $2.50 wholesale.\n\n## Profit Margins\n\nAt least 40% margin at wholesale. 50% is standard.\n\n## Minimum Orders\n\n$100-$500 per order for boutiques. 6-12 bars per SKU.\n\n## Distributor Relationships\n\nDistributors take 15-25% of wholesale price. Provide network access.\n\n## Negotiation Strategies\n\nKnow your costs. Never go below minimum price. Offer volume discounts.",
+    "reviewStatus": "published",
+    "source": null,
+    "sourceRevision": null,
+    "lastReviewed": "2026-09-15",
+    "reviewer": "editor"
+  },
+  {
+    "slug": "soap-ingredient-cost-comparison",
+    "title": "Soap Ingredient Cost Comparison \u2014 Oils, Butters, and Additives",
+    "description": "A detailed cost comparison of soap-making ingredients including oils, butters, and additives. Covers cost per pound, substitution strategies, and budget formulations.",
+    "category": "Ingredients",
+    "tags": [
+      "ingredient cost",
+      "soap oil comparison",
+      "butter cost",
+      "soap additives",
+      "budget formulation",
+      "cost per pound",
+      "soap ingredient substitution"
+    ],
+    "publishedAt": "2026-09-18",
+    "author": "SoapCraft Pro",
+    "readingTime": 9,
+    "image": "/blog/ingredient-cost-comparison.jpg",
+    "imageAlt": "Cost comparison chart of soap oils, butters, and additives per pound",
+    "seo": {
+      "title": "Soap Ingredient Cost Comparison \u2014 Oils, Butters, and Additives",
+      "description": "A detailed cost comparison of soap-making ingredients. Covers cost per pound, substitution strategies, and budget formulations.",
+      "keywords": [
+        "soap ingredient costs",
+        "oil cost comparison soap",
+        "butter cost soap making"
+      ]
+    },
+    "content": "Understanding ingredient costs is essential for formulating profitable soap.\n\n## Oil Cost Comparison\n\nOlive Oil (pomace): $2-$4/lb. Coconut Oil: $3-$6/lb. Palm Oil: $2-$4/lb.\nShea Butter: $8-$15/lb. Sweet Almond Oil: $10-$18/lb.\n\n## Butter Cost Comparison\n\nCocoa Butter: $10-$20/lb. Mango Butter: $12-$18/lb.\n\n## Additive Cost Comparison\n\nOatmeal: $1-$3/lb. Honey: $5-$10/lb. Clay: $3-$8/lb.\n\n## Substitution Strategies\n\nReplace sweet almond oil with apricot kernel oil. Use local tallow. Buy in bulk.",
+    "reviewStatus": "published",
+    "source": null,
+    "sourceRevision": null,
+    "lastReviewed": "2026-09-18",
+    "reviewer": "editor"
+  },
+  {
+    "slug": "setting-up-a-soapmaking-business-legal-basics",
+    "title": "Setting Up a Soapmaking Business \u2014 Legal Basics for Makers",
+    "description": "A comprehensive guide to the legal requirements for starting a soapmaking business. Covers business registration, insurance, labeling requirements, and FDA guidelines.",
+    "category": "Business",
+    "tags": [
+      "soap business legal",
+      "business registration",
+      "soap labeling",
+      "FDA guidelines",
+      "soap insurance",
+      "business setup",
+      "soapmaking law"
+    ],
+    "publishedAt": "2026-09-20",
+    "author": "SoapCraft Pro",
+    "readingTime": 11,
+    "image": "/blog/legal-basics-soap.jpg",
+    "imageAlt": "Legal requirements for setting up a soapmaking business including labeling and FDA guidelines",
+    "seo": {
+      "title": "Setting Up a Soapmaking Business \u2014 Legal Basics for Makers",
+      "description": "A comprehensive guide to the legal requirements for starting a soapmaking business. Covers registration, insurance, labeling, and FDA guidelines.",
+      "keywords": [
+        "soapmaking business legal",
+        "business registration soap",
+        "soap labeling requirements",
+        "FDA soap guidelines"
+      ]
+    },
+    "content": "Starting a soapmaking business requires navigating legal requirements.\n\n## Business Registration\n\nMost soap businesses register as LLCs. Provides personal liability protection. Registration fees vary by state ($50-$800).\n\n## State and Local Requirements\n\nSeller's Permit for sales tax. Home Occupation Permit. Zoning Compliance.\n\n## FDA Guidelines\n\nThe FDA regulates soap as a cosmetic. Labeling requirements include product identity, net weight, INCI ingredient names.\n\n## Insurance\n\nGeneral Liability: $400-$800/year. Product Liability is critical.\n\n## Labeling Requirements\n\nIngredients in descending order by weight. INCI names. Net weight. Batch number.\n\n## Summary Checklist\n\nRegister business entity, obtain EIN, get licenses, set up labeling, purchase insurance.",
+    "reviewStatus": "published",
+    "source": null,
+    "sourceRevision": null,
+    "lastReviewed": "2026-09-20",
+    "reviewer": "editor"
+  },
+  {
+    "slug": "cure-times-and-what-happens-during-curing",
+    "title": "Cure Times and What Happens During Curing \u2014 Chemical Changes and Readiness",
+    "description": "A detailed guide to soap curing: the chemical changes, moisture evaporation, hardness development, and how to know when soap is ready to use or sell.",
+    "category": "Formulation",
+    "tags": [
+      "cure time",
+      "soap curing",
+      "saponification",
+      "moisture evaporation",
+      "hardness development",
+      "soap chemistry",
+      "cure process"
+    ],
+    "publishedAt": "2026-09-22",
+    "author": "SoapCraft Pro",
+    "readingTime": 9,
+    "image": "/blog/cure-times-guide.jpg",
+    "imageAlt": "Soap bars during curing process showing moisture evaporation and hardness development",
+    "seo": {
+      "title": "Cure Times and What Happens During Curing \u2014 Chemical Changes Guide",
+      "description": "A detailed guide to soap curing: chemical changes, moisture evaporation, hardness development, and when soap is ready to use or sell.",
+      "keywords": [
+        "cure time soap",
+        "soap curing process",
+        "saponification cure",
+        "moisture evaporation soap"
+      ]
+    },
+    "content": "Curing is one of the most important phases in cold process soap making.\n\n## What Happens During Curing?\n\nFreshly unmolded soap contains approximately 35-40% water. During curing, this water gradually evaporates.\n\n### Moisture Evaporation\n\nA well-cured bar loses about 10-15% of its original weight.\n\n### Complete Saponification\n\nAny remaining unsaponified oils undergo further reaction with residual lye.\n\n### Hardness Development\n\nAs moisture evaporates, soap molecules concentrate, leading to harder bars.\n\n### pH Changes\n\nFresh soap has pH 9-12. Cured soap should have pH 8-10.\n\n## How to Know When Soap Is Ready\n\n1. Bar feels hard and dense\n2. pH stabilized between 8-10\n3. Smooth texture\n4. No lye smell\n5. Lost 10-15% of original weight\n\n## Common Curing Mistakes\n\nNot insulating initially, stacking bars too early, using airtight containers.",
+    "reviewStatus": "published",
+    "source": null,
+    "sourceRevision": null,
+    "lastReviewed": "2026-09-22",
+    "reviewer": "editor"
+  },
+  {
+    "slug": "batch-records-why-every-soapmaker-should-keep-them",
+    "title": "Batch Records \u2014 Why Every Soapmaker Should Keep Them",
+    "description": "A comprehensive guide to batch record-keeping for soapmakers. Covers traceability, recipe versioning, quality control, and regulatory compliance requirements.",
+    "category": "Production",
+    "tags": [
+      "batch records",
+      "traceability",
+      "recipe versioning",
+      "quality control",
+      "regulatory compliance",
+      "soap documentation",
+      "batch tracking"
+    ],
+    "publishedAt": "2026-09-25",
+    "author": "SoapCraft Pro",
+    "readingTime": 10,
+    "image": "/blog/batch-records-guide.jpg",
+    "imageAlt": "Batch record-keeping system for soapmakers showing traceability and quality control",
+    "seo": {
+      "title": "Batch Records \u2014 Why Every Soapmaker Should Keep Them",
+      "description": "A comprehensive guide to batch record-keeping for soapmakers. Covers traceability, recipe versioning, quality control, and regulatory compliance.",
+      "keywords": [
+        "batch records soap",
+        "traceability soap making",
+        "recipe versioning",
+        "quality control soap"
+      ]
+    },
+    "content": "Batch records are the foundation of professional soap making.\n\n## What Are Batch Records?\n\nA detailed document capturing every aspect of a soap production run: batch number, date, recipe formulation, actual measurements, trace temperature, observations.\n\n## Traceability\n\nAbility to track a product's history. Essential for recall management, quality issues, and regulatory audits.\n\n## Recipe Versioning\n\nAssign unique identifiers to each recipe version. Record dates of changes.\n\n## Quality Control\n\nCompare planned vs actual measurements. Identify systematic issues.\n\n## Regulatory Compliance\n\nMany jurisdictions require batch records as part of GMP. Records must be legible, accurate, retained for 3+ years.\n\n## Getting Started\n\nStart with batch number, date, recipe used, and observations. Consistency is key.",
+    "reviewStatus": "published",
+    "source": null,
+    "sourceRevision": null,
+    "lastReviewed": "2026-09-25",
+    "reviewer": "editor"
+  },
+  {
+    "slug": "how-to-scale-your-soap-recipe-for-larger-batches",
+    "title": "How to Scale Your Soap Recipe for Larger Batches \u2014 Math, Limits & Adjustments",
+    "description": "A practical guide to scaling soap recipes for larger production volumes. Covers the math behind scaling, equipment limits, water adjustments, and lye calculations.",
+    "category": "Soap Calculators",
+    "tags": [
+      "recipe scaling",
+      "soap batch scaling",
+      "large batch soap",
+      "scaling math",
+      "equipment limits",
+      "water adjustments",
+      "lye calculation"
+    ],
+    "publishedAt": "2026-09-28",
+    "author": "SoapCraft Pro",
+    "readingTime": 9,
+    "image": "/blog/recipe-scaling-guide.jpg",
+    "imageAlt": "Scaling soap recipes for larger batch production with equipment considerations",
+    "seo": {
+      "title": "How to Scale Your Soap Recipe for Larger Batches \u2014 Scaling Guide",
+      "description": "A practical guide to scaling soap recipes for larger production volumes. Covers math, equipment limits, water adjustments, and lye calculations.",
+      "keywords": [
+        "scaling soap recipe",
+        "large batch soap making",
+        "recipe scaling math"
+      ]
+    },
+    "content": "Scaling a soap recipe involves more than multiplying ingredient quantities.\n\n## The Basic Scaling Formula\n\nOils, lye, water, and fragrance scale directly by the multiplier.\n\n## Equipment Limits\n\nMixer capacity, pot size, mold size, and lye mixing all constrain scaling.\n\n## Water Ratio Adjustments\n\nSmall batches: standard ratio. Medium (5-20 lbs): reduce slightly. Large (20+ lbs): reduce further.\n\n## Lye Calculation for Large Batches\n\nFollow same SAP method. Use 33% lye solution for easier management.\n\n## Common Scaling Mistakes\n\nIgnoring equipment limits. Wrong water ratio. Not accounting for lye heat.",
+    "reviewStatus": "published",
+    "source": null,
+    "sourceRevision": null,
+    "lastReviewed": "2026-09-28",
+    "reviewer": "editor"
+  },
+  {
+    "slug": "how-to-choose-soap-mold-size",
+    "title": "How to Choose Soap Mold Size \u2014 Volume, Shape, and Bar Count",
+    "description": "Selecting the right soap mold size is crucial for efficient production. Learn how to calculate mold volume and estimate bar count.",
+    "content": "Choosing the right soap mold is one of the most practical decisions a soap maker makes. A mold that is too small means you cannot meet demand. A mold that is too large means wasted effort and ingredients.\n\n## Calculating Mold Volume\n\nThe volume of your mold determines how much batter you can pour. For a rectangular mold, multiply length by width by height. For a cylindrical mold, use pi times radius squared times height.\n\n## Shape Considerations\n\nRectangular molds are the most versatile and widely available. They produce traditional bar shapes and are easy to line. Cylindrical molds produce round soaps that are visually distinctive but harder to unmold.\n\n## Estimating Bar Count\n\nOnce you know the mold volume, estimate the number of bars by dividing the total batter weight by the weight of each individual bar. Standard soap bars weigh approximately 100-120 grams.\n\n## Mold Material and Cost\n\nSilicone molds are the most popular choice for serious soap makers. They are flexible, durable, and easy to unmold. Wood molds are inexpensive but require lining. PVC molds offer a middle ground.\n\n## Recommended Mold Sizes\n\nFor beginners, a 10x10x7 inch rectangular mold is ideal. It produces approximately 20-25 bars per batch. For larger production, consider 12x12x9 inch molds or multiple smaller molds.\n\n## Using the Mold Volume Calculator\n\nSoapCraft Pro includes a mold volume calculator that takes your dimensions and returns the estimated batch weight, bar count, and recommended ingredient quantities.",
+    "category": "Formulation",
+    "tags": [
+      "mold sizing",
+      "soap mold",
+      "bar count",
+      "mold volume",
+      "soap production"
+    ],
+    "publishedAt": "2026-09-08",
+    "author": "SoapCraft Pro",
+    "readingTime": 8,
+    "image": "/blog/mold-sizing-guide.jpg",
+    "imageAlt": "Choosing the right soap mold size with volume calculations",
+    "seo": {
+      "title": "How to Choose Soap Mold Size \u2014 Volume, Shape & Bar Count",
+      "description": "Selecting the right soap mold size is crucial for efficient production.",
+      "keywords": [
+        "soap mold size",
+        "mold volume calculation",
+        "bar count soap"
+      ]
+    },
+    "reviewStatus": "published"
+  },
+  {
+    "slug": "soap-ingredient-storage-best-practices",
+    "title": "Soap Ingredient Storage Best Practices \u2014 Keeping Oils and Lye Safe",
+    "description": "Proper storage of soap ingredients prevents spoilage and maintains quality. A guide to storing oils, butters, lye, and fragrances.",
+    "content": "Proper ingredient storage is often overlooked but has a direct impact on soap quality and safety. Rancid oils produce inferior soap. Lye exposed to moisture creates hazardous clumps. Fragrances that degrade lose their potency.\n\n## Storing Oils and Butters\n\nVegetable oils and butters should be stored in cool, dark places away from direct sunlight. Keep containers tightly sealed to prevent oxidation.\n\n## Storing Lye\n\nLye must be stored in airtight, moisture-proof containers. It absorbs water from the air and can form hazardous lumps. Keep lye in a dedicated cabinet away from food and children.\n\n## Storing Fragrances\n\nFragrance oils should be stored in dark, cool locations. Essential oils degrade when exposed to air and light. Keep containers tightly sealed.\n\n## Labeling and Organization\n\nLabel every container with the purchase date, quantity, and any safety warnings. Keep an inventory list that tracks usage and expiration dates.",
+    "category": "Ingredients",
+    "tags": [
+      "ingredient storage",
+      "oil storage",
+      "lye storage",
+      "fragrance storage",
+      "soap ingredients"
+    ],
+    "publishedAt": "2026-09-08",
+    "author": "SoapCraft Pro",
+    "readingTime": 7,
+    "image": "/blog/ingredient-storage.jpg",
+    "imageAlt": "Proper storage for soapmaking ingredients",
+    "seo": {
+      "title": "Soap Ingredient Storage Best Practices",
+      "description": "Proper storage prevents spoilage and maintains quality."
+    },
+    "reviewStatus": "published"
+  },
+  {
+    "slug": "how-to-scale-soap-production-for-sales",
+    "title": "How to Scale Soap Production for Sales \u2014 From Hobby to Business",
+    "description": "Transitioning from hobby soap making to selling requires scaling your production. Learn how to plan batch sizes and maintain quality at volume.",
+    "content": "Scaling soap production from a hobby to a business requires more than just making more bars. It involves planning, systems, and quality control.\n\n## Planning Your First Production Run\n\nBefore scaling, determine your market size. How many bars do you need per month? What channels are you selling through?\n\n## Equipment and Space\n\nScaling requires more equipment. Consider investing in larger molds and dedicated workspace.\n\n## Quality Control at Scale\n\nWhen you are making 100 bars, you cannot personally check every bar. Establish quality checkpoints at each stage of production.\n\n## Inventory Management\n\nTrack your raw materials, finished goods, and work-in-progress.\n\n## Using SoapCraft Pro for Scaling\n\nSoapCraft Pro tracks recipes, batches, costs, and production capacity.",
+    "category": "Business",
+    "tags": [
+      "scaling soap production",
+      "soap business",
+      "production planning",
+      "inventory management"
+    ],
+    "publishedAt": "2026-09-08",
+    "author": "SoapCraft Pro",
+    "readingTime": 9,
+    "image": "/blog/scaling-production.jpg",
+    "imageAlt": "Scaling soap production from hobby to business",
+    "seo": {
+      "title": "How to Scale Soap Production for Sales",
+      "description": "Transitioning from hobby soap making to selling requires scaling."
+    },
+    "reviewStatus": "published"
+  },
+  {
+    "slug": "soap-packaging-and-labeling-guide",
+    "title": "Soap Packaging and Labeling Guide \u2014 Design, Materials, and Compliance",
+    "description": "Learn how to package and label your handmade soap professionally. Covers materials, label design, and legal requirements.",
+    "content": "Soap packaging serves two purposes: protecting the product and attracting the customer. Good packaging communicates quality and professionalism.\n\n## Packaging Materials\n\nCommon options include paper wrappers, cardboard boxes, cellophane wrap, and muslin bags. Each has different costs and visual appeal.\n\n## Label Design\n\nYour label should include the product name, ingredients, weight, and any safety information.\n\n## Legal Requirements\n\nIn the United States, the FDA requires cosmetic labels to include the product name, net weight, ingredients listed by descending proportion, and manufacturer information.\n\n## Packaging Costs\n\nPackaging can add $0.50-$2.00 per bar to your cost. Factor this into your pricing.",
+    "category": "Business",
+    "tags": [
+      "soap packaging",
+      "soap labeling",
+      "cosmetic labeling",
+      "soap business"
+    ],
+    "publishedAt": "2026-09-08",
+    "author": "SoapCraft Pro",
+    "readingTime": 8,
+    "image": "/blog/soap-packaging.jpg",
+    "imageAlt": "Professional soap packaging and labeling",
+    "seo": {
+      "title": "Soap Packaging and Labeling Guide",
+      "description": "Learn how to package and label handmade soap professionally."
+    },
+    "reviewStatus": "published"
+  },
+  {
+    "slug": "soap-cure-tracking-and-quality-control",
+    "title": "Soap Cure Tracking and Quality Control \u2014 Observing Your Bars",
+    "description": "Tracking the cure process ensures your soap is ready to sell and maintains consistent quality. A guide to cure observation and record keeping.",
+    "content": "Curing is the final stage of soap making and the one most often neglected. Proper cure tracking ensures your soap is at its best before it reaches a customer.\n\n## Why Cure Tracking Matters\n\nUnder-cured soap can be soft and have a high pH. Over-cured soap can become brittle.\n\n## What to Observe\n\nTrack hardness, appearance, scent evolution, and color changes. These observations help you understand how different formulations behave.\n\n## Quality Checkpoints\n\nWeek 1: Check for soda ash. Week 2: Bars should be hardening. Week 4: Bars should be firm. Week 6: Full cure achieved.",
+    "category": "Production",
+    "tags": [
+      "cure tracking",
+      "soap quality",
+      "cure observation",
+      "quality control soap"
+    ],
+    "publishedAt": "2026-09-08",
+    "author": "SoapCraft Pro",
+    "readingTime": 8,
+    "image": "/blog/cure-tracking.jpg",
+    "imageAlt": "Cure tracking and quality control for soap bars",
+    "seo": {
+      "title": "Soap Cure Tracking and Quality Control",
+      "description": "Tracking the cure process ensures soap is ready to sell."
+    },
+    "reviewStatus": "published"
+  },
+  {
+    "slug": "soap-business-tax-deductions",
+    "title": "Soap Business Tax Deductions and Expenses \u2014 What You Can Write Off",
+    "description": "Running a soap business comes with tax deductions. Learn what expenses are deductible and what records to keep.",
+    "content": "Running a soap business comes with legitimate tax deductions. Keeping track of expenses throughout the year makes tax time simpler.\n\n## Common Deductible Expenses\n\nIngredients and supplies, equipment, workspace costs, marketing, travel, professional services.\n\n## Tracking Your Expenses\n\nKeep receipts for every business expense. Categorize by month.\n\n## Records to Keep\n\nKeep all business records for at least 3 years.\n\n## Consultation\n\nTalk to a tax professional familiar with small businesses and handmade goods.",
+    "category": "Business",
+    "tags": [
+      "tax deductions",
+      "soap business expenses",
+      "business accounting"
+    ],
+    "publishedAt": "2026-09-08",
+    "author": "SoapCraft Pro",
+    "readingTime": 8,
+    "image": "/blog/tax-deductions.jpg",
+    "imageAlt": "Tax deductions for handmade soap businesses",
+    "seo": {
+      "title": "Soap Business Tax Deductions and Expenses",
+      "description": "Learn what expenses are deductible for a soap business."
+    },
+    "reviewStatus": "published"
   }
 ]

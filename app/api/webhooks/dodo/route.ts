@@ -6,8 +6,7 @@ import crypto from "crypto";
 import { db } from "@/lib/db";
 import { subscriptions, users } from "@/db/schema";
 import { eq } from "drizzle-orm";
-
-const DODO_WEBHOOK_SECRET = process.env.DODO_WEBHOOK_SECRET ?? "dw_secret_placeholder_replace_me";
+import { dodoVerifyWebhook } from "@/lib/dodo-payments";
 
 // ── Types ─────────────────────────────────────────────────────
 
@@ -19,47 +18,6 @@ interface DodoWebhookEvent {
 }
 
 // ── Verify webhook signature ─────────────────────────────────
-
-export function verifyDodoWebhookSignature(
-  payload: string,
-  signature: string
-): boolean {
-  const expected = crypto
-    .createHmac("sha256", DODO_WEBHOOK_SECRET)
-    .update(payload, "utf-8")
-    .digest("hex");
-  return crypto.timingSafeEqual(
-    Buffer.from(expected, "hex"),
-    Buffer.from(signature, "hex")
-  );
-}
-
-// ── Idempotency key ──────────────────────────────────────────
-
-function idempotencyKey(event: DodoWebhookEvent): string {
-  return event.id;
-}
-
-// ── Project Dodo state into app entitlement ──────────────────
-
-async function projectSubscriptionState(
-  dodoSubscriptionId: string,
-  dodoCustomerId: string
-) {
-  // Look up the local subscription record
-  const [sub] = await db
-    .select()
-    .from(subscriptions)
-    .where(eq(subscriptions.dodoSubscriptionId, dodoSubscriptionId))
-    .limit(1);
-
-  if (!sub) return null;
-
-  // Update the subscription status based on Dodo state
-  // The actual Dodo API call is deferred to the webhook handler
-  // which receives the state from Dodo directly
-  return sub;
-}
 
 // ── Handle individual event types ────────────────────────────
 
@@ -274,10 +232,14 @@ const eventHandlers: Record<string, (event: DodoWebhookEvent) => Promise<void>> 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.text();
-    const signature = req.headers.get("x-dodo-signature") ?? "";
+    const webhookHeaders = {
+      "webhook-id": req.headers.get("webhook-id") ?? "",
+      "webhook-timestamp": req.headers.get("webhook-timestamp") ?? "",
+      "webhook-signature": req.headers.get("webhook-signature") ?? "",
+    };
 
-    // Verify webhook signature
-    if (!verifyDodoWebhookSignature(body, signature)) {
+    // Dodo follows Standard Webhooks: signature covers id.timestamp.raw-body.
+    if (!dodoVerifyWebhook(body, webhookHeaders)) {
       return NextResponse.json(
         { error: "Invalid signature" },
         { status: 401 }

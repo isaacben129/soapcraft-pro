@@ -1,9 +1,17 @@
 // ── Dodo Payments client ──────────────────────────────────────
-// Uses the Dodo Payments API (not Stripe). Placeholder values for keys.
+// Uses the Dodo Payments API (not Stripe). Credentials are required at call time.
+
+import { Webhook } from "standardwebhooks";
 
 const DODO_PAYMENTS_API_URL = "https://api.dodopayments.com/v1";
-const DODO_PAYMENTS_SECRET = process.env.DODO_PAYMENTS_SECRET ?? "dp_secret_placeholder_replace_me";
-const DODO_PAYMENTS_PUBLISHABLE_KEY = process.env.DODO_PAYMENTS_PUBLISHABLE_KEY ?? "dp_publishable_placeholder_replace_me";
+
+function requiredDodoApiKey(): string {
+  const apiKey = process.env.DODO_PAYMENTS_API_KEY;
+  if (!apiKey) {
+    throw new Error("DODO_PAYMENTS_API_KEY is not configured");
+  }
+  return apiKey;
+}
 
 // ── Types ─────────────────────────────────────────────────────────────
 
@@ -61,7 +69,7 @@ async function dodoRequest<T>(
     ...options,
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${DODO_PAYMENTS_SECRET}`,
+      Authorization: `Bearer ${requiredDodoApiKey()}`,
       ...options.headers,
     },
   });
@@ -172,9 +180,24 @@ export async function dodoCreateCheckoutSession(
 
 // ── Webhook verification ─────────────────────────────────────────────
 
-export async function dodoVerifyWebhook(payload: string, signature: string) {
-  // Dodo Payments signs webhook payloads with a secret
-  // This is a placeholder — real verification uses HMAC-SHA256
-  const expectedSignature = "placeholder_signature";
-  return signature === expectedSignature;
+export interface DodoWebhookHeaders {
+  "webhook-id": string;
+  "webhook-timestamp": string;
+  "webhook-signature": string;
+}
+
+/** Verify Dodo's Standard Webhooks signature over id.timestamp.raw-body. */
+export function dodoVerifyWebhook(
+  payload: string,
+  headers: DodoWebhookHeaders,
+): boolean {
+  const secret = process.env.DODO_WEBHOOK_SECRET;
+  if (!secret) return false;
+
+  try {
+    new Webhook(secret).verify(payload, headers, { jsonParse: false });
+    return true;
+  } catch {
+    return false;
+  }
 }

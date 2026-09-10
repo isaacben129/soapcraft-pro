@@ -6,6 +6,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getBlogPost, getAllBlogSlugs, getRelatedPosts } from "@/lib/blog";
+import { serializeJsonLd } from "@/lib/seo/json-ld";
 
 export const dynamicParams = false;
 
@@ -209,13 +210,13 @@ export default async function BlogPostPage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(ArticleJsonLd(post)),
+          __html: serializeJsonLd(ArticleJsonLd(post)),
         }}
       />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(BreadcrumbJsonLd(slug)),
+          __html: serializeJsonLd(BreadcrumbJsonLd(slug)),
         }}
       />
 

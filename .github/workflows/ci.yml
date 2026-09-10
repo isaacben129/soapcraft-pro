@@ -27,6 +27,8 @@ jobs:
           node-version: "22"
       - run: npm ci
       - run: npm run test -- --coverage
+      - name: Verify SEO content pipeline
+        run: python3 -m unittest discover -s scripts/tests -p 'test_*.py' -v
 
   build:
     runs-on: ubuntu-latest

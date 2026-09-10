@@ -9,4 +9,7 @@ GTM-implementation.md
 SEO-research.md
 *.log
 tsconfig.tsbuildinfo
+__pycache__/
+*.py[cod]
 .DS_Store
+.vercel

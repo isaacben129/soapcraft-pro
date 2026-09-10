@@ -17,7 +17,7 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "scan:generic": "bash scripts/scan-generic.sh",
-    "postinstall": "shx mkdir -p components/ui"
+    "postinstall": "node -e \"require('node:fs').mkdirSync('components/ui',{recursive:true})\""
   },
   "dependencies": {
     "@ai-sdk/openai": "^4.0.27",
@@ -28,7 +28,6 @@
     "@radix-ui/react-slot": "1.1.0",
     "@radix-ui/react-toast": "1.2.0",
     "@tailwindcss/postcss": "4.1.0",
-    "@tailwindcss/vite": "4.1.0",
     "ai": "^7.0.48",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
@@ -40,6 +39,7 @@
     "posthog-js": "^1.234.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "standardwebhooks": "^1.1.1",
     "tailwind-merge": "2.6.0",
     "tailwindcss": "4.1.0",
     "zod": "^3.25.76"
@@ -60,8 +60,9 @@
   },
   "overrides": {
     "esbuild": "0.28.1",
+    "nanoid": "5.1.16",
     "postcss": "8.5.25",
-    "sharp": "0.32.0",
+    "sharp": "0.35.4",
     "vite": "8.2.0"
   },
   "engines": {

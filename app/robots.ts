@@ -1,8 +1,5 @@
 import { MetadataRoute } from "next";
-import { intentRegistry } from "@/lib/seo/intent-registry";
-import { blogPosts } from "@/lib/blog";
-
-const SITE_URL = "https://soapcraft-pro.vercel.app";
+import { SITE_URL } from "@/lib/seo/site-url";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -17,7 +14,6 @@ export default function robots(): MetadataRoute.Robots {
           "/batches/",
           "/dashboard/",
           "/subscription/",
-          "/blog/[slug]",
         ],
       },
     ],
