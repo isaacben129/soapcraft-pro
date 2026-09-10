@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     description:
       "Start free with the calculator. Pro adds unlimited recipes, batches, cure tracking, and cost analysis.",
     type: "website",
-    url: "https://soapcraft-pro.vercel.app/marketing/pricing",
+    url: "https://soapcraft-pro.vercel.app/pricing",
   },
   robots: { index: true, follow: true },
 };

@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     description:
       "Deterministic soap making guides, verified recipes, and troubleshooting articles.",
     type: "website",
-    url: "https://soapcraft-pro.vercel.app/marketing/blog",
+    url: "https://soapcraft-pro.vercel.app/blog",
   },
   robots: { index: true, follow: true },
 };

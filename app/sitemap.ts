@@ -9,10 +9,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const staticPages: MetadataRoute.Sitemap = [
     { url: SITE_URL, lastModified: new Date() },
-    { url: `${SITE_URL}/marketing/pricing`, lastModified: new Date() },
-    { url: `${SITE_URL}/marketing/blog`, lastModified: new Date() },
+    
     { url: `${SITE_URL}/blog`, lastModified: new Date() },
-    { url: `${SITE_URL}/calculators/soap-cost-calculator`, lastModified: new Date() },
+    { url: `${SITE_URL}/pricing`, lastModified: new Date() },
     { url: `${SITE_URL}/compare/soapcalc-alternative`, lastModified: new Date() },
     { url: `${SITE_URL}/soap-recipe-management-software`, lastModified: new Date() },
     { url: `${SITE_URL}/soap-batch-tracking-software`, lastModified: new Date() },
