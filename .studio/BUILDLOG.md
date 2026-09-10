@@ -112,3 +112,29 @@ All copy must preserve Isaac's authentic voice. Do not polish, formalize, or "im
 - Final verification: 37 focused tests passed, 114 full tests passed, typecheck passed, production build passed, and `git diff --check` passed.
 - Evidence: `.studio/evidence/SLICE-003/implementation-verification.md`.
 - No public chemistry release is authorized until source, cross-check, safety, and Gate_A receipts are complete.
+
+### 2026-09-09 — Phase 3: SLICE-001 (SEO Infrastructure and Public Shell)
+
+**Status:** IMPLEMENTED, awaiting build verification
+
+- Added `lib/seo/structured-data.ts`: Organization, Website, Blog, Article, BreadcrumbList, FAQ schemas
+- Added `components/shared/json-ld.tsx`: JsonLd and JsonLdList React components
+- Added `lib/seo/index.ts`: Re-exports all SEO utilities
+- Updated `app/layout.tsx`: Organization + Website JSON-LD injected via JsonLd
+- Updated `app/page.tsx`: FAQ schema injected via JsonLd on homepage
+- Updated `components/shared/index.ts`: Export JsonLd, JsonLdList
+- Fixed canonical URL duplicates: /marketing/blog → /blog, /marketing/pricing → /pricing
+- Updated sitemap: removed duplicate /marketing paths, added /pricing
+- Updated marketing page metadata canonical URLs
+
+Acceptance: UTIL-007 — robots.txt, sitemap, metadata, schema, canonical URLs
+Boundary: deployed
+
+### Blocked Gates (NOT implementation-ready):
+- CHEM-001 through CHEM-009: SAP dataset source not assigned (no named domain owner)
+- CHEM-010: Chemistry verification gate (deterministic spec, independent fixtures, hand calculations)
+- SIZE-003, SIZE-006: Mold density reference values not sourced
+- SLICE-003, SLICE-004, SLICE-013: BLOCKED pending chemistry gates
+- DESIGN-GATE-001 through 004: Brand mark, photography, visual tokens, motion design
+
+### Next: SLICE-002 (Recipe Versioning and Immutability) — depends on SLICE-001
