@@ -28,7 +28,7 @@ export async function generateMetadata({
       type: "article",
       publishedTime: post.publishedAt,
       authors: [post.author],
-      url: `https://soapcraft-pro.vercel.app/marketing/blog/${post.slug}`,
+      url: `https://soapcraft-pro.vercel.app/blog/${post.slug}`,
     },
     robots: { index: true, follow: true },
   };
