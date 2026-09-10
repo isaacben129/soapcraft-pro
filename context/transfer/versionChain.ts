@@ -1,0 +1,2 @@
+export interface VersionedRecipe<T> { id: string; version: number; createdAt: string; immutable: T; previousVersionId?: string; }
+export function appendVersion<T>(chain: readonly VersionedRecipe<T>[], id: string, value: T): VersionedRecipe<T>[] { const previous = chain.at(-1); return [...chain, { id, version: (previous?.version ?? 0) + 1, createdAt: new Date().toISOString(), immutable: structuredClone(value), previousVersionId: previous?.id }]; }

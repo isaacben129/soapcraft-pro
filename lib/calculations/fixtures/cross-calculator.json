@@ -1,0 +1,8 @@
+{
+  "version": "2.0.0",
+  "status": "fixture-ready-pending-domain-review",
+  "fixtures": [
+    {"id":"synthetic-pure-naoh-1000g","source":"lib/calculations/fixtures/chemistry.json","independentCalculationRequired":true},
+    {"id":"synthetic-mixed-alkali","source":"lib/calculations/fixtures/chemistry.json","independentCalculationRequired":true}
+  ]
+}

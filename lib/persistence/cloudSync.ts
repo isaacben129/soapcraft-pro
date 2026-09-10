@@ -1,0 +1,4 @@
+export interface SyncRecord<T> { id: string; updatedAt: string; payload: T; syncState: "pending" | "synced" | "failed"; }
+export interface CloudSyncAdapter { upsert<T>(collection: string, record: SyncRecord<T>): Promise<void>; list<T>(collection: string): Promise<SyncRecord<T>[]>; }
+export class LocalOnlyCloudSync implements CloudSyncAdapter { private records = new Map<string, SyncRecord<unknown>>(); async upsert<T>(_collection: string, record: SyncRecord<T>) { this.records.set(record.id, record); } async list<T>(_collection: string) { return [...this.records.values()] as SyncRecord<T>[]; } }
+export async function syncPending<T>(adapter: CloudSyncAdapter, collection: string, records: SyncRecord<T>[]): Promise<void> { for (const record of records.filter(r => r.syncState === "pending")) await adapter.upsert(collection, { ...record, syncState: "synced" }); }

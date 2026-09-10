@@ -1,0 +1,2 @@
+import Link from "next/link";
+export default function SettingsPage(){return <main><h1>Settings</h1><p>SoapCraft Pro works anonymously first. Optional account and cloud sync settings appear when persistence is configured.</p><ul><li>Local browser data remains available without an account.</li><li>Cloud sync is an explicit opt-in.</li><li><Link href="/auth/login">Sign in</Link> or <Link href="/auth/signup">create an account</Link> to use account-backed features.</li></ul></main>}

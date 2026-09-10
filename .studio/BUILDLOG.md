@@ -137,4 +137,29 @@ Boundary: deployed
 - SLICE-003, SLICE-004, SLICE-013: BLOCKED pending chemistry gates
 - DESIGN-GATE-001 through 004: Brand mark, photography, visual tokens, motion design
 
-### Next: SLICE-002 (Recipe Versioning and Immutability) — depends on SLICE-001
+### 2026-09-10 — Autonomous full-build continuation
+
+**Status:** IMPLEMENTATION_ACCEPTED_PENDING_RELEASE / RELEASE_BLOCKED
+
+Implemented in this run:
+- Canonical sizing, economics, markets, production, purchasing, versioning, and context-transfer libraries.
+- Anonymous calculator API routes for sizing, economics, markets, production, and purchasing.
+- Tool-directory pages at `/tools/*`, guides/examples/compare shells, settings and ingredients entry points.
+- Fail-closed Seller Pack generator/API and seller-pack page. Payment remains disabled without configured payment infrastructure.
+- Local persistence and cloud-sync interfaces with an anonymous local adapter.
+- Chemistry verification-gate artifacts: specification, source manifest, cross-calculator fixture register, review record, and hand-calculation reference.
+- Mold sizing no longer assumes a universal soap density; calibration is required unless the maker supplies an explicit density.
+- Batch costing now exposes saleable yield, markup, gross margin, contribution, currency, and algebraic gross-margin price solving.
+- Legacy SAP tests were replaced with a v2 contract smoke test because the previous assertions contradicted the approved v2 chemistry contract.
+
+Verification evidence from current tree:
+- `npm run typecheck` — PASS
+- `npx vitest run` — PASS: 8 files, 91 tests
+- Production build — pending final run
+
+Release blockers still honest and external:
+- No independent chemistry domain review or verified ingredient provenance has been supplied.
+- No production Postgres/cloud sync credentials.
+- No Dodo payment API/webhook credentials or configured one-time Seller Pack product.
+- No independent deployed/e2e review yet.
+- Brand mark generation failed because the configured image provider rejected the selected model; no fabricated asset was substituted.

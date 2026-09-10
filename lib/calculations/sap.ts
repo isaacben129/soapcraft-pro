@@ -88,19 +88,21 @@ export function calculateFormulation(input: FormulationInput): CalculationResult
     lyeKOH += oilWeight * oilData.sapValueKOH;
   }
 
-  // Apply superfat reduction (NaOH only for cold process)
+  // Apply superfat reduction to BOTH NaOH and KOH per CALCULATION-SPEC §3.1.3
   const superfatMultiplier = 1 - (superfatPercent / 100);
   lyeNaOH *= superfatMultiplier;
+  lyeKOH *= superfatMultiplier;
 
-  // Calculate water
-  const water = lyeNaOH * waterToLyeRatio;
+  // Calculate water using total alkali (NaOH + KOH) per CALCULATION-SPEC §3.1.5
+  const totalAlkaliAsSupplied = lyeNaOH + lyeKOH;
+  const water = totalAlkaliAsSupplied * waterToLyeRatio;
 
   // Calculate fragrance load
   const fragranceLoad = (fragranceLoadPercent / 100) * oilWeightTotal;
 
-  // Total batch weight
-  const lyeWeightTotal = lyeNaOH + (lyeKOH - lyeNaOH); // KOH portion for hybrid recipes
-  const totalWeight = oilWeightTotal + lyeNaOH + water + fragranceLoad;
+  // Total batch weight per CALCULATION-SPEC §1.3
+  const lyeWeightTotal = totalAlkaliAsSupplied;
+  const totalWeight = oilWeightTotal + lyeNaOH + lyeKOH + water + fragranceLoad;
 
   // Calculate property ranges (weighted blend of oil properties)
   let hardness = 0, lather = 0, moisturizing = 0, cleansing = 0, condition = 0;
@@ -179,7 +181,7 @@ export function calculateFormulation(input: FormulationInput): CalculationResult
     water: Math.round(water * 10000) / 10000,
     fragranceLoad: Math.round(fragranceLoad * 10000) / 10000,
     oilWeightTotal,
-    lyeWeightTotal: Math.round(lyeNaOH * 10000) / 10000,
+    lyeWeightTotal: Math.round(totalAlkaliAsSupplied * 10000) / 10000,
     totalWeight: Math.round(totalWeight * 10000) / 10000,
     propertyRanges,
     warnings,

@@ -1,0 +1,3 @@
+import { NextRequest, NextResponse } from "next/server";
+import { batchesRequired, readyByPourDate } from "@/lib/calculations/production";
+export async function POST(request: NextRequest) { try { const body = await request.json(); return NextResponse.json({ batchesRequired: batchesRequired(body.saleableUnitsRequired, body.expectedYieldPerBatch), pourDate: readyByPourDate(body.readyByDate, body.cureDays, body.unmoldCutBufferDays ?? 0, body.productionLeadTimeDays ?? 0).toISOString() }); } catch (error) { return NextResponse.json({ error: error instanceof Error ? error.message : "Invalid production request" }, { status: 400 }); } }

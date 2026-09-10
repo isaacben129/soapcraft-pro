@@ -1,0 +1,2 @@
+export interface RecipeContext { version: 1; recipeId?: string; recipeName?: string; ingredients: Array<{ ingredientId: string; percent: number; grams?: number }>; targetOilMass?: number; formulation?: Record<string, unknown>; sizing?: Record<string, unknown>; economics?: Record<string, unknown>; markets?: Record<string, unknown>; production?: Record<string, unknown>; purchasing?: Record<string, unknown>; }
+export function createRecipeContext(input: Omit<RecipeContext, "version">): RecipeContext { return { version: 1, ...input }; }

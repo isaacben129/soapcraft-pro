@@ -1,0 +1,10 @@
+{
+  "version": "2.0.0",
+  "status": "provisional",
+  "sourceHierarchy": [
+    {"priority":1,"title":"ISO 3657:2020","identifier":"https://www.iso.org/standard/78380.html","role":"laboratory method"},
+    {"priority":2,"title":"Codex CXS 210-1999","identifier":"https://www.fao.org/4/y2774e/y2774e04.htm","role":"identity ranges"},
+    {"priority":3,"title":"PubChem KOH CID 14797 and NaOH CID 14798","identifier":"https://pubchem.ncbi.nlm.nih.gov/","role":"molecular weights"}
+  ],
+  "publicRelease": "blocked until independently reviewed"
+}

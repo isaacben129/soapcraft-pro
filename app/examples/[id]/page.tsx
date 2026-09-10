@@ -1,0 +1,1 @@
+export default function ExamplePage({params}:{params:{id:string}}){return <main><h1>Example {params.id}</h1><p>Example recipes are educational contexts. Verify every ingredient source and workshop procedure independently.</p></main>}

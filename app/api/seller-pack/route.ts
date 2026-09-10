@@ -1,0 +1,3 @@
+import { NextRequest, NextResponse } from "next/server";
+import { generateSellerPack } from "@/lib/seller-pack/generator";
+export async function POST(request: NextRequest) { if (process.env.SELLER_PACK_ENABLED !== "true") return NextResponse.json({ error: "SELLER_PACK_PAYMENT_REQUIRED", message: "Seller Pack delivery is disabled until payment infrastructure is configured." }, { status: 503 }); try { const markdown = generateSellerPack(await request.json()); return new NextResponse(markdown, { headers: { "Content-Type": "text/markdown; charset=utf-8", "Content-Disposition": "attachment; filename=soapcraft-seller-pack.md" } }); } catch (error) { return NextResponse.json({ error: error instanceof Error ? error.message : "Invalid seller pack" }, { status: 400 }); } }

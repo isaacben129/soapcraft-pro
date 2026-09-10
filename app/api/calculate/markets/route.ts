@@ -1,0 +1,3 @@
+import { NextRequest, NextResponse } from "next/server";
+import { craftFairBreakEven, wholesalePrice, weightedBreakEven } from "@/lib/calculations/markets";
+export async function POST(request: NextRequest) { try { const body = await request.json(); if (body.mode === "wholesale") return NextResponse.json({ wholesalePrice: wholesalePrice(body.productionCostPerBar, body.pricingMode ?? "gross_margin", body.target) }); if (Array.isArray(body.products)) return NextResponse.json({ breakEvenUnits: weightedBreakEven(body.fixedEventCost, body.products) }); return NextResponse.json(craftFairBreakEven(body.fixedEventCost, body.product)); } catch (error) { return NextResponse.json({ error: error instanceof Error ? error.message : "Invalid market request" }, { status: 400 }); } }

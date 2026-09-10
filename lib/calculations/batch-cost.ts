@@ -13,7 +13,14 @@ export interface BatchCostInput {
   fragranceCost: number;
   otherCosts: number;
   batchYieldBars: number;
-  targetPricePerBar: number;
+  targetPricePerBar?: number;
+  targetGrossMargin?: number;
+  targetMarkupPercent?: number;
+  currency?: string;
+  trim?: number;
+  samples?: number;
+  defects?: number;
+  testingUnits?: number;
   costBasisRevision: number;
 }
 
@@ -25,7 +32,14 @@ export interface BatchCostResult {
   fragranceCost: number;
   otherCosts: number;
   marginPercent: number;
-  suggestedPrice: number;
+  markupPercent: number;
+  grossMarginPercent: number;
+  saleableYield: number;
+  costPerSaleableUnit: number;
+  suggestedPrice: number | null;
+  currency: string;
+  netRevenuePerUnit: number;
+  contributionPerUnit: number;
   costBasisRevision: number;
   missingCostBasis: Array<{
     ingredientId: string;
@@ -105,7 +119,9 @@ export function calculateBatchCost(input: BatchCostInput): BatchCostResult {
     });
   }
 
+  const saleableYield = Math.max(0, input.batchYieldBars - (input.trim ?? 0) - (input.samples ?? 0) - (input.defects ?? 0) - (input.testingUnits ?? 0));
   const costPerBar = input.batchYieldBars > 0 ? totalCost / input.batchYieldBars : 0;
+  const costPerSaleableUnit = saleableYield > 0 ? totalCost / saleableYield : 0;
 
   // 4. Calculate cost per unit (per gram)
   const totalQuantityGrams = costRows.reduce((sum, cost) => {
@@ -114,19 +130,16 @@ export function calculateBatchCost(input: BatchCostInput): BatchCostResult {
 
   const costPerUnit = totalQuantityGrams > 0 ? totalCost / totalQuantityGrams : 0;
 
-  // 5. Calculate margin percent
-  const marginPercent =
-    input.targetPricePerBar > 0
-      ? ((input.targetPricePerBar - costPerBar) / input.targetPricePerBar) * 100
-      : 0;
-
-  // 6. Suggested price (cost + margin)
-  const suggestedPrice =
-    input.targetPricePerBar > 0
-      ? input.targetPricePerBar
-      : costPerBar > 0
-      ? costPerBar * 1.5 // Default 50% margin if no target price
-      : 0;
+  const targetPrice = input.targetPricePerBar ?? 0;
+  const markupPercent = targetPrice > 0 && costPerBar > 0 ? ((targetPrice - costPerBar) / costPerBar) * 100 : 0;
+  const grossMarginPercent = targetPrice > 0 ? ((targetPrice - costPerBar) / targetPrice) * 100 : 0;
+  const targetGrossMargin = input.targetGrossMargin;
+  const suggestedPrice = targetGrossMargin !== undefined && targetGrossMargin >= 0 && targetGrossMargin < 100 && costPerBar > 0
+    ? costPerBar / (1 - targetGrossMargin / 100)
+    : targetPrice > 0 ? targetPrice : null;
+  const currency = input.currency ?? "USD";
+  const netRevenuePerUnit = targetPrice;
+  const contributionPerUnit = netRevenuePerUnit - costPerSaleableUnit;
 
   // 7. Additional warnings
   if (input.ingredientCosts.length === 0) {
@@ -143,10 +156,10 @@ export function calculateBatchCost(input: BatchCostInput): BatchCostResult {
     });
   }
 
-  if (marginPercent < 0) {
+  if (markupPercent < 0) {
     warnings.push({
       type: "warning",
-      message: `Target price $${input.targetPricePerBar.toFixed(2)} is below cost per bar $${costPerBar.toFixed(2)} — negative margin`,
+      message: `Target price ${targetPrice.toFixed(2)} is below cost per bar ${costPerBar.toFixed(2)} — negative margin`,
     });
   }
 
@@ -157,8 +170,15 @@ export function calculateBatchCost(input: BatchCostInput): BatchCostResult {
     ingredientCostTotal,
     fragranceCost: input.fragranceCost,
     otherCosts: input.otherCosts,
-    marginPercent,
+    marginPercent: grossMarginPercent,
+    markupPercent,
+    grossMarginPercent,
+    saleableYield,
+    costPerSaleableUnit,
     suggestedPrice,
+    currency,
+    netRevenuePerUnit,
+    contributionPerUnit,
     costBasisRevision: input.costBasisRevision,
     missingCostBasis,
     warnings,
