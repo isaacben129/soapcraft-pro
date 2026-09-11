@@ -14,6 +14,8 @@ const publicRoutes = new Set([
   "/safety",
   "/privacy",
   "/terms",
+  "/privacy-pinterest",
+  "/terms-pinterest",
   "/api/auth",
   "/api/webhooks",
 ]);

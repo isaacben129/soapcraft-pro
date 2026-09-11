@@ -19,6 +19,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/safety`, lastModified: new Date() },
     { url: `${SITE_URL}/privacy`, lastModified: new Date() },
     { url: `${SITE_URL}/terms`, lastModified: new Date() },
+    { url: `${SITE_URL}/privacy-pinterest`, lastModified: new Date() },
+    { url: `${SITE_URL}/terms-pinterest`, lastModified: new Date() },
   ];
 
   const blogPages: MetadataRoute.Sitemap = blogSlugs.map((slug) => ({
