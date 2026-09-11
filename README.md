@@ -126,3 +126,4 @@ cp -r . ~/.hermes/skills/studio-build/   # (SKILL.md + agents/ + templates/)
 # 3. Run an idea through the pipeline
 hermes -s studio-build "Build a <idea>"
 ```
+# SoapCraft Pro - Fri Sep 11 11:37:13 UTC 2026
