@@ -1,10 +1,11 @@
 # SoapCraft Pro — Public Tool Build Contract
 
-**Version:** 3.0.0
+**Version:** 4.0.0
 **Status:** BUILD AUTHORIZED; public chemistry remains fail-closed
-**Normative formula source:** `product/CALCULATION-SPEC.md` v2.0.0
+**Normative formula source:** `product/CALCULATION-SPEC.md` v2.1.0
+**Normative implementation source:** `product/TOOL-IMPLEMENTATION-CONTRACT.md` v1.0.0
 **Research source:** `product/TOOL-MARKET-REQUIREMENTS.md`
-**Contract precedence:** this file defines public-tool scope; `CALCULATION-SPEC.md` defines calculation semantics; `.studio/acceptance.json` defines observable acceptance; `.studio/slices.json` defines execution order.
+**Contract precedence:** `CALCULATION-SPEC.md` defines numeric semantics and release gates; `TOOL-IMPLEMENTATION-CONTRACT.md` defines browser behavior, validation, transport and proof; this file defines public scope; `.studio/acceptance.json` defines observable acceptance; `.studio/slices.json` defines bounded execution.
 
 ## 1. Goal and completion metric
 
@@ -43,6 +44,7 @@ Supporting surfaces required for those tools are `/tools`, `/methodology`, worke
 8. Money in one calculation uses one currency code. Mixed currencies block rather than sum.
 9. Tests include hand-authored golden vectors, edge cases, API integration, browser interaction, local restore, export/share, and mobile/desktop viewport checks.
 10. A tool is not complete while its canonical page redirects elsewhere, displays a release notice instead of the functional UI, or exposes only a subset engine that contradicts its labels.
+11. The exact context schema, result envelope, serialization, import behavior, per-tool edge cases and test matrix are normative in `TOOL-IMPLEMENTATION-CONTRACT.md`; a worker may not replace them with an inferred design.
 
 ## 4. TOOL-FORM — Formulation and lye calculator
 
@@ -96,7 +98,7 @@ Synthetic algebra vectors from `CALCULATION-SPEC.md` §14; NaOH, KOH, mixed-alka
 - transfer to recipe scaling and formulation.
 
 ### Formula contract
-Use `CALCULATION-SPEC.md` §§3.2, 11 and 14.2. Geometry determines volume. `calibratedDensity = priorBatterMass / priorOccupiedVolume`; `targetBatterMass = targetFillVolume × calibratedDensity`. No universal density constant or false point estimate. Metric/imperial conversions use tested exact factors.
+Use `CALCULATION-SPEC.md` §§5.3, 10, 13.3, 14.7 and 15 and `TOOL-IMPLEMENTATION-CONTRACT.md` §4. Geometry determines volume. `calibratedDensity = priorBatterMass / priorOccupiedVolume`; `targetBatterMass = targetFillVolume × calibratedDensity`. No universal density constant or false point estimate. Metric/imperial conversions use tested exact factors.
 
 ### Required proof
 Rectangular, cylindrical, water-fill, irregular, metric/imperial equivalence, calibration, uncalibrated range, invalid dimension, overfill, multi-mold, and reverse-scaling browser/API vectors.
@@ -143,7 +145,7 @@ Scale up/down/no-op, unit conversion, decimals, zero/negative rejection, sums in
 - handoff to wholesale pricing, event planning, production, and purchasing.
 
 ### Formula contract
-Use `CALCULATION-SPEC.md` §§3.3, 12 and 14.3. `saleableUnits = made - trim - samples - defects - retainedTesting`; cost per saleable unit uses that denominator. Missing basis is never zero. Markup is `(price-cost)/cost`; gross margin is `(price-cost)/price`.
+Use `CALCULATION-SPEC.md` §§2.3, 3.3, 4, 11, 13.2 and 14.6 and `TOOL-IMPLEMENTATION-CONTRACT.md` §6. `saleableUnits = made - trim - samples - defects - retainedTesting`; cost per saleable unit uses that denominator. Missing basis is never zero. Markup is `(price-cost)/cost`; gross margin is `(price-cost)/price`.
 
 ### Required proof
 Complete and incomplete basis, packaging/labor/overhead, zero saleable units, waste categories, currency mismatch, saleable-vs-made cost, markup-vs-margin reference vectors, API/UI parity, local restore, and export/share.
@@ -155,7 +157,7 @@ Complete and incomplete basis, packaging/labor/overhead, zero saleable units, wa
 - pricing mode: target markup or target gross margin;
 - target percentage;
 - percentage and fixed per-unit channel/payment fees;
-- optional wholesale discount from retail, MOQ, case/pack multiple, and order quantity;
+- optional quoted discount applied to list price, MOQ, case/pack multiple, requested quantity, and user-entered retail comparison price;
 - one currency code and quote metadata.
 
 ### Outputs
@@ -167,7 +169,7 @@ Complete and incomplete basis, packaging/labor/overhead, zero saleable units, wa
 - printable/downloadable quote or price sheet with assumptions and validity metadata.
 
 ### Formula contract
-Use `CALCULATION-SPEC.md` §§3.3, 12 and 14.3. Markup and gross margin are different modes. Where percentage fee `f` and fixed fee `x` apply, solve price algebraically; do not approximate with a markup multiplier. Percentages that make the denominator non-positive block.
+Use `CALCULATION-SPEC.md` §§3.3.2–3.3.6, 4, 11.2–11.7, 12.2, 13.2 and 14.6 and `TOOL-IMPLEMENTATION-CONTRACT.md` §7. Markup and gross margin are different modes. Discount and percentage/fixed fees are part of the algebraic solve; they are not applied afterward while preserving a false target claim. Percentages that make the denominator non-positive block.
 
 ### Required proof
 Markup and margin vectors, fee vector, impossible percentage, incomplete cost, MOQ/pack rounding, retail comparison, quote print layout, and API/UI parity.
@@ -189,7 +191,7 @@ Markup and margin vectors, fee vector, impossible percentage, incomplete cost, M
 - feasibility warnings for non-positive contribution or insufficient stock.
 
 ### Formula contract
-Use `CALCULATION-SPEC.md` §§3.4 and 14.4. `weightedContribution = Σ(mixShare × unitContribution)`; `breakEvenUnits = ceil(fixedCosts / weightedContribution)`; `targetProfitUnits = ceil((fixedCosts + targetProfit) / weightedContribution)`. Zero fixed costs yields zero break-even units. Non-positive weighted contribution blocks.
+Use `CALCULATION-SPEC.md` §§3.3.6, 3.4, 4, 11.4, 12.1 and 13.2 and `TOOL-IMPLEMENTATION-CONTRACT.md` §8. `weightedContribution = Σ(mixShare × unitContribution)`; `breakEvenUnits = ceil(fixedCosts / weightedContribution)`; `targetProfitUnits = ceil((fixedCosts + targetProfit) / weightedContribution)`. Zero fixed costs yields zero break-even units only when weighted contribution is positive. Non-positive contribution blocks. Invalid shares require correction or an explicit user-requested normalization action.
 
 ### Required proof
 Single/multi-product, mix normalization, zero fixed cost, percentage/fixed fees, target profit, sell-through, stock ceiling, non-positive contribution, rounding-up boundary, and imported pricing context.
@@ -211,7 +213,7 @@ Single/multi-product, mix normalization, zero fixed cost, percentage/fixed fees,
 - transfer to purchase planner and batch record/export.
 
 ### Formula contract
-Use date-only arithmetic. Back-plan from ready-by date by the entered intervals and buffer. `batchesRequired = ceil(targetSaleableUnits / saleableUnitsPerBatch)`. Schedule across allowed production days without time-of-day drift. Cure readiness is a user decision.
+Use `CALCULATION-SPEC.md` §§3.6, 12.3, 12.5–12.6 and `TOOL-IMPLEMENTATION-CONTRACT.md` §9. Use date-only arithmetic. `batchesRequired = ceil(targetSaleableUnits / saleableUnitsPerBatch)`. Backward allocation obeys both daily and ISO-week capacity, production weekdays, blackout dates and planning start. Cure readiness is a user decision.
 
 ### Required proof
 Leap year/month boundary/DST-zone independence, zero or negative validation, exact ceiling, blackout dates, insufficient capacity, imported yield, print/export, and mobile date workflow.
@@ -234,7 +236,7 @@ Leap year/month boundary/DST-zone independence, zero or negative validation, exa
 - no inventory depletion claim unless an explicit completed-batch action exists.
 
 ### Formula contract
-Aggregate normalized quantities first. `usableStock = max(0, onHand - reserved)`; `netNeed = max(0, grossRequirement × (1 + buffer) - usableStock)`; `packs = ceil(netNeed / packSize)`; landed unit cost includes applicable shipping/fees. Never compare or total mixed currencies.
+Use `CALCULATION-SPEC.md` §§2.3, 3.5, 4, 11.7, 12.4 and `TOOL-IMPLEMENTATION-CONTRACT.md` §10. Aggregate normalized quantities by stable ingredient ID first. Apply buffer once, then subtract usable stock. Pack rounding, minimum packs, minimum spend, shipping and fees are explicit. Never compare or total mixed currencies.
 
 ### Required proof
 Multi-batch aggregation, unit normalization, sufficient stock, reserved stock, pack ceiling/exact multiple, overbuy, supplier landed-cost comparison, minimum order, mixed-currency block, zero need, and context import.
