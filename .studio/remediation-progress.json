@@ -1,0 +1,30 @@
+{
+  "$schema": "https://studioforge.dev/schemas/build-progress.json",
+  "version": "1.0.0",
+  "contract": "product/POST-AUDIT-REMEDIATION-CONTRACT.md",
+  "updatedAt": "2026-09-13T07:20:00Z",
+  "releaseTruth": "Post-audit remediation active. Prior acceptance evidence is not release-valid for the remediated tools.",
+  "remediationSlices": {
+    "REM-001": {
+      "status": "VERIFYING",
+      "scope": "Mold capacity correctness and decision clarity",
+      "evidence": [
+        "RED: npx vitest run lib/calculations/sizing.test.ts — estimateMoldCapacity is not a function",
+        "GREEN: npx vitest run lib/calculations/sizing.test.ts — 4/4 passing",
+        "GREEN: npm run typecheck — exit 0",
+        "GREEN: npm run lint — exit 0 with pre-existing repository warnings",
+        "GREEN: npm test — 186/186 passing"
+      ],
+      "blockedEvidence": "Local Next dev process accepted startup but http://127.0.0.1:3000/tools/mold-volume returned no headers within 30 seconds; browser navigation timed out. npm run build also timed out after 300 seconds during ‘Creating an optimized production build’. The design scan reports existing banned patterns elsewhere in the repository and itself timed out. Desktop and 390px browser evidence remains required before independent acceptance.",
+      "reviewRequired": true
+    },
+    "REM-002": { "status": "READY", "dependsOn": [] },
+    "REM-003": { "status": "BLOCKED", "dependsOn": ["REM-002"] },
+    "REM-004": { "status": "BLOCKED", "dependsOn": ["REM-001"] },
+    "REM-005": { "status": "BLOCKED", "dependsOn": ["REM-003"] },
+    "REM-006": { "status": "BLOCKED", "dependsOn": ["REM-001"] },
+    "REM-007": { "status": "BLOCKED", "dependsOn": ["REM-006"] },
+    "REM-008": { "status": "BLOCKED_ON_EXTERNAL_EVIDENCE", "dependsOn": ["CHEM-GATE"] },
+    "REM-009": { "status": "BLOCKED", "dependsOn": ["REM-001", "REM-002", "REM-003", "REM-004", "REM-005", "REM-006", "REM-007", "REM-008"] }
+  }
+}

@@ -6,6 +6,11 @@
   },
   "activationMetric": "New visitor completes one full public tool without authentication",
   "approvalBoundary": "BUILD_AUTHORIZED by Isaac on 2026-09-11 for all eight researched public tools; RELEASE_ACCEPTED is reserved for independent deployed verification",
+  "postAuditRemediation": {
+    "contract": "product/POST-AUDIT-REMEDIATION-CONTRACT.md",
+    "status": "ACTIVE",
+    "rule": "Prior acceptance evidence is not release-valid for the remediated capabilities until the named remediation receives independent browser review."
+  },
   "capabilities": [
     {
       "acceptanceRows": [
