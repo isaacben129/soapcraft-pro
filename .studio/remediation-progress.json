@@ -18,7 +18,19 @@
       "blockedEvidence": "Local Next dev process accepted startup but http://127.0.0.1:3000/tools/mold-volume returned no headers within 30 seconds; browser navigation timed out. npm run build also timed out after 300 seconds during ‘Creating an optimized production build’. The design scan reports existing banned patterns elsewhere in the repository and itself timed out. Desktop and 390px browser evidence remains required before independent acceptance.",
       "reviewRequired": true
     },
-    "REM-002": { "status": "READY", "dependsOn": [] },
+    "REM-002": {
+      "status": "VERIFYING",
+      "scope": "Batch cost commercial semantics and task-first UX",
+      "evidence": [
+        "RED: npx vitest run app/api/calculate/batch-cost/route.test.ts — $1 at 40% target margin returned $1.40 instead of $1.666…",
+        "GREEN: npx vitest run app/api/calculate/batch-cost/route.test.ts lib/calculations/batch-cost.test.ts — 21/21 passing",
+        "GREEN: npm run typecheck — exit 0",
+        "GREEN: npm run lint — exit 0 with 77 pre-existing warnings",
+        "GREEN: npm test — 21 test files / 193 tests passing"
+      ],
+      "blockedEvidence": "Local Next dev --webpack remains running but did not emit a ready log or HTTP headers; curl to the Batch Cost route timed out after 20 seconds. Browser evidence at desktop and 390px remains required before independent acceptance.",
+      "reviewRequired": true
+    },
     "REM-003": { "status": "BLOCKED", "dependsOn": ["REM-002"] },
     "REM-004": { "status": "BLOCKED", "dependsOn": ["REM-001"] },
     "REM-005": { "status": "BLOCKED", "dependsOn": ["REM-003"] },

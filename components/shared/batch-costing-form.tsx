@@ -24,7 +24,8 @@ export function BatchCostingForm() {
   const [fragranceCost, setFragranceCost] = useState("");
   const [otherCosts, setOtherCosts] = useState("");
   const [batchYieldBars, setBatchYieldBars] = useState("");
-  const [targetMargin, setTargetMargin] = useState("40");
+  const [pricingMode, setPricingMode] = useState<"gross_margin" | "markup">("gross_margin");
+  const [targetPercentage, setTargetPercentage] = useState("40");
   const [result, setResult] = useState<{
     totalCost: number;
     costPerBar: number;
@@ -79,7 +80,7 @@ export function BatchCostingForm() {
           fragranceCost: Number(fragranceCost) || 0,
           otherCosts: Number(otherCosts) || 0,
           batchYieldBars: Number(batchYieldBars),
-          targetMargin: Number(targetMargin) || 0,
+          [pricingMode === "gross_margin" ? "targetGrossMargin" : "targetMarkupPercent"]: Number(targetPercentage) || 0,
         }),
       });
 
@@ -223,14 +224,27 @@ export function BatchCostingForm() {
           </div>
         </div>
 
-        {/* Target margin */}
+        {/* Target percentage with mode selector */}
         <div>
-          <label className="text-sm text-muted-foreground block mb-1">Target margin (%)</label>
+          <div className="flex items-center gap-4 mb-2">
+            <label className="text-sm text-muted-foreground block mb-0">Target price basis</label>
+            <select
+              value={pricingMode}
+              onChange={(e) => setPricingMode(e.target.value as "gross_margin" | "markup")}
+              className="px-3 py-1.5 bg-sheet border border-rule rounded-md text-foreground text-sm focus:outline-none focus:border-action"
+            >
+              <option value="gross_margin">Target Gross Margin</option>
+              <option value="markup">Target Markup</option>
+            </select>
+          </div>
+          <label className="text-sm text-muted-foreground block mb-1">
+            {pricingMode === "gross_margin" ? "Target gross margin (%)" : "Target markup (%)"}
+          </label>
           <input
             type="number"
-            placeholder="40"
-            value={targetMargin}
-            onChange={(e) => setTargetMargin(e.target.value)}
+            placeholder={pricingMode === "gross_margin" ? "40" : "40"}
+            value={targetPercentage}
+            onChange={(e) => setTargetPercentage(e.target.value)}
             className="w-32 px-3 py-2 bg-sheet border border-rule rounded-md text-foreground placeholder-muted-foreground text-sm focus:outline-none focus:border-action"
           />
         </div>
