@@ -43,6 +43,9 @@
     "skills",
     "scripts",
     "tests",
-    "docs"
+    "docs",
+    "e2e",
+    "playwright.config.ts",
+    ".next/dev"
   ]
 }

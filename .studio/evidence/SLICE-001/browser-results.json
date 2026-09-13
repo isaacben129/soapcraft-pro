@@ -1,0 +1,66 @@
+[
+  {
+    "name": "desktop",
+    "width": 1440,
+    "height": 1000,
+    "title": "SoapCraft Pro — Recipe, Batch & Profitability Workspace",
+    "cardCount": 8,
+    "headings": [
+      "Formulation",
+      "Mold Volume",
+      "Recipe Scaling",
+      "Batch Cost",
+      "Wholesale Pricing",
+      "Ready-by Planner",
+      "Craft-Fair Break-Even",
+      "Ingredient Purchase Planner"
+    ],
+    "statuses": [
+      "Unavailable — chemistry safety-gated",
+      "Preview",
+      "Preview",
+      "Preview",
+      "Preview",
+      "Unavailable — in build",
+      "Preview",
+      "Unavailable — in build"
+    ],
+    "guidanceComplete": true,
+    "pageOverflow": false,
+    "viewportWidth": 1440,
+    "scrollWidth": 1440,
+    "artifact": "/opt/data/studio/apps/soapcraft-pro/.studio/evidence/SLICE-001/tools-desktop.png"
+  },
+  {
+    "name": "mobile",
+    "width": 390,
+    "height": 844,
+    "title": "SoapCraft Pro — Recipe, Batch & Profitability Workspace",
+    "cardCount": 8,
+    "headings": [
+      "Formulation",
+      "Mold Volume",
+      "Recipe Scaling",
+      "Batch Cost",
+      "Wholesale Pricing",
+      "Ready-by Planner",
+      "Craft-Fair Break-Even",
+      "Ingredient Purchase Planner"
+    ],
+    "statuses": [
+      "Unavailable — chemistry safety-gated",
+      "Preview",
+      "Preview",
+      "Preview",
+      "Preview",
+      "Unavailable — in build",
+      "Preview",
+      "Unavailable — in build"
+    ],
+    "guidanceComplete": true,
+    "pageOverflow": false,
+    "viewportWidth": 390,
+    "scrollWidth": 390,
+    "artifact": "/opt/data/studio/apps/soapcraft-pro/.studio/evidence/SLICE-001/tools-mobile.png"
+  }
+]

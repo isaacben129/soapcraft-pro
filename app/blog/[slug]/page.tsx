@@ -7,6 +7,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getBlogPost, getAllBlogSlugs, getRelatedPosts } from "@/lib/blog";
 import { serializeJsonLd } from "@/lib/seo/json-ld";
+import { SITE_URL } from "@/lib/seo/site-url";
 
 export const dynamicParams = false;
 
@@ -34,7 +35,7 @@ export async function generateMetadata({
       type: "article",
       publishedTime: post.publishedAt,
       authors: [post.author],
-      url: `https://soapcraft-pro.vercel.app/blog/${post.slug}`,
+      url: `${SITE_URL}/blog/${post.slug}`,
       images: post.image
         ? [{ url: post.image, alt: post.imageAlt || post.title }]
         : undefined,
@@ -69,7 +70,7 @@ function ArticleJsonLd(post: {
       "@type": "Organization",
       name: "SoapCraft Pro",
     },
-    url: `https://soapcraft-pro.vercel.app/blog/${post.slug}`,
+    url: `${SITE_URL}/blog/${post.slug}`,
     image: post.image
       ? {
           "@type": "ImageObject",
@@ -91,19 +92,19 @@ function BreadcrumbJsonLd(slug: string) {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://soapcraft-pro.vercel.app",
+        item: SITE_URL,
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Blog",
-        item: "https://soapcraft-pro.vercel.app/blog",
+        item: `${SITE_URL}/blog`,
       },
       {
         "@type": "ListItem",
         position: 3,
         name: parts[parts.length - 1]?.replace(/-/g, " ") || slug,
-        item: `https://soapcraft-pro.vercel.app/blog/${slug}`,
+        item: `${SITE_URL}/blog/${slug}`,
       },
     ],
   };
@@ -172,7 +173,7 @@ function formatContent(content: string) {
             <img
               src={match[2]}
               alt={match[1]}
-              className="w-full rounded-lg border border-border"
+              className="w-full object-cover"
             />
             {match[1] && (
               <figcaption className="mt-2 text-xs text-muted-foreground text-center">
@@ -271,7 +272,7 @@ export default async function BlogPostPage({
               <img
                 src={post.image}
                 alt={post.imageAlt || post.title}
-                className="w-full rounded-lg border border-border"
+                className="w-full object-cover"
               />
               {post.imageAlt && (
                 <figcaption className="mt-2 text-xs text-muted-foreground text-center">
@@ -286,7 +287,7 @@ export default async function BlogPostPage({
             {post.tags.map((tag) => (
               <span
                 key={tag}
-                className="rounded-full bg-muted px-3 py-1 text-xs text-muted-foreground"
+                className="border border-border bg-muted px-3 py-1 text-xs text-muted-foreground"
               >
                 {tag}
               </span>
@@ -297,6 +298,8 @@ export default async function BlogPostPage({
           <div className="mt-12 prose prose-lg max-w-none">
             {formatContent(post.content)}
           </div>
+
+          {post.contextualCTA ? <div className="mt-12 border-y-2 border-primary bg-muted p-6"><p className="text-xs font-bold uppercase tracking-[.14em] text-primary">Next step</p><h2 className="mt-2 text-2xl font-bold">Take this into your own batch</h2><p className="mt-2 text-muted-foreground">Turn the ideas in this article into a concrete decision with a free SoapCraft Pro tool.</p><Link href={post.contextualCTA.href} className="mt-4 inline-flex font-bold text-primary hover:underline">{post.contextualCTA.text} <span aria-hidden="true" className="ml-2">↗</span></Link></div> : null}
 
           {/* Related articles */}
           {related.length > 0 && (

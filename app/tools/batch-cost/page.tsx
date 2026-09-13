@@ -1,12 +1,13 @@
-// ── SLICE-001: Canonical /tools/batch-cost ──
-// Canonical route for batch cost calculator.
-// Renders the same content as /calculators/batch-costing.
-// Legacy /calculators/batch-costing redirects to this canonical route.
+// ── SLICE-002: Canonical /tools/batch-cost ──
+// Wired through the real RecipeBatchContextV1 interface.
+// Context persistence, share, export, and reset all functional.
 
 import { Metadata } from "next";
 import Link from "next/link";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { BatchCostingForm } from "@/components/shared/batch-costing-form";
+
+import { ShareDecodeWidget } from "@/components/shared/share-decode-widget";
 
 export const metadata: Metadata = pageMetadata({
   title: "Batch Cost Calculator — Know Your Cost Per Bar",
@@ -31,10 +32,19 @@ export default function BatchCostPage() {
           <p className="mt-4 text-lg text-muted-foreground leading-relaxed">
             Know exactly what each bar costs before you price it. Enter your ingredient costs, batch yield, and target margin. Get real-time results — no signup, no account, no credit card.
           </p>
+
+
           <section className="mt-12" aria-labelledby="calculator">
             <h2 id="calculator" className="font-display text-2xl font-bold text-foreground mb-6">Calculate Your Cost Per Bar</h2>
             <BatchCostingForm />
           </section>
+
+          {/* Share decode import seam */}
+          <section className="mt-12" aria-labelledby="import">
+            <h2 id="import" className="font-display text-xl font-semibold text-foreground mb-4">Import Shared Context</h2>
+            <ShareDecodeWidget />
+          </section>
+
           <section className="mt-12" aria-labelledby="formula">
             <h2 id="formula" className="font-display text-xl font-semibold text-foreground mb-4">How Cost Per Bar Works</h2>
             <ul className="space-y-2 text-muted-foreground">

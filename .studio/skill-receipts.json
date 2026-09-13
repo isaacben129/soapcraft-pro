@@ -5,6 +5,8 @@
   "description": "Planning receipts for the eight-tool public build contract",
   "receipts": [
     {
+      "applied": true,
+      "artifact": "receipt-record",
       "skill": "studio-product-contract",
       "trigger": "Reconcile every researched public tool into user-observable acceptance and atomic slices",
       "stage": "Product Contract",
@@ -14,6 +16,8 @@
       "timestamp": "2026-09-11T00:00:00Z"
     },
     {
+      "applied": true,
+      "artifact": "receipt-record",
       "skill": "studio-experience-routing",
       "trigger": "Connected anonymous tool journeys and route reconciliation",
       "stage": "Experience Routing",
@@ -23,13 +27,92 @@
       "timestamp": "2026-09-11T00:05:00Z"
     },
     {
-      "skill": "design/app-life-and-style",
+      "applied": true,
+      "artifact": "receipt-record",
+      "skill": "app-life-and-style",
       "trigger": "Every tool needs complete interaction states and mobile usability",
       "stage": "Experience Quality",
       "outputArtifact": "product/PRD.md §8-9 and per-slice browser exit criteria",
       "acceptanceIds": ["UTIL-001", "CTX-001", "F-07", "F-09", "F-12"],
       "evidence": "Contract requires empty/editing/validating/result/warning/error/save/share/print states, 44px targets, keyboard completion and desktop/mobile proof.",
       "timestamp": "2026-09-11T00:10:00Z"
+    },
+    {
+      "applied": true,
+      "artifact": "receipt-record",
+      "skill": "studio-build",
+      "trigger": "Execute the SoapCraft Forge build and reconcile verification truth",
+      "stage": "Forge execution",
+      "outputArtifact": ".studio/acceptance.json; .studio/verification-report.json; .studio/skill-receipts.json",
+      "acceptanceIds": [],
+      "evidence": "Ran acceptance audit, focused/full regression checks, typecheck, diff hygiene, and bounded build/runtime diagnostics. Release remains rejected because browser/deployed evidence is unavailable.",
+      "timestamp": "2026-09-12T18:20:00Z"
+    },
+    {
+      "applied": true,
+      "artifact": "receipt-record",
+      "skill": "studio-app-implementation",
+      "trigger": "Repair anonymous-first Batch Cost context continuity",
+      "stage": "Implementation",
+      "outputArtifact": "components/shared/batch-costing-form.tsx; components/shared/recipe-batch-context.tsx; lib/context/RecipeBatchContextV1.ts",
+      "acceptanceIds": ["TOOL-COST", "CTX-001"],
+      "evidence": "Batch Cost now mounts one context manager, binds costing results, and context reset deletes only the active storage record.",
+      "timestamp": "2026-09-12T18:20:00Z"
+    },
+    {
+      "applied": true,
+      "artifact": "receipt-record",
+      "skill": "test-driven-development",
+      "trigger": "Protect context export/reset and anonymous API route behavior",
+      "stage": "Regression",
+      "outputArtifact": "lib/context/RecipeBatchContextV1.test.ts; lib/routing/public-routes.test.ts",
+      "acceptanceIds": ["CTX-001", "F-07"],
+      "evidence": "Focused Vitest run passed 34/34 tests; full suite had previously passed 184/184 in this run lineage.",
+      "timestamp": "2026-09-12T18:20:00Z"
+    },
+    {
+      "applied": true,
+      "artifact": "receipt-record",
+      "skill": "debugging",
+      "trigger": "Diagnose Next dev/build startup and anonymous API redirect",
+      "stage": "Runtime diagnosis",
+      "outputArtifact": "lib/routing/public-routes.ts; runtime command output",
+      "acceptanceIds": ["F-01", "F-07"],
+      "evidence": "Identified the API auth boundary and patched public calculation prefixes. Next dev and production compilation still hang in WSL at runtime/optimized compilation.",
+      "timestamp": "2026-09-12T18:20:00Z"
+    },
+    {
+      "applied": true,
+      "artifact": "receipt-record",
+      "skill": "requesting-code-review",
+      "trigger": "Pre-acceptance quality gate",
+      "stage": "Quality gate",
+      "outputArtifact": "git diff --check; npm run typecheck; Vitest output",
+      "acceptanceIds": [],
+      "evidence": "Diff check and typecheck passed; independent review and browser proof remain pending, so no verified release claim is made.",
+      "timestamp": "2026-09-12T18:20:00Z"
+    },
+    {
+      "applied": true,
+      "artifact": "receipt-record",
+      "skill": "app-life-and-style",
+      "trigger": "Audit public tool interaction states and mobile journey requirements",
+      "stage": "Experience quality",
+      "outputArtifact": "product/PRD.md; product/FLOWS.md; product/PUBLIC-TOOL-CONTRACT.md",
+      "acceptanceIds": ["UTIL-001", "F-07", "F-09", "F-12"],
+      "evidence": "Used the required interaction-state and browser/mobile verification criteria while preserving the release rejection for missing runtime evidence.",
+      "timestamp": "2026-09-12T18:20:00Z"
+    },
+    {
+      "applied": true,
+      "artifact": "receipt-record",
+      "skill": "impeccable-design",
+      "trigger": "Remove misleading scaffold/placeholder language from public tool surfaces",
+      "stage": "Experience quality",
+      "outputArtifact": "app/tools/page.tsx; app/tools/wholesale-pricing/page.tsx; app/tools/ready-by-planner/page.tsx; app/tools/ingredient-purchase-planner/page.tsx",
+      "acceptanceIds": ["UTIL-001"],
+      "evidence": "Replaced placeholder-form wording with truthful unavailable/in-build language; no visual acceptance was claimed.",
+      "timestamp": "2026-09-12T18:20:00Z"
     }
   ],
   "missingSkills": [],

@@ -17,4 +17,9 @@ describe("canBypassAuth", () => {
   it("does not make private application routes public", () => {
     expect(canBypassAuth("/workspace")).toBe(false);
   });
+
+  it("allows anonymous calculation APIs", () => {
+    expect(canBypassAuth("/api/calculate/batch-cost")).toBe(true);
+    expect(canBypassAuth("/api/calculate/wholesale-pricing")).toBe(true);
+  });
 });

@@ -1,102 +1,30 @@
-// ── Navbar ──────────────────────────────────
-// Top-level navigation for the public site.
-// Uses Lucide icons per DESIGN.md §4.5 (no emoji brand).
-// SLICE-001: Removed pricing, subscription, and marketing routes from navigation.
-
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Calculator, FlaskConical, ArrowRight } from "lucide-react";
+import { ArrowRight, Beaker, BookOpen, Calculator, Menu, X } from "lucide-react";
+import { useState } from "react";
 
-const navItems = [
-  { href: "/tools", label: "All tools", icon: Calculator },
+const primary = [
+  { href: "/tools", label: "Toolbox", icon: Calculator },
+  { href: "/blog", label: "Blog", icon: BookOpen },
+  { href: "/methodology", label: "Methodology", icon: Beaker },
 ];
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
-
-  return (
-    <>
-      <header className="fixed top-0 left-0 right-0 z-40 border-b border-rule bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <nav className="container mx-auto px-4 h-16 flex items-center justify-between" aria-label="Main navigation">
-          <Link href="/" className="flex items-center gap-2 font-display font-bold text-ink hover:text-action transition-colors">
-            <FlaskConical aria-hidden="true" className="h-5 w-5 text-action" />
-            <span>SoapCraft Pro</span>
-          </Link>
-
-          <div className="hidden md:flex items-center gap-1">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                    isActive ? "bg-action/10 text-action" : "text-ink-muted hover:text-ink hover:bg-ledger"
-                  }`}
-                >
-                  <Icon className="h-4 w-4" />
-                  {item.label}
-                </Link>
-              );
-            })}
-          </div>
-
-          <div className="hidden md:flex items-center gap-3">
-            <Link
-              href="/tools"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-action text-action-text rounded-md font-medium hover:bg-action-hover transition-colors text-sm"
-            >
-              Open tools
-              <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
-          </div>
-
-          <button
-            onClick={() => setOpen(!open)}
-            className="md:hidden w-10 h-10 flex items-center justify-center rounded-md text-ink-muted hover:text-ink hover:bg-ledger transition-colors"
-            aria-label="Toggle menu"
-          >
-            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
-        </nav>
-      </header>
-
-      {open && (
-        <div className="fixed inset-0 z-50 md:hidden">
-          <div className="absolute inset-0 bg-background/95 backdrop-blur" />
-          <nav className="absolute top-16 left-0 right-0 p-4 space-y-1" aria-label="Mobile navigation">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className={`flex items-center gap-2 px-4 py-3 rounded-md text-sm font-medium ${
-                    isActive ? "bg-action/10 text-action" : "text-ink-muted hover:text-ink hover:bg-ledger"
-                  }`}
-                >
-                  <Icon className="h-5 w-5" />
-                  {item.label}
-                </Link>
-              );
-            })}
-            <Link
-              href="/tools"
-              onClick={() => setOpen(false)}
-              className="block px-4 py-3 rounded-md text-sm font-medium bg-action text-action-text text-center mt-2"
-            >
-              Open tools
-            </Link>
-          </nav>
-        </div>
-      )}
-    </>
-  );
+  const active = (href: string) => href === "/" ? pathname === "/" : pathname.startsWith(href);
+  return <header className="sticky top-0 z-40 border-b border-border bg-background">
+    <nav className="mx-auto flex min-h-[68px] max-w-7xl items-center justify-between gap-6 px-5 sm:px-8" aria-label="Main navigation">
+      <Link href="/" className="group flex shrink-0 items-center gap-3" onClick={() => setOpen(false)}>
+        <span className="grid h-9 w-9 place-items-center bg-primary text-primary-foreground"><span className="text-lg font-black">S</span></span>
+        <span><span className="block font-display text-lg font-bold tracking-tight text-foreground">SoapCraft Pro</span><span className="block text-[10px] font-bold uppercase tracking-[.16em] text-primary">Utility hub</span></span>
+      </Link>
+      <div className="hidden items-center gap-6 md:flex">{primary.map(({ href, label, icon: Icon }) => <Link key={href} href={href} className={`inline-flex items-center gap-2 border-b-2 py-5 text-sm font-semibold transition ${active(href) ? "border-primary text-primary" : "border-transparent text-foreground/70 hover:border-primary/40 hover:text-foreground"}`}><Icon className="h-4 w-4" />{label}</Link>)}</div>
+      <div className="hidden items-center gap-3 md:flex"><Link href="/tools" className="inline-flex items-center gap-2 bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground transition hover:bg-primary/90">Open toolbox <ArrowRight className="h-4 w-4" /></Link></div>
+      <button type="button" className="grid h-11 w-11 place-items-center border border-border bg-card text-foreground md:hidden" onClick={() => setOpen((value) => !value)} aria-expanded={open} aria-label={open ? "Close menu" : "Open menu"}>{open ? <X /> : <Menu />}</button>
+    </nav>
+    {open && <div className="border-t border-border bg-background px-5 py-4 md:hidden"><div className="mx-auto grid max-w-7xl gap-1">{primary.map(({ href, label, icon: Icon }) => <Link key={href} href={href} onClick={() => setOpen(false)} className={`flex min-h-12 items-center gap-3 border-b border-border px-2 font-semibold ${active(href) ? "text-primary" : "text-foreground"}`}><Icon className="h-5 w-5" />{label}</Link>)}<Link href="/tools" onClick={() => setOpen(false)} className="mt-3 flex min-h-12 items-center justify-center bg-primary font-bold text-primary-foreground">Open toolbox</Link></div></div>}
+  </header>;
 }

@@ -1,37 +1,21 @@
-import { MetadataRoute } from "next";
-import { blogPosts } from "@/lib/blog";
+import type { MetadataRoute } from "next";
+import { canonicalRoutes } from "@/lib/routing/canonical-routes";
 import { getPublishedEntries } from "@/lib/seo/intent-registry";
+import { getPublishedPosts } from "@/lib/blog";
 import { SITE_URL } from "@/lib/seo/site-url";
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const publishedEntries = getPublishedEntries();
-  const blogSlugs = blogPosts.map((post) => post.slug);
-
-  const staticPages: MetadataRoute.Sitemap = [
-    { url: SITE_URL, lastModified: new Date() },
-    { url: `${SITE_URL}/blog`, lastModified: new Date() },
-    { url: `${SITE_URL}/tools`, lastModified: new Date() },
-    { url: `${SITE_URL}/tools/batch-cost`, lastModified: new Date() },
-    { url: `${SITE_URL}/tools/recipe-scaling`, lastModified: new Date() },
-    { url: `${SITE_URL}/tools/mold-volume`, lastModified: new Date() },
-    { url: `${SITE_URL}/tools/craft-fair-break-even`, lastModified: new Date() },
-    { url: `${SITE_URL}/methodology`, lastModified: new Date() },
-    { url: `${SITE_URL}/safety`, lastModified: new Date() },
-    { url: `${SITE_URL}/privacy`, lastModified: new Date() },
-    { url: `${SITE_URL}/terms`, lastModified: new Date() },
-    { url: `${SITE_URL}/privacy-pinterest`, lastModified: new Date() },
-    { url: `${SITE_URL}/terms-pinterest`, lastModified: new Date() },
-  ];
-
-  const blogPages: MetadataRoute.Sitemap = blogSlugs.map((slug) => ({
-    url: `${SITE_URL}/blog/${slug}`,
-    lastModified: new Date(),
-  }));
-
-  const seoPages: MetadataRoute.Sitemap = publishedEntries.map((entry) => ({
-    url: `${SITE_URL}${entry.path}`,
-    lastModified: new Date(),
-  }));
-
-  return [...staticPages, ...blogPages, ...seoPages];
+export default function sitemap(): MetadataRoute.Sitemap {
+  const paths = new Map<string, MetadataRoute.Sitemap[number]>();
+  const add = (path: string, lastModified?: string) => paths.set(path, {
+    url: `${SITE_URL}${path}`,
+    ...(lastModified ? { lastModified } : {}),
+  });
+  add("/");
+  add("/tools");
+  add("/blog");
+  add("/methodology");
+  for (const route of canonicalRoutes) add(route.path);
+  for (const entry of getPublishedEntries()) add(entry.path);
+  for (const post of getPublishedPosts()) add(`/blog/${post.slug}`, post.lastReviewed || post.publishedAt);
+  return [...paths.values()];
 }

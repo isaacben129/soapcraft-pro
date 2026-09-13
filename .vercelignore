@@ -27,4 +27,6 @@ references
 skills
 scripts
 tests
+e2e
+playwright.config.ts
 docs

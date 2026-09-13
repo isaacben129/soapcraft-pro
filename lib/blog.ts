@@ -45,7 +45,17 @@ export function getBlogPostFrom(
   posts: BlogPost[],
   slug: string
 ): BlogPost | undefined {
-  return filterPublishedPosts(posts).find((post) => post.slug === slug);
+  const post = filterPublishedPosts(posts).find((entry) => entry.slug === slug);
+  if (!post) return undefined;
+  if (post.contextualCTA) return post;
+  const ctaByCategory: Record<string, BlogPost["contextualCTA"]> = {
+    "Soap Calculators": { text: "Open the calculators", href: "/tools" },
+    Formulation: { text: "Review the chemistry boundary", href: "/tools/formulation" },
+    Ingredients: { text: "Plan what to buy", href: "/tools/ingredient-purchase-planner" },
+    Production: { text: "Plan the production date", href: "/tools/ready-by-planner" },
+    "Soap Business": { text: "Calculate batch cost", href: "/tools/batch-cost" },
+  };
+  return { ...post, contextualCTA: ctaByCategory[post.category] ?? { text: "Browse the toolbox", href: "/tools" } };
 }
 
 export function getAllBlogSlugsFrom(posts: BlogPost[]): string[] {

@@ -1,39 +1,13 @@
 {
   "$schema": "https://studioforge.dev/schemas/acceptance.json",
-  "schema": 1,
-  "version": "4.0.0",
-  "project": "SoapCraft Pro",
-  "repository": "/opt/data/studio/apps/soapcraft-pro",
-  "source_roots": ["app", "components", "lib", "middleware.ts"],
-  "goalMetric": "Weekly anonymous sessions that complete a correct result and continue into at least one connected tool without re-entry",
+  "MKT-DEFERRED-SELLER-PACK": {
+    "reason": "One-time payment remains deferred and may not block free public tools",
+    "scope": "out"
+  },
   "activationMetric": "New visitor completes one full public tool without authentication",
   "approvalBoundary": "BUILD_AUTHORIZED by Isaac on 2026-09-11 for all eight researched public tools; RELEASE_ACCEPTED is reserved for independent deployed verification",
-  "contractPrecedence": [
-    "product/CALCULATION-SPEC.md for numerical semantics",
-    "product/PUBLIC-TOOL-CONTRACT.md for public-tool behavior",
-    "this file for user-observable acceptance",
-    ".studio/slices.json for dependency order",
-    "current source is evidence, not specification"
-  ],
-  "constraints": {
-    "anonymousCore": "No login, email, payment, or cookie gate for a core result, export, share, or local restore",
-    "completeLoop": "A route, form, API, engine, or unit test alone is not a built tool; browser input-to-result-to-persistence-to-handoff must work",
-    "deterministic": "AI cannot invent or modify chemical, financial, date, sizing, or purchasing quantities",
-    "precision": "Full internal precision; rounding only for display/export",
-    "context": "Versioned Recipe/Batch Context transfers reviewed editable fields without personal data",
-    "chemistry": "Public chemistry fails closed until source, fixture, domain and safety receipts pass",
-    "money": "One currency per calculation; mixed currencies block",
-    "claims": "No unverified safety, cure, compliance, source, competitor, or business claim",
-    "release": "No product completion claim before Gate_A receives RELEASE_ACCEPTED"
-  },
   "capabilities": [
     {
-      "id": "TOOL-FORM",
-      "name": "Formulation and lye calculator",
-      "category": "public-tool",
-      "boundary": "deployed",
-      "route": "/tools/formulation",
-      "specRefs": ["PUBLIC-TOOL-CONTRACT.md §4", "CALCULATION-SPEC.md §§3,5-10,13-15", "TOOL-MARKET-REQUIREMENTS.md §§1.1-1.4"],
       "acceptanceRows": [
         "Anonymous user can enter one or more versioned oils and an explicit positive target oil mass; no hidden default recipe participates in calculation",
         "User can select NaOH, KOH, or mixed alkali; mixed KOH percentage is a share of full pure alkali equivalents",
@@ -46,15 +20,19 @@
         "While release receipts are incomplete the public API fails closed and the page truthfully explains the gate without returning quantities",
         "Synthetic NaOH, KOH, mixed, purity, superfat, all-water-mode, unit and deterministic-repeat fixtures pass",
         "A release-enabled deployed browser run completes formulation and transfers reviewed editable context to another tool"
+      ],
+      "boundary": "deployed",
+      "category": "public-tool",
+      "id": "TOOL-FORM",
+      "name": "Formulation and lye calculator",
+      "route": "/tools/formulation",
+      "specRefs": [
+        "PUBLIC-TOOL-CONTRACT.md \u00a74",
+        "CALCULATION-SPEC.md \u00a7\u00a73,5-10,13-15",
+        "TOOL-MARKET-REQUIREMENTS.md \u00a7\u00a71.1-1.4"
       ]
     },
     {
-      "id": "TOOL-MOLD",
-      "name": "Mold volume and capacity calculator",
-      "category": "public-tool",
-      "boundary": "e2e",
-      "route": "/tools/mold-volume",
-      "specRefs": ["PUBLIC-TOOL-CONTRACT.md §5", "CALCULATION-SPEC.md §§3.2,11,14.2", "TOOL-MARKET-REQUIREMENTS.md §2.1"],
       "acceptanceRows": [
         "User can calculate normalized volume from rectangular, cylindrical, measured-fill or irregular/measured inputs in metric or imperial units",
         "Fill percentage/headspace is explicit and validated",
@@ -65,15 +43,19 @@
         "Invalid dimensions, calibration, density or fill values preserve inputs and block output",
         "Geometry, calibration, range, unit-equivalence, irregular, multi-mold and reverse-scaling fixtures pass",
         "Browser result supports local restore, print/export/share and reviewed handoff to recipe scaling"
+      ],
+      "boundary": "e2e",
+      "category": "public-tool",
+      "id": "TOOL-MOLD",
+      "name": "Mold volume and capacity calculator",
+      "route": "/tools/mold-volume",
+      "specRefs": [
+        "PUBLIC-TOOL-CONTRACT.md \u00a75",
+        "CALCULATION-SPEC.md \u00a7\u00a73.2,11,14.2",
+        "TOOL-MARKET-REQUIREMENTS.md \u00a72.1"
       ]
     },
     {
-      "id": "TOOL-SCALE",
-      "name": "Recipe scaling calculator",
-      "category": "public-tool",
-      "boundary": "e2e",
-      "route": "/tools/recipe-scaling",
-      "specRefs": ["PUBLIC-TOOL-CONTRACT.md §6", "TOOL-MARKET-REQUIREMENTS.md §2.2"],
       "acceptanceRows": [
         "User explicitly chooses proportional-copy or formulation-recalculation mode",
         "Copy mode calculates one scale factor and multiplies each unrounded source line once",
@@ -84,15 +66,18 @@
         "Scale up, scale down, no-op, decimal, unit, sum-invariant and cumulative-rounding fixtures pass",
         "Zero, negative, non-finite or incompatible-unit input blocks and preserves values",
         "Browser result restores locally, exports/shares and transfers editable quantities to costing and purchasing"
+      ],
+      "boundary": "e2e",
+      "category": "public-tool",
+      "id": "TOOL-SCALE",
+      "name": "Recipe scaling calculator",
+      "route": "/tools/recipe-scaling",
+      "specRefs": [
+        "PUBLIC-TOOL-CONTRACT.md \u00a76",
+        "TOOL-MARKET-REQUIREMENTS.md \u00a72.2"
       ]
     },
     {
-      "id": "TOOL-COST",
-      "name": "Batch costing and cost-per-bar calculator",
-      "category": "public-tool",
-      "boundary": "e2e",
-      "route": "/tools/batch-cost",
-      "specRefs": ["PUBLIC-TOOL-CONTRACT.md §7", "CALCULATION-SPEC.md §§3.3,12,14.3", "TOOL-MARKET-REQUIREMENTS.md §3.1"],
       "acceptanceRows": [
         "User can enter or import ingredient quantities and purchase cost basis plus packaging, labor and overhead lines",
         "Every required cost line has a complete or named missing basis; missing cost never silently becomes zero",
@@ -104,15 +89,19 @@
         "Mixed currencies block all totals",
         "Complete/incomplete basis, yield loss, labor, overhead, markup/margin and currency fixtures pass in engine and API",
         "Browser result restores locally, prints/exports/shares and transfers basis to wholesale/event planning without email capture"
+      ],
+      "boundary": "e2e",
+      "category": "public-tool",
+      "id": "TOOL-COST",
+      "name": "Batch costing and cost-per-bar calculator",
+      "route": "/tools/batch-cost",
+      "specRefs": [
+        "PUBLIC-TOOL-CONTRACT.md \u00a77",
+        "CALCULATION-SPEC.md \u00a7\u00a73.3,12,14.3",
+        "TOOL-MARKET-REQUIREMENTS.md \u00a73.1"
       ]
     },
     {
-      "id": "TOOL-WHOLESALE",
-      "name": "Wholesale pricing calculator",
-      "category": "public-tool",
-      "boundary": "e2e",
-      "route": "/tools/wholesale-pricing",
-      "specRefs": ["PUBLIC-TOOL-CONTRACT.md §8", "CALCULATION-SPEC.md §§3.3,12,14.3", "TOOL-MARKET-REQUIREMENTS.md §3.2"],
       "acceptanceRows": [
         "Canonical page exists and does not redirect or rely on an orphan form",
         "User enters/imports cost per saleable unit and chooses target markup or target gross margin as separate modes",
@@ -123,15 +112,19 @@
         "MOQ, order quantity and pack/case multiple produce valid rounded quantities and order totals",
         "Printable/downloadable quote includes currency, revision, assumptions and generated date",
         "Markup, margin, fee, impossible percentage, incomplete basis and MOQ fixtures pass in engine, API and browser"
+      ],
+      "boundary": "e2e",
+      "category": "public-tool",
+      "id": "TOOL-WHOLESALE",
+      "name": "Wholesale pricing calculator",
+      "route": "/tools/wholesale-pricing",
+      "specRefs": [
+        "PUBLIC-TOOL-CONTRACT.md \u00a78",
+        "CALCULATION-SPEC.md \u00a7\u00a73.3,12,14.3",
+        "TOOL-MARKET-REQUIREMENTS.md \u00a73.2"
       ]
     },
     {
-      "id": "TOOL-EVENT",
-      "name": "Craft-fair break-even calculator",
-      "category": "public-tool",
-      "boundary": "e2e",
-      "route": "/tools/craft-fair-break-even",
-      "specRefs": ["PUBLIC-TOOL-CONTRACT.md §9", "CALCULATION-SPEC.md §§3.4,14.4", "TOOL-MARKET-REQUIREMENTS.md §4.1"],
       "acceptanceRows": [
         "User enters itemized fixed event costs and zero total fixed cost is valid",
         "User can enter one or more products with price, variable cost, fees, expected mix, stock and sell-through",
@@ -142,15 +135,19 @@
         "Insufficient stock or unrealistic mix creates a visible feasibility warning",
         "Single/multi-product, mix, zero-cost, fees, target profit, sell-through and ceiling fixtures pass",
         "Browser result supports imported pricing context, local restore and export/share"
+      ],
+      "boundary": "e2e",
+      "category": "public-tool",
+      "id": "TOOL-EVENT",
+      "name": "Craft-fair break-even calculator",
+      "route": "/tools/craft-fair-break-even",
+      "specRefs": [
+        "PUBLIC-TOOL-CONTRACT.md \u00a79",
+        "CALCULATION-SPEC.md \u00a7\u00a73.4,14.4",
+        "TOOL-MARKET-REQUIREMENTS.md \u00a74.1"
       ]
     },
     {
-      "id": "TOOL-READY",
-      "name": "Ready-by production planner",
-      "category": "public-tool",
-      "boundary": "e2e",
-      "route": "/tools/ready-by-planner",
-      "specRefs": ["PUBLIC-TOOL-CONTRACT.md §10", "TOOL-MARKET-REQUIREMENTS.md §5.1"],
       "acceptanceRows": [
         "Canonical page is functional and does not redirect to the tool directory",
         "User enters ready-by date, cure interval, unmold/cut/packing buffers and allowed production days",
@@ -162,15 +159,18 @@
         "Copy says estimated window reached and never declares cure or product safety",
         "Leap/month boundary, ceiling, blackout, capacity and timezone fixtures pass",
         "Browser result restores locally, exports and transfers planned batches to purchasing"
+      ],
+      "boundary": "e2e",
+      "category": "public-tool",
+      "id": "TOOL-READY",
+      "name": "Ready-by production planner",
+      "route": "/tools/ready-by-planner",
+      "specRefs": [
+        "PUBLIC-TOOL-CONTRACT.md \u00a710",
+        "TOOL-MARKET-REQUIREMENTS.md \u00a75.1"
       ]
     },
     {
-      "id": "TOOL-PURCHASE",
-      "name": "Ingredient purchase planner",
-      "category": "public-tool",
-      "boundary": "e2e",
-      "route": "/tools/ingredient-purchase-planner",
-      "specRefs": ["PUBLIC-TOOL-CONTRACT.md §11", "TOOL-MARKET-REQUIREMENTS.md §6.1"],
       "acceptanceRows": [
         "Canonical page is functional and does not redirect to the tool directory",
         "User enters/imports one or more planned recipes/batches and quantities are normalized before aggregation",
@@ -182,13 +182,18 @@
         "Output names unresolved supplier/cost basis and does not invent a preferred supplier",
         "Aggregation, stock, reserved, pack, overbuy, minimum-order, landed-cost and currency fixtures pass",
         "Browser output restores locally and prints/exports a purchase list without claiming inventory depletion"
+      ],
+      "boundary": "e2e",
+      "category": "public-tool",
+      "id": "TOOL-PURCHASE",
+      "name": "Ingredient purchase planner",
+      "route": "/tools/ingredient-purchase-planner",
+      "specRefs": [
+        "PUBLIC-TOOL-CONTRACT.md \u00a711",
+        "TOOL-MARKET-REQUIREMENTS.md \u00a76.1"
       ]
     },
     {
-      "id": "CTX-001",
-      "name": "Recipe/Batch Context and anonymous continuity",
-      "category": "cross-cutting",
-      "boundary": "e2e",
       "acceptanceRows": [
         "One versioned schema represents formulation, sizing, yield, cost, pricing, event, production and purchasing context",
         "Each tool declares imported and exported fields and the destination shows field source before user acceptance",
@@ -198,75 +203,75 @@
         "Share payload contains no personal data, is validated and checksummed, and opens in a clean browser",
         "Oversized share state offers a portable download instead of producing a broken URL",
         "Corrupt or incompatible context fails safely without executing or silently dropping data"
-      ]
+      ],
+      "boundary": "e2e",
+      "category": "cross-cutting",
+      "id": "CTX-001",
+      "name": "Recipe/Batch Context and anonymous continuity"
     },
     {
-      "id": "UTIL-001",
-      "name": "Homepage and eight-tool directory",
-      "category": "support",
-      "boundary": "deployed",
       "acceptanceRows": [
         "Homepage and /tools expose exactly the eight in-scope canonical tools with truthful availability",
         "Every directory entry names the user decision, required inputs and connected next step",
         "Every listed route returns its complete tool or truthful chemistry gate; no empty, retired or fictional route",
         "Desktop and narrow mobile layouts have no horizontal overflow and all primary controls meet touch targets",
         "Navigation, footer and primary calls to action contain no subscription, CRM or retired tool promise"
-      ]
+      ],
+      "boundary": "deployed",
+      "category": "support",
+      "id": "UTIL-001",
+      "name": "Homepage and eight-tool directory"
     },
     {
-      "id": "UTIL-002",
-      "name": "Methodology and source documentation",
-      "category": "support",
-      "boundary": "deployed",
       "acceptanceRows": [
         "Each tool documents equations, units, assumptions, limitations and revision history",
         "Externally sourced data identifies source, revision/effective date, conflict disposition and eligibility",
         "Methodology does not use disclaimers to cover missing correctness",
         "Every tool result links directly to the relevant methodology section"
-      ]
+      ],
+      "boundary": "deployed",
+      "category": "support",
+      "id": "UTIL-002",
+      "name": "Methodology and source documentation"
     },
     {
-      "id": "UTIL-003",
-      "name": "Editable examples and usable templates",
-      "category": "support",
-      "boundary": "e2e",
       "acceptanceRows": [
         "Every tool has an explicitly labelled editable example with independently calculated expected output",
         "Changing example input changes the live deterministic result",
         "Templates are real portable artifacts and download without login or email",
         "Example/template versions identify their compatible formula and schema revisions"
-      ]
+      ],
+      "boundary": "e2e",
+      "category": "support",
+      "id": "UTIL-003",
+      "name": "Editable examples and usable templates"
     },
     {
-      "id": "UTIL-004",
-      "name": "Factual comparisons",
-      "category": "support",
-      "boundary": "deployed",
       "acceptanceRows": [
         "Every comparison names observation date, evidence grade and source",
         "Competitor behavior is described factually without invented access, feature or superiority claims",
         "Stale or unverified rows are omitted or visibly marked unavailable",
         "Comparison pages link to the relevant working SoapCraft tool and methodology"
-      ]
+      ],
+      "boundary": "deployed",
+      "category": "support",
+      "id": "UTIL-004",
+      "name": "Factual comparisons"
     },
     {
-      "id": "UTIL-007",
-      "name": "Canonical SEO and public shell",
-      "category": "support",
-      "boundary": "deployed",
       "acceptanceRows": [
         "Canonical metadata, sitemap, robots and structured data are generated from the route registry",
         "Legacy routes redirect one-to-one only where semantics match and no duplicate /marketing tree is canonical",
         "Gated chemistry is not described in metadata as a currently working public calculator",
         "No retired subscription, CRM or social-campaign route appears in navigation or sitemap",
         "Deployed canonical URLs return expected status without redirect loops"
-      ]
+      ],
+      "boundary": "deployed",
+      "category": "support",
+      "id": "UTIL-007",
+      "name": "Canonical SEO and public shell"
     },
     {
-      "id": "CHEM-GATE",
-      "name": "Chemistry publication gate",
-      "category": "release-gate",
-      "boundary": "deployed",
       "acceptanceRows": [
         "Production ingredient manifest has authoritative provenance and explicit conflict dispositions",
         "Hand calculations and at least two specialist-calculator comparisons are recorded with explained differences",
@@ -274,69 +279,422 @@
         "Named independent domain and safety reviewers approve engine and user-facing copy",
         "PUBLIC_CHEMISTRY_ENABLED defaults off and cannot bypass ingredient eligibility",
         "Release-disabled deployed API returns typed 503 without quantities; release-enabled verification occurs only after receipts"
-      ]
+      ],
+      "boundary": "deployed",
+      "category": "release-gate",
+      "id": "CHEM-GATE",
+      "name": "Chemistry publication gate"
     }
   ],
+  "constraints": {
+    "anonymousCore": "No login, email, payment, or cookie gate for a core result, export, share, or local restore",
+    "chemistry": "Public chemistry fails closed until source, fixture, domain and safety receipts pass",
+    "claims": "No unverified safety, cure, compliance, source, competitor, or business claim",
+    "completeLoop": "A route, form, API, engine, or unit test alone is not a built tool; browser input-to-result-to-persistence-to-handoff must work",
+    "context": "Versioned Recipe/Batch Context transfers reviewed editable fields without personal data",
+    "deterministic": "AI cannot invent or modify chemical, financial, date, sizing, or purchasing quantities",
+    "money": "One currency per calculation; mixed currencies block",
+    "precision": "Full internal precision; rounding only for display/export",
+    "release": "No product completion claim before Gate_A receives RELEASE_ACCEPTED"
+  },
+  "contractPrecedence": [
+    "product/CALCULATION-SPEC.md for numerical semantics",
+    "product/PUBLIC-TOOL-CONTRACT.md for public-tool behavior",
+    "this file for user-observable acceptance",
+    ".studio/slices.json for dependency order",
+    "current source is evidence, not specification"
+  ],
+  "core_flows": [
+    "F-01",
+    "F-02",
+    "F-03",
+    "F-04",
+    "F-05",
+    "F-06",
+    "F-08",
+    "F-10"
+  ],
   "flows": [
-    {"id":"F-01","name":"Formulate to connected plan","boundary":"deployed","acceptanceRows":["Anonymous formulation completes with verified data or fails closed and transfers reviewed context"]},
-    {"id":"F-02","name":"Mold to recipe scale","boundary":"e2e","acceptanceRows":["Calibrated or ranged mold result transfers to recipe scaling without false precision"]},
-    {"id":"F-03","name":"Scale to cost","boundary":"e2e","acceptanceRows":["Scaled quantities transfer to costing and produce complete or explicitly incomplete economics"]},
-    {"id":"F-04","name":"Cost to wholesale","boundary":"e2e","acceptanceRows":["Saleable-unit cost transfers to markup/margin pricing and printable quote"]},
-    {"id":"F-05","name":"Price to event plan","boundary":"e2e","acceptanceRows":["One or more priced products produce weighted break-even, target and stock outputs"]},
-    {"id":"F-06","name":"Ready-by to purchase plan","boundary":"e2e","acceptanceRows":["Production batches transfer to aggregated stock-aware pack-rounded purchase plan"]},
-    {"id":"F-07","name":"Direct tool entry","boundary":"deployed","acceptanceRows":["Every canonical tool completes from manually supplied inputs without prior route or account"]},
-    {"id":"F-08","name":"Share and clean-browser re-entry","boundary":"e2e","acceptanceRows":["Versioned non-personal share state validates, opens editable and recalculates in a clean browser"]},
-    {"id":"F-09","name":"Local restore and reset","boundary":"e2e","acceptanceRows":["Saved local inputs survive reload; save failure and confirmed reset are truthful"]},
-    {"id":"F-10","name":"Discovery and trust","boundary":"deployed","acceptanceRows":["Directory, methodology, metadata and route status agree for all eight tools"]},
-    {"id":"F-11","name":"Editable example and template","boundary":"e2e","acceptanceRows":["Verified example is editable and compatible ungated artifact downloads"]},
-    {"id":"F-12","name":"Error recovery","boundary":"e2e","acceptanceRows":["Validation, API, save and decode failures preserve safe input and expose recovery"]}
+    {
+      "acceptanceRows": [
+        "Anonymous formulation completes with verified data or fails closed and transfers reviewed context"
+      ],
+      "boundary": "deployed",
+      "id": "F-01",
+      "name": "Formulate to connected plan"
+    },
+    {
+      "acceptanceRows": [
+        "Calibrated or ranged mold result transfers to recipe scaling without false precision"
+      ],
+      "boundary": "e2e",
+      "id": "F-02",
+      "name": "Mold to recipe scale"
+    },
+    {
+      "acceptanceRows": [
+        "Scaled quantities transfer to costing and produce complete or explicitly incomplete economics"
+      ],
+      "boundary": "e2e",
+      "id": "F-03",
+      "name": "Scale to cost"
+    },
+    {
+      "acceptanceRows": [
+        "Saleable-unit cost transfers to markup/margin pricing and printable quote"
+      ],
+      "boundary": "e2e",
+      "id": "F-04",
+      "name": "Cost to wholesale"
+    },
+    {
+      "acceptanceRows": [
+        "One or more priced products produce weighted break-even, target and stock outputs"
+      ],
+      "boundary": "e2e",
+      "id": "F-05",
+      "name": "Price to event plan"
+    },
+    {
+      "acceptanceRows": [
+        "Production batches transfer to aggregated stock-aware pack-rounded purchase plan"
+      ],
+      "boundary": "e2e",
+      "id": "F-06",
+      "name": "Ready-by to purchase plan"
+    },
+    {
+      "acceptanceRows": [
+        "Every canonical tool completes from manually supplied inputs without prior route or account"
+      ],
+      "boundary": "deployed",
+      "id": "F-07",
+      "name": "Direct tool entry"
+    },
+    {
+      "acceptanceRows": [
+        "Versioned non-personal share state validates, opens editable and recalculates in a clean browser"
+      ],
+      "boundary": "e2e",
+      "id": "F-08",
+      "name": "Share and clean-browser re-entry"
+    },
+    {
+      "acceptanceRows": [
+        "Saved local inputs survive reload; save failure and confirmed reset are truthful"
+      ],
+      "boundary": "e2e",
+      "id": "F-09",
+      "name": "Local restore and reset"
+    },
+    {
+      "acceptanceRows": [
+        "Directory, methodology, metadata and route status agree for all eight tools"
+      ],
+      "boundary": "deployed",
+      "id": "F-10",
+      "name": "Discovery and trust"
+    },
+    {
+      "acceptanceRows": [
+        "Verified example is editable and compatible ungated artifact downloads"
+      ],
+      "boundary": "e2e",
+      "id": "F-11",
+      "name": "Editable example and template"
+    },
+    {
+      "acceptanceRows": [
+        "Validation, API, save and decode failures preserve safe input and expose recovery"
+      ],
+      "boundary": "e2e",
+      "id": "F-12",
+      "name": "Error recovery"
+    }
   ],
   "gates": {
-    "Gate_C": "PASS — BUILD_AUTHORIZED for the eight researched public tools on 2026-09-11",
-    "Gate_R": "PASS — normative product, tool, formula, flow and architecture contracts exist",
-    "Gate_A": "PENDING — requires literal RELEASE_ACCEPTED after independent deployed verification"
+    "Gate_A": "PENDING \u2014 requires literal RELEASE_ACCEPTED after independent deployed verification",
+    "Gate_C": "PASS \u2014 BUILD_AUTHORIZED for the eight researched public tools on 2026-09-11",
+    "Gate_R": "PASS \u2014 normative product, tool, formula, flow and architecture contracts exist"
   },
+  "goalMetric": "Weekly anonymous sessions that complete a correct result and continue into at least one connected tool without re-entry",
   "launchBoundary": {
-    "included": ["eight anonymous public tools", "shared local context", "share/export", "methodology", "examples/templates", "factual comparisons", "canonical SEO"],
-    "failClosed": ["public chemistry until CHEM-GATE receipts"],
-    "deferred": ["optional cloud account and sync", "Seller Pack payment", "subscription billing", "CRM", "social scheduling", "native app"]
+    "deferred": [
+      "optional cloud account and sync",
+      "Seller Pack payment",
+      "subscription billing",
+      "CRM",
+      "social scheduling",
+      "native app"
+    ],
+    "failClosed": [
+      "public chemistry until CHEM-GATE receipts"
+    ],
+    "included": [
+      "eight anonymous public tools",
+      "shared local context",
+      "share/export",
+      "methodology",
+      "examples/templates",
+      "factual comparisons",
+      "canonical SEO"
+    ]
   },
-  "nonGoals": ["AI-generated chemistry", "mandatory accounts", "email-gated outputs", "marketplace", "ecommerce integrations", "community features"],
-  "required_skills": ["studio-build", "studio-app-implementation", "test-driven-development", "debugging", "requesting-code-review", "app-life-and-style", "impeccable-design"],
-  "core_flows": ["F-01", "F-02", "F-03", "F-04", "F-05", "F-06", "F-08", "F-10"],
-  "requirements": [
-    {"id":"TOOL-FORM","description":"Formulation behavior, typed public fail-closed gate, data eligibility, context transfer and proof are exactly those in TOOL-IMPLEMENTATION-CONTRACT.md §3 and CALCULATION-SPEC.md §§3.1, 4–9, 13.1, 14.1–14.5 and 15.","scope":"in","boundary":"deployed","status":"PLANNED","evidence":[]},
-    {"id":"TOOL-MOLD","description":"Mold geometry, calibration-only precise capacity, receipt-backed planning range, cut plan, context and proof are exactly those in TOOL-IMPLEMENTATION-CONTRACT.md §4 and CALCULATION-SPEC.md §§5.3, 10, 13.3, 14.7 and 15.","scope":"in","boundary":"e2e","status":"PLANNED","evidence":[]},
-    {"id":"TOOL-SCALE","description":"Copy-versus-recalculation behavior, target bases, errors, context and proof are exactly those in TOOL-IMPLEMENTATION-CONTRACT.md §5 and CALCULATION-SPEC.md §§3.2, 4, 9, 10.4 and 13.","scope":"in","boundary":"e2e","status":"PLANNED","evidence":[]},
-    {"id":"TOOL-COST","description":"Cost basis completeness, saleable yield, currencies, contribution, context and proof are exactly those in TOOL-IMPLEMENTATION-CONTRACT.md §6 and CALCULATION-SPEC.md §§2.3, 3.3, 4, 11, 13.2 and 14.6.","scope":"in","boundary":"e2e","status":"PLANNED","evidence":[]},
-    {"id":"TOOL-WHOLESALE","description":"Markup/margin, list/invoice discount and fee algebra, MOQ/pack quote behavior and proof are exactly those in TOOL-IMPLEMENTATION-CONTRACT.md §7 and CALCULATION-SPEC.md §§3.3.2–3.3.6, 11.2–11.7 and 12.2.","scope":"in","boundary":"e2e","status":"PLANNED","evidence":[]},
-    {"id":"TOOL-EVENT","description":"Weighted contribution, explicit mix normalization, target-profit, stock scenario and proof behavior are exactly those in TOOL-IMPLEMENTATION-CONTRACT.md §8 and CALCULATION-SPEC.md §§3.3.6, 3.4, 11.4 and 12.1.","scope":"in","boundary":"e2e","status":"PLANNED","evidence":[]},
-    {"id":"TOOL-READY","description":"Date-only backward capacity allocation, infeasibility, safe wording, context and proof are exactly those in TOOL-IMPLEMENTATION-CONTRACT.md §9 and CALCULATION-SPEC.md §§3.6, 12.3 and 12.5–12.6.","scope":"in","boundary":"e2e","status":"PLANNED","evidence":[]},
-    {"id":"TOOL-PURCHASE","description":"Ingredient aggregation, buffer/stock/pack/minimum/landed-cost rules, currency behavior and proof are exactly those in TOOL-IMPLEMENTATION-CONTRACT.md §10 and CALCULATION-SPEC.md §§3.5, 11.7 and 12.4.","scope":"in","boundary":"e2e","status":"PLANNED","evidence":[]},
-    {"id":"CTX-001","description":"Result envelope, context schema, local persistence, secure share, export, editable imports and migration behavior are exactly those in TOOL-IMPLEMENTATION-CONTRACT.md §2.","scope":"in","boundary":"e2e","status":"PLANNED","evidence":[]},
-    {"id":"UTIL-001","description":"The directory exposes exactly the eight canonical tools with truthful states and verified mobile/desktop behavior as required by PUBLIC-TOOL-CONTRACT.md §§2–3.","scope":"in","boundary":"deployed","status":"PLANNED","evidence":[]},
-    {"id":"UTIL-002","description":"Every tool has direct methodology with equations, units, assumptions, limitations, provenance and revision behavior as required by PUBLIC-TOOL-CONTRACT.md §12.","scope":"in","boundary":"deployed","status":"PLANNED","evidence":[]},
-    {"id":"UTIL-003","description":"Every tool has editable independently verified examples and ungated portable templates as required by PUBLIC-TOOL-CONTRACT.md §12.","scope":"in","boundary":"e2e","status":"PLANNED","evidence":[]},
-    {"id":"UTIL-004","description":"Published comparisons retain observation dates, evidence grade/source and factual working-tool links as required by PUBLIC-TOOL-CONTRACT.md §12.","scope":"in","boundary":"deployed","status":"PLANNED","evidence":[]},
-    {"id":"UTIL-007","description":"Canonical SEO, sitemap, robots, metadata and public route behavior derive from the truthful route registry as required by PUBLIC-TOOL-CONTRACT.md §§3 and 12.","scope":"in","boundary":"deployed","status":"PLANNED","evidence":[]},
-    {"id":"CHEM-GATE","description":"Production chemistry evidence and independent authorization satisfy CALCULATION-SPEC.md §15; absence preserves typed public fail-closed behavior.","scope":"in","boundary":"deployed","status":"PLANNED","evidence":[]},
-    {"id":"F-01","description":"Formulate-to-connected-plan browser journey behaves exactly as FLOWS.md F-01 and TOOL-IMPLEMENTATION-CONTRACT.md §§2–3.","scope":"in","boundary":"deployed","status":"PLANNED","evidence":[]},
-    {"id":"F-02","description":"Mold-to-recipe-scale browser journey behaves exactly as FLOWS.md F-02 and TOOL-IMPLEMENTATION-CONTRACT.md §§2 and 4–5.","scope":"in","boundary":"e2e","status":"PLANNED","evidence":[]},
-    {"id":"F-03","description":"Scale-to-cost browser journey behaves exactly as FLOWS.md F-03 and TOOL-IMPLEMENTATION-CONTRACT.md §§5–6.","scope":"in","boundary":"e2e","status":"PLANNED","evidence":[]},
-    {"id":"F-04","description":"Cost-to-wholesale browser journey behaves exactly as FLOWS.md F-04 and TOOL-IMPLEMENTATION-CONTRACT.md §§6–7.","scope":"in","boundary":"e2e","status":"PLANNED","evidence":[]},
-    {"id":"F-05","description":"Price-to-event-plan browser journey behaves exactly as FLOWS.md F-05 and TOOL-IMPLEMENTATION-CONTRACT.md §§7–8.","scope":"in","boundary":"e2e","status":"PLANNED","evidence":[]},
-    {"id":"F-06","description":"Ready-by-to-purchase-plan browser journey behaves exactly as FLOWS.md F-06 and TOOL-IMPLEMENTATION-CONTRACT.md §§9–10.","scope":"in","boundary":"e2e","status":"PLANNED","evidence":[]},
-    {"id":"F-07","description":"Direct entry to each canonical tool works anonymously with complete manual valid inputs as required by FLOWS.md F-07.","scope":"in","boundary":"deployed","status":"PLANNED","evidence":[]},
-    {"id":"F-08","description":"Clean-browser share and re-entry validate, preserve editability and fail safely exactly as FLOWS.md F-08 and TOOL-IMPLEMENTATION-CONTRACT.md §2.","scope":"in","boundary":"e2e","status":"PLANNED","evidence":[]},
-    {"id":"F-09","description":"Local restore, truthful save failure and confirmed reset behave exactly as FLOWS.md F-09 and TOOL-IMPLEMENTATION-CONTRACT.md §2.","scope":"in","boundary":"e2e","status":"PLANNED","evidence":[]},
-    {"id":"F-10","description":"Tool discovery, route registry, methodology, sitemap and truthful availability agree exactly as FLOWS.md F-10.","scope":"in","boundary":"deployed","status":"PLANNED","evidence":[]},
-    {"id":"F-11","description":"Editable examples and portable templates behave exactly as FLOWS.md F-11.","scope":"in","boundary":"e2e","status":"PLANNED","evidence":[]},
-    {"id":"F-12","description":"Validation, API, local-save and share-decode recovery preserve safe input and expose recovery exactly as FLOWS.md F-12.","scope":"in","boundary":"e2e","status":"PLANNED","evidence":[]},
-    {"id":"MKT-DEFERRED-SELLER-PACK","description":"One-time Seller Pack payment is excluded from this free public-tool release.","scope":"out","boundary":"unit","status":"DEFERRED","evidence":[]}
+  "nonGoals": [
+    "AI-generated chemistry",
+    "mandatory accounts",
+    "email-gated outputs",
+    "marketplace",
+    "ecommerce integrations",
+    "community features"
   ],
   "placeholder_allowlist": [],
-  "MKT-DEFERRED-SELLER-PACK": {
-    "scope": "out",
-    "reason": "One-time payment remains deferred and may not block free public tools"
-  }
+  "project": "SoapCraft Pro",
+  "repository": "/opt/data/studio/apps/soapcraft-pro",
+  "required_skills": [
+    "studio-build",
+    "studio-app-implementation",
+    "test-driven-development",
+    "debugging",
+    "requesting-code-review",
+    "app-life-and-style",
+    "impeccable-design"
+  ],
+  "requirements": [
+    {
+      "boundary": "deployed",
+      "description": "Formulation behavior, typed public fail-closed gate, data eligibility, context transfer and proof are exactly those in TOOL-IMPLEMENTATION-CONTRACT.md \u00a73 and CALCULATION-SPEC.md \u00a7\u00a73.1, 4\u20139, 13.1, 14.1\u201314.5 and 15.",
+      "evidence": [],
+      "id": "TOOL-FORM",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Mold geometry, calibration-only precise capacity, receipt-backed planning range, cut plan, context and proof are exactly those in TOOL-IMPLEMENTATION-CONTRACT.md \u00a74 and CALCULATION-SPEC.md \u00a7\u00a75.3, 10, 13.3, 14.7 and 15.",
+      "evidence": [],
+      "id": "TOOL-MOLD",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Copy-versus-recalculation behavior, target bases, errors, context and proof are exactly those in TOOL-IMPLEMENTATION-CONTRACT.md \u00a75 and CALCULATION-SPEC.md \u00a7\u00a73.2, 4, 9, 10.4 and 13.",
+      "evidence": [],
+      "id": "TOOL-SCALE",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Cost basis completeness, saleable yield, currencies, contribution, context and proof are exactly those in TOOL-IMPLEMENTATION-CONTRACT.md \u00a76 and CALCULATION-SPEC.md \u00a7\u00a72.3, 3.3, 4, 11, 13.2 and 14.6.",
+      "evidence": [
+        ".studio/evidence/TOOL-COST/20260912T190620Z.json",
+        ".studio/evidence/TOOL-COST/20260912T191907Z.json"
+      ],
+      "id": "TOOL-COST",
+      "scope": "in",
+      "status": "VERIFYING"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Markup/margin, list/invoice discount and fee algebra, MOQ/pack quote behavior and proof are exactly those in TOOL-IMPLEMENTATION-CONTRACT.md \u00a77 and CALCULATION-SPEC.md \u00a7\u00a73.3.2\u20133.3.6, 11.2\u201311.7 and 12.2.",
+      "evidence": [],
+      "id": "TOOL-WHOLESALE",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Weighted contribution, explicit mix normalization, target-profit, stock scenario and proof behavior are exactly those in TOOL-IMPLEMENTATION-CONTRACT.md \u00a78 and CALCULATION-SPEC.md \u00a7\u00a73.3.6, 3.4, 11.4 and 12.1.",
+      "evidence": [],
+      "id": "TOOL-EVENT",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Date-only backward capacity allocation, infeasibility, safe wording, context and proof are exactly those in TOOL-IMPLEMENTATION-CONTRACT.md \u00a79 and CALCULATION-SPEC.md \u00a7\u00a73.6, 12.3 and 12.5\u201312.6.",
+      "evidence": [],
+      "id": "TOOL-READY",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Ingredient aggregation, buffer/stock/pack/minimum/landed-cost rules, currency behavior and proof are exactly those in TOOL-IMPLEMENTATION-CONTRACT.md \u00a710 and CALCULATION-SPEC.md \u00a7\u00a73.5, 11.7 and 12.4.",
+      "evidence": [],
+      "id": "TOOL-PURCHASE",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Result envelope, context schema, local persistence, secure share, export, editable imports and migration behavior are exactly those in TOOL-IMPLEMENTATION-CONTRACT.md \u00a72.",
+      "evidence": [],
+      "id": "CTX-001",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "deployed",
+      "description": "The directory exposes exactly the eight canonical tools with truthful states and verified mobile/desktop behavior as required by PUBLIC-TOOL-CONTRACT.md \u00a7\u00a72\u20133.",
+      "evidence": [],
+      "id": "UTIL-001",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "deployed",
+      "description": "Every tool has direct methodology with equations, units, assumptions, limitations, provenance and revision behavior as required by PUBLIC-TOOL-CONTRACT.md \u00a712.",
+      "evidence": [],
+      "id": "UTIL-002",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Every tool has editable independently verified examples and ungated portable templates as required by PUBLIC-TOOL-CONTRACT.md \u00a712.",
+      "evidence": [],
+      "id": "UTIL-003",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "deployed",
+      "description": "Published comparisons retain observation dates, evidence grade/source and factual working-tool links as required by PUBLIC-TOOL-CONTRACT.md \u00a712.",
+      "evidence": [],
+      "id": "UTIL-004",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "deployed",
+      "description": "Canonical SEO, sitemap, robots, metadata and public route behavior derive from the truthful route registry as required by PUBLIC-TOOL-CONTRACT.md \u00a7\u00a73 and 12.",
+      "evidence": [],
+      "id": "UTIL-007",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "deployed",
+      "description": "Production chemistry evidence and independent authorization satisfy CALCULATION-SPEC.md \u00a715; absence preserves typed public fail-closed behavior.",
+      "evidence": [],
+      "id": "CHEM-GATE",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "deployed",
+      "description": "Formulate-to-connected-plan browser journey behaves exactly as FLOWS.md F-01 and TOOL-IMPLEMENTATION-CONTRACT.md \u00a7\u00a72\u20133.",
+      "evidence": [],
+      "id": "F-01",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Mold-to-recipe-scale browser journey behaves exactly as FLOWS.md F-02 and TOOL-IMPLEMENTATION-CONTRACT.md \u00a7\u00a72 and 4\u20135.",
+      "evidence": [],
+      "id": "F-02",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Scale-to-cost browser journey behaves exactly as FLOWS.md F-03 and TOOL-IMPLEMENTATION-CONTRACT.md \u00a7\u00a75\u20136.",
+      "evidence": [],
+      "id": "F-03",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Cost-to-wholesale browser journey behaves exactly as FLOWS.md F-04 and TOOL-IMPLEMENTATION-CONTRACT.md \u00a7\u00a76\u20137.",
+      "evidence": [],
+      "id": "F-04",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Price-to-event-plan browser journey behaves exactly as FLOWS.md F-05 and TOOL-IMPLEMENTATION-CONTRACT.md \u00a7\u00a77\u20138.",
+      "evidence": [],
+      "id": "F-05",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Ready-by-to-purchase-plan browser journey behaves exactly as FLOWS.md F-06 and TOOL-IMPLEMENTATION-CONTRACT.md \u00a7\u00a79\u201310.",
+      "evidence": [],
+      "id": "F-06",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "deployed",
+      "description": "Direct entry to each canonical tool works anonymously with complete manual valid inputs as required by FLOWS.md F-07.",
+      "evidence": [],
+      "id": "F-07",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Clean-browser share and re-entry validate, preserve editability and fail safely exactly as FLOWS.md F-08 and TOOL-IMPLEMENTATION-CONTRACT.md \u00a72.",
+      "evidence": [],
+      "id": "F-08",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Local restore, truthful save failure and confirmed reset behave exactly as FLOWS.md F-09 and TOOL-IMPLEMENTATION-CONTRACT.md \u00a72.",
+      "evidence": [],
+      "id": "F-09",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "deployed",
+      "description": "Tool discovery, route registry, methodology, sitemap and truthful availability agree exactly as FLOWS.md F-10.",
+      "evidence": [],
+      "id": "F-10",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Editable examples and portable templates behave exactly as FLOWS.md F-11.",
+      "evidence": [],
+      "id": "F-11",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Validation, API, local-save and share-decode recovery preserve safe input and expose recovery exactly as FLOWS.md F-12.",
+      "evidence": [],
+      "id": "F-12",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "unit",
+      "description": "One-time Seller Pack payment is excluded from this free public-tool release.",
+      "evidence": [],
+      "id": "MKT-DEFERRED-SELLER-PACK",
+      "scope": "out",
+      "status": "DEFERRED"
+    }
+  ],
+  "schema": 1,
+  "source_roots": [
+    "app",
+    "components",
+    "lib",
+    "middleware.ts"
+  ],
+  "version": "4.0.0"
 }

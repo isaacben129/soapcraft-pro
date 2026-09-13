@@ -1,0 +1,27 @@
+{
+  "version": "1.0.0",
+  "project": "SoapCraft Pro",
+  "branch": "studio/soapcraft-eight-tool-build",
+  "contractCommit": "3f437ca",
+  "builderModel": "openrouter/inclusionai/ling-3.0-flash-fin:free",
+  "executionPolicy": "One dependency-ready slice per run; independent verification before acceptance",
+  "slices": {
+    "SLICE-001": {"status": "implementation_rejected", "workerPid": null, "acceptedCommit": null, "evidence": [".studio/evidence/SLICE-001/browser-results.json", ".studio/evidence/SLICE-001/tools-desktop.png", ".studio/evidence/SLICE-001/tools-mobile.png"], "reviewFindings": ["cheap worker self-reported VERIFIED without required mobile evidence", "out-of-scope edits were reverted", "truthful availability and mobile overflow were repaired", "sitemap still publishes nine retired calculator/social URLs; slice cannot be accepted until removed"]},
+    "SLICE-002": {"status": "pending", "acceptedCommit": null, "evidence": []},
+    "SLICE-003": {"status": "pending", "acceptedCommit": null, "evidence": []},
+    "SLICE-004": {"status": "blocked_external_evidence", "acceptedCommit": null, "evidence": []},
+    "SLICE-005": {"status": "pending", "acceptedCommit": null, "evidence": []},
+    "SLICE-006": {"status": "pending", "acceptedCommit": null, "evidence": []},
+    "SLICE-007": {"status": "pending", "acceptedCommit": null, "evidence": []},
+    "SLICE-008": {"status": "pending", "acceptedCommit": null, "evidence": []},
+    "SLICE-009": {"status": "pending", "acceptedCommit": null, "evidence": []},
+    "SLICE-010": {"status": "pending", "acceptedCommit": null, "evidence": []},
+    "SLICE-011": {"status": "pending", "acceptedCommit": null, "evidence": []},
+    "SLICE-012": {"status": "pending", "acceptedCommit": null, "evidence": []},
+    "SLICE-013": {"status": "pending", "acceptedCommit": null, "evidence": []},
+    "SLICE-014": {"status": "pending", "acceptedCommit": null, "evidence": []},
+    "SLICE-015": {"status": "pending", "acceptedCommit": null, "evidence": []},
+    "SLICE-016": {"status": "blocked_until_all_dependencies_and_independent_verifier", "acceptedCommit": null, "evidence": []}
+  },
+  "lastUpdated": "2026-09-11T20:05:00Z"
+}

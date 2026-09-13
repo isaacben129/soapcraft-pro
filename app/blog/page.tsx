@@ -1,220 +1,46 @@
-// ── Blog Index ────────────────────────────────
-// R8.1: Canonical /blog, featured/latest/category filter,
-// semantic article rendering, images/alt text, related articles,
-// Article/Breadcrumb JSON-LD, redirect old URLs.
-
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
+import { ArrowUpRight, BookOpen, Calculator, Ruler, CircleDollarSign } from "lucide-react";
 import { blogPosts, getBlogPostsByCategory } from "@/lib/blog";
+import { pageMetadata } from "@/lib/seo/metadata";
 import { serializeJsonLd } from "@/lib/seo/json-ld";
+import { SITE_URL } from "@/lib/seo/site-url";
 
-export const metadata: Metadata = {
-  title: "Blog — SoapCraft Pro",
-  description:
-    "Programmatic SEO articles for soap makers: calculators, recipes, guides, and troubleshooting.",
-  openGraph: {
-    title: "Blog — SoapCraft Pro",
-    description:
-      "Deterministic soap making guides, verified recipes, and troubleshooting articles.",
-    type: "website",
-    url: "https://soapcraft-pro.vercel.app/blog",
-  },
-  robots: { index: true, follow: true },
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Soapmaking Blog: Calculators, Recipes & Practical Guides | SoapCraft Pro",
+  description: "Practical soapmaking guides covering formulation, calculators, recipes, ingredients, production, safety, and selling.",
+  path: "/blog",
+});
 
-const categories = [
-  "All",
-  "Soap Calculators",
-  "Soap Recipes",
-  "Soap Making Guides",
-  "Troubleshooting",
+const categories = ["All", "Soap Calculators", "Soap Recipes", "Soap Making Guides", "Troubleshooting", "Ingredients", "Production", "Safety"];
+const toolLinks = [
+  { href: "/tools/mold-volume", label: "Mold volume", icon: Ruler, text: "Size the mold before you scale a recipe." },
+  { href: "/tools/recipe-scaling", label: "Recipe scaling", icon: Calculator, text: "Resize a recipe without losing its basis." },
+  { href: "/tools/batch-cost", label: "Batch cost", icon: CircleDollarSign, text: "See what each saleable bar really costs." },
 ];
 
-// JSON-LD structured data for the blog index
 const blogJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Blog",
-  name: "SoapCraft Pro Blog",
-  description:
-    "Deterministic guides, verified recipes, and troubleshooting for serious soap makers.",
-  url: "https://soapcraft-pro.vercel.app/blog",
-  publisher: {
-    "@type": "Organization",
-    name: "SoapCraft Pro",
-  },
+  "@context": "https://schema.org", "@type": "Blog", name: "SoapCraft Pro Blog",
+  description: "Practical, evidence-led soapmaking guides and connected tools.", url: `${SITE_URL}/blog`,
+  publisher: { "@type": "Organization", name: "SoapCraft Pro" },
 };
 
-// Featured posts: first 3 published posts
-const featured = blogPosts.slice(0, 3);
-
-async function BlogContent({ category }: { category: string }) {
-  const posts =
-    category && category !== "All"
-      ? getBlogPostsByCategory(category)
-      : blogPosts;
-
-  return (
-    <>
-      {/* Category filter */}
-      <div className="mt-8 flex flex-wrap gap-2" role="group" aria-label="Filter by category">
-        {categories.map((cat) => (
-          <a
-            key={cat}
-            href={cat === "All" ? "/blog" : `/blog?category=${encodeURIComponent(cat)}`}
-            className={`rounded-full border px-4 py-1.5 text-sm transition-colors ${
-              cat === category
-                ? "bg-action text-action-text border-action"
-                : "border-rule text-ink-muted hover:bg-ledger hover:text-ink"
-            }`}
-          >
-            {cat}
-          </a>
-        ))}
+export default async function BlogPage({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
+  const { category = "All" } = await searchParams;
+  const posts = category !== "All" ? getBlogPostsByCategory(category) : blogPosts;
+  const [lead, ...rest] = posts;
+  return <main className="min-h-screen">
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(blogJsonLd) }} />
+    <section className="border-b border-border bg-muted">
+      <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8 md:py-20">
+        <div className="max-w-3xl"><p className="eyebrow">The journal</p><h1 className="mt-4 max-w-2xl text-5xl leading-[1.02] sm:text-7xl">Better batches start with better decisions.</h1><p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">Useful writing for soap makers who want to understand the numbers, not just press calculate.</p></div>
+        <nav className="mt-10 flex max-w-5xl flex-wrap gap-2" aria-label="Filter articles by category">{categories.map((item) => <Link key={item} href={item === "All" ? "/blog" : `/blog?category=${encodeURIComponent(item)}`} className={`border px-3 py-2 text-sm font-semibold transition ${category === item ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background text-foreground hover:border-primary hover:text-primary"}`}>{item}</Link>)}</nav>
       </div>
-
-      {/* Featured section */}
-      <section className="mt-12" aria-label="Featured articles">
-        <h2 className="font-display text-xl font-bold text-ink mb-4">
-          Featured
-        </h2>
-        <div className="grid gap-6 md:grid-cols-3">
-          {featured.slice(0, 3).map((post) => (
-            <article
-              key={post.slug}
-              className="border border-rule rounded-lg p-6 hover:shadow-elevation-1 transition-shadow"
-            >
-              {post.image && (
-                <img
-                  src={post.image}
-                  alt={post.imageAlt || post.title}
-                  className="w-full h-40 object-cover rounded-md mb-4"
-                  loading="lazy"
-                />
-              )}
-              <div className="text-sm text-ink-muted mb-2">
-                {post.category} · {post.readingTime} min read
-              </div>
-              <h3 className="font-display text-lg font-semibold text-ink">
-                <Link href={`/blog/${post.slug}`} className="hover:underline">
-                  {post.title}
-                </Link>
-              </h3>
-              <p className="mt-2 text-sm text-ink-muted">
-                {post.description}
-              </p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      {/* Latest articles */}
-      <section className="mt-12" aria-label="Latest articles">
-        <h2 className="font-display text-xl font-bold text-ink mb-4">
-          Latest
-        </h2>
-        {posts.length === 0 ? (
-          <p className="text-ink-muted text-sm">
-            No articles found in this category yet.
-          </p>
-        ) : (
-          <div className="space-y-8">
-            {posts.map((post) => (
-              <article
-                key={post.slug}
-                className="border-b border-rule pb-8 last:border-0"
-              >
-                <div className="flex items-center gap-2 text-sm text-ink-muted mb-2">
-                  <span>{post.category}</span>
-                  <span aria-hidden="true">·</span>
-                  <span>{post.readingTime} min read</span>
-                  <span aria-hidden="true">·</span>
-                  <time dateTime={post.publishedAt}>
-                    {new Date(post.publishedAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </time>
-                </div>
-                <h2 className="font-display text-xl font-semibold text-ink">
-                  <Link href={`/blog/${post.slug}`} className="hover:underline">
-                    {post.title}
-                  </Link>
-                </h2>
-                <p className="mt-2 text-sm text-ink-muted leading-relaxed">
-                  {post.description}
-                </p>
-                {post.image && (
-                  <img
-                    src={post.image}
-                    alt={post.imageAlt || post.title}
-                    className="mt-3 w-full h-48 object-cover rounded-md"
-                    loading="lazy"
-                  />
-                )}
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {post.tags.slice(0, 3).map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-full bg-ink-muted/10 px-3 py-1 text-xs text-ink-muted"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </article>
-            ))}
-          </div>
-        )}
-      </section>
-    </>
-  );
-}
-
-export default async function BlogPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ category?: string; sort?: string }>;
-}) {
-  const { category } = await searchParams;
-  const activeCategory = category || "";
-
-  return (
-    <main className="flex flex-col min-h-screen">
-      {/* JSON-LD structured data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: serializeJsonLd(blogJsonLd) }}
-      />
-
-      <section className="container mx-auto px-4 py-16 md:py-20">
-        <div className="max-w-4xl mx-auto">
-          {/* Breadcrumb */}
-          <nav aria-label="Breadcrumb" className="mb-4">
-            <ol className="flex items-center gap-1 text-sm text-ink-muted">
-              <li>
-                <Link href="/" className="hover:text-ink transition-colors">
-                  Home
-                </Link>
-              </li>
-              <li aria-hidden="true" className="mx-1">
-                /
-              </li>
-              <li className="text-ink">Blog</li>
-            </ol>
-          </nav>
-
-          <h1 className="font-display text-3xl md:text-4xl font-bold text-ink">
-            Blog
-          </h1>
-          <p className="mt-4 text-lg text-ink-muted">
-            Deterministic guides, verified recipes, and troubleshooting for
-            serious soap makers.
-          </p>
-
-          <BlogContent category={activeCategory} />
-        </div>
-      </section>
-    </main>
-  );
+    </section>
+    <section className="mx-auto max-w-7xl px-5 py-14 sm:px-8 md:py-20">
+      {lead ? <div className="grid gap-10 border-b border-border pb-14 md:grid-cols-[1.1fr_.9fr] md:items-end"><article><p className="text-sm font-bold text-primary">Featured · {lead.category}</p><h2 className="mt-3 max-w-3xl text-4xl leading-tight sm:text-5xl"><Link href={`/blog/${lead.slug}`} className="hover:text-primary">{lead.title}</Link></h2><p className="mt-5 max-w-2xl text-lg leading-8 text-muted-foreground">{lead.description}</p><Link href={`/blog/${lead.slug}`} className="mt-7 inline-flex items-center gap-2 font-bold text-primary">Read the guide <ArrowUpRight className="h-4 w-4" /></Link></article><div className="border-l-2 border-accent pl-6 text-sm leading-7 text-muted-foreground"><BookOpen className="mb-4 h-6 w-6 text-accent" /><p>These articles connect directly to the free tools. Follow the reasoning here, then run your own numbers.</p><Link href="/tools" className="mt-4 inline-flex font-bold text-foreground hover:text-primary">Browse the toolbox <ArrowUpRight className="ml-2 h-4 w-4" /></Link></div></div> : <p>No articles found in this category yet.</p>}
+      <div className="grid gap-x-10 gap-y-12 pt-14 md:grid-cols-2 lg:grid-cols-3">{rest.map((post) => <article key={post.slug} className="border-t-2 border-border pt-5"><p className="text-xs font-bold uppercase tracking-[.14em] text-primary">{post.category}</p><h2 className="mt-3 text-2xl leading-tight"><Link href={`/blog/${post.slug}`} className="hover:text-primary">{post.title}</Link></h2><p className="mt-3 leading-7 text-muted-foreground">{post.description}</p><p className="mt-4 text-sm text-muted-foreground">{post.readingTime} min read</p></article>)}</div>
+    </section>
+    <section className="border-y border-border bg-background"><div className="mx-auto max-w-7xl px-5 py-12 sm:px-8"><div className="flex flex-col justify-between gap-4 md:flex-row md:items-end"><div><p className="eyebrow">Read, then run it</p><h2 className="mt-3 text-3xl">Tools for the next decision</h2></div><Link href="/tools" className="font-bold text-primary hover:underline">See all tools <ArrowUpRight className="inline h-4 w-4" /></Link></div><div className="mt-8 grid gap-8 md:grid-cols-3">{toolLinks.map(({ href, label, icon: Icon, text }) => <Link key={href} href={href} className="group flex gap-4 border-t border-border pt-4"><Icon className="mt-1 h-5 w-5 shrink-0 text-primary" /><span><span className="block font-bold group-hover:text-primary">{label}</span><span className="mt-1 block text-sm leading-6 text-muted-foreground">{text}</span></span></Link>)}</div></div></section>
+  </main>;
 }

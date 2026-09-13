@@ -3,24 +3,18 @@ const retiredRoutePrefixes = ["/marketing/"];
 
 const publicRoutes = new Set([
   "/",
-  "/blog",
-  "/auth/login",
-  "/auth/signup",
-  "/auth/reset-password",
-  "/robots.txt",
-  "/sitemap.xml",
   "/tools",
   "/methodology",
   "/safety",
   "/privacy",
   "/terms",
-  "/privacy-pinterest",
-  "/terms-pinterest",
+  "/robots.txt",
+  "/sitemap.xml",
   "/api/auth",
   "/api/webhooks",
 ]);
 
-const publicPrefixes = ["/blog/", "/guides/", "/compare/", "/tools/", "/api/auth/"];
+const publicPrefixes = ["/tools/", "/blog/", "/api/auth/", "/api/calculate/"];
 
 export function isRetiredRoute(pathname: string) {
   return retiredRoutes.includes(pathname) || retiredRoutePrefixes.some((prefix) => pathname.startsWith(prefix));
@@ -34,4 +28,8 @@ export function canBypassAuth(pathname: string) {
     publicRoutes.has(pathname) ||
     publicPrefixes.some((prefix) => pathname.startsWith(prefix))
   );
+}
+
+export function isCanonicalRoute(pathname: string): boolean {
+  return publicRoutes.has(pathname) || publicPrefixes.some((prefix) => pathname.startsWith(prefix));
 }

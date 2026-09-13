@@ -1,0 +1,27 @@
+{
+  "timestamp": "2026-09-12T18:03:15.555Z",
+  "tests": [
+    {
+      "name": "8 tool cards",
+      "pass": true,
+      "detail": "8"
+    },
+    {
+      "name": "truthful statuses",
+      "pass": true,
+      "detail": "gated=true, inbuild=true, preview=true, working=false"
+    },
+    {
+      "name": "all 8 slugs",
+      "pass": true,
+      "detail": "all present"
+    },
+    {
+      "name": "390px no overflow",
+      "pass": false,
+      "detail": "425 vs 390"
+    }
+  ],
+  "passed": 3,
+  "total": 4
+}

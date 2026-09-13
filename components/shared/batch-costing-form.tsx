@@ -6,7 +6,9 @@
 
 import { useState } from "react";
 import { Calculator, Plus, Trash2, AlertTriangle } from "lucide-react";
-import { EmailCaptureModal } from "@/components/shared/email-capture-modal";
+import { RecipeBatchContextManagerComponent } from "@/components/shared/recipe-batch-context";
+import type { RecipeBatchContextManager } from "@/lib/context/RecipeBatchContextV1";
+import type { CostingContext } from "@/lib/schemas/context-schema";
 
 interface IngredientRow {
   name: string;
@@ -31,8 +33,7 @@ export function BatchCostingForm() {
   } | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [showEmailCapture, setShowEmailCapture] = useState(false);
-
+  const [contextManager, setContextManager] = useState<RecipeBatchContextManager | null>(null);
   const addIngredient = () => {
     setIngredients([...ingredients, { name: "", costPerUnit: "", unit: "g", quantity: "" }]);
   };
@@ -90,6 +91,25 @@ export function BatchCostingForm() {
           suggestedPrice: data.suggestedPrice,
           ingredientCostTotal: data.ingredientCostTotal,
         });
+        const costing: CostingContext = {
+          sourceTool: "TOOL-COST",
+          acceptedAt: new Date().toISOString(),
+          sourceRevision: String(data.costBasisRevision ?? 0),
+          totalCost: data.totalCost,
+          costPerMadeUnit: data.costPerBar,
+          costPerSaleableUnit: data.costPerSaleableUnit ?? data.costPerBar,
+          ingredientCostTotal: data.ingredientCostTotal,
+          fragranceCost: data.fragranceCost ?? (Number(fragranceCost) || 0),
+          packagingCost: 0,
+          laborCost: 0,
+          overheadCost: 0,
+          otherCosts: data.otherCosts ?? (Number(otherCosts) || 0),
+          currency: data.currency ?? "USD",
+          missingCostBasis: data.missingCostBasis ?? [],
+          completeness: (data.missingCostBasis?.length ?? 0) > 0 ? "incomplete" : "complete",
+          origin: "calculated",
+        };
+        contextManager?.updateSection("costing", costing);
       } else {
         const err = await response.json();
         setError(err.error || "Calculation failed");
@@ -101,13 +121,14 @@ export function BatchCostingForm() {
     }
   };
 
-  const handleSaveResults = () => {
-    setShowEmailCapture(true);
-  };
-
   return (
     <>
       <div className="bg-canvas rounded-lg border border-rule p-6 space-y-6">
+        <RecipeBatchContextManagerComponent
+          sourceTool="TOOL-COST"
+          units={{ mass: "g", dimensions: "cm" }}
+          onManagerReady={setContextManager}
+        />
         {/* Ingredient rows */}
         <div>
           <div className="flex items-center justify-between mb-3">
@@ -266,12 +287,7 @@ export function BatchCostingForm() {
             </div>
             <div className="flex gap-4 pt-2">
               <button
-                onClick={handleSaveResults}
-                className="px-6 py-2.5 bg-action text-action-text rounded-md font-medium text-sm hover:opacity-90 transition-opacity"
-              >
-                Save results & get worksheet
-              </button>
-              <button
+                type="button"
                 onClick={() => setResult(null)}
                 className="px-6 py-2.5 border border-rule rounded-md font-medium text-sm hover:bg-ledger transition-colors"
               >
@@ -282,16 +298,6 @@ export function BatchCostingForm() {
         )}
       </div>
 
-      {/* Email capture modal */}
-      <EmailCaptureModal
-        isOpen={showEmailCapture}
-        onClose={() => setShowEmailCapture(false)}
-        calculationData={result ? {
-          costPerBar: result.costPerBar,
-          suggestedPrice: result.suggestedPrice,
-          totalCost: result.totalCost,
-        } : undefined}
-      />
     </>
   );
 }

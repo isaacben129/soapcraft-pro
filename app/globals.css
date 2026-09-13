@@ -66,31 +66,31 @@
 :root {
   /* ── Typography ── */
   --font-sans: "DM Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-serif: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-serif: "DM Sans", ui-sans-serif, system-ui, sans-serif;
 
-  /* ── Color palette: craft ledger — warm cream, umber charcoal, amber-brown ── */
+  /* ── Color palette: sea-glass studio — cool mineral surfaces, ink, coral action ── */
   /* Mapped from DESIGN.md §4.2 — values are HSL components for hsl() reconstruction */
 
   /* Base surfaces */
-  --background: 40 7% 90%;
-  --foreground: 25 12% 12%;
-  --muted: 30 10% 90%;
-  --muted-foreground: 30 8% 35%;
-  --popover: 38 18% 96%;
-  --popover-foreground: 25 12% 12%;
-  --card: 38 18% 96%;
-  --card-foreground: 25 12% 12%;
-  --border: 30 8% 75%;
-  --input: 30 8% 75%;
+  --background: 210 33% 97%;
+  --foreground: 213 35% 16%;
+  --muted: 204 28% 92%;
+  --muted-foreground: 213 15% 42%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 213 35% 16%;
+  --card: 0 0% 100%;
+  --card-foreground: 213 35% 16%;
+  --border: 204 20% 84%;
+  --input: 204 20% 76%;
 
-  /* Brand — grounded, craft-oriented amber-brown, not generic blue */
-  --primary: 25 55% 35%;
-  --primary-foreground: 38 100% 98%;
-  --secondary: 38 12% 94%;
-  --secondary-foreground: 25 12% 12%;
-  --accent: 40 30% 75%;
-  --accent-foreground: 25 12% 12%;
-  --accent-hover: 25 55% 28%;
+  /* Brand — sea-glass teal with a warm coral accent */
+  --primary: 174 52% 30%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 204 28% 92%;
+  --secondary-foreground: 213 35% 16%;
+  --accent: 12 78% 66%;
+  --accent-foreground: 213 35% 16%;
+  --accent-hover: 174 52% 24%;
 
   /* Semantic */
   --success: 145 30% 30%;
@@ -106,20 +106,20 @@
   --ring: 210 65% 50%;
 
   /* ── DESIGN.md §4.2 color tokens exposed as complete CSS colors for Tailwind v4 ── */
-  --color-canvas: hsl(40 7% 90%);
-  --color-sheet: hsl(38 18% 96%);
-  --color-ledger: hsl(30 10% 90%);
-  --color-rail: hsl(25 12% 13%);
-  --color-rail-muted: hsl(30 8% 65%);
-  --color-ink: hsl(25 12% 12%);
-  --color-ink-muted: hsl(30 8% 35%);
-  --color-rule: hsl(30 8% 75%);
-  --color-action: hsl(25 55% 35%);
-  --color-action-hover: hsl(25 55% 28%);
-  --color-action-text: hsl(38 100% 98%);
-  --color-clay: hsl(25 25% 85%);
-  --color-sage: hsl(80 12% 80%);
-  --color-brass: hsl(40 30% 75%);
+  --color-canvas: hsl(210 33% 97%);
+  --color-sheet: hsl(0 0% 100%);
+  --color-ledger: hsl(204 28% 92%);
+  --color-rail: hsl(213 35% 16%);
+  --color-rail-muted: hsl(213 15% 62%);
+  --color-ink: hsl(213 35% 16%);
+  --color-ink-muted: hsl(213 15% 42%);
+  --color-rule: hsl(204 20% 84%);
+  --color-action: hsl(174 52% 30%);
+  --color-action-hover: hsl(174 52% 24%);
+  --color-action-text: hsl(0 0% 100%);
+  --color-clay: hsl(12 78% 92%);
+  --color-sage: hsl(174 28% 84%);
+  --color-brass: hsl(12 78% 66%);
   --color-info: hsl(195 35% 35%);
   --color-success: hsl(145 30% 30%);
   --color-warning: hsl(38 65% 35%);
@@ -127,10 +127,10 @@
   --color-focus: hsl(210 65% 50%);
 
   /* ── Design tokens ── */
-  --radius: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-sm: calc(var(--radius) - 4px);
+  --radius: 3px;
+  --radius-lg: 3px;
+  --radius-md: 2px;
+  --radius-sm: 1px;
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
   --shadow-md: 0 2px 8px rgba(0,0,0,0.06);
   --shadow-lg: 0 4px 16px rgba(0,0,0,0.08);
@@ -140,21 +140,20 @@
 
   /* ── Semantic surface tokens (rail/canvas/ledger/sheet/clay/sage/brass) ── */
   /* Aligned to DESIGN.md §4.1 surface architecture */
-  --rail: 25 12% 13%;
-  --rail-foreground: 30 8% 65%;
-  --canvas: 40 7% 90%;
-  --canvas-foreground: 25 12% 12%;
-  --ledger: 30 10% 90%;
-  --ledger-foreground: 25 12% 12%;
-  --sheet: 38 18% 96%;
-  --sheet-foreground: 25 12% 12%;
-  --clay: 25 25% 85%;
-  --clay-foreground: 25 12% 12%;
-  --sage: 80 12% 80%;
-  --sage-foreground: 25 12% 12%;
-  --brass: 40 30% 75%;
-  --brass-foreground: 25 12% 12%;
-
+  --rail: 213 35% 8%;
+  --rail-foreground: 210 16% 68%;
+  --canvas: 213 35% 10%;
+  --canvas-foreground: 210 33% 96%;
+  --ledger: 213 28% 17%;
+  --ledger-foreground: 210 33% 96%;
+  --sheet: 213 30% 14%;
+  --sheet-foreground: 210 33% 96%;
+  --clay: 12 32% 24%;
+  --clay-foreground: 210 33% 96%;
+  --sage: 174 28% 24%;
+  --sage-foreground: 210 33% 96%;
+  --brass: 12 48% 42%;
+  --brass-foreground: 210 33% 96%;
   /* ── Spacing scale ── */
   --space-xs: 0.25rem;
   --space-sm: 0.5rem;
@@ -165,25 +164,25 @@
 }
 
 .dark {
-  --background: 25 10% 8%;
-  --foreground: 38 8% 92%;
-  --muted: 25 6% 16%;
-  --muted-foreground: 30 6% 56%;
-  --popover: 25 10% 10%;
-  --popover-foreground: 38 8% 92%;
-  --card: 25 10% 12%;
-  --card-foreground: 38 8% 92%;
-  --border: 25 6% 20%;
-  --input: 25 6% 20%;
-  --primary: 32 70% 55%;
-  --primary-foreground: 25 10% 8%;
-  --secondary: 25 6% 16%;
-  --secondary-foreground: 38 8% 92%;
-  --accent: 32 80% 55%;
-  --accent-foreground: 25 10% 8%;
+  --background: 213 35% 10%;
+  --foreground: 210 33% 96%;
+  --muted: 213 28% 17%;
+  --muted-foreground: 210 16% 68%;
+  --popover: 213 32% 13%;
+  --popover-foreground: 210 33% 96%;
+  --card: 213 30% 14%;
+  --card-foreground: 210 33% 96%;
+  --border: 213 22% 25%;
+  --input: 213 22% 25%;
+  --primary: 174 52% 48%;
+  --primary-foreground: 213 35% 10%;
+  --secondary: 213 28% 17%;
+  --secondary-foreground: 210 33% 96%;
+  --accent: 12 78% 66%;
+  --accent-foreground: 213 35% 10%;
   --destructive: 0 72% 51%;
   --destructive-foreground: 0 0% 98%;
-  --ring: 32 70% 55%;
+  --ring: 174 52% 48%;
 }
 
 * {
@@ -204,8 +203,21 @@ html {
   scroll-behavior: smooth;
 }
 
+.eyebrow {
+  color: hsl(var(--primary));
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+::selection {
+  background: hsl(var(--accent) / 0.35);
+}
+
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   font-weight: 700;
   letter-spacing: -0.02em;
 }

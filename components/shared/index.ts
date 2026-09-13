@@ -23,3 +23,5 @@ export { MoldVolumeForm } from "./mold-volume-form";
 export { CraftFairBreakEvenForm } from "./craft-fair-break-even-form";
 export { WholesalePricingForm } from "./wholesale-pricing-form";
 export { EmailCaptureModal } from "./email-capture-modal";
+export { RecipeBatchContextManagerComponent } from "./recipe-batch-context";
+export { ShareDecodeWidget } from "./share-decode-widget";
