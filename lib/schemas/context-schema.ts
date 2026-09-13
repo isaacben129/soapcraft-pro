@@ -227,9 +227,8 @@ export function createContextId(): string {
   if (typeof crypto !== "undefined" && crypto.getRandomValues) {
     crypto.getRandomValues(bytes);
   } else {
-    // Node.js fallback
-    const { randomFillSync } = require("crypto");
-    randomFillSync(bytes);
+    // Node.js fallback — globalThis.crypto available in Node.js 19+
+    (globalThis.crypto as Crypto).getRandomValues(bytes);
   }
   return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
 }
