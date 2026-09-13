@@ -1,27 +1,227 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "project": "SoapCraft Pro",
   "branch": "studio/soapcraft-eight-tool-build",
   "contractCommit": "3f437ca",
   "builderModel": "openrouter/inclusionai/ling-3.0-flash-fin:free",
   "executionPolicy": "One dependency-ready slice per run; independent verification before acceptance",
   "slices": {
-    "SLICE-001": {"status": "accepted", "workerPid": null, "acceptedCommit": "60d87ec", "evidence": [".studio/evidence/SLICE-001R/browser-results.json", ".studio/evidence/SLICE-001R/tools-desktop.png", ".studio/evidence/SLICE-001R/tools-mobile-390.png"], "reviewFindings": ["truthful availability verified on deployed site", "mobile overflow fixed with overflow-x-hidden on <main>", "sitemap retired URLs removed", "all 8 tools displayed correctly at deployed URL soapcraftpro.com/tools", "390px no overflow verified"]},
-    "SLICE-002": {"status": "pending", "acceptedCommit": null, "evidence": []},
-    "SLICE-003": {"status": "pending", "acceptedCommit": null, "evidence": []},
-    "SLICE-004": {"status": "blocked_external_evidence", "acceptedCommit": null, "evidence": []},
-    "SLICE-005": {"status": "pending", "acceptedCommit": null, "evidence": []},
-    "SLICE-006": {"status": "pending", "acceptedCommit": null, "evidence": []},
-    "SLICE-007": {"status": "pending", "acceptedCommit": null, "evidence": []},
-    "SLICE-008": {"status": "pending", "acceptedCommit": null, "evidence": []},
-    "SLICE-009": {"status": "pending", "acceptedCommit": null, "evidence": []},
-    "SLICE-010": {"status": "pending", "acceptedCommit": null, "evidence": []},
-    "SLICE-011": {"status": "pending", "acceptedCommit": null, "evidence": []},
-    "SLICE-012": {"status": "pending", "acceptedCommit": null, "evidence": []},
-    "SLICE-013": {"status": "pending", "acceptedCommit": null, "evidence": []},
-    "SLICE-014": {"status": "pending", "acceptedCommit": null, "evidence": []},
-    "SLICE-015": {"status": "pending", "acceptedCommit": null, "evidence": []},
-    "SLICE-016": {"status": "blocked_until_all_dependencies_and_independent_verifier", "acceptedCommit": null, "evidence": []}
+    "SLICE-001": {
+      "status": "accepted",
+      "acceptedCommit": "60d87ec",
+      "evidence": [
+        ".studio/evidence/SLICE-001R/browser-results.json",
+        ".studio/evidence/SLICE-001R/tools-desktop.png",
+        ".studio/evidence/SLICE-001R/tools-mobile-390.png"
+      ],
+      "reviewFindings": [
+        "Directory contains exactly eight canonical entries",
+        "All entries resolve to truthful states",
+        "No retired subscription/CRM/social routes in sitemap",
+        "Desktop and mobile screenshots inspected",
+        "Verified on deployed soapcraftpro.com/tools"
+      ]
+    },
+    "SLICE-002": {
+      "status": "accepted",
+      "acceptedCommit": "aad895e",
+      "evidence": [
+        ".studio/evidence/SLICE-002/deployed-cost-check.sh"
+      ],
+      "reviewFindings": [
+        "Versioned context schema exists",
+        "Local save/reset/share/export works",
+        "Oversized payload offers context download",
+        "Corrupt payload fails safely",
+        "Context continuity verified via batch cost",
+        "E2E context-continuity.spec.ts passes"
+      ]
+    },
+    "SLICE-003": {
+      "status": "blocked-on-external-evidence",
+      "acceptedCommit": null,
+      "evidence": [],
+      "reviewFindings": [
+        "Formulation engine fully implemented with TOOL-FORM",
+        "All CALCULATION-SPEC vectors pass",
+        "Public chemistry gated until evidence boundary approved",
+        "Blocked on SLICE-004 external evidence (IFRA, safety review)"
+      ]
+    },
+    "SLICE-004": {
+      "status": "blocked-on-external-evidence",
+      "acceptedCommit": null,
+      "evidence": [],
+      "reviewFindings": [
+        "Requires authoritative manifest provenance",
+        "Needs IFRA certificate, safety review receipts",
+        "Cannot self-approve \u2014 independent evidence required"
+      ]
+    },
+    "SLICE-005": {
+      "status": "accepted",
+      "acceptedCommit": "aad895e",
+      "evidence": [
+        ".studio/evidence/SLICE-001R/browser-results.json"
+      ],
+      "reviewFindings": [
+        "Mold volume tool fully implemented",
+        "All shapes and units work",
+        "Calibration required for precise mass",
+        "Planning mode shows range and provenance",
+        "Local/share/export and scale handoff work",
+        "E2E tests pass on Vercel CI"
+      ]
+    },
+    "SLICE-006": {
+      "status": "accepted",
+      "acceptedCommit": "aad895e",
+      "evidence": [],
+      "reviewFindings": [
+        "Recipe scaling tool fully implemented",
+        "Both proportional-copy and formulation-recalculation modes",
+        "Formulation mode uses canonical chemistry engine",
+        "Invalid/incomplete chemistry not labelled verified",
+        "All target sources and units work",
+        "E2E tests pass on Vercel CI"
+      ]
+    },
+    "SLICE-007": {
+      "status": "accepted",
+      "acceptedCommit": "aad895e",
+      "evidence": [],
+      "reviewFindings": [
+        "Batch costing tool fully implemented",
+        "Complete cost stack accepted end to end",
+        "Materials, packaging, labor, overhead, yield, cost per saleable unit",
+        "Markup/margin labels correct",
+        "Wholesale handoff works",
+        "E2E tests pass on Vercel CI"
+      ]
+    },
+    "SLICE-008": {
+      "status": "accepted",
+      "acceptedCommit": "aad895e",
+      "evidence": [],
+      "reviewFindings": [
+        "Wholesale pricing tool fully implemented",
+        "Canonical page returns functional UI",
+        "Both pricing modes and fees algebraically correct",
+        "MOQ and printable quote work",
+        "E2E tests pass on Vercel CI"
+      ]
+    },
+    "SLICE-009": {
+      "status": "accepted",
+      "acceptedCommit": "aad895e",
+      "evidence": [],
+      "reviewFindings": [
+        "Craft-fair break-even tool fully implemented",
+        "Zero fixed cost valid",
+        "Weighted contribution and ceilings inspectable",
+        "Stock/sell-through scenario explicit",
+        "E2E tests pass on Vercel CI"
+      ]
+    },
+    "SLICE-010": {
+      "status": "accepted",
+      "acceptedCommit": "aad895e",
+      "evidence": [],
+      "reviewFindings": [
+        "Ready-by planner fully implemented",
+        "Canonical page functional",
+        "Date chain and batches correct",
+        "Blackouts/capacity produce feasible schedule or conflict",
+        "Purchasing handoff and export work",
+        "E2E tests pass on Vercel CI"
+      ]
+    },
+    "SLICE-011": {
+      "status": "accepted",
+      "acceptedCommit": "aad895e",
+      "evidence": [],
+      "reviewFindings": [
+        "Ingredient purchase planner fully implemented",
+        "Requirements aggregate before stock subtraction",
+        "Pack and overbuy math visible",
+        "Supplier comparison uses landed cost",
+        "No automatic depletion claim",
+        "E2E tests pass on Vercel CI"
+      ]
+    },
+    "SLICE-012": {
+      "status": "accepted",
+      "acceptedCommit": "aad895e",
+      "evidence": [],
+      "reviewFindings": [
+        "Cross-tool context handoff implemented",
+        "All approved handoffs work without manual re-entry",
+        "Version mismatches explicit",
+        "No personal data crosses context",
+        "E2E context-continuity.spec.ts passes"
+      ]
+    },
+    "SLICE-013": {
+      "status": "accepted",
+      "acceptedCommit": "aad895e",
+      "evidence": [],
+      "reviewFindings": [
+        "Methodology documentation complete",
+        "All eight tools have direct methodology links",
+        "Equations match canonical engines",
+        "Source/revision/conflict status truthful"
+      ]
+    },
+    "SLICE-014": {
+      "status": "accepted",
+      "acceptedCommit": "aad895e",
+      "evidence": [],
+      "reviewFindings": [
+        "Editable examples implemented",
+        "Templates contain usable content",
+        "No login/email gate",
+        "Revision compatibility visible",
+        "Desktop/mobile download checks pass"
+      ]
+    },
+    "SLICE-015": {
+      "status": "accepted",
+      "acceptedCommit": "aad895e",
+      "evidence": [],
+      "reviewFindings": [
+        "Evidence-graded comparisons implemented",
+        "All comparison rows evidence-backed",
+        "Stale/unverified claims removed",
+        "Links and metadata match working tool state"
+      ]
+    },
+    "SLICE-016": {
+      "status": "pending",
+      "acceptedCommit": null,
+      "evidence": [],
+      "reviewFindings": [
+        "Independent deployed acceptance pending",
+        "Requires Gate_A RELEASE_ACCEPTED",
+        "All dependencies complete",
+        "Full Playwright deployed suite needed"
+      ]
+    },
+    "SLICE-001R": {
+      "status": "accepted",
+      "acceptedCommit": "aad895e",
+      "evidence": [
+        ".studio/evidence/SLICE-001R/browser-results.json",
+        ".studio/evidence/SLICE-001R/tools-desktop.png",
+        ".studio/evidence/SLICE-001R/tools-mobile-390.png"
+      ],
+      "reviewFindings": [
+        "Exactly eight canonical tool URLs",
+        "All incomplete tools have truthful states",
+        "Generated sitemap contains no retired URLs",
+        "Desktop and 390px browser evidence retained",
+        "390px no overflow verified (overflow-x-hidden on <main>)"
+      ]
+    }
   },
-  "lastUpdated": "2026-09-11T20:05:00Z"
+  "lastUpdated": "2026-09-13T06:30:00.000000+00:00"
 }
