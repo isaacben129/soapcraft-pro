@@ -4,6 +4,7 @@ const retiredRoutePrefixes = ["/marketing/"];
 const publicRoutes = new Set([
   "/",
   "/tools",
+  "/blog",
   "/methodology",
   "/safety",
   "/privacy",
