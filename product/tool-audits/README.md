@@ -27,3 +27,7 @@
 3. Only then leverage the actual differentiator: context handoffs across tools, with source/revision/completeness carried forward.
 
 The former `product/COMPETITIVE-AUDIT.md` is a portfolio-level overview. These eight files are the implementation-grade per-tool audits requested by Isaac.
+
+## Deployed UI audit
+
+`09-deployed-ui-audit.md` is the separately recorded desktop visual/UI inspection of every deployed SoapCraft tool. It identifies the shipped UI baseline, direct-comparator interaction implications, and the concrete UI changes needed per tool. This prevents feature parity and UI parity from being treated as the same claim.
