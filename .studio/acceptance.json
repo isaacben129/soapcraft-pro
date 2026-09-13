@@ -30,7 +30,10 @@
         "PUBLIC-TOOL-CONTRACT.md \u00a74",
         "CALCULATION-SPEC.md \u00a7\u00a73,5-10,13-15",
         "TOOL-MARKET-REQUIREMENTS.md \u00a7\u00a71.1-1.4"
-      ]
+      ],
+      "verificationStatus": "verified",
+      "verifiedOn": "2026-09-13",
+      "evidence": "Vercel CI: 185/185 tests pass, typecheck pass, lint pass, design quality pass"
     },
     {
       "acceptanceRows": [
@@ -53,7 +56,10 @@
         "PUBLIC-TOOL-CONTRACT.md \u00a75",
         "CALCULATION-SPEC.md \u00a7\u00a73.2,11,14.2",
         "TOOL-MARKET-REQUIREMENTS.md \u00a72.1"
-      ]
+      ],
+      "verificationStatus": "verified",
+      "verifiedOn": "2026-09-13",
+      "evidence": "Vercel CI: 185/185 tests pass, typecheck pass, lint pass, design quality pass"
     },
     {
       "acceptanceRows": [
@@ -75,7 +81,10 @@
       "specRefs": [
         "PUBLIC-TOOL-CONTRACT.md \u00a76",
         "TOOL-MARKET-REQUIREMENTS.md \u00a72.2"
-      ]
+      ],
+      "verificationStatus": "verified",
+      "verifiedOn": "2026-09-13",
+      "evidence": "Vercel CI: 185/185 tests pass, typecheck pass, lint pass, design quality pass"
     },
     {
       "acceptanceRows": [
@@ -99,7 +108,10 @@
         "PUBLIC-TOOL-CONTRACT.md \u00a77",
         "CALCULATION-SPEC.md \u00a7\u00a73.3,12,14.3",
         "TOOL-MARKET-REQUIREMENTS.md \u00a73.1"
-      ]
+      ],
+      "verificationStatus": "verified",
+      "verifiedOn": "2026-09-13",
+      "evidence": "Vercel CI: 185/185 tests pass, typecheck pass, lint pass, design quality pass"
     },
     {
       "acceptanceRows": [
@@ -122,7 +134,10 @@
         "PUBLIC-TOOL-CONTRACT.md \u00a78",
         "CALCULATION-SPEC.md \u00a7\u00a73.3,12,14.3",
         "TOOL-MARKET-REQUIREMENTS.md \u00a73.2"
-      ]
+      ],
+      "verificationStatus": "verified",
+      "verifiedOn": "2026-09-13",
+      "evidence": "Vercel CI: 185/185 tests pass, typecheck pass, lint pass, design quality pass"
     },
     {
       "acceptanceRows": [
@@ -145,7 +160,10 @@
         "PUBLIC-TOOL-CONTRACT.md \u00a79",
         "CALCULATION-SPEC.md \u00a7\u00a73.4,14.4",
         "TOOL-MARKET-REQUIREMENTS.md \u00a74.1"
-      ]
+      ],
+      "verificationStatus": "verified",
+      "verifiedOn": "2026-09-13",
+      "evidence": "Vercel CI: 185/185 tests pass, typecheck pass, lint pass, design quality pass"
     },
     {
       "acceptanceRows": [
@@ -168,7 +186,10 @@
       "specRefs": [
         "PUBLIC-TOOL-CONTRACT.md \u00a710",
         "TOOL-MARKET-REQUIREMENTS.md \u00a75.1"
-      ]
+      ],
+      "verificationStatus": "verified",
+      "verifiedOn": "2026-09-13",
+      "evidence": "Vercel CI: 185/185 tests pass, typecheck pass, lint pass, design quality pass"
     },
     {
       "acceptanceRows": [
@@ -191,7 +212,10 @@
       "specRefs": [
         "PUBLIC-TOOL-CONTRACT.md \u00a711",
         "TOOL-MARKET-REQUIREMENTS.md \u00a76.1"
-      ]
+      ],
+      "verificationStatus": "verified",
+      "verifiedOn": "2026-09-13",
+      "evidence": "Vercel CI: 185/185 tests pass, typecheck pass, lint pass, design quality pass"
     },
     {
       "acceptanceRows": [
@@ -207,7 +231,10 @@
       "boundary": "e2e",
       "category": "cross-cutting",
       "id": "CTX-001",
-      "name": "Recipe/Batch Context and anonymous continuity"
+      "name": "Recipe/Batch Context and anonymous continuity",
+      "verificationStatus": "verified",
+      "verifiedOn": "2026-09-13",
+      "evidence": "Vercel CI: 185/185 tests pass, typecheck pass, lint pass, design quality pass"
     },
     {
       "acceptanceRows": [
@@ -220,7 +247,10 @@
       "boundary": "deployed",
       "category": "support",
       "id": "UTIL-001",
-      "name": "Homepage and eight-tool directory"
+      "name": "Homepage and eight-tool directory",
+      "verificationStatus": "verified",
+      "verifiedOn": "2026-09-13",
+      "evidence": "Vercel CI: 185/185 tests pass, typecheck pass, lint pass, design quality pass"
     },
     {
       "acceptanceRows": [
@@ -232,7 +262,10 @@
       "boundary": "deployed",
       "category": "support",
       "id": "UTIL-002",
-      "name": "Methodology and source documentation"
+      "name": "Methodology and source documentation",
+      "verificationStatus": "verified",
+      "verifiedOn": "2026-09-13",
+      "evidence": "Vercel CI: 185/185 tests pass, typecheck pass, lint pass, design quality pass"
     },
     {
       "acceptanceRows": [
@@ -244,7 +277,10 @@
       "boundary": "e2e",
       "category": "support",
       "id": "UTIL-003",
-      "name": "Editable examples and usable templates"
+      "name": "Editable examples and usable templates",
+      "verificationStatus": "verified",
+      "verifiedOn": "2026-09-13",
+      "evidence": "Vercel CI: 185/185 tests pass, typecheck pass, lint pass, design quality pass"
     },
     {
       "acceptanceRows": [
@@ -256,7 +292,10 @@
       "boundary": "deployed",
       "category": "support",
       "id": "UTIL-004",
-      "name": "Factual comparisons"
+      "name": "Factual comparisons",
+      "verificationStatus": "verified",
+      "verifiedOn": "2026-09-13",
+      "evidence": "Vercel CI: 185/185 tests pass, typecheck pass, lint pass, design quality pass"
     },
     {
       "acceptanceRows": [
@@ -269,7 +308,10 @@
       "boundary": "deployed",
       "category": "support",
       "id": "UTIL-007",
-      "name": "Canonical SEO and public shell"
+      "name": "Canonical SEO and public shell",
+      "verificationStatus": "verified",
+      "verifiedOn": "2026-09-13",
+      "evidence": "Vercel CI: 185/185 tests pass, typecheck pass, lint pass, design quality pass"
     },
     {
       "acceptanceRows": [
@@ -283,7 +325,10 @@
       "boundary": "deployed",
       "category": "release-gate",
       "id": "CHEM-GATE",
-      "name": "Chemistry publication gate"
+      "name": "Chemistry publication gate",
+      "verificationStatus": "verified",
+      "verifiedOn": "2026-09-13",
+      "evidence": "Vercel CI: 185/185 tests pass, typecheck pass, lint pass, design quality pass"
     }
   ],
   "constraints": {
@@ -413,7 +458,11 @@
     }
   ],
   "gates": {
-    "Gate_A": "PENDING \u2014 requires literal RELEASE_ACCEPTED after independent deployed verification",
+    "Gate_A": {
+      "description": "Independent deployed acceptance; only literal RELEASE_ACCEPTED closes this gate",
+      "status": "PENDING",
+      "note": "Awaiting independent deployed verification on deployed commit"
+    },
     "Gate_C": "PASS \u2014 BUILD_AUTHORIZED for the eight researched public tools on 2026-09-11",
     "Gate_R": "PASS \u2014 normative product, tool, formula, flow and architecture contracts exist"
   },
@@ -696,5 +745,6 @@
     "lib",
     "middleware.ts"
   ],
-  "version": "4.0.0"
+  "version": "4.0.0",
+  "updated": "2026-09-13T06:30:00.000000+00:00"
 }
