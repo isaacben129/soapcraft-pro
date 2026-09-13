@@ -4,21 +4,18 @@
 
 import { Metadata } from "next";
 import Link from "next/link";
-import { pageMetadata } from "@/lib/seo/metadata";
+import { getToolMetadata } from "@/lib/seo/tool-seo";
+import { ToolSeo } from "@/components/shared/tool-seo";
 import { BatchCostingForm } from "@/components/shared/batch-costing-form";
 
 import { ShareDecodeWidget } from "@/components/shared/share-decode-widget";
 
-export const metadata: Metadata = pageMetadata({
-  title: "Batch Cost Calculator — Know Your Cost Per Bar",
-  description:
-    "Calculate the real cost per bar of handmade soap. Enter ingredient costs, batch yield, and target margin. Free, no signup required.",
-  path: "/tools/batch-cost",
-});
+export const metadata: Metadata = getToolMetadata("batch-cost");
 
 export default function BatchCostPage() {
   return (
     <main className="flex flex-col min-h-screen">
+      <ToolSeo slug="batch-cost" />
       <article className="container mx-auto px-4 py-16 md:py-20">
         <div className="max-w-4xl mx-auto">
           <nav aria-label="Breadcrumb" className="mb-4">

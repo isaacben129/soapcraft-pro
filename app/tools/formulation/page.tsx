@@ -3,10 +3,16 @@
 // Shows gated status, not a fake clickable route.
 
 import Link from "next/link";
+import { ToolSeo } from "@/components/shared/tool-seo";
+import { getToolMetadata } from "@/lib/seo/tool-seo";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = getToolMetadata("formulation");
 
 export default function FormulationPage() {
   return (
     <main className="min-h-screen">
+      <ToolSeo slug="formulation" />
       <section className="container mx-auto max-w-3xl px-4 py-12 md:py-16">
         <h1 className="font-display text-3xl font-bold text-foreground md:text-4xl">
           Formulation calculator
