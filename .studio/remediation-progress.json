@@ -2,7 +2,7 @@
   "$schema": "https://studioforge.dev/schemas/build-progress.json",
   "version": "1.0.0",
   "contract": "product/POST-AUDIT-REMEDIATION-CONTRACT.md",
-  "updatedAt": "2026-09-13T07:45:00Z",
+  "updatedAt": "2026-09-13T08:40:29Z",
   "releaseTruth": "Post-audit remediation active. Prior acceptance evidence is not release-valid for the remediated tools.",
   "remediationSlices": {
     "REM-001": {
@@ -13,9 +13,11 @@
         "GREEN: npx vitest run lib/calculations/sizing.test.ts — 4/4 passing",
         "GREEN: npm run typecheck — exit 0",
         "GREEN: npm run lint — exit 0 with pre-existing repository warnings",
-        "GREEN: npm test — 186/186 passing"
+        "GREEN: npm test — 186/186 passing",
+        "DEPLOY: Vercel preview https://soapcraft-pl11ba19w-isaacs-projects-5e1cb4e6.vercel.app built successfully",
+        "BROWSER (390px): e2e/mold-volume-mobile.mjs exercised 12 × 3 × 3 in at 100% fill; verified 1769.8 cm³ and 1592.8 g with no horizontal overflow"
       ],
-      "blockedEvidence": "Local Next dev process accepted startup but http://127.0.0.1:3000/tools/mold-volume returned no headers within 30 seconds; browser navigation timed out. npm run build also timed out after 300 seconds during 'Creating an optimized production build'. The design scan reports existing banned patterns elsewhere in the repository and itself timed out. Desktop and 390px browser evidence remains required before independent acceptance.",
+      "blockedEvidence": "No known functional evidence blocker. Local development/build failures and repository-wide design scan findings remain non-release evidence concerns. This slice awaits formal independent acceptance; it is not self-accepted.",
       "reviewRequired": true
     },
     "REM-002": {
@@ -29,7 +31,10 @@
         "GREEN: npx vitest run app/api/calculate/batch-cost/route.test.ts — 1/1 passing",
         "GREEN: npx vitest run — 193/193 passing (21 test files)",
         "GREEN: npm run typecheck — exit 0",
-        "GREEN: npm run lint — exit 0 with 77 pre-existing warnings"
+        "GREEN: npm run lint — exit 0 with 77 pre-existing warnings",
+        "RED: deployed 390px E2E measured 520px document width and 3.16:1 batch-yield label contrast",
+        "GREEN: Vercel preview https://soapcraft-pl11ba19w-isaacs-projects-5e1cb4e6.vercel.app built successfully; e2e/batch-cost-mobile.mjs verified no 390px overflow, >=4.5:1 label contrast, gross-margin selection, and $1.67 suggested price for $1.00 cost at 40% margin",
+        "BROWSER (desktop): rendered review found no material blockers; labels, input values, and Target Gross Margin control were visible and enabled-looking"
       ],
       "fixesApplied": [
         "batch-cost.ts: Added targetMarkupPercent to markupPercent and suggestedPrice calculations",
@@ -40,7 +45,7 @@
         "batch-cost.test.ts: Added tests for targetMarkupPercent, targetGrossMargin, and default markupPercent from targetPrice",
         "components/shared/batch-costing-form.tsx: Replaced ambiguous 'Target margin' with pricing mode selector (Gross Margin vs Markup)"
       ],
-      "blockedEvidence": "Local Next dev process accepted startup but browser navigation to the Batch Cost route timed out. Desktop and 390px browser evidence remains required before independent acceptance.",
+      "blockedEvidence": "No known functional evidence blocker. This slice awaits formal independent acceptance; it is not self-accepted.",
       "reviewRequired": true
     },
     "REM-003": { "status": "BLOCKED", "dependsOn": ["REM-002"] },

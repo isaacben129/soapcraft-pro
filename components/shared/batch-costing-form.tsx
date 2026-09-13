@@ -144,25 +144,25 @@ export function BatchCostingForm() {
           </div>
           <div className="space-y-3">
             {ingredients.map((ing, index) => (
-              <div key={index} className="flex gap-2 items-start">
+              <div key={index} className="flex flex-wrap items-start gap-2 sm:flex-nowrap">
                 <input
                   type="text"
                   placeholder="Ingredient name"
                   value={ing.name}
                   onChange={(e) => updateIngredient(index, "name", e.target.value)}
-                  className="flex-1 px-3 py-2 bg-sheet border border-rule rounded-md text-foreground placeholder-muted-foreground text-sm focus:outline-none focus:border-action"
+                  className="min-w-0 flex-1 px-3 py-2 bg-sheet border border-rule rounded-md text-slate-100 placeholder:text-slate-400 text-sm focus:outline-none focus:border-action"
                 />
                 <input
                   type="number"
                   placeholder="Cost"
                   value={ing.costPerUnit}
                   onChange={(e) => updateIngredient(index, "costPerUnit", e.target.value)}
-                  className="w-28 px-3 py-2 bg-sheet border border-rule rounded-md text-foreground placeholder-muted-foreground text-sm focus:outline-none focus:border-action"
+                  className="w-28 px-3 py-2 bg-sheet border border-rule rounded-md text-slate-100 placeholder:text-slate-400 text-sm focus:outline-none focus:border-action"
                 />
                 <select
                   value={ing.unit}
                   onChange={(e) => updateIngredient(index, "unit", e.target.value)}
-                  className="w-20 px-3 py-2 bg-sheet border border-rule rounded-md text-foreground text-sm focus:outline-none focus:border-action"
+                  className="w-20 px-3 py-2 bg-sheet border border-rule rounded-md text-slate-100 text-sm focus:outline-none focus:border-action"
                 >
                   <option value="g">g</option>
                   <option value="kg">kg</option>
@@ -174,13 +174,13 @@ export function BatchCostingForm() {
                   placeholder="Qty"
                   value={ing.quantity}
                   onChange={(e) => updateIngredient(index, "quantity", e.target.value)}
-                  className="w-20 px-3 py-2 bg-sheet border border-rule rounded-md text-foreground placeholder-muted-foreground text-sm focus:outline-none focus:border-action"
+                  className="w-20 px-3 py-2 bg-sheet border border-rule rounded-md text-slate-100 placeholder:text-slate-400 text-sm focus:outline-none focus:border-action"
                 />
                 {ingredients.length > 1 && (
                   <button
                     type="button"
                     onClick={() => removeIngredient(index)}
-                    className="p-2 text-muted-foreground hover:text-destructive transition-colors"
+                    className="p-2 text-slate-200 hover:text-destructive transition-colors"
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>
@@ -193,33 +193,36 @@ export function BatchCostingForm() {
         {/* Fragrance & other costs */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label className="text-sm text-muted-foreground block mb-1">Fragrance cost ($)</label>
+            <label htmlFor="fragrance-cost" className="text-sm text-slate-200 block mb-1">Fragrance cost ($)</label>
             <input
+              id="fragrance-cost"
               type="number"
               placeholder="0"
               value={fragranceCost}
               onChange={(e) => setFragranceCost(e.target.value)}
-              className="w-full px-3 py-2 bg-sheet border border-rule rounded-md text-foreground placeholder-muted-foreground text-sm focus:outline-none focus:border-action"
+              className="w-full px-3 py-2 bg-sheet border border-rule rounded-md text-slate-100 placeholder:text-slate-400 text-sm focus:outline-none focus:border-action"
             />
           </div>
           <div>
-            <label className="text-sm text-muted-foreground block mb-1">Other costs ($)</label>
+            <label htmlFor="other-costs" className="text-sm text-slate-200 block mb-1">Other costs ($)</label>
             <input
+              id="other-costs"
               type="number"
               placeholder="0"
               value={otherCosts}
               onChange={(e) => setOtherCosts(e.target.value)}
-              className="w-full px-3 py-2 bg-sheet border border-rule rounded-md text-foreground placeholder-muted-foreground text-sm focus:outline-none focus:border-action"
+              className="w-full px-3 py-2 bg-sheet border border-rule rounded-md text-slate-100 placeholder:text-slate-400 text-sm focus:outline-none focus:border-action"
             />
           </div>
           <div>
-            <label className="text-sm text-muted-foreground block mb-1">Batch yield (bars)</label>
+            <label htmlFor="batch-yield-bars" className="text-sm text-slate-200 block mb-1">Batch yield (bars)</label>
             <input
+              id="batch-yield-bars"
               type="number"
               placeholder="42"
               value={batchYieldBars}
               onChange={(e) => setBatchYieldBars(e.target.value)}
-              className="w-full px-3 py-2 bg-sheet border border-rule rounded-md text-foreground placeholder-muted-foreground text-sm focus:outline-none focus:border-action"
+              className="w-full px-3 py-2 bg-sheet border border-rule rounded-md text-slate-100 placeholder:text-slate-400 text-sm focus:outline-none focus:border-action"
             />
           </div>
         </div>
@@ -227,25 +230,27 @@ export function BatchCostingForm() {
         {/* Target percentage with mode selector */}
         <div>
           <div className="flex items-center gap-4 mb-2">
-            <label className="text-sm text-muted-foreground block mb-0">Target price basis</label>
+            <label htmlFor="target-price-basis" className="text-sm text-slate-200 block mb-0">Target price basis</label>
             <select
+              id="target-price-basis"
               value={pricingMode}
               onChange={(e) => setPricingMode(e.target.value as "gross_margin" | "markup")}
-              className="px-3 py-1.5 bg-sheet border border-rule rounded-md text-foreground text-sm focus:outline-none focus:border-action"
+              className="px-3 py-1.5 bg-sheet border border-rule rounded-md text-slate-100 text-sm focus:outline-none focus:border-action"
             >
               <option value="gross_margin">Target Gross Margin</option>
               <option value="markup">Target Markup</option>
             </select>
           </div>
-          <label className="text-sm text-muted-foreground block mb-1">
+          <label htmlFor="target-percentage" className="text-sm text-slate-200 block mb-1">
             {pricingMode === "gross_margin" ? "Target gross margin (%)" : "Target markup (%)"}
           </label>
           <input
+            id="target-percentage"
             type="number"
             placeholder={pricingMode === "gross_margin" ? "40" : "40"}
             value={targetPercentage}
             onChange={(e) => setTargetPercentage(e.target.value)}
-            className="w-32 px-3 py-2 bg-sheet border border-rule rounded-md text-foreground placeholder-muted-foreground text-sm focus:outline-none focus:border-action"
+            className="w-32 px-3 py-2 bg-sheet border border-rule rounded-md text-slate-100 placeholder:text-slate-400 text-sm focus:outline-none focus:border-action"
           />
         </div>
 
@@ -283,19 +288,19 @@ export function BatchCostingForm() {
             <h3 className="font-display text-lg font-bold text-foreground">Results</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="bg-canvas rounded-md p-4">
-                <p className="text-sm text-muted-foreground">Total ingredient cost</p>
+                <p className="text-sm text-slate-200">Total ingredient cost</p>
                 <p className="font-mono text-xl font-bold text-ink">${result.ingredientCostTotal.toFixed(2)}</p>
               </div>
               <div className="bg-canvas rounded-md p-4">
-                <p className="text-sm text-muted-foreground">Cost per bar</p>
+                <p className="text-sm text-slate-200">Cost per bar</p>
                 <p className="font-mono text-xl font-bold text-action">${result.costPerBar.toFixed(2)}</p>
               </div>
               <div className="bg-canvas rounded-md p-4">
-                <p className="text-sm text-muted-foreground">Suggested selling price</p>
+                <p className="text-sm text-slate-200">Suggested selling price</p>
                 <p className="font-mono text-xl font-bold text-success">${result.suggestedPrice.toFixed(2)}</p>
               </div>
               <div className="bg-canvas rounded-md p-4">
-                <p className="text-sm text-muted-foreground">Total batch cost</p>
+                <p className="text-sm text-slate-200">Total batch cost</p>
                 <p className="font-mono text-xl font-bold text-ink">${result.totalCost.toFixed(2)}</p>
               </div>
             </div>
