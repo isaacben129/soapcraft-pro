@@ -45,8 +45,8 @@ export function CommandBar() {
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-50 flex items-start justify-center pt-24 bg-background/80 backdrop-blur-sm" onClick={() => setOpen(false)}>
-          <div className="w-full max-w-lg bg-canvas border border-border rounded-xl shadow-elevation-3 overflow-hidden" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-24 bg-background/90" onClick={() => setOpen(false)}>
+          <div className="w-full max-w-lg bg-canvas border border-border rounded-lg shadow-elevation-3 overflow-hidden" onClick={(e) => e.stopPropagation()}>
             <input
               autoFocus
               value={query}

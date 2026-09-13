@@ -14,7 +14,7 @@ export default function FormulationPage() {
         <p className="mt-4 text-lg leading-7 text-muted-foreground">
           This tool is currently gated for verification.
         </p>
-        <div className="mt-6 rounded-xl border border-warning/40 bg-warning/5 p-6">
+        <div className="mt-6 rounded-lg border border-warning/40 bg-warning/5 p-6">
           <p className="font-semibold text-warning">Gated for verification</p>
           <p className="mt-2 text-sm leading-6 text-muted-foreground">
             The formulation calculator is not publicly available while its ingredient

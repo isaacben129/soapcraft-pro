@@ -103,10 +103,15 @@ export class LocalContextStorage implements ContextStorageAdapter {
     const prefix = this.getPrefix();
     try {
       const stored = storage();
-      const keys = Object.keys(storage());
-      // storage() returns a LocalStorageAdapter, not the raw keys
-      // We need to enumerate differently
-    } catch {}
+      const rawKeys = Object.keys(storage());
+      for (const key of rawKeys) {
+        if (key.startsWith(prefix)) {
+          ids.push(key.slice(prefix.length));
+        }
+      }
+    } catch {
+      // storage unavailable, return empty list
+    }
     return ids;
   }
 }

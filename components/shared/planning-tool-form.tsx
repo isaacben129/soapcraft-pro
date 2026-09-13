@@ -53,7 +53,7 @@ export function PlanningToolForm({ kind }: { kind: ToolKind }) {
   }
 
   const field = (key: string, label: string, suffix?: string, type = "number") => (
-    <label className="block text-sm font-medium text-foreground">{label}<span className="mt-2 flex items-center rounded-xl border border-input bg-background shadow-sm focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/15"><input required type={type} min={type === "number" ? "0" : undefined} step={type === "number" ? "any" : undefined} value={values[key]} onChange={(event) => update(key, event.target.value)} className="min-h-12 w-full bg-transparent px-4 outline-none" />{suffix && <span className="pr-4 text-sm text-muted-foreground">{suffix}</span>}</span></label>
+    <label className="block text-sm font-medium text-foreground">{label}<span className="mt-2 flex items-center rounded-lg border border-input bg-background shadow-sm focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/15"><input required type={type} min={type === "number" ? "0" : undefined} step={type === "number" ? "any" : undefined} value={values[key]} onChange={(event) => update(key, event.target.value)} className="min-h-12 w-full bg-transparent px-4 outline-none" />{suffix && <span className="pr-4 text-sm text-muted-foreground">{suffix}</span>}</span></label>
   );
 
   return <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.72fr)]">
@@ -63,8 +63,8 @@ export function PlanningToolForm({ kind }: { kind: ToolKind }) {
         {kind === "ready" && <>{field("units", "Saleable units required")}{field("yield", "Saleable units per batch")}{field("ready", "Ready-by date", undefined, "date")}{field("cure", "User-selected interval", "days")}{field("buffer", "Unmold / cut buffer", "days")}{field("lead", "Other lead time", "days")}</>}
         {kind === "purchase" && <>{field("required", "Requirement", "g")}{field("onHand", "On hand", "g")}{field("pack", "Pack size", "g")}</>}
       </div>
-      <button className="mt-7 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-primary px-5 font-semibold text-primary-foreground transition hover:-translate-y-0.5 hover:bg-primary/90 sm:w-auto" type="submit">Calculate {kind === "purchase" ? "purchase need" : "plan"}</button>
-      {error && <p role="alert" className="mt-4 rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">{error}</p>}
+      <button className="mt-7 inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-primary px-5 font-semibold text-primary-foreground transition hover:-translate-y-0.5 hover:bg-primary/90 sm:w-auto" type="submit">Calculate {kind === "purchase" ? "purchase need" : "plan"}</button>
+      {error && <p role="alert" className="mt-4 rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">{error}</p>}
     </form>
     <aside className="rounded-3xl bg-foreground p-6 text-background sm:p-7"><p className="text-xs font-bold uppercase tracking-[.18em] text-background/55">What this gives you</p><p className="mt-4 text-lg leading-8 text-background/80">{meta.intro}</p>{result ? <Result kind={kind} data={result} /> : <p className="mt-8 border-t border-background/15 pt-5 text-sm leading-6 text-background/55">Your result will appear here. Nothing is sent to an account.</p>}</aside>
   </div>;

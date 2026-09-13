@@ -51,7 +51,7 @@ export function EmailCaptureModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-950/70">
       <div className="bg-sheet rounded-lg border border-rule p-8 max-w-md w-full mx-4 shadow-xl">
         <div className="text-center">
           {status === "success" ? (

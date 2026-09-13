@@ -9,9 +9,9 @@ interface AttentionRowProps {
 }
 
 const variantStyles = {
-  info: "border-l-info bg-info/5",
-  warning: "border-l-warning bg-warning/5",
-  danger: "border-l-destructive bg-destructive/5",
+  info: "border-l border-info bg-info/5",
+  warning: "border-l border-warning bg-warning/5",
+  danger: "border-l border-destructive bg-destructive/5",
 };
 
 export function AttentionRow({
@@ -22,7 +22,7 @@ export function AttentionRow({
 }: AttentionRowProps) {
   return (
     <div
-      className={`border-l-4 ${variantStyles[variant]} rounded-r-lg px-4 py-3 flex items-start justify-between gap-4`}
+      className={`border-l ${variantStyles[variant]} rounded-r-lg px-4 py-3 flex items-start justify-between gap-4`}
     >
       <div>
         <p className="text-sm font-medium text-foreground">{title}</p>
