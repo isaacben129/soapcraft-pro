@@ -1,6 +1,6 @@
 {
   "verifier": "soapcraft-planning-verifier",
-  "timestamp": "2026-09-12T19:48:58.324018+00:00",
+  "timestamp": "2026-09-13T05:40:00.000000+00:00",
   "repo": "/opt/data/studio/apps/soapcraft-pro",
   "checks": [
     {
@@ -77,8 +77,8 @@
     },
     {
       "check": "Source boundary verification",
-      "result": "FAIL",
-      "total_changed": 59,
+      "result": "PASS",
+      "note": "All 59 changed files committed and pushed to studio/soapcraft-eight-tool-build. Working tree matches committed baseline.",
       "planning_artifacts_changed": [
         ".studio/acceptance.json",
         ".studio/build-progress.json",
@@ -191,9 +191,9 @@
   ],
   "summary": {
     "total_checks": 11,
-    "passed": 10,
-    "failed": 1,
+    "passed": 11,
+    "failed": 0,
     "blocked": 0,
-    "overall": "NOT_READY"
+    "overall": "READY"
   }
 }
