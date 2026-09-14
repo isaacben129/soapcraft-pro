@@ -8,6 +8,7 @@ import { notFound } from "next/navigation";
 import { getBlogPost, getAllBlogSlugs, getRelatedPosts } from "@/lib/blog";
 import { serializeJsonLd } from "@/lib/seo/json-ld";
 import { SITE_URL } from "@/lib/seo/site-url";
+import { articleMetadata } from "@/lib/seo/metadata";
 
 export const dynamicParams = false;
 
@@ -25,23 +26,16 @@ export async function generateMetadata({
   const post = getBlogPost(slug);
   if (!post) return { title: "Blog Post — SoapCraft Pro" };
 
-  return {
+  return articleMetadata({
     title: post.seo.title,
     description: post.seo.description,
+    path: `/blog/${post.slug}`,
+    publishedAt: post.publishedAt,
+    author: post.author,
+    image: `${SITE_URL}${post.image}`,
+    imageAlt: post.imageAlt || post.title,
     keywords: post.seo.keywords,
-    openGraph: {
-      title: post.seo.title,
-      description: post.seo.description,
-      type: "article",
-      publishedTime: post.publishedAt,
-      authors: [post.author],
-      url: `${SITE_URL}/blog/${post.slug}`,
-      images: post.image
-        ? [{ url: post.image, alt: post.imageAlt || post.title }]
-        : undefined,
-    },
-    robots: { index: true, follow: true },
-  };
+  });
 }
 
 // ── JSON-LD structured data ──────────────
@@ -56,28 +50,28 @@ function ArticleJsonLd(post: {
   image?: string;
   imageAlt?: string;
 }) {
+  const url = `${SITE_URL}/blog/${post.slug}`;
   return {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "BlogPosting",
+    "@id": `${url}#article`,
     headline: post.title,
     description: post.description,
     datePublished: post.publishedAt,
+    dateModified: post.publishedAt,
     author: {
-      "@type": "Person",
+      "@type": "Organization",
       name: post.author,
+      url: SITE_URL,
     },
     publisher: {
       "@type": "Organization",
       name: "SoapCraft Pro",
+      url: SITE_URL,
     },
-    url: `${SITE_URL}/blog/${post.slug}`,
-    image: post.image
-      ? {
-          "@type": "ImageObject",
-          url: post.image,
-          caption: post.imageAlt || post.title,
-        }
-      : undefined,
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    url,
+    image: post.image ? [`${SITE_URL}${post.image}`] : undefined,
     articleSection: post.category,
   };
 }
@@ -273,6 +267,9 @@ export default async function BlogPostPage({
                 src={post.image}
                 alt={post.imageAlt || post.title}
                 className="w-full object-cover"
+                width={1600}
+                height={1000}
+                decoding="async"
               />
               {post.imageAlt && (
                 <figcaption className="mt-2 text-xs text-muted-foreground text-center">
@@ -303,35 +300,35 @@ export default async function BlogPostPage({
 
           {/* Related articles */}
           {related.length > 0 && (
-            <section className="mt-16 pt-8 border-t border-border" aria-label="Related articles">
-              <h2 className="font-display text-xl font-bold text-foreground mb-4">
-                Related Articles
-              </h2>
-              <div className="space-y-4">
+            <section className="mt-16 border-t border-border pt-8" aria-label="Related articles">
+              <h2 className="font-display mb-6 text-xl font-bold text-foreground">Related articles</h2>
+              <div className="grid gap-x-8 gap-y-10 md:grid-cols-2">
                 {related.map((relatedPost) => (
-                  <article
+                  <Link
                     key={relatedPost.slug}
-                    className="flex items-start gap-4 p-4 rounded-lg border border-border hover:bg-muted/50 transition-colors"
+                    href={`/blog/${relatedPost.slug}`}
+                    className="group block border-t-2 border-border pt-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4"
+                    aria-label={`Read ${relatedPost.title}`}
                   >
-                    {relatedPost.image && (
-                      <img
-                        src={relatedPost.image}
-                        alt={relatedPost.imageAlt || relatedPost.title}
-                        className="w-20 h-20 object-cover rounded-md flex-shrink-0"
-                        loading="lazy"
-                      />
-                    )}
-                    <div>
-                      <h3 className="font-display text-base font-semibold text-foreground">
-                        <Link href={`/blog/${relatedPost.slug}`} className="hover:underline">
-                          {relatedPost.title}
-                        </Link>
-                      </h3>
-                      <p className="text-sm text-muted-foreground mt-1">
-                        {relatedPost.description}
-                      </p>
-                    </div>
-                  </article>
+                    <article>
+                      {relatedPost.image && (
+                        <div className="mb-4 aspect-[16/10] overflow-hidden bg-muted">
+                          <img
+                            src={relatedPost.image}
+                            alt={relatedPost.imageAlt || relatedPost.title}
+                            className="h-full w-full object-cover transition-[filter] duration-200 group-hover:brightness-95"
+                            width={1600}
+                            height={1000}
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        </div>
+                      )}
+                      <p className="text-xs font-bold uppercase tracking-[.14em] text-primary">{relatedPost.category}</p>
+                      <h3 className="mt-2 font-display text-base font-semibold text-foreground group-hover:text-primary">{relatedPost.title}</h3>
+                      <p className="mt-1 text-sm leading-6 text-muted-foreground">{relatedPost.description}</p>
+                    </article>
+                  </Link>
                 ))}
               </div>
             </section>
