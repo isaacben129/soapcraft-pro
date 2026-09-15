@@ -196,6 +196,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
+  text-wrap: pretty;
 }
 
 html {
@@ -211,14 +212,36 @@ html {
   text-transform: uppercase;
 }
 
-::selection {
-  background: hsl(var(--accent) / 0.35);
-}
-
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-serif);
   font-weight: 700;
   letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+::selection {
+  color: hsl(var(--foreground));
+  background: hsl(var(--accent) / 0.45);
+}
+
+* {
+  scrollbar-color: hsl(var(--rule)) hsl(var(--background));
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 0.7rem;
+  height: 0.7rem;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border: 3px solid hsl(var(--background));
+  border-radius: 999px;
 }
 
 /* Form controls must remain legible on every semantic surface.  Several older
