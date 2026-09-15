@@ -64,6 +64,7 @@ export function WholesalePricingForm() {
           <input
             type="number"
             step="0.01"
+            aria-label="Cost per bar"
             placeholder="e.g. 1.50"
             value={costPerBar}
             onChange={(e) => setCostPerBar(e.target.value)}
@@ -75,6 +76,7 @@ export function WholesalePricingForm() {
           <input
             type="number"
             step="0.01"
+            aria-label="Batch expenses"
             placeholder="e.g. 25.00"
             value={batchExpenses}
             onChange={(e) => setBatchExpenses(e.target.value)}
@@ -88,6 +90,7 @@ export function WholesalePricingForm() {
           <label className="block text-sm font-medium text-ink mb-1">Bars Per Batch</label>
           <input
             type="number"
+            aria-label="Bars per batch"
             placeholder="e.g. 20"
             value={barsPerBatch}
             onChange={(e) => setBarsPerBatch(e.target.value)}
@@ -98,6 +101,7 @@ export function WholesalePricingForm() {
           <label className="block text-sm font-medium text-ink mb-1">Case Size (bars)</label>
           <input
             type="number"
+            aria-label="Case size in bars"
             placeholder="e.g. 12"
             value={caseSize}
             onChange={(e) => setCaseSize(e.target.value)}
@@ -111,6 +115,7 @@ export function WholesalePricingForm() {
           <label className="block text-sm font-medium text-ink mb-1">Wholesale Target Margin (%)</label>
           <input
             type="number"
+            aria-label="Wholesale target margin"
             placeholder="e.g. 30"
             value={wholesaleMargin}
             onChange={(e) => setWholesaleMargin(e.target.value)}
@@ -121,6 +126,7 @@ export function WholesalePricingForm() {
           <label className="block text-sm font-medium text-ink mb-1">Retail Target Margin (%)</label>
           <input
             type="number"
+            aria-label="Retail target margin"
             placeholder="e.g. 40"
             value={retailMargin}
             onChange={(e) => setRetailMargin(e.target.value)}
@@ -168,7 +174,7 @@ export function WholesalePricingForm() {
               <span className="font-mono text-success ml-2">{result.wholesaleMarginPercent}%</span>
             </div>
           </div>
-          <div className="flex items-center gap-2 p-3 bg-cream/50 rounded-md text-sm">
+          <div className="flex items-center gap-2 p-3 bg-clay/50 rounded-md text-sm">
             <AlertTriangle className="h-4 w-4 text-warning flex-shrink-0" />
             <span className="text-ink-muted">
               Recommended wholesale case price (${result.recommendedCasePrice.toFixed(2)}) includes a 15% buffer above bare-bones wholesale pricing.

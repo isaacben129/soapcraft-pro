@@ -374,4 +374,58 @@ describe("calculateBatchCost", () => {
     expect(result.marginPercent).toBeLessThan(0);
     expect(result.warnings.some((w) => w.type === "warning")).toBe(true);
   });
+
+  // ── REM-002 RED contract: targetMarkupPercent must be used ──
+
+  it("uses targetMarkupPercent to compute suggested price (markup formula)", () => {
+    const result = calculateBatchCost({
+      ingredientCosts: [
+        { ingredientId: "test-oil", costPerUnit: 1, unit: "g", quantity: 1, quantityUnit: "g" },
+      ],
+      fragranceCost: 0,
+      otherCosts: 0,
+      batchYieldBars: 1,
+      costBasisRevision: COST_BASIS_REVISION,
+      targetMarkupPercent: 40,
+    });
+
+    // Markup: cost × (1 + 40/100) = 1.00 × 1.40 = 1.40
+    expect(result.suggestedPrice).toBeCloseTo(1.40, 2);
+    // Markup percent should be set to targetMarkupPercent
+    expect(result.markupPercent).toBe(40);
+  });
+
+  it("uses targetGrossMargin to compute suggested price (gross margin formula)", () => {
+    const result = calculateBatchCost({
+      ingredientCosts: [
+        { ingredientId: "test-oil", costPerUnit: 1, unit: "g", quantity: 1, quantityUnit: "g" },
+      ],
+      fragranceCost: 0,
+      otherCosts: 0,
+      batchYieldBars: 1,
+      costBasisRevision: COST_BASIS_REVISION,
+      targetGrossMargin: 40,
+    });
+
+    // Gross margin: cost / (1 - 40/100) = 1.00 / 0.6 = 1.666…
+    expect(result.suggestedPrice).toBeCloseTo(1.6667, 3);
+    // Gross margin percent should be set to targetGrossMargin
+    expect(result.grossMarginPercent).toBe(40);
+  });
+
+  it("defaults markupPercent from targetPrice when targetMarkupPercent is not provided", () => {
+    const result = calculateBatchCost({
+      ingredientCosts: [
+        { ingredientId: "test-oil", costPerUnit: 1, unit: "g", quantity: 1, quantityUnit: "g" },
+      ],
+      fragranceCost: 0,
+      otherCosts: 0,
+      batchYieldBars: 1,
+      costBasisRevision: COST_BASIS_REVISION,
+      targetPricePerBar: 1.40,
+    });
+
+    expect(result.markupPercent).toBeCloseTo(40, 1);
+    expect(result.suggestedPrice).toBeCloseTo(1.40, 2);
+  });
 });

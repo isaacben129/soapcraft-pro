@@ -4,19 +4,16 @@
 
 import { Metadata } from "next";
 import Link from "next/link";
-import { pageMetadata } from "@/lib/seo/metadata";
+import { getToolMetadata } from "@/lib/seo/tool-seo";
+import { ToolSeo } from "@/components/shared/tool-seo";
 import { CraftFairBreakEvenForm } from "@/components/shared/craft-fair-break-even-form";
 
-export const metadata: Metadata = pageMetadata({
-  title: "Craft Fair Break-Even Calculator",
-  description:
-    "Calculate exactly how many bars you need to sell to cover booth costs. Input expenses and pricing. Find your break-even point. Free, no signup required.",
-  path: "/tools/craft-fair-break-even",
-});
+export const metadata: Metadata = getToolMetadata("craft-fair-break-even");
 
 export default function CraftFairBreakEvenPage() {
   return (
     <main className="flex flex-col min-h-screen">
+      <ToolSeo slug="craft-fair-break-even" />
       <article className="container mx-auto px-4 py-16 md:py-20">
         <div className="max-w-4xl mx-auto">
           <nav aria-label="Breadcrumb" className="mb-4">

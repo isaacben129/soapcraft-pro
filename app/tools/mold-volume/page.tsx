@@ -4,19 +4,16 @@
 
 import { Metadata } from "next";
 import Link from "next/link";
-import { pageMetadata } from "@/lib/seo/metadata";
+import { getToolMetadata } from "@/lib/seo/tool-seo";
+import { ToolSeo } from "@/components/shared/tool-seo";
 import { MoldVolumeForm } from "@/components/shared/mold-volume-form";
 
-export const metadata: Metadata = pageMetadata({
-  title: "Mold Volume Calculator — Size Your Soap Mold",
-  description:
-    "Calculate how much soap your mold will hold. Enter mold dimensions or volume. Get the estimated batch weight. Free, no signup required.",
-  path: "/tools/mold-volume",
-});
+export const metadata: Metadata = getToolMetadata("mold-volume");
 
 export default function MoldVolumePage() {
   return (
     <main className="flex flex-col min-h-screen">
+      <ToolSeo slug="mold-volume" />
       <article className="container mx-auto px-4 py-16 md:py-20">
         <div className="max-w-4xl mx-auto">
           <nav aria-label="Breadcrumb" className="mb-4">

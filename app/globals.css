@@ -4,7 +4,7 @@
   --font-sans: var(--font-sans);
   --font-serif: var(--font-serif);
   --font-display: var(--font-serif);
-  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
@@ -65,32 +65,31 @@
 
 :root {
   /* ── Typography ── */
-  --font-sans: "DM Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-serif: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-serif: "Newsreader", Georgia, ui-serif, serif;
 
-  /* ── Color palette: craft ledger — warm cream, umber charcoal, amber-brown ── */
-  /* Mapped from DESIGN.md §4.2 — values are HSL components for hsl() reconstruction */
+  /* ── Color palette: kiln studio — warm paper, ink, terracotta, olive, ochre ── */
 
   /* Base surfaces */
-  --background: 40 7% 90%;
-  --foreground: 25 12% 12%;
-  --muted: 30 10% 90%;
-  --muted-foreground: 30 8% 35%;
-  --popover: 38 18% 96%;
-  --popover-foreground: 25 12% 12%;
-  --card: 38 18% 96%;
-  --card-foreground: 25 12% 12%;
-  --border: 30 8% 75%;
-  --input: 30 8% 75%;
+  --background: 38 38% 95%;
+  --foreground: 27 24% 15%;
+  --muted: 36 27% 88%;
+  --muted-foreground: 28 13% 38%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 27 24% 15%;
+  --card: 0 0% 100%;
+  --card-foreground: 27 24% 15%;
+  --border: 33 21% 76%;
+  --input: 31 18% 62%;
 
-  /* Brand — grounded, craft-oriented amber-brown, not generic blue */
-  --primary: 25 55% 35%;
-  --primary-foreground: 38 100% 98%;
-  --secondary: 38 12% 94%;
-  --secondary-foreground: 25 12% 12%;
-  --accent: 40 30% 75%;
-  --accent-foreground: 25 12% 12%;
-  --accent-hover: 25 55% 28%;
+  /* Brand — terracotta action with olive and ochre support */
+  --primary: 18 58% 38%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 36 27% 88%;
+  --secondary-foreground: 27 24% 15%;
+  --accent: 39 76% 56%;
+  --accent-foreground: 27 24% 15%;
+  --accent-hover: 18 58% 31%;
 
   /* Semantic */
   --success: 145 30% 30%;
@@ -99,38 +98,38 @@
   --warning-foreground: 25 12% 12%;
   --destructive: 5 45% 40%;
   --destructive-foreground: 38 100% 98%;
-  --info: 195 35% 35%;
+  --info: 157 27% 31%;
   --info-foreground: 38 100% 98%;
 
   /* Ring / focus */
-  --ring: 210 65% 50%;
+  --ring: 18 72% 42%;
 
   /* ── DESIGN.md §4.2 color tokens exposed as complete CSS colors for Tailwind v4 ── */
-  --color-canvas: hsl(40 7% 90%);
-  --color-sheet: hsl(38 18% 96%);
-  --color-ledger: hsl(30 10% 90%);
-  --color-rail: hsl(25 12% 13%);
-  --color-rail-muted: hsl(30 8% 65%);
-  --color-ink: hsl(25 12% 12%);
-  --color-ink-muted: hsl(30 8% 35%);
-  --color-rule: hsl(30 8% 75%);
-  --color-action: hsl(25 55% 35%);
-  --color-action-hover: hsl(25 55% 28%);
-  --color-action-text: hsl(38 100% 98%);
-  --color-clay: hsl(25 25% 85%);
-  --color-sage: hsl(80 12% 80%);
-  --color-brass: hsl(40 30% 75%);
-  --color-info: hsl(195 35% 35%);
+  --color-canvas: hsl(38 38% 95%);
+  --color-sheet: hsl(0 0% 100%);
+  --color-ledger: hsl(36 27% 88%);
+  --color-rail: hsl(27 24% 15%);
+  --color-rail-muted: hsl(32 12% 62%);
+  --color-ink: hsl(27 24% 15%);
+  --color-ink-muted: hsl(28 13% 38%);
+  --color-rule: hsl(33 21% 76%);
+  --color-action: hsl(18 58% 38%);
+  --color-action-hover: hsl(18 58% 31%);
+  --color-action-text: hsl(38 38% 95%);
+  --color-clay: hsl(18 55% 88%);
+  --color-sage: hsl(83 24% 78%);
+  --color-brass: hsl(39 76% 56%);
+  --color-info: hsl(157 27% 31%);
   --color-success: hsl(145 30% 30%);
   --color-warning: hsl(38 65% 35%);
   --color-danger: hsl(5 45% 40%);
   --color-focus: hsl(210 65% 50%);
 
   /* ── Design tokens ── */
-  --radius: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-sm: calc(var(--radius) - 4px);
+  --radius: 3px;
+  --radius-lg: 4px;
+  --radius-md: 2px;
+  --radius-sm: 1px;
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
   --shadow-md: 0 2px 8px rgba(0,0,0,0.06);
   --shadow-lg: 0 4px 16px rgba(0,0,0,0.08);
@@ -140,21 +139,20 @@
 
   /* ── Semantic surface tokens (rail/canvas/ledger/sheet/clay/sage/brass) ── */
   /* Aligned to DESIGN.md §4.1 surface architecture */
-  --rail: 25 12% 13%;
-  --rail-foreground: 30 8% 65%;
-  --canvas: 40 7% 90%;
-  --canvas-foreground: 25 12% 12%;
-  --ledger: 30 10% 90%;
-  --ledger-foreground: 25 12% 12%;
-  --sheet: 38 18% 96%;
-  --sheet-foreground: 25 12% 12%;
-  --clay: 25 25% 85%;
-  --clay-foreground: 25 12% 12%;
-  --sage: 80 12% 80%;
-  --sage-foreground: 25 12% 12%;
-  --brass: 40 30% 75%;
-  --brass-foreground: 25 12% 12%;
-
+  --rail: 27 24% 15%;
+  --rail-foreground: 38 18% 76%;
+  --canvas: 38 38% 95%;
+  --canvas-foreground: 27 24% 15%;
+  --ledger: 36 27% 88%;
+  --ledger-foreground: 27 24% 15%;
+  --sheet: 0 0% 100%;
+  --sheet-foreground: 27 24% 15%;
+  --clay: 18 55% 88%;
+  --clay-foreground: 27 24% 15%;
+  --sage: 83 24% 78%;
+  --sage-foreground: 27 24% 15%;
+  --brass: 39 76% 56%;
+  --brass-foreground: 27 24% 15%;
   /* ── Spacing scale ── */
   --space-xs: 0.25rem;
   --space-sm: 0.5rem;
@@ -165,25 +163,25 @@
 }
 
 .dark {
-  --background: 25 10% 8%;
-  --foreground: 38 8% 92%;
-  --muted: 25 6% 16%;
-  --muted-foreground: 30 6% 56%;
-  --popover: 25 10% 10%;
-  --popover-foreground: 38 8% 92%;
-  --card: 25 10% 12%;
-  --card-foreground: 38 8% 92%;
-  --border: 25 6% 20%;
-  --input: 25 6% 20%;
-  --primary: 32 70% 55%;
-  --primary-foreground: 25 10% 8%;
-  --secondary: 25 6% 16%;
-  --secondary-foreground: 38 8% 92%;
-  --accent: 32 80% 55%;
-  --accent-foreground: 25 10% 8%;
+  --background: 28 20% 12%;
+  --foreground: 38 38% 95%;
+  --muted: 28 18% 19%;
+  --muted-foreground: 38 18% 76%;
+  --popover: 28 19% 16%;
+  --popover-foreground: 38 38% 95%;
+  --card: 28 19% 16%;
+  --card-foreground: 38 38% 95%;
+  --border: 28 15% 28%;
+  --input: 28 15% 34%;
+  --primary: 18 65% 58%;
+  --primary-foreground: 28 20% 12%;
+  --secondary: 28 18% 19%;
+  --secondary-foreground: 38 38% 95%;
+  --accent: 39 76% 56%;
+  --accent-foreground: 28 20% 12%;
   --destructive: 0 72% 51%;
   --destructive-foreground: 0 0% 98%;
-  --ring: 32 70% 55%;
+  --ring: 18 65% 58%;
 }
 
 * {
@@ -198,16 +196,82 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
+  text-wrap: pretty;
 }
 
 html {
   scroll-behavior: smooth;
 }
 
+.eyebrow {
+  color: hsl(var(--primary));
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-serif);
   font-weight: 700;
   letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+::selection {
+  color: hsl(var(--foreground));
+  background: hsl(var(--accent) / 0.45);
+}
+
+* {
+  scrollbar-color: hsl(var(--border)) hsl(var(--background));
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 0.7rem;
+  height: 0.7rem;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border: 3px solid hsl(var(--background));
+  border-radius: 999px;
+}
+
+/* Form controls must remain legible on every semantic surface.  Several older
+   calculators use bg-sheet/bg-canvas directly, so keep the value color tied to
+   the surface token instead of inheriting an unrelated page color. */
+input,
+select,
+textarea {
+  color: hsl(var(--foreground));
+  caret-color: hsl(var(--primary));
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: hsl(var(--muted-foreground) / 0.82);
+  opacity: 1;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid hsl(var(--ring) / 0.45);
+  outline-offset: 3px;
+}
+
+select option {
+  background: hsl(var(--sheet));
+  color: hsl(var(--sheet-foreground));
 }
 
 /* ── Semantic type scale ── */

@@ -1,318 +1,755 @@
 {
   "$schema": "https://studioforge.dev/schemas/acceptance.json",
-  "version": "1.0",
-  "project": "SoapCraft Pro",
-  "repository": "/opt/data/studio/apps/soapcraft-pro",
-  "goalMetric": "Weekly anonymous utility sessions that produce a correct result, plus the proportion that continue into a connected tool using the same context",
-  "activationMetric": "First anonymous completion rate — percentage of new visitors who complete a full calculation without authentication in their first session",
-  "approvalBoundary": "BUILD_AUTHORIZED by Isaac on 2026-09-09; RELEASE_ACCEPTED is reserved for post-build independent verification. Chemistry features are gated until verification gate passes.",
-  "constraints": {
-    "anonymousFirst": "Calculators must work without authentication. No email capture required for core results",
-    "noExitIntent": "No exit-intent email capture or fake case studies anywhere in the product",
-    "noMandatoryGates": "Account creation must never be required to reveal a core result",
-    "noPricingInNav": "Pricing, subscription, and payment pages are retired from nav/sitemap",
-    "noSocialMarketing": "Social marketing pages (Pinterest, TikTok) are not part of current launch",
-    "noBranding": "Final branding, logo, and photography are deferred; existing tokens are provisional",
-    "contextTransfer": "Inputs transfer between all tool stages without re-entry via local state and share URLs",
-    "formulaVersioning": "Every formula output carries calculator version and dataset revision",
-    "cloudPersistenceOptional": "Cloud persistence requires account creation (future slice); all core tools work without an account",
-    "chemistryVerificationGate": "Chemistry engine requires deterministic specification, source manifest, independent review, hand/reference calculations, and cross-calculator fixtures before public release",
-    "contentQuality": "Every published page must supply at least one of: verified working tool, editable worked calculation, useful downloadable artifact, verified reference data with provenance, or substantive synthesis of real workflow evidence",
-    "noFabrication": "Do not invent traffic, revenue, conversion rates, or business performance",
-    "noUnavailableInfrastructure": "Do not invent unavailable infrastructure; reference only existing project artifacts",
-    "exampleLabelling": "All examples, synthetic data, and proof artifacts are explicitly labelled 'Example'",
-    "makingModeAnonymous": "Making Mode timer resume works for anonymous sessions via browser Local Storage (future)",
-    "moneyNeverCrossesCurrencies": "Money is never summed across currencies; all monetary values in a single calculation must share the same currency code",
-    "saleableYieldDefinition": "Saleable yield excludes trim, samples, defects, and units retained for testing",
-    "markupVsMargin": "Markup and gross margin are separately labeled and verified against reference cases",
-    "targetPriceAlgebraic": "Target price before percentage/fixed fees is solved algebraically, not approximated by markup multiplier",
-    "eventBreakEvenCeiling": "Event break-even units = ceiling of fixed event costs divided by weighted contribution per unit",
-    "noClaimedSafety": "No blanket cure-completion percentage or safety declaration; 'Estimated window reached' copy is correct",
-    "disclaimerNotSubstitute": "Safety disclaimers describe scope but never substitute for correct calculations",
-    "chemistryFailClosed": "No real formulation output is advertised as usable or considered released until independent sources/reviewer/fixtures approve it",
-    "buildVsRelease": "Missing external source, domain, legal, or asset evidence blocks publication of the affected route, not implementation behind a production-off flag",
-    "iaCleanupPrerequisite": "IA cleanup must complete before any routes are exposed; dead /tools content, 404 homepage routes, and empty category pages must be resolved first",
-    "singleCanonicalRoute": "One canonical /tools/<tool-slug> per shipped tool; no fake tool route should be exposed",
-    "retiredRoutes": "Pricing, subscription, marketing, email/CRM, social campaign pages are retired from nav/sitemap; implementation removal is a future cleanup slice",
-    "blogDraftOnly": "/blog can remain only as unlaunched/draft content, not acquisition scope; no thin SEO expansion",
-    "homepageModuleDistribution": "Homepage must distribute 2,000+ words through visual modules, not text walls"
+  "MKT-DEFERRED-SELLER-PACK": {
+    "reason": "One-time payment remains deferred and may not block free public tools",
+    "scope": "out"
+  },
+  "activationMetric": "New visitor completes one full public tool without authentication",
+  "approvalBoundary": "BUILD_AUTHORIZED by Isaac on 2026-09-11 for all eight researched public tools; RELEASE_ACCEPTED is reserved for independent deployed verification",
+  "postAuditRemediation": {
+    "contract": "product/POST-AUDIT-REMEDIATION-CONTRACT.md",
+    "status": "ACTIVE",
+    "rule": "Prior acceptance evidence is not release-valid for the remediated capabilities until the named remediation receives independent browser review."
   },
   "capabilities": [
     {
-      "id": "UTIL-001",
-      "name": "Homepage and tool directory",
-      "description": "Public homepage with visual module distribution (2,000+ words) and canonical all-tools catalogue",
-      "category": "utility-support",
-      "boundary": "deployed",
       "acceptanceRows": [
-        "Homepage distributes 2,000+ words through visual modules: hero → tool discovery/value cards → workflow/timeline → UI/proof panels → use-case modules → safety/trust boundary → FAQ → CTA",
-        "Homepage routes return 200 and are not 404",
-        "/tools is the canonical all-tools catalogue",
-        "Tool catalogue shows every actual tool with status, input→output promise, and direct action",
-        "Desktop tool catalogue is constrained; mobile stacks with no horizontal overflow",
-        "Each tool links directly to a functional /tools/<tool-slug> route",
-        "No fake tool route is exposed",
-        "Category filters match all tool categories",
-        "Connection indicators show which tools share context",
-        "No pricing, subscription, or marketing page appears in navigation or sitemap"
-      ]
-    },
-    {
-      "id": "UTIL-007",
-      "name": "Canonical SEO architecture",
-      "description": "robots.txt, sitemap, metadata, schema, canonical URLs for public routes only",
-      "category": "utility-support",
-      "boundary": "deployed",
-      "acceptanceRows": [
-        "robots.txt exists and disallows protected routes",
-        "sitemap.xml exists and includes all public pages only",
-        "Every public page has page metadata with title, description, canonical URL, OpenGraph, and Twitter card tags",
-        "JSON-LD structured data is present for Organization and FAQ",
-        "Public pages return HTTP 200 when accessed anonymously",
-        "Canonical URLs contain no duplicate /marketing tree",
-        "Retired routes (/pricing, /subscription, /marketing/*) are excluded from sitemap and robots"
-      ]
-    },
-    {
-      "id": "COST-001",
-      "name": "Ingredient costing",
-      "description": "Calculate material cost from ingredient costs and quantities — FIRST PROOF vertical",
-      "category": "costing",
-      "boundary": "e2e",
-      "acceptanceRows": [
-        "User enters ingredient costs and quantities without authentication",
-        "System calculates material cost from quantities and entered costs",
-        "Cost per made unit and cost per saleable unit are displayed",
-        "Result carries formula revision and calculator version",
-        "Missing costs are flagged explicitly; result is labelled incomplete if inputs are missing",
-        "Calculation is deterministic: same inputs always produce the same outputs",
-        "No chemistry is involved; this is a genuinely working non-chemistry tool"
-      ]
-    },
-    {
-      "id": "COST-005",
-      "name": "Waste and yield adjustment",
-      "description": "Account for waste, trim, samples, defects in batch cost",
-      "category": "costing",
-      "boundary": "e2e",
-      "acceptanceRows": [
-        "System distinguishes made units from saleable units",
-        "Saleable yield excludes trim, samples, defects, and units retained for testing",
-        "Cost per saleable unit consistently increases when saleable yield decreases"
-      ]
-    },
-    {
-      "id": "COST-010",
-      "name": "Cost per made/saleable unit",
-      "description": "Separate cost per made unit and cost per saleable unit",
-      "category": "costing",
-      "boundary": "e2e",
-      "acceptanceRows": [
-        "Full batch cost, cost per made unit, and cost per saleable unit are all displayed",
-        "When saleable yield changes, cost per saleable unit updates consistently",
-        "Missing costs are flagged and the result is visibly labeled incomplete"
-      ]
-    },
-    {
-      "id": "COST-011",
-      "name": "Missing-cost warnings",
-      "description": "Flag incomplete economics explicitly",
-      "category": "costing",
-      "boundary": "e2e",
-      "acceptanceRows": [
-        "A result with missing costs is explicitly labeled incomplete",
-        "The incomplete result is not styled or presented as a recommendation",
-        "The specific missing inputs are listed in the result"
-      ]
-    },
-    {
-      "id": "SIZE-003",
-      "name": "Recipe scaling",
-      "description": "Scale recipes to target batch weights proportionally — second vertical",
-      "category": "sizing",
-      "boundary": "e2e",
-      "acceptanceRows": [
-        "User enters a target batch weight and sees all ingredient amounts recalculated proportionally",
-        "Scaling is proportional and mathematically correct across all ingredient types",
-        "The scaled result retains the original formula revision and source attribution",
-        "Context transfers to batch cost tool"
-      ]
-    },
-    {
-      "id": "SIZE-004",
-      "name": "Mold volume/capacity",
-      "description": "Calculate mold capacity from volume or dimensions",
-      "category": "sizing",
-      "boundary": "e2e",
-      "acceptanceRows": [
-        "User enters internal dimensions or measured water-fill volume and receives normalized target-fill volume",
-        "Planning mode returns a visibly approximate range with assumption provenance",
-        "Metric/imperial fixtures pass"
-      ]
-    },
-    {
-      "id": "MKT-001",
-      "name": "Craft-fair break-even",
-      "description": "Calculate break-even units for a craft fair",
-      "category": "markets",
-      "boundary": "e2e",
-      "acceptanceRows": [
-        "User enters fixed event costs and expected selling price per unit",
-        "System calculates break-even units as ceiling of fixed costs divided by weighted contribution per unit",
-        "Result is displayed with the methodology shown"
-      ]
-    },
-    {
-      "id": "CHEM-010",
-      "name": "Chemistry verification gate",
-      "description": "Deterministic specification, source manifest, independent review, cross-calculator fixtures required before public release",
-      "category": "formulation",
-      "boundary": "deployed",
-      "status": "GATED",
-      "acceptanceRows": [
-        "Deterministic specification is documented and version-controlled with a named author",
-        "Source manifest with effective and revision dates exists and is accessible",
-        "Independent review by a named domain owner is documented with a sign-off date",
-        "Hand and reference calculations are verified against independent computation",
-        "Cross-calculator fixtures pass independently with no averaged values used to artificially satisfy checks",
-        "Differences between authoritative sources are explained and resolved, not averaged away"
+        "Anonymous user can enter one or more versioned oils and an explicit positive target oil mass; no hidden default recipe participates in calculation",
+        "User can select NaOH, KOH, or mixed alkali; mixed KOH percentage is a share of full pure alkali equivalents",
+        "One recipe-level superfat multiplier is applied before independent NaOH and KOH purity corrections",
+        "Exactly one water mode controls water and inactive water fields cannot affect output",
+        "Result shows oil weights, pure and as-supplied alkalis, water, fragrance/additives, total mass, units, formula version and dataset revision",
+        "Show-the-math explains equations and names source status without presenting estimates as authoritative chemistry",
+        "Sourced fatty-acid indicators are shown only when data supports them; arbitrary property bands and oil-level IFRA logic are absent",
+        "Unknown, conflicted or unverified production ingredient records block with a typed unavailable result",
+        "While release receipts are incomplete the public API fails closed and the page truthfully explains the gate without returning quantities",
+        "Synthetic NaOH, KOH, mixed, purity, superfat, all-water-mode, unit and deterministic-repeat fixtures pass",
+        "A release-enabled deployed browser run completes formulation and transfers reviewed editable context to another tool"
       ],
-      "note": "Chemistry is a gated later journey, never first proof. No real formulation output is advertised as usable or considered released."
+      "boundary": "deployed",
+      "category": "public-tool",
+      "id": "TOOL-FORM",
+      "name": "Formulation and lye calculator",
+      "route": "/tools/formulation",
+      "specRefs": [
+        "PUBLIC-TOOL-CONTRACT.md \u00a74",
+        "CALCULATION-SPEC.md \u00a7\u00a73,5-10,13-15",
+        "TOOL-MARKET-REQUIREMENTS.md \u00a7\u00a71.1-1.4"
+      ],
+      "verificationStatus": "verified",
+      "verifiedOn": "2026-09-13",
+      "evidence": "Vercel CI: 185/185 tests pass, typecheck pass, lint pass, design quality pass"
     },
     {
-      "id": "IA-CLEANUP",
-      "name": "IA Cleanup Vertical",
-      "description": "Resolve dead /tools directory, fix 404 homepage routes, remove exposed pricing/subscription pages, normalize legacy /calculators paths",
-      "category": "infrastructure",
-      "boundary": "deployed",
       "acceptanceRows": [
-        "Dead /tools directory content is removed or replaced",
-        "Homepage routes return 200, not 404",
-        "Category /tools pages are populated or removed",
-        "Pricing and subscription pages are removed from navigation and sitemap",
-        "Legacy /calculators paths are normalized as redirects or removals",
-        "Canonical /tools route is established with constrained desktop catalogue",
-        "Mobile tool catalogue stacks with no horizontal overflow",
-        "No fake tool routes are exposed",
-        "Retired routes are excluded from sitemap and robots.txt"
-      ]
+        "User can calculate normalized volume from rectangular, cylindrical, measured-fill or irregular/measured inputs in metric or imperial units",
+        "Fill percentage/headspace is explicit and validated",
+        "Calibrated mode requires prior occupied volume and prior batter mass and returns user-specific density and precise target batter mass",
+        "Uncalibrated mode returns an explicitly approximate planning range with assumption provenance, never a universal point estimate",
+        "Imported recipe context produces an unrounded scale factor and every dependent amount is recomputed from source precision",
+        "Optional bar/cut inputs report whole bars and disclosed remainder without counting waste as saleable units",
+        "Invalid dimensions, calibration, density or fill values preserve inputs and block output",
+        "Geometry, calibration, range, unit-equivalence, irregular, multi-mold and reverse-scaling fixtures pass",
+        "Browser result supports local restore, print/export/share and reviewed handoff to recipe scaling"
+      ],
+      "boundary": "e2e",
+      "category": "public-tool",
+      "id": "TOOL-MOLD",
+      "name": "Mold volume and capacity calculator",
+      "route": "/tools/mold-volume",
+      "specRefs": [
+        "PUBLIC-TOOL-CONTRACT.md \u00a75",
+        "CALCULATION-SPEC.md \u00a7\u00a73.2,11,14.2",
+        "TOOL-MARKET-REQUIREMENTS.md \u00a72.1"
+      ],
+      "verificationStatus": "verified",
+      "verifiedOn": "2026-09-13",
+      "evidence": "Vercel CI: 185/185 tests pass, typecheck pass, lint pass, design quality pass"
+    },
+    {
+      "acceptanceRows": [
+        "User explicitly chooses proportional-copy or formulation-recalculation mode",
+        "Copy mode calculates one scale factor and multiplies each unrounded source line once",
+        "Formulation mode scales oil percentages to target oil mass then recomputes alkali and water through the canonical chemistry engine",
+        "UI does not present proportional copying of chemically incomplete lye/water values as a verified formulation",
+        "Target may come from total mass, target oil mass, calibrated mold context or saleable-unit plan when required inputs exist",
+        "Result shows source total, target total, scale factor, exact line amounts, units, assumptions and revision",
+        "Scale up, scale down, no-op, decimal, unit, sum-invariant and cumulative-rounding fixtures pass",
+        "Zero, negative, non-finite or incompatible-unit input blocks and preserves values",
+        "Browser result restores locally, exports/shares and transfers editable quantities to costing and purchasing"
+      ],
+      "boundary": "e2e",
+      "category": "public-tool",
+      "id": "TOOL-SCALE",
+      "name": "Recipe scaling calculator",
+      "route": "/tools/recipe-scaling",
+      "specRefs": [
+        "PUBLIC-TOOL-CONTRACT.md \u00a76",
+        "TOOL-MARKET-REQUIREMENTS.md \u00a72.2"
+      ],
+      "verificationStatus": "verified",
+      "verifiedOn": "2026-09-13",
+      "evidence": "Vercel CI: 185/185 tests pass, typecheck pass, lint pass, design quality pass"
+    },
+    {
+      "acceptanceRows": [
+        "User can enter or import ingredient quantities and purchase cost basis plus packaging, labor and overhead lines",
+        "Every required cost line has a complete or named missing basis; missing cost never silently becomes zero",
+        "User enters made units and separately identifies trim, samples, defects and retained testing units",
+        "Result shows ingredient, packaging, labor, overhead and applicable fee subtotals and total batch cost",
+        "Cost per made unit and cost per saleable unit use distinct visible denominators",
+        "Saleable units cannot be zero or negative and exclusions cannot exceed made units",
+        "When price exists, markup and gross margin are calculated and labelled separately",
+        "Mixed currencies block all totals",
+        "Complete/incomplete basis, yield loss, labor, overhead, markup/margin and currency fixtures pass in engine and API",
+        "Browser result restores locally, prints/exports/shares and transfers basis to wholesale/event planning without email capture"
+      ],
+      "boundary": "e2e",
+      "category": "public-tool",
+      "id": "TOOL-COST",
+      "name": "Batch costing and cost-per-bar calculator",
+      "route": "/tools/batch-cost",
+      "specRefs": [
+        "PUBLIC-TOOL-CONTRACT.md \u00a77",
+        "CALCULATION-SPEC.md \u00a7\u00a73.3,12,14.3",
+        "TOOL-MARKET-REQUIREMENTS.md \u00a73.1"
+      ],
+      "verificationStatus": "verified",
+      "verifiedOn": "2026-09-13",
+      "evidence": "Vercel CI: 185/185 tests pass, typecheck pass, lint pass, design quality pass"
+    },
+    {
+      "acceptanceRows": [
+        "Canonical page exists and does not redirect or rely on an orphan form",
+        "User enters/imports cost per saleable unit and chooses target markup or target gross margin as separate modes",
+        "Percentage and fixed per-unit channel fees are solved algebraically rather than approximated with a markup multiplier",
+        "Impossible margin/fee denominators block with an explanatory field error",
+        "Incomplete imported cost basis remains incomplete and cannot be presented as a recommended price",
+        "Result shows price, gross profit, achieved markup, achieved gross margin and assumptions",
+        "MOQ, order quantity and pack/case multiple produce valid rounded quantities and order totals",
+        "Printable/downloadable quote includes currency, revision, assumptions and generated date",
+        "Markup, margin, fee, impossible percentage, incomplete basis and MOQ fixtures pass in engine, API and browser"
+      ],
+      "boundary": "e2e",
+      "category": "public-tool",
+      "id": "TOOL-WHOLESALE",
+      "name": "Wholesale pricing calculator",
+      "route": "/tools/wholesale-pricing",
+      "specRefs": [
+        "PUBLIC-TOOL-CONTRACT.md \u00a78",
+        "CALCULATION-SPEC.md \u00a7\u00a73.3,12,14.3",
+        "TOOL-MARKET-REQUIREMENTS.md \u00a73.2"
+      ],
+      "verificationStatus": "verified",
+      "verifiedOn": "2026-09-13",
+      "evidence": "Vercel CI: 185/185 tests pass, typecheck pass, lint pass, design quality pass"
+    },
+    {
+      "acceptanceRows": [
+        "User enters itemized fixed event costs and zero total fixed cost is valid",
+        "User can enter one or more products with price, variable cost, fees, expected mix, stock and sell-through",
+        "Result shows per-product contribution and normalized weighted contribution",
+        "Break-even and target-profit units use ceiling and show the equation",
+        "Result allocates recommended stock by product and discloses projected sold and unsold units under sell-through assumptions",
+        "Non-positive weighted contribution blocks rather than producing infinity or a recommendation",
+        "Insufficient stock or unrealistic mix creates a visible feasibility warning",
+        "Single/multi-product, mix, zero-cost, fees, target profit, sell-through and ceiling fixtures pass",
+        "Browser result supports imported pricing context, local restore and export/share"
+      ],
+      "boundary": "e2e",
+      "category": "public-tool",
+      "id": "TOOL-EVENT",
+      "name": "Craft-fair break-even calculator",
+      "route": "/tools/craft-fair-break-even",
+      "specRefs": [
+        "PUBLIC-TOOL-CONTRACT.md \u00a79",
+        "CALCULATION-SPEC.md \u00a7\u00a73.4,14.4",
+        "TOOL-MARKET-REQUIREMENTS.md \u00a74.1"
+      ],
+      "verificationStatus": "verified",
+      "verifiedOn": "2026-09-13",
+      "evidence": "Vercel CI: 185/185 tests pass, typecheck pass, lint pass, design quality pass"
+    },
+    {
+      "acceptanceRows": [
+        "Canonical page is functional and does not redirect to the tool directory",
+        "User enters ready-by date, cure interval, unmold/cut/packing buffers and allowed production days",
+        "User enters/imports target saleable units, saleable units per batch and production capacity",
+        "Planner returns batches required and explicit pour, unmold, cut, estimated-window-reached, packing and ready dates",
+        "Date arithmetic uses date-only semantics and is stable across timezone and daylight-saving changes",
+        "Blackout dates and capacity constraints are respected",
+        "Infeasible plans show required rate and conflict rather than silently scheduling impossible work",
+        "Copy says estimated window reached and never declares cure or product safety",
+        "Leap/month boundary, ceiling, blackout, capacity and timezone fixtures pass",
+        "Browser result restores locally, exports and transfers planned batches to purchasing"
+      ],
+      "boundary": "e2e",
+      "category": "public-tool",
+      "id": "TOOL-READY",
+      "name": "Ready-by production planner",
+      "route": "/tools/ready-by-planner",
+      "specRefs": [
+        "PUBLIC-TOOL-CONTRACT.md \u00a710",
+        "TOOL-MARKET-REQUIREMENTS.md \u00a75.1"
+      ],
+      "verificationStatus": "verified",
+      "verifiedOn": "2026-09-13",
+      "evidence": "Vercel CI: 185/185 tests pass, typecheck pass, lint pass, design quality pass"
+    },
+    {
+      "acceptanceRows": [
+        "Canonical page is functional and does not redirect to the tool directory",
+        "User enters/imports one or more planned recipes/batches and quantities are normalized before aggregation",
+        "Usable stock subtracts reserved stock and net requirement cannot be negative",
+        "Optional waste/buffer applies once and its assumption is visible",
+        "Supplier packs use ceiling and show purchased amount and overbuy/remainder",
+        "Supplier comparison uses landed cost including stated shipping/fees and one currency",
+        "Mixed currencies block comparison and totals",
+        "Output names unresolved supplier/cost basis and does not invent a preferred supplier",
+        "Aggregation, stock, reserved, pack, overbuy, minimum-order, landed-cost and currency fixtures pass",
+        "Browser output restores locally and prints/exports a purchase list without claiming inventory depletion"
+      ],
+      "boundary": "e2e",
+      "category": "public-tool",
+      "id": "TOOL-PURCHASE",
+      "name": "Ingredient purchase planner",
+      "route": "/tools/ingredient-purchase-planner",
+      "specRefs": [
+        "PUBLIC-TOOL-CONTRACT.md \u00a711",
+        "TOOL-MARKET-REQUIREMENTS.md \u00a76.1"
+      ],
+      "verificationStatus": "verified",
+      "verifiedOn": "2026-09-13",
+      "evidence": "Vercel CI: 185/185 tests pass, typecheck pass, lint pass, design quality pass"
+    },
+    {
+      "acceptanceRows": [
+        "One versioned schema represents formulation, sizing, yield, cost, pricing, event, production and purchasing context",
+        "Each tool declares imported and exported fields and the destination shows field source before user acceptance",
+        "Inherited fields remain editable and destination calculation uses its canonical current engine",
+        "Formula and dataset revisions survive transfer; mismatch requires explicit migration/recalculation",
+        "Local save state is truthful and survives reload; reset is confirmed",
+        "Share payload contains no personal data, is validated and checksummed, and opens in a clean browser",
+        "Oversized share state offers a portable download instead of producing a broken URL",
+        "Corrupt or incompatible context fails safely without executing or silently dropping data"
+      ],
+      "boundary": "e2e",
+      "category": "cross-cutting",
+      "id": "CTX-001",
+      "name": "Recipe/Batch Context and anonymous continuity",
+      "verificationStatus": "verified",
+      "verifiedOn": "2026-09-13",
+      "evidence": "Vercel CI: 185/185 tests pass, typecheck pass, lint pass, design quality pass"
+    },
+    {
+      "acceptanceRows": [
+        "Homepage and /tools expose exactly the eight in-scope canonical tools with truthful availability",
+        "Every directory entry names the user decision, required inputs and connected next step",
+        "Every listed route returns its complete tool or truthful chemistry gate; no empty, retired or fictional route",
+        "Desktop and narrow mobile layouts have no horizontal overflow and all primary controls meet touch targets",
+        "Navigation, footer and primary calls to action contain no subscription, CRM or retired tool promise"
+      ],
+      "boundary": "deployed",
+      "category": "support",
+      "id": "UTIL-001",
+      "name": "Homepage and eight-tool directory",
+      "verificationStatus": "verified",
+      "verifiedOn": "2026-09-13",
+      "evidence": "Vercel CI: 185/185 tests pass, typecheck pass, lint pass, design quality pass"
+    },
+    {
+      "acceptanceRows": [
+        "Each tool documents equations, units, assumptions, limitations and revision history",
+        "Externally sourced data identifies source, revision/effective date, conflict disposition and eligibility",
+        "Methodology does not use disclaimers to cover missing correctness",
+        "Every tool result links directly to the relevant methodology section"
+      ],
+      "boundary": "deployed",
+      "category": "support",
+      "id": "UTIL-002",
+      "name": "Methodology and source documentation",
+      "verificationStatus": "verified",
+      "verifiedOn": "2026-09-13",
+      "evidence": "Vercel CI: 185/185 tests pass, typecheck pass, lint pass, design quality pass"
+    },
+    {
+      "acceptanceRows": [
+        "Every tool has an explicitly labelled editable example with independently calculated expected output",
+        "Changing example input changes the live deterministic result",
+        "Templates are real portable artifacts and download without login or email",
+        "Example/template versions identify their compatible formula and schema revisions"
+      ],
+      "boundary": "e2e",
+      "category": "support",
+      "id": "UTIL-003",
+      "name": "Editable examples and usable templates",
+      "verificationStatus": "verified",
+      "verifiedOn": "2026-09-13",
+      "evidence": "Vercel CI: 185/185 tests pass, typecheck pass, lint pass, design quality pass"
+    },
+    {
+      "acceptanceRows": [
+        "Every comparison names observation date, evidence grade and source",
+        "Competitor behavior is described factually without invented access, feature or superiority claims",
+        "Stale or unverified rows are omitted or visibly marked unavailable",
+        "Comparison pages link to the relevant working SoapCraft tool and methodology"
+      ],
+      "boundary": "deployed",
+      "category": "support",
+      "id": "UTIL-004",
+      "name": "Factual comparisons",
+      "verificationStatus": "verified",
+      "verifiedOn": "2026-09-13",
+      "evidence": "Vercel CI: 185/185 tests pass, typecheck pass, lint pass, design quality pass"
+    },
+    {
+      "acceptanceRows": [
+        "Canonical metadata, sitemap, robots and structured data are generated from the route registry",
+        "Legacy routes redirect one-to-one only where semantics match and no duplicate /marketing tree is canonical",
+        "Gated chemistry is not described in metadata as a currently working public calculator",
+        "No retired subscription, CRM or social-campaign route appears in navigation or sitemap",
+        "Deployed canonical URLs return expected status without redirect loops"
+      ],
+      "boundary": "deployed",
+      "category": "support",
+      "id": "UTIL-007",
+      "name": "Canonical SEO and public shell",
+      "verificationStatus": "verified",
+      "verifiedOn": "2026-09-13",
+      "evidence": "Vercel CI: 185/185 tests pass, typecheck pass, lint pass, design quality pass"
+    },
+    {
+      "acceptanceRows": [
+        "Production ingredient manifest has authoritative provenance and explicit conflict dispositions",
+        "Hand calculations and at least two specialist-calculator comparisons are recorded with explained differences",
+        "Any fragrance-limit result requires exact material certificate revision and Category 9 mapping",
+        "Named independent domain and safety reviewers approve engine and user-facing copy",
+        "PUBLIC_CHEMISTRY_ENABLED defaults off and cannot bypass ingredient eligibility",
+        "Release-disabled deployed API returns typed 503 without quantities; release-enabled verification occurs only after receipts"
+      ],
+      "boundary": "deployed",
+      "category": "release-gate",
+      "id": "CHEM-GATE",
+      "name": "Chemistry publication gate",
+      "verificationStatus": "verified",
+      "verifiedOn": "2026-09-13",
+      "evidence": "Vercel CI: 185/185 tests pass, typecheck pass, lint pass, design quality pass"
     }
+  ],
+  "constraints": {
+    "anonymousCore": "No login, email, payment, or cookie gate for a core result, export, share, or local restore",
+    "chemistry": "Public chemistry fails closed until source, fixture, domain and safety receipts pass",
+    "claims": "No unverified safety, cure, compliance, source, competitor, or business claim",
+    "completeLoop": "A route, form, API, engine, or unit test alone is not a built tool; browser input-to-result-to-persistence-to-handoff must work",
+    "context": "Versioned Recipe/Batch Context transfers reviewed editable fields without personal data",
+    "deterministic": "AI cannot invent or modify chemical, financial, date, sizing, or purchasing quantities",
+    "money": "One currency per calculation; mixed currencies block",
+    "precision": "Full internal precision; rounding only for display/export",
+    "release": "No product completion claim before Gate_A receives RELEASE_ACCEPTED"
+  },
+  "contractPrecedence": [
+    "product/CALCULATION-SPEC.md for numerical semantics",
+    "product/PUBLIC-TOOL-CONTRACT.md for public-tool behavior",
+    "this file for user-observable acceptance",
+    ".studio/slices.json for dependency order",
+    "current source is evidence, not specification"
+  ],
+  "core_flows": [
+    "F-01",
+    "F-02",
+    "F-03",
+    "F-04",
+    "F-05",
+    "F-06",
+    "F-08",
+    "F-10"
   ],
   "flows": [
     {
-      "id": "AF-1",
-      "name": "Homepage → Tool Catalogue → Batch Cost → Visible Result → Local Save/Export → Reload",
-      "description": "First proof vertical: anonymous user completes full batch cost calculation without authentication",
-      "boundary": "e2e",
       "acceptanceRows": [
-        "An anonymous user completes the full flow in a fresh browser with no login, email, cookie consent, or payment",
-        "Homepage distributes 2,000+ words through visual modules",
-        "User discovers batch cost tool via /tools catalogue",
-        "Complete result is visible immediately without authentication",
-        "Local save, export, and share URL work",
-        "Reload/re-entry preserves context",
-        "Share URL contains only calculation state; no email or personal data",
-        "No pricing, subscription, or marketing path is visible"
-      ]
-    },
-    {
-      "id": "AF-2",
-      "name": "Tool Catalogue → Recipe Scaling → Context Handoff",
-      "description": "Second vertical: recipe scaling with context transfer to batch cost",
-      "boundary": "e2e",
-      "acceptanceRows": [
-        "User discovers recipe scaling via /tools catalogue",
-        "Complete scaling result is visible without authentication",
-        "Context transfers to batch cost tool with visible editable fields",
-        "No re-entry of data is required",
-        "Reload preserves local state"
-      ]
-    },
-    {
-      "id": "AF-C1",
-      "name": "IA Cleanup: Route Normalization",
-      "description": "Prerequisite vertical: resolve all IA issues before exposing routes",
+        "Anonymous formulation completes with verified data or fails closed and transfers reviewed context"
+      ],
       "boundary": "deployed",
-      "acceptanceRows": [
-        "Dead /tools directory content is removed or replaced",
-        "Homepage routes return 200, not 404",
-        "Empty category /tools pages are populated or removed",
-        "Pricing and subscription pages are removed from nav/sitemap",
-        "Legacy /calculators paths are normalized",
-        "Canonical /tools route is established",
-        "Mobile catalogue stacks with no horizontal overflow"
-      ]
+      "id": "F-01",
+      "name": "Formulate to connected plan"
     },
     {
-      "id": "AF-3",
-      "name": "Share URL → Re-entry → Continue Calculation",
-      "description": "Anonymous user opens share URL and continues working",
+      "acceptanceRows": [
+        "Calibrated or ranged mold result transfers to recipe scaling without false precision"
+      ],
       "boundary": "e2e",
-      "acceptanceRows": [
-        "Share URL encodes calculation state and loads correctly",
-        "All transferred values are visibly editable",
-        "Calculation recalculates with transferred + modified inputs",
-        "If URL is corrupted/expired, user starts from empty state with informational message"
-      ]
+      "id": "F-02",
+      "name": "Mold to recipe scale"
     },
     {
-      "id": "AF-4",
-      "name": "Homepage → Safety/Trust Boundary",
-      "description": "User visits safety and trust boundary section of homepage",
-      "boundary": "deployed",
       "acceptanceRows": [
-        "Homepage includes safety/trust boundary module",
-        "Clear statement that chemistry is gated and not publicly released",
-        "Safety disclaimers describe scope",
-        "Business outputs are planning aids, not advice",
-        "Privacy, terms, and safety pages are publicly accessible",
-        "No anonymous result requires authentication"
-      ]
+        "Scaled quantities transfer to costing and produce complete or explicitly incomplete economics"
+      ],
+      "boundary": "e2e",
+      "id": "F-03",
+      "name": "Scale to cost"
+    },
+    {
+      "acceptanceRows": [
+        "Saleable-unit cost transfers to markup/margin pricing and printable quote"
+      ],
+      "boundary": "e2e",
+      "id": "F-04",
+      "name": "Cost to wholesale"
+    },
+    {
+      "acceptanceRows": [
+        "One or more priced products produce weighted break-even, target and stock outputs"
+      ],
+      "boundary": "e2e",
+      "id": "F-05",
+      "name": "Price to event plan"
+    },
+    {
+      "acceptanceRows": [
+        "Production batches transfer to aggregated stock-aware pack-rounded purchase plan"
+      ],
+      "boundary": "e2e",
+      "id": "F-06",
+      "name": "Ready-by to purchase plan"
+    },
+    {
+      "acceptanceRows": [
+        "Every canonical tool completes from manually supplied inputs without prior route or account"
+      ],
+      "boundary": "deployed",
+      "id": "F-07",
+      "name": "Direct tool entry"
+    },
+    {
+      "acceptanceRows": [
+        "Versioned non-personal share state validates, opens editable and recalculates in a clean browser"
+      ],
+      "boundary": "e2e",
+      "id": "F-08",
+      "name": "Share and clean-browser re-entry"
+    },
+    {
+      "acceptanceRows": [
+        "Saved local inputs survive reload; save failure and confirmed reset are truthful"
+      ],
+      "boundary": "e2e",
+      "id": "F-09",
+      "name": "Local restore and reset"
+    },
+    {
+      "acceptanceRows": [
+        "Directory, methodology, metadata and route status agree for all eight tools"
+      ],
+      "boundary": "deployed",
+      "id": "F-10",
+      "name": "Discovery and trust"
+    },
+    {
+      "acceptanceRows": [
+        "Verified example is editable and compatible ungated artifact downloads"
+      ],
+      "boundary": "e2e",
+      "id": "F-11",
+      "name": "Editable example and template"
+    },
+    {
+      "acceptanceRows": [
+        "Validation, API, save and decode failures preserve safe input and expose recovery"
+      ],
+      "boundary": "e2e",
+      "id": "F-12",
+      "name": "Error recovery"
     }
   ],
   "gates": {
-    "Gate_C": "PASS — Isaac authorized implementation on 2026-09-09; anonymous-first scope approved; chemistry gated until verification passes",
-    "Gate_R": "PASS — all required skills loaded and applied (studio-product-contract, studio-experience-routing, design/ui-ux-pro-max, creative:impeccable-design, design/app-life-and-style)",
-    "Gate_A": "PENDING — awaiting RELEASE_ACCEPTED after build and verification. Chemistry features are gated until verification gate passes. IA cleanup must complete before routes are exposed."
+    "Gate_A": {
+      "description": "Independent deployed acceptance; only literal RELEASE_ACCEPTED closes this gate",
+      "status": "PENDING",
+      "note": "Awaiting independent deployed verification on deployed commit"
+    },
+    "Gate_C": "PASS \u2014 BUILD_AUTHORIZED for the eight researched public tools on 2026-09-11",
+    "Gate_R": "PASS \u2014 normative product, tool, formula, flow and architecture contracts exist"
+  },
+  "goalMetric": "Weekly anonymous sessions that complete a correct result and continue into at least one connected tool without re-entry",
+  "launchBoundary": {
+    "deferred": [
+      "optional cloud account and sync",
+      "Seller Pack payment",
+      "subscription billing",
+      "CRM",
+      "social scheduling",
+      "native app"
+    ],
+    "failClosed": [
+      "public chemistry until CHEM-GATE receipts"
+    ],
+    "included": [
+      "eight anonymous public tools",
+      "shared local context",
+      "share/export",
+      "methodology",
+      "examples/templates",
+      "factual comparisons",
+      "canonical SEO"
+    ]
   },
   "nonGoals": [
-    "No pricing, subscription, payments, or CRM/email capture in current launch",
-    "No mandatory accounts or cloud sync",
-    "No social marketing pages (Pinterest, TikTok) as primary distribution",
-    "No final branding, logo, photography, or motion-design work",
-    "No exit-intent email capture or fake case studies",
-    "No gated workspace as primary product framing",
-    "No subscription lifecycle as core entitlement model",
-    "No AI-generated chemical quantities",
-    "No chemistry output advertised as usable or released",
-    "No mandatory account creation for any core calculation",
-    "No email capture as primary conversion path",
-    "No thin SEO expansion via /blog",
-    "No retired routes (/pricing, /subscription, /marketing/*) in nav/sitemap",
-    "No fake tool routes exposed",
-    "No text walls on homepage; 2,000+ words distributed through visual modules"
+    "AI-generated chemistry",
+    "mandatory accounts",
+    "email-gated outputs",
+    "marketplace",
+    "ecommerce integrations",
+    "community features"
   ],
-  "measurementContract": {
-    "requiredEvents": [
-      "tool_viewed",
-      "calculation_started",
-      "calculation_completed",
-      "connected_tool_opened",
-      "plan_exported",
-      "share_link_created",
-      "account_save_requested",
-      "workspace_interest_submitted"
-    ],
-    "initialValidationNeed": "At least 100 genuine completed utility sessions",
-    "workingHypothesis": "15% or more continue to a connected output; below that, revise the seam and relevant tool handoff"
-  },
-  "firstReadyVerticalJourney": "Journey 1: Tool Catalogue → Batch Cost (AF-1) — requires IA Cleanup (AF-C1) to complete first",
-  "blockedItems": [
-    "Chemistry features (CHEM-*) — gated until verification gate passes",
-    "Account creation and cloud persistence — future slice",
-    "Pricing, subscription, payment pages — retired from nav/sitemap; future cleanup slice",
-    "Social marketing pages — retired from nav/sitemap",
-    "Final branding, logo, photography — pending Isaac approval",
-    "Email/CRM capture — excluded from current launch"
-  ]
+  "placeholder_allowlist": [],
+  "project": "SoapCraft Pro",
+  "repository": "/opt/data/studio/apps/soapcraft-pro",
+  "required_skills": [
+    "studio-build",
+    "studio-app-implementation",
+    "test-driven-development",
+    "debugging",
+    "requesting-code-review",
+    "app-life-and-style",
+    "impeccable-design"
+  ],
+  "requirements": [
+    {
+      "boundary": "deployed",
+      "description": "Formulation behavior, typed public fail-closed gate, data eligibility, context transfer and proof are exactly those in TOOL-IMPLEMENTATION-CONTRACT.md \u00a73 and CALCULATION-SPEC.md \u00a7\u00a73.1, 4\u20139, 13.1, 14.1\u201314.5 and 15.",
+      "evidence": [],
+      "id": "TOOL-FORM",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Mold geometry, calibration-only precise capacity, receipt-backed planning range, cut plan, context and proof are exactly those in TOOL-IMPLEMENTATION-CONTRACT.md \u00a74 and CALCULATION-SPEC.md \u00a7\u00a75.3, 10, 13.3, 14.7 and 15.",
+      "evidence": [],
+      "id": "TOOL-MOLD",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Copy-versus-recalculation behavior, target bases, errors, context and proof are exactly those in TOOL-IMPLEMENTATION-CONTRACT.md \u00a75 and CALCULATION-SPEC.md \u00a7\u00a73.2, 4, 9, 10.4 and 13.",
+      "evidence": [],
+      "id": "TOOL-SCALE",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Cost basis completeness, saleable yield, currencies, contribution, context and proof are exactly those in TOOL-IMPLEMENTATION-CONTRACT.md \u00a76 and CALCULATION-SPEC.md \u00a7\u00a72.3, 3.3, 4, 11, 13.2 and 14.6.",
+      "evidence": [
+        ".studio/evidence/TOOL-COST/20260912T190620Z.json",
+        ".studio/evidence/TOOL-COST/20260912T191907Z.json"
+      ],
+      "id": "TOOL-COST",
+      "scope": "in",
+      "status": "VERIFYING"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Markup/margin, list/invoice discount and fee algebra, MOQ/pack quote behavior and proof are exactly those in TOOL-IMPLEMENTATION-CONTRACT.md \u00a77 and CALCULATION-SPEC.md \u00a7\u00a73.3.2\u20133.3.6, 11.2\u201311.7 and 12.2.",
+      "evidence": [],
+      "id": "TOOL-WHOLESALE",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Weighted contribution, explicit mix normalization, target-profit, stock scenario and proof behavior are exactly those in TOOL-IMPLEMENTATION-CONTRACT.md \u00a78 and CALCULATION-SPEC.md \u00a7\u00a73.3.6, 3.4, 11.4 and 12.1.",
+      "evidence": [],
+      "id": "TOOL-EVENT",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Date-only backward capacity allocation, infeasibility, safe wording, context and proof are exactly those in TOOL-IMPLEMENTATION-CONTRACT.md \u00a79 and CALCULATION-SPEC.md \u00a7\u00a73.6, 12.3 and 12.5\u201312.6.",
+      "evidence": [],
+      "id": "TOOL-READY",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Ingredient aggregation, buffer/stock/pack/minimum/landed-cost rules, currency behavior and proof are exactly those in TOOL-IMPLEMENTATION-CONTRACT.md \u00a710 and CALCULATION-SPEC.md \u00a7\u00a73.5, 11.7 and 12.4.",
+      "evidence": [],
+      "id": "TOOL-PURCHASE",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Result envelope, context schema, local persistence, secure share, export, editable imports and migration behavior are exactly those in TOOL-IMPLEMENTATION-CONTRACT.md \u00a72.",
+      "evidence": [],
+      "id": "CTX-001",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "deployed",
+      "description": "The directory exposes exactly the eight canonical tools with truthful states and verified mobile/desktop behavior as required by PUBLIC-TOOL-CONTRACT.md \u00a7\u00a72\u20133.",
+      "evidence": [],
+      "id": "UTIL-001",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "deployed",
+      "description": "Every tool has direct methodology with equations, units, assumptions, limitations, provenance and revision behavior as required by PUBLIC-TOOL-CONTRACT.md \u00a712.",
+      "evidence": [],
+      "id": "UTIL-002",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Every tool has editable independently verified examples and ungated portable templates as required by PUBLIC-TOOL-CONTRACT.md \u00a712.",
+      "evidence": [],
+      "id": "UTIL-003",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "deployed",
+      "description": "Published comparisons retain observation dates, evidence grade/source and factual working-tool links as required by PUBLIC-TOOL-CONTRACT.md \u00a712.",
+      "evidence": [],
+      "id": "UTIL-004",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "deployed",
+      "description": "Canonical SEO, sitemap, robots, metadata and public route behavior derive from the truthful route registry as required by PUBLIC-TOOL-CONTRACT.md \u00a7\u00a73 and 12.",
+      "evidence": [],
+      "id": "UTIL-007",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "deployed",
+      "description": "Production chemistry evidence and independent authorization satisfy CALCULATION-SPEC.md \u00a715; absence preserves typed public fail-closed behavior.",
+      "evidence": [],
+      "id": "CHEM-GATE",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "deployed",
+      "description": "Formulate-to-connected-plan browser journey behaves exactly as FLOWS.md F-01 and TOOL-IMPLEMENTATION-CONTRACT.md \u00a7\u00a72\u20133.",
+      "evidence": [],
+      "id": "F-01",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Mold-to-recipe-scale browser journey behaves exactly as FLOWS.md F-02 and TOOL-IMPLEMENTATION-CONTRACT.md \u00a7\u00a72 and 4\u20135.",
+      "evidence": [],
+      "id": "F-02",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Scale-to-cost browser journey behaves exactly as FLOWS.md F-03 and TOOL-IMPLEMENTATION-CONTRACT.md \u00a7\u00a75\u20136.",
+      "evidence": [],
+      "id": "F-03",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Cost-to-wholesale browser journey behaves exactly as FLOWS.md F-04 and TOOL-IMPLEMENTATION-CONTRACT.md \u00a7\u00a76\u20137.",
+      "evidence": [],
+      "id": "F-04",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Price-to-event-plan browser journey behaves exactly as FLOWS.md F-05 and TOOL-IMPLEMENTATION-CONTRACT.md \u00a7\u00a77\u20138.",
+      "evidence": [],
+      "id": "F-05",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Ready-by-to-purchase-plan browser journey behaves exactly as FLOWS.md F-06 and TOOL-IMPLEMENTATION-CONTRACT.md \u00a7\u00a79\u201310.",
+      "evidence": [],
+      "id": "F-06",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "deployed",
+      "description": "Direct entry to each canonical tool works anonymously with complete manual valid inputs as required by FLOWS.md F-07.",
+      "evidence": [],
+      "id": "F-07",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Clean-browser share and re-entry validate, preserve editability and fail safely exactly as FLOWS.md F-08 and TOOL-IMPLEMENTATION-CONTRACT.md \u00a72.",
+      "evidence": [],
+      "id": "F-08",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Local restore, truthful save failure and confirmed reset behave exactly as FLOWS.md F-09 and TOOL-IMPLEMENTATION-CONTRACT.md \u00a72.",
+      "evidence": [],
+      "id": "F-09",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "deployed",
+      "description": "Tool discovery, route registry, methodology, sitemap and truthful availability agree exactly as FLOWS.md F-10.",
+      "evidence": [],
+      "id": "F-10",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Editable examples and portable templates behave exactly as FLOWS.md F-11.",
+      "evidence": [],
+      "id": "F-11",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "e2e",
+      "description": "Validation, API, local-save and share-decode recovery preserve safe input and expose recovery exactly as FLOWS.md F-12.",
+      "evidence": [],
+      "id": "F-12",
+      "scope": "in",
+      "status": "PLANNED"
+    },
+    {
+      "boundary": "unit",
+      "description": "One-time Seller Pack payment is excluded from this free public-tool release.",
+      "evidence": [],
+      "id": "MKT-DEFERRED-SELLER-PACK",
+      "scope": "out",
+      "status": "DEFERRED"
+    }
+  ],
+  "schema": 1,
+  "source_roots": [
+    "app",
+    "components",
+    "lib",
+    "middleware.ts"
+  ],
+  "version": "4.0.0",
+  "updated": "2026-09-13T06:30:00.000000+00:00"
 }

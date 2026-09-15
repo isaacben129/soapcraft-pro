@@ -1,11 +1,11 @@
 # SoapCraft Pro — Calculation Specification
 
 **Status:** Build-ready deterministic formula contract; publication remains fail-closed on §15 release gates  
-**Version:** 2.0.0  
-**Date:** 2026-09-09  
+**Version:** 2.1.0  
+**Date:** 2026-09-12  
 **Owner:** Product/Engineering  
-**Parent contract:** `PRODUCT-CONTRACT-UTILITY-HUB.md`  
-**Supersedes:** Version 1.0.0 and its unresolved formula conventions.
+**Parent contracts:** `PUBLIC-TOOL-CONTRACT.md` v4.0.0 and `TOOL-IMPLEMENTATION-CONTRACT.md` v1.0.0  
+**Supersedes:** Version 2.0.0 and its under-specified non-chemistry formulas.
 
 ---
 
@@ -69,22 +69,22 @@ All symbols used across the calculation system, with their units and canonical d
 
 ### 1.4 Property / Quality Symbols
 
-No public property-range symbols exist in version 2.0. Sourced fatty-acid composition fields may be added later through the same manifest governance as SAP values; arbitrary hardness/lather/moisturizing transforms are forbidden.
+No public property-range symbols exist in version 2.1. Sourced fatty-acid composition fields may be added later through the same manifest governance as SAP values; arbitrary hardness/lather/moisturizing transforms are forbidden.
 
 ### 1.5 Economic / Cost Symbols
 
 | Symbol | Name | Unit | Canonical Definition |
 |--------|------|------|---------------------|
-| `cost` | Total batch cost | currency units | `ingredientCostTotal + fragranceCost + otherCosts` |
-| `costPerBar` | Cost per bar | currency units per bar | `totalCost / batchYieldBars` |
-| `costPerUnit` | Cost per unit mass | currency units per gram | `totalCost / totalQuantityGrams` |
-| `ingredientCostTotal` | Sum of ingredient costs | currency units | `Σ (costPerGram(i) × quantityInGrams(i))` excluding missing-cost items |
-| `batchYieldBars` | Number of bars from batch | bars (count) | User-entered or derived; excludes trim/samples/defects for saleable yield |
-| `saleableYield` | Saleable unit count | bars (count) | `batchYieldBars - trim - samples - defects - testingUnits` |
+| `totalCost` | Total batch cost | currency units | Ingredient + fragrance + packaging + labor + overhead + named other costs |
+| `costPerMadeUnit` | Cost per unit produced | currency units per unit | `totalCost / madeUnits` |
+| `costPerSaleableUnit` | Cost per saleable unit | currency units per unit | `totalCost / saleableYield` |
+| `ingredientCostTotal` | Sum of ingredient costs | currency units | `Σ (costPerGram(i) × quantityInGrams(i))` excluding missing-basis lines |
+| `madeUnits` | Number of units produced | units (count) | User-entered or derived before exclusions |
+| `saleableYield` | Saleable unit count | units (count) | `madeUnits - trim - samples - defects - testingUnits` |
 | `price` | Selling price per unit | currency units per bar | User-entered or algebraically solved |
-| `markupPercent` | Markup percentage | % | `(price - cost) / cost × 100` |
-| `grossMarginPercent` | Gross margin percentage | % | `(netRevenue - cost) / netRevenue × 100` |
-| `netRevenue` | Revenue after channel fees | currency units | `price × units - percentageFee - fixedFeePerTransaction` |
+| `markupPercent` | Markup percentage | % | `(price - costPerSaleableUnit) / costPerSaleableUnit × 100` |
+| `grossMarginPercent` | Gross margin percentage | % | `(netRevenue - costPerSaleableUnit) / netRevenue × 100` |
+| `netRevenue` | Revenue after channel fees | currency units | `invoicePrice × (1 - feeFraction) - fixedFeePerTransaction / unitsPerTransaction` |
 | `contributionPerUnit` | Contribution per saleable unit | currency units per bar | `netRevenuePerUnit - costPerSaleableUnit` |
 | `fixedEventCost` | Fixed event costs | currency units | Total booth, travel, and other fixed costs |
 | `eventBreakEvenUnits` | Break-even units for event | bars (count) | `ceiling(fixedEventCost / weightedContributionPerUnit)` |
@@ -126,9 +126,9 @@ Every formula must satisfy dimensional homogeneity. The following table confirms
 | `lyeNaOH = Σ oilWeight(i) × SAP_NaOH(i)` | g | g × (g/g) = g | ✅ |
 | `water = lyeNaOH × waterToLyeRatio` | g | g × (g/g) = g | ✅ |
 | `totalWeight = oilWeightTotal + lyeNaOH + water + fragranceLoad` | g | g + g + g + g = g | ✅ |
-| `costPerBar = totalCost / batchYieldBars` | curr/bar | curr / bar = curr/bar | ✅ |
-| `markupPercent = (price - cost) / cost × 100` | % | (curr - curr) / curr × 100 = % | ✅ |
-| `grossMarginPercent = (netRevenue - cost) / netRevenue × 100` | % | (curr - curr) / curr × 100 = % | ✅ |
+| `costPerSaleableUnit = totalCost / saleableYield` | curr/unit | curr / unit = curr/unit | ✅ |
+| `markupPercent = (price - costPerSaleableUnit) / costPerSaleableUnit × 100` | % | (curr - curr) / curr × 100 = % | ✅ |
+| `grossMarginPercent = (netRevenue - costPerSaleableUnit) / netRevenue × 100` | % | (curr - curr) / curr × 100 = % | ✅ |
 | `breakEvenUnits = ceiling(fixedCost / contributionPerUnit)` | bars | curr / (curr/bar) = bars | ✅ |
 | `totalWeight = moldVolume × density` | g | cm³ × g/cm³ = g | ✅ |
 
@@ -245,10 +245,13 @@ The output schema MUST expose `naohMass`, `kohMass`, and `totalAlkaliMass` separ
 #### 3.2.1 Recipe Scaling
 
 ```
-scaledAmount = originalAmount × scaleFactor
+scaleFactor = targetBasis / sourceBasis
+scaledAmount(i) = originalUnroundedAmount(i) × scaleFactor
 ```
 
-All ingredient amounts, including oils, lye, water, and fragrance, scale linearly by the same factor.
+`copy_quantities` mode requires source and target to use the same declared basis and scales every component once. It preserves the source water-mode label but makes no chemistry-verification claim.
+
+`recalculate_formulation` mode preserves oil percentages and process controls, derives the target oil mass, and calls §3.1 to recompute alkali, water, fragrance and total batter mass. It never scales displayed lye/water values. The source recipe must satisfy §13.1, and public chemistry eligibility still applies. Target mold mass must come from calibrated capacity; an uncalibrated estimate remains a range.
 
 #### 3.2.2 Unit Conversion
 
@@ -264,33 +267,38 @@ Where `UNIT_TO_GRAMS = { g: 1, kg: 1000, oz: 28.3495, lb: 453.592 }`.
 
 ```
 ingredientCostTotal = Σ [normalizeCostPerGram(costPerUnit(i), unit(i)) × normalizeToGrams(quantity(i), quantityUnit(i))]
-totalCost = ingredientCostTotal + fragranceCost + otherCosts
-costPerBar = totalCost / batchYieldBars  (if batchYieldBars > 0; otherwise blocking warning)
-costPerUnit = totalCost / totalQuantityGrams  (if totalQuantityGrams > 0; otherwise 0)
+saleableYield = madeUnits - trim - samples - defects - testingUnits
+packagingCost = packagingCostPerSaleableUnit × saleableYield
+laborCost = (laborMinutes / 60) × laborRatePerHour
+totalCost = ingredientCostTotal + fragranceCost + packagingCost + laborCost + overheadCost + namedOtherCosts
+costPerMadeUnit = totalCost / madeUnits
+costPerSaleableUnit = totalCost / saleableYield
 ```
 
-**Missing cost basis:** If `costPerUnit(i) ≤ 0`, the ingredient is excluded from `ingredientCostTotal` and added to `missingCostBasis`. No zero-cost fallback is used.
+`madeUnits` and `saleableYield` must both be positive, and exclusions may not exceed made units. Packaging may instead use one explicit batch-amount mode, but modes cannot be combined.
+
+**Missing cost basis:** Absent cost data is excluded from the known subtotal and added to `missingCostBasis`. It is not converted to numeric zero. An explicit numeric zero is valid only for a genuinely zero optional line such as labor or overhead. An incomplete result cannot generate a recommended price.
 
 #### 3.3.2 Markup Percentage
 
 ```
-markupPercent = (price - costPerBar) / costPerBar × 100
+markupPercent = (price - costPerSaleableUnit) / costPerSaleableUnit × 100
 ```
 
 #### 3.3.3 Gross Margin Percentage
 
 ```
-grossMarginPercent = (netRevenuePerBar - costPerBar) / netRevenuePerBar × 100
+grossMarginPercent = (netRevenuePerUnit - costPerSaleableUnit) / netRevenuePerUnit × 100
 ```
 
-Where `netRevenuePerBar` is the price after channel fees.
+Where `netRevenuePerUnit` is the invoiced price after channel fees.
 
 #### 3.3.4 Target Price from Gross Margin (Algebraic Solve)
 
 When `targetGrossMargin` is given and price must be solved:
 
 ```
-price = costPerBar / (1 - targetGrossMargin / 100)
+priceFromGrossMargin = costPerSaleableUnit / (1 - targetGrossMargin / 100)
 ```
 
 **This is the correct algebraic inversion of the gross margin formula.** A markup multiplier approximation must NOT be used.
@@ -299,7 +307,7 @@ price = costPerBar / (1 - targetGrossMargin / 100)
 
 ```
 suggestedPrice = targetPricePerBar  if targetPricePerBar > 0
-suggestedPrice = costPerBar / (1 - configuredTargetGrossMargin / 100)  if an explicit configured target exists
+suggestedPrice = costPerSaleableUnit / (1 - configuredTargetGrossMargin / 100)  if an explicit configured target exists
 suggestedPrice = null  otherwise
 ```
 
@@ -331,39 +339,60 @@ percentageOfInventory = (breakEvenQuantity / itemCount) × 100
 #### 3.4.2 Event Break-Even with Weighted Contribution
 
 ```
+netRevenuePerUnit(i) = price(i) × (1 - percentageFee(i) / 100) - fixedFee(i) / unitsPerTransaction(i)
+contributionPerUnit(i) = netRevenuePerUnit(i) - variableCostPerUnit(i)
+weightedContributionPerUnit = Σ [mixShare(i) × contributionPerUnit(i)]
+weightedAveragePrice = Σ [mixShare(i) × price(i)]
 eventBreakEvenUnits = ceiling(fixedEventCost / weightedContributionPerUnit)
+targetProfitUnits = ceiling((fixedEventCost + targetProfit) / weightedContributionPerUnit)
+breakEvenRevenue = eventBreakEvenUnits × weightedAveragePrice
+bufferUnits = ceiling(targetProfitUnits × stockBufferPercent / 100)
+baseStock = targetProfitUnits + bufferUnits
+stockToBring(s) = ceiling(baseStock / sellThroughFraction(s))
 ```
 
-Where `weightedContributionPerUnit` accounts for product mix when multiple products are sold at the event.
+Mix shares are fractions that total 1 within ±0.0001. Invalid shares block unless the user explicitly invokes normalization. Every active product and the weighted result require positive contribution. If fixed costs are zero and weighted contribution is positive, break-even is zero. A zero sell-through scenario is explicitly infeasible. Integer stock is allocated to products by largest-remainder apportionment so allocations sum exactly to the total.
 
 #### 3.4.3 Wholesale Pricing
 
 ```
-wholesalePricePerBar = productionCostPerBar / (1 - desiredWholesaleGrossMargin / 100)
-wholesalePricePerBatch = wholesalePricePerBar × batchSize
-retailPricePerBar = wholesalePricePerBar × retailMultiplier
-retailPricePerBatch = retailPricePerBar × batchSize
-wholesaleGrossMarginPercent = (wholesalePricePerBar - productionCostPerBar) / wholesalePricePerBar × 100
+requiredNetRevenueMargin = costPerSaleableUnit / (1 - targetGrossMargin / 100)
+requiredNetRevenueMarkup = costPerSaleableUnit × (1 + targetMarkup / 100)
+fixedFeePerUnit = fixedFeePerTransaction / unitsPerTransaction
+listPrice = (requiredNetRevenue + fixedFeePerUnit) / ((1 - discountFraction) × (1 - percentageFeeFraction))
+invoicePrice = listPrice × (1 - discountFraction)
+netRevenuePerUnit = invoicePrice × (1 - percentageFeeFraction) - fixedFeePerUnit
+contributionPerUnit = netRevenuePerUnit - costPerSaleableUnit
 ```
 
-If the user chooses markup mode instead, `wholesalePricePerBar = productionCostPerBar × (1 + desiredMarkup / 100)` and the input/output are labeled markup. The two modes are never conflated.
+The user chooses exactly one target mode. Discount is a quoted reduction from list price and is included in the solve; it is not applied after the solve while preserving a false target claim. Gross margin, discount and percentage fee must each be below 100%, and the combined denominator must be positive. Optional retail price is user input for comparison, never a hidden multiplier.
 
 ### 3.5 Purchasing and Inventory
 
 #### 3.5.1 Purchase Requirements
 
 ```
-purchaseQuantity = requirements - stock  (rounded up to nearest pack size)
+baseRequirement(i) = Σ normalizedRequirement(i, plannedBatch)
+grossRequirement(i) = baseRequirement(i) × (1 + bufferPercent(i) / 100)
+usableStock(i) = max(0, onHand(i) - reserved(i))
+netNeed(i) = max(0, grossRequirement(i) - usableStock(i))
 ```
 
-Where `requirements` derive from planned batch production, and `stock` is current inventory on hand.
+Requirements are normalized and aggregated by stable ingredient ID before buffer, stock subtraction, or supplier selection. Reserved stock may not exceed on-hand stock.
 
 #### 3.5.2 Pack Rounding
 
 ```
-packsRequired = ceiling(purchaseQuantity / packSize)
+needPacks = ceiling(netNeed / packSize)
+packsRequired = max(needPacks, minimumPacks)
 purchaseQuantityFinal = packsRequired × packSize
+landedCost = packsRequired × packPrice + shipping + namedFees
+landedUnitCost = landedCost / purchaseQuantityFinal
+overbuy = max(0, purchaseQuantityFinal - netNeed)
+projectedRemaining = max(0, usableStock + purchaseQuantityFinal - grossRequirement)
 ```
+
+If `netNeed = 0`, no order is proposed and all order quantities/costs are zero. A minimum order amount, when present, increases pack count until `packs × packPrice` meets the threshold. Supplier offers are compared only within one selected currency and only from user-entered offers.
 
 ### 3.6 Production and Cure Planning
 
@@ -377,13 +406,11 @@ stockTarget = batchesRequired × expectedYieldPerBatch + buffer
 #### 3.6.2 Ready-By Date Planning
 
 ```
-pourDate = readyByDate - cureDays - unmoldCutBufferDays - productionLeadTime
+batchesRequired = ceiling(saleableUnitsRequired / expectedYieldPerBatch)
+latestPourDate = readyByDate - cureDays - unmoldCutBufferDays
 ```
 
-Where:
-- `cureDays` is user-selected cure interval
-- `unmoldCutBufferDays` is time from pour to unmold/cut
-- `productionLeadTime` accounts for batch count and capacity
+All values are date-only calendar values. Starting at `latestPourDate`, walk backward over allowed production weekdays and non-blackout dates. Allocate no more than the configured daily capacity and no more than the configured capacity in each ISO week until every batch is assigned. The plan is infeasible when any required batch would fall before `planningStartDate`. Each batch reports pour date, `unmoldCutDate = pourDate + unmoldCutBufferDays`, and `estimatedIntervalEnd = unmoldCutDate + cureDays`.
 
 ---
 
@@ -659,9 +686,11 @@ Calibration records are versioned user data, never global constants. A planning 
 |------|------------|---------|
 | **Material Cost** | Cost of all ingredients | `Σ (costPerGram × grams)` |
 | **Fragrance Cost** | Cost of fragrance additives | User input |
-| **Other Costs** | Packaging, labor, overhead | User input |
-| **Full Batch Cost** | Total cost of producing the batch | `materialCost + fragranceCost + otherCosts` |
-| **Cost Per Made Unit** | Cost per bar produced (including defects) | `fullBatchCost / batchYieldBars` |
+| **Packaging Cost** | Per-saleable-unit or explicit batch packaging cost | `packagingCostPerSaleableUnit × saleableYield` or batch input |
+| **Labor Cost** | User-valued production time | `(laborMinutes / 60) × laborRatePerHour` |
+| **Overhead / Other Costs** | Explicit named batch costs | User input |
+| **Full Batch Cost** | Total cost of producing the batch | `materialCost + fragranceCost + packagingCost + laborCost + overhead + namedOtherCosts` |
+| **Cost Per Made Unit** | Cost per unit produced (including defects) | `fullBatchCost / madeUnits` |
 | **Cost Per Saleable Unit** | Cost per bar that can be sold | `fullBatchCost / saleableYield` |
 | **Saleable Yield** | Bars available for sale | `batchYieldBars - trim - samples - defects - testingUnits` |
 | **Markup %** | Percentage above cost | `(price - cost) / cost × 100` |
@@ -683,7 +712,7 @@ These are **not interchangeable**. The distinction is critical:
 
 ### 11.3 Known Bug: Target Margin Computes Markup
 
-In `batch-cost.ts`, the suggested price calculation at line 128 uses `costPerBar * 1.5`, which computes a 50% markup, not a 50% margin. The correct behavior should use `price = costPerBar / (1 - targetMargin / 100)`.
+In `batch-cost.ts`, the suggested price calculation at line 128 uses `costPerBar * 1.5`, which computes a 50% markup, not a 50% margin. The correct behavior uses `priceFromGrossMargin = costPerSaleableUnit / (1 - targetMargin / 100)`.
 
 ### 11.4 Channel Fees
 
@@ -699,7 +728,7 @@ contributionPerUnit = netRevenuePerUnit - costPerSaleableUnit
 
 ### 11.5 Missing Cost Basis Policy
 
-If an ingredient has `costPerUnit ≤ 0`, it is **excluded from the total cost** and added to `missingCostBasis`. The system does NOT use a zero-cost fallback. The result is explicitly marked as incomplete with `missingCostBasis` entries and `warnings`.
+If required cost basis is absent, that line is **excluded from the known subtotal** and added to `missingCostBasis`. The system does not coerce absence to zero. Explicit zero is accepted only for a genuinely zero optional line such as labor or overhead. The result is marked incomplete with row/field-specific entries and warnings.
 
 **A result with missing costs cannot be styled as a recommendation.**
 
@@ -733,26 +762,28 @@ percentageOfInventory = (breakEvenQuantity / itemCount) × 100
 #### 12.1.2 Multi-Product Event (Weighted Contribution)
 
 ```
+netRevenuePerUnit(i) = price(i) × (1 - percentageFeeFraction(i)) - fixedFee(i) / unitsPerTransaction(i)
+contributionPerUnit(i) = netRevenuePerUnit(i) - variableCostPerUnit(i)
+weightedContributionPerUnit = Σ [mixShare(i) × contributionPerUnit(i)]
 eventBreakEvenUnits = ceiling(fixedEventCost / weightedContributionPerUnit)
+targetProfitUnits = ceiling((fixedEventCost + targetProfit) / weightedContributionPerUnit)
 ```
 
-Where `weightedContributionPerUnit` is derived from the product mix:
-```
-weightedContributionPerUnit = Σ [mixShare(i) × contributionPerUnit(i)]
-```
+Shares must explicitly total one, contributions must be positive, and integer per-product plans use largest-remainder apportionment. Sell-through and stock-buffer rules are defined in §3.4.2 and `TOOL-IMPLEMENTATION-CONTRACT.md` §8.
 
 ### 12.2 Wholesale Pricing
 
-The user chooses either gross-margin mode or markup mode.
+The user chooses either gross-margin mode or markup mode. Discount and fees are part of the solve.
 
 ```
-priceFromGrossMargin = productionCostPerBar / (1 - desiredGrossMargin / 100)
-priceFromMarkup = productionCostPerBar × (1 + desiredMarkup / 100)
-wholesalePricePerBatch = wholesalePricePerBar × batchSize
-retailPricePerBar = wholesalePricePerBar × retailMultiplier
+requiredNetRevenueMargin = costPerSaleableUnit / (1 - targetGrossMargin / 100)
+requiredNetRevenueMarkup = costPerSaleableUnit × (1 + targetMarkup / 100)
+listPrice = (requiredNetRevenue + fixedFee / unitsPerTransaction) / ((1 - discountFraction) × (1 - percentageFeeFraction))
+invoicePrice = listPrice × (1 - discountFraction)
+netRevenuePerUnit = invoicePrice × (1 - percentageFeeFraction) - fixedFee / unitsPerTransaction
 ```
 
-Inputs and results MUST use the chosen term consistently. Gross margin must be less than 100%; invalid or incomplete cost bases block price recommendations.
+Inputs and results MUST use the chosen term consistently. Gross margin, discount and percentage fee must each be below 100%; invalid denominators or incomplete cost bases block price recommendations. Retail comparison is optional user input, never a hidden multiplier.
 
 ### 12.3 Production Requirement Planning
 
@@ -764,26 +795,26 @@ stockTarget = batchesRequired × expectedYieldPerBatch + buffer
 ### 12.4 Purchase Requirements
 
 ```
-purchaseQuantity = requirements - stock  (rounded up to pack size)
-packsRequired = ceiling(purchaseQuantity / packSize)
+baseRequirement = Σ normalized planned requirements for one ingredient
+grossRequirement = baseRequirement × (1 + bufferPercent / 100)
+usableStock = max(0, onHand - reserved)
+netNeed = max(0, grossRequirement - usableStock)
+needPacks = ceiling(netNeed / packSize)
+packsRequired = max(needPacks, minimumPacks)
 purchaseQuantityFinal = packsRequired × packSize
+landedCost = packsRequired × packPrice + shipping + namedFees
 ```
 
-Where:
-- `requirements` = ingredient quantities needed for planned batches
-- `stock` = current inventory levels
-- `packSize` = supplier minimum order quantity
+Aggregation precedes stock subtraction and pack rounding. Pack size and supplier minimum are distinct inputs. Minimum spend increases packs until the entered offer threshold is met. When net need is zero, no order is proposed. Mixed currencies are excluded rather than converted or summed.
 
 ### 12.5 Ready-By Date Planning
 
 ```
-pourDate = readyByDate - cureDays - unmoldCutBufferDays - productionLeadTime
+batchesRequired = ceiling(saleableUnitsRequired / expectedYieldPerBatch)
+latestPourDate = readyByDate - cureDays - unmoldCutBufferDays
 ```
 
-Where:
-- `cureDays` = user-selected cure interval (e.g., 4–6 weeks)
-- `unmoldCutBufferDays` = time from pour to cut (typically 24–48 hours)
-- `productionLeadTime` = batches_per_week × time_per_batch (adjusted for capacity)
+Starting at `latestPourDate`, allocate batches backward across allowed date-only production days, obeying per-day and per-ISO-week capacity and blackout dates. A plan that crosses `planningStartDate` is infeasible. No cure interval or unmold delay is silently defaulted.
 
 ### 12.6 Date Planning Invariants
 
@@ -1005,12 +1036,14 @@ totalWeight = oilWeightTotal + totalAlkaliAsSupplied + water + fragranceLoad + a
 
 ### Costing
 ```
-ingredientCostTotal = Σ [costPerGram(i) × grams(i)]  (excluding missing-cost items)
-totalCost = ingredientCostTotal + fragranceCost + otherCosts
-costPerBar = totalCost / batchYieldBars
-markupPercent = (price - costPerBar) / costPerBar × 100
-grossMarginPercent = (price - costPerBar) / price × 100
-priceFromMargin = costPerBar / (1 - targetMargin / 100)
+ingredientCostTotal = Σ [costPerGram(i) × grams(i)]  (excluding missing-basis lines)
+saleableYield = madeUnits - trim - samples - defects - testingUnits
+totalCost = ingredientCostTotal + fragranceCost + packagingCost + laborCost + overhead + namedOtherCosts
+costPerMadeUnit = totalCost / madeUnits
+costPerSaleableUnit = totalCost / saleableYield
+markupPercent = (price - costPerSaleableUnit) / costPerSaleableUnit × 100
+grossMarginPercent = (netRevenue - costPerSaleableUnit) / netRevenue × 100
+priceFromGrossMargin = costPerSaleableUnit / (1 - targetMargin / 100)
 ```
 
 ### Event Planning

@@ -20,7 +20,7 @@ export default function PinterestTermsPage() {
       <dt>"Pinterest Integration"</dt>
       <dd>The feature enabling users to connect their SoapCraft Pro account to Pinterest via Postiz for the purpose of scheduling, creating, managing, and publishing Pinterest Pins and Boards.</dd>
       <dt>"Pinterest Developer Terms"</dt>
-      <dd>Pinterest's <a href="https://www.pinterest.com/terms/developer/">Developer Terms</a> and <a href="https://policy.pinterest.com/en/developer-guidelines">Developer Guidelines</a>, as published and updated by Pinterest from time to time.</li></dt>
+      <dd>Pinterest's <a href="https://www.pinterest.com/terms/developer/">Developer Terms</a> and <a href="https://policy.pinterest.com/en/developer-guidelines">Developer Guidelines</a>, as published and updated by Pinterest from time to time.</dd>
       <dt>"Pin"</dt>
       <dd>A piece of content saved or posted on Pinterest, consisting of an image, description, link, and associated metadata.</dd>
       <dt>"Board"</dt>

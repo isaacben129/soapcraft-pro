@@ -1,6 +1,7 @@
 import { withAuth } from "next-auth/middleware";
 import { NextResponse, type NextRequest } from "next/server";
 import { canBypassAuth, isRetiredRoute } from "./lib/routing/public-routes";
+import { canonicalPaths } from "./lib/routing/canonical-routes";
 
 export default withAuth(
   function middleware(req: NextRequest) {
@@ -21,10 +22,15 @@ export default withAuth(
         "mold-volume": "/tools/mold-volume",
         "craft-fair-break-even": "/tools/craft-fair-break-even",
         "soap-cost-calculator": "/tools/batch-cost",
-        "wholesale-pricing": "/tools/batch-cost",
+        "wholesale-pricing": "/tools/wholesale-pricing",
       };
       const canonicalPath = canonicalMap[legacySlug] || "/tools";
       return NextResponse.redirect(new URL(canonicalPath, req.url));
+    }
+
+    // Ensure canonical tool paths are recognized
+    if (canonicalPaths.has(pathname)) {
+      return NextResponse.next();
     }
 
     return NextResponse.next();

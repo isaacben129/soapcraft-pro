@@ -1,0 +1,19 @@
+{
+  "actor": "hermes-deploy-check",
+  "artifacts": [
+    ".studio/evidence/SLICE-002/deployed-cost-check.sh"
+  ],
+  "command": [
+    "bash",
+    ".studio/evidence/SLICE-002/deployed-cost-check.sh"
+  ],
+  "ended_at": "2026-09-12T19:06:22.994547+00:00",
+  "exit_code": 0,
+  "id": "TOOL-COST",
+  "kind": "e2e",
+  "log": ".studio/evidence/TOOL-COST/20260912T190620Z.log",
+  "schema": 1,
+  "source_fingerprint": "0a2ba1d57918216bc0bff3efd53ad3f847a2f5df49836cc48800fd6b7edfed04",
+  "started_at": "2026-09-12T19:06:20.501164+00:00",
+  "target": "https://soapcraftpro.com"
+}

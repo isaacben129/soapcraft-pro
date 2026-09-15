@@ -454,6 +454,55 @@ def check_normative_contract_semantics(acceptance, slices):
     }
 
 
+def check_acceptance_gate_compatibility(acceptance):
+    """Prove the planning manifest is consumable by the fail-closed evidence gate."""
+    valid_boundaries = {"unit", "integration", "e2e", "device", "deployed", "manual_visual"}
+    expected_ids = {
+        c["id"] for c in acceptance.get("capabilities", []) if isinstance(c, dict) and c.get("id")
+    } | {
+        f["id"] for f in acceptance.get("flows", []) if isinstance(f, dict) and f.get("id")
+    } | {"MKT-DEFERRED-SELLER-PACK"}
+    requirements = [r for r in acceptance.get("requirements", []) if isinstance(r, dict)]
+    seen = defaultdict(int)
+    malformed = []
+    for requirement in requirements:
+        req_id = requirement.get("id")
+        if req_id:
+            seen[req_id] += 1
+        if not req_id or not requirement.get("description"):
+            malformed.append({"id": req_id, "issue": "id and description are required"})
+        if requirement.get("boundary") not in valid_boundaries:
+            malformed.append({"id": req_id, "issue": "unsupported boundary"})
+        if requirement.get("scope", "in") not in {"in", "out"}:
+            malformed.append({"id": req_id, "issue": "scope must be in or out"})
+    missing = sorted(expected_ids - set(seen))
+    duplicates = sorted(req_id for req_id, count in seen.items() if count != 1)
+    core_missing = sorted(set(acceptance.get("core_flows", [])) - set(seen))
+    issues = []
+    if acceptance.get("schema") != 1:
+        issues.append("acceptance schema must be numeric 1")
+    if not acceptance.get("source_roots"):
+        issues.append("source_roots required for evidence fingerprinting")
+    if missing:
+        issues.append("missing gate requirements: " + ", ".join(missing))
+    if duplicates:
+        issues.append("non-unique gate requirements: " + ", ".join(duplicates))
+    if malformed:
+        issues.append("malformed gate requirements")
+    if core_missing:
+        issues.append("core flows absent from gate requirements: " + ", ".join(core_missing))
+    return {
+        "check": "Acceptance-gate compatibility",
+        "result": "PASS" if not issues else "FAIL",
+        "requirements_expected": len(expected_ids),
+        "requirements_present": len(requirements),
+        "missing": missing,
+        "duplicates": duplicates,
+        "malformed": malformed,
+        "issues": issues,
+    }
+
+
 def main():
     report = {
         "verifier": "soapcraft-planning-verifier",
@@ -480,6 +529,7 @@ def main():
     report["checks"].append(check_slice_coverage(slices.get("slices", slices), acceptance))
     report["checks"].append(check_markdown_fences(PRODUCT))
     report["checks"].append(check_gate_consistency(acceptance, skill_receipts, slices))
+    report["checks"].append(check_acceptance_gate_compatibility(acceptance))
     report["checks"].append(check_normative_contract_semantics(acceptance, slices))
     report["checks"].append(check_contradiction_resolution(os.path.join(PRODUCT, "CONTRACT-CRITIQUE.md")))
     report["checks"].append(check_source_boundary(REPO))

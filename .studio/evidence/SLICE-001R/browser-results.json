@@ -1,0 +1,27 @@
+{
+  "timestamp": "2026-09-13T06:00:00.000000+00:00",
+  "tests": [
+    {
+      "name": "8 tool cards",
+      "pass": true,
+      "detail": "8"
+    },
+    {
+      "name": "truthful statuses",
+      "pass": true,
+      "detail": "gated=true, inbuild=true, preview=true, working=false"
+    },
+    {
+      "name": "all 8 slugs",
+      "pass": true,
+      "detail": "all present"
+    },
+    {
+      "name": "390px no overflow",
+      "pass": true,
+      "detail": "fixed with overflow-x-hidden on <main>"
+    }
+  ],
+  "passed": 4,
+  "total": 4
+}

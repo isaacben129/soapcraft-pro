@@ -1,4 +1,5 @@
 // ── EmptyState ───────────────────────────────
+import { Inbox } from "lucide-react";
 
 interface EmptyStateProps {
   title: string;
@@ -9,8 +10,8 @@ interface EmptyStateProps {
 export function EmptyState({ title, description, action }: EmptyStateProps) {
   return (
     <div className="flex flex-col items-center justify-center py-12 text-center">
-      <div className="w-12 h-12 rounded-full bg-clay flex items-center justify-center mb-4">
-        <span className="text-2xl">📭</span>
+      <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-clay">
+        <Inbox className="h-5 w-5 text-primary" aria-hidden="true" />
       </div>
       <h3 className="font-display text-lg font-bold text-foreground mb-2">
         {title}

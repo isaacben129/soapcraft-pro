@@ -4,19 +4,16 @@
 
 import { Metadata } from "next";
 import Link from "next/link";
-import { pageMetadata } from "@/lib/seo/metadata";
+import { getToolMetadata } from "@/lib/seo/tool-seo";
+import { ToolSeo } from "@/components/shared/tool-seo";
 import { RecipeScalingForm } from "@/components/shared/recipe-scaling-form";
 
-export const metadata: Metadata = pageMetadata({
-  title: "Recipe Scaling Calculator — Scale Soap Recipes Easily",
-  description:
-    "Scale any soap recipe up or down. Enter your original recipe and desired batch size. Get exact ingredient amounts — free, no signup required.",
-  path: "/tools/recipe-scaling",
-});
+export const metadata: Metadata = getToolMetadata("recipe-scaling");
 
 export default function RecipeScalingPage() {
   return (
     <main className="flex flex-col min-h-screen">
+      <ToolSeo slug="recipe-scaling" />
       <article className="container mx-auto px-4 py-16 md:py-20">
         <div className="max-w-4xl mx-auto">
           <nav aria-label="Breadcrumb" className="mb-4">

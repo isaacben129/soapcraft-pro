@@ -131,11 +131,17 @@ export function calculateBatchCost(input: BatchCostInput): BatchCostResult {
   const costPerUnit = totalQuantityGrams > 0 ? totalCost / totalQuantityGrams : 0;
 
   const targetPrice = input.targetPricePerBar ?? 0;
-  const markupPercent = targetPrice > 0 && costPerBar > 0 ? ((targetPrice - costPerBar) / costPerBar) * 100 : 0;
-  const grossMarginPercent = targetPrice > 0 ? ((targetPrice - costPerBar) / targetPrice) * 100 : 0;
+  const markupPercent = input.targetMarkupPercent !== undefined
+    ? input.targetMarkupPercent
+    : (targetPrice > 0 && costPerBar > 0 ? ((targetPrice - costPerBar) / costPerBar) * 100 : 0);
+  const grossMarginPercent = input.targetGrossMargin !== undefined
+    ? input.targetGrossMargin
+    : (targetPrice > 0 ? ((targetPrice - costPerBar) / targetPrice) * 100 : 0);
   const targetGrossMargin = input.targetGrossMargin;
   const suggestedPrice = targetGrossMargin !== undefined && targetGrossMargin >= 0 && targetGrossMargin < 100 && costPerBar > 0
     ? costPerBar / (1 - targetGrossMargin / 100)
+    : input.targetMarkupPercent !== undefined && input.targetMarkupPercent >= 0 && costPerBar > 0
+    ? costPerBar * (1 + input.targetMarkupPercent / 100)
     : targetPrice > 0 ? targetPrice : null;
   const currency = input.currency ?? "USD";
   const netRevenuePerUnit = targetPrice;

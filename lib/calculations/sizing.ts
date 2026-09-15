@@ -9,4 +9,26 @@ export function cylindricalVolume(radius: number, height: number, unit: "cm" | "
 export function calibratedDensity(priorBatterMass: number, priorOccupiedVolumeMl: number): number { if (priorBatterMass <= 0 || priorOccupiedVolumeMl <= 0) throw new Error("Calibration values must be positive"); return priorBatterMass / priorOccupiedVolumeMl; }
 export function targetBatterMass(targetVolumeMl: number, density: number): number { if (targetVolumeMl <= 0 || density <= 0) throw new Error("Volume and density must be positive"); return targetVolumeMl * density; }
 export function fitRecipeToMold(currentRecipeMass: number, targetMass: number): { scaleFactor: number } { if (currentRecipeMass <= 0 || targetMass <= 0) throw new Error("Recipe and target mass must be positive"); return { scaleFactor: targetMass / currentRecipeMass }; }
+export type MoldCapacityInput = {
+  shape: "rectangle" | "cylinder";
+  length: number;
+  width: number;
+  height: number;
+  unit: "cm" | "in";
+  density: number;
+  fillPercent: number;
+};
+
+export function estimateMoldCapacity(input: MoldCapacityInput): { volumeCm3: number; targetFillVolumeCm3: number; freshBatterMassG: number } {
+  const { shape, length, width, height, unit, density, fillPercent } = input;
+  if (![length, width, height, density, fillPercent].every(Number.isFinite) || length <= 0 || width <= 0 || height <= 0 || density <= 0 || fillPercent <= 0 || fillPercent > 100) {
+    throw new Error("Mold dimensions, density, and fill percentage must be positive; fill cannot exceed 100%");
+  }
+  const volumeCm3 = shape === "rectangle"
+    ? rectangularVolume(length, width, height, unit)
+    : cylindricalVolume(width / 2, height, unit);
+  const targetFillVolumeCm3 = volumeCm3 * (fillPercent / 100);
+  return { volumeCm3, targetFillVolumeCm3, freshBatterMassG: targetBatterMass(targetFillVolumeCm3, density) };
+}
+
 export function barsFromMass(totalMass: number, barWeight: number, wastePercent = 0): number { if (totalMass < 0 || barWeight <= 0 || wastePercent < 0 || wastePercent >= 100) throw new Error("Invalid bar planning inputs"); return Math.floor((totalMass * (1 - wastePercent / 100)) / barWeight); }
