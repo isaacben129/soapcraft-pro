@@ -68,29 +68,28 @@
   --font-sans: "DM Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-serif: "Playfair Display", Georgia, ui-serif, serif;
 
-  /* ── Color palette: sea-glass studio — cool mineral surfaces, ink, coral action ── */
-  /* Mapped from DESIGN.md §4.2 — values are HSL components for hsl() reconstruction */
+  /* ── Color palette: kiln studio — warm paper, ink, terracotta, olive, ochre ── */
 
   /* Base surfaces */
-  --background: 210 33% 97%;
-  --foreground: 213 35% 16%;
-  --muted: 204 28% 92%;
-  --muted-foreground: 213 15% 42%;
+  --background: 38 38% 95%;
+  --foreground: 27 24% 15%;
+  --muted: 36 27% 88%;
+  --muted-foreground: 28 13% 38%;
   --popover: 0 0% 100%;
-  --popover-foreground: 213 35% 16%;
+  --popover-foreground: 27 24% 15%;
   --card: 0 0% 100%;
-  --card-foreground: 213 35% 16%;
-  --border: 204 20% 84%;
-  --input: 204 20% 76%;
+  --card-foreground: 27 24% 15%;
+  --border: 33 21% 76%;
+  --input: 31 18% 62%;
 
-  /* Brand — sea-glass teal with a warm coral accent */
-  --primary: 174 52% 30%;
+  /* Brand — terracotta action with olive and ochre support */
+  --primary: 18 58% 38%;
   --primary-foreground: 0 0% 100%;
-  --secondary: 204 28% 92%;
-  --secondary-foreground: 213 35% 16%;
-  --accent: 12 78% 66%;
-  --accent-foreground: 213 35% 16%;
-  --accent-hover: 174 52% 24%;
+  --secondary: 36 27% 88%;
+  --secondary-foreground: 27 24% 15%;
+  --accent: 39 76% 56%;
+  --accent-foreground: 27 24% 15%;
+  --accent-hover: 18 58% 31%;
 
   /* Semantic */
   --success: 145 30% 30%;
@@ -99,28 +98,28 @@
   --warning-foreground: 25 12% 12%;
   --destructive: 5 45% 40%;
   --destructive-foreground: 38 100% 98%;
-  --info: 195 35% 35%;
+  --info: 157 27% 31%;
   --info-foreground: 38 100% 98%;
 
   /* Ring / focus */
-  --ring: 210 65% 50%;
+  --ring: 18 72% 42%;
 
   /* ── DESIGN.md §4.2 color tokens exposed as complete CSS colors for Tailwind v4 ── */
-  --color-canvas: hsl(210 33% 97%);
+  --color-canvas: hsl(38 38% 95%);
   --color-sheet: hsl(0 0% 100%);
-  --color-ledger: hsl(204 28% 92%);
-  --color-rail: hsl(213 35% 16%);
-  --color-rail-muted: hsl(213 15% 62%);
-  --color-ink: hsl(213 35% 16%);
-  --color-ink-muted: hsl(213 15% 42%);
-  --color-rule: hsl(204 20% 84%);
-  --color-action: hsl(174 52% 30%);
-  --color-action-hover: hsl(174 52% 24%);
-  --color-action-text: hsl(0 0% 100%);
-  --color-clay: hsl(12 78% 92%);
-  --color-sage: hsl(174 28% 84%);
-  --color-brass: hsl(12 78% 66%);
-  --color-info: hsl(195 35% 35%);
+  --color-ledger: hsl(36 27% 88%);
+  --color-rail: hsl(27 24% 15%);
+  --color-rail-muted: hsl(32 12% 62%);
+  --color-ink: hsl(27 24% 15%);
+  --color-ink-muted: hsl(28 13% 38%);
+  --color-rule: hsl(33 21% 76%);
+  --color-action: hsl(18 58% 38%);
+  --color-action-hover: hsl(18 58% 31%);
+  --color-action-text: hsl(38 38% 95%);
+  --color-clay: hsl(18 55% 88%);
+  --color-sage: hsl(83 24% 78%);
+  --color-brass: hsl(39 76% 56%);
+  --color-info: hsl(157 27% 31%);
   --color-success: hsl(145 30% 30%);
   --color-warning: hsl(38 65% 35%);
   --color-danger: hsl(5 45% 40%);
@@ -140,20 +139,20 @@
 
   /* ── Semantic surface tokens (rail/canvas/ledger/sheet/clay/sage/brass) ── */
   /* Aligned to DESIGN.md §4.1 surface architecture */
-  --rail: 213 35% 8%;
-  --rail-foreground: 210 16% 68%;
-  --canvas: 213 35% 10%;
-  --canvas-foreground: 210 33% 96%;
-  --ledger: 213 28% 17%;
-  --ledger-foreground: 210 33% 96%;
-  --sheet: 213 30% 14%;
-  --sheet-foreground: 210 33% 96%;
-  --clay: 12 32% 24%;
-  --clay-foreground: 210 33% 96%;
-  --sage: 174 28% 24%;
-  --sage-foreground: 210 33% 96%;
-  --brass: 12 48% 42%;
-  --brass-foreground: 210 33% 96%;
+  --rail: 27 24% 15%;
+  --rail-foreground: 38 18% 76%;
+  --canvas: 38 38% 95%;
+  --canvas-foreground: 27 24% 15%;
+  --ledger: 36 27% 88%;
+  --ledger-foreground: 27 24% 15%;
+  --sheet: 0 0% 100%;
+  --sheet-foreground: 27 24% 15%;
+  --clay: 18 55% 88%;
+  --clay-foreground: 27 24% 15%;
+  --sage: 83 24% 78%;
+  --sage-foreground: 27 24% 15%;
+  --brass: 39 76% 56%;
+  --brass-foreground: 27 24% 15%;
   /* ── Spacing scale ── */
   --space-xs: 0.25rem;
   --space-sm: 0.5rem;
@@ -164,25 +163,25 @@
 }
 
 .dark {
-  --background: 213 35% 10%;
-  --foreground: 210 33% 96%;
-  --muted: 213 28% 17%;
-  --muted-foreground: 210 16% 68%;
-  --popover: 213 32% 13%;
-  --popover-foreground: 210 33% 96%;
-  --card: 213 30% 14%;
-  --card-foreground: 210 33% 96%;
-  --border: 213 22% 25%;
-  --input: 213 22% 25%;
-  --primary: 174 52% 48%;
-  --primary-foreground: 213 35% 10%;
-  --secondary: 213 28% 17%;
-  --secondary-foreground: 210 33% 96%;
-  --accent: 12 78% 66%;
-  --accent-foreground: 213 35% 10%;
+  --background: 28 20% 12%;
+  --foreground: 38 38% 95%;
+  --muted: 28 18% 19%;
+  --muted-foreground: 38 18% 76%;
+  --popover: 28 19% 16%;
+  --popover-foreground: 38 38% 95%;
+  --card: 28 19% 16%;
+  --card-foreground: 38 38% 95%;
+  --border: 28 15% 28%;
+  --input: 28 15% 34%;
+  --primary: 18 65% 58%;
+  --primary-foreground: 28 20% 12%;
+  --secondary: 28 18% 19%;
+  --secondary-foreground: 38 38% 95%;
+  --accent: 39 76% 56%;
+  --accent-foreground: 28 20% 12%;
   --destructive: 0 72% 51%;
   --destructive-foreground: 0 0% 98%;
-  --ring: 174 52% 48%;
+  --ring: 18 65% 58%;
 }
 
 * {
@@ -217,9 +216,39 @@ html {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-sans);
+  font-family: var(--font-serif);
   font-weight: 700;
   letter-spacing: -0.02em;
+}
+
+/* Form controls must remain legible on every semantic surface.  Several older
+   calculators use bg-sheet/bg-canvas directly, so keep the value color tied to
+   the surface token instead of inheriting an unrelated page color. */
+input,
+select,
+textarea {
+  color: hsl(var(--foreground));
+  caret-color: hsl(var(--primary));
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: hsl(var(--muted-foreground) / 0.82);
+  opacity: 1;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid hsl(var(--ring) / 0.45);
+  outline-offset: 3px;
+}
+
+select option {
+  background: hsl(var(--sheet));
+  color: hsl(var(--sheet-foreground));
 }
 
 /* ── Semantic type scale ── */
