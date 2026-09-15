@@ -7,11 +7,13 @@
 import { useState } from "react";
 import { Calculator, Plus, Trash2, AlertTriangle } from "lucide-react";
 import { RecipeBatchContextManagerComponent } from "@/components/shared/recipe-batch-context";
+import { IngredientPicker } from "@/components/shared/ingredient-picker";
 import type { RecipeBatchContextManager } from "@/lib/context/RecipeBatchContextV1";
 import type { CostingContext } from "@/lib/schemas/context-schema";
 
 interface IngredientRow {
   name: string;
+  selectedId: string | null;
   costPerUnit: string;
   unit: string;
   quantity: string;
@@ -19,7 +21,7 @@ interface IngredientRow {
 
 export function BatchCostingForm() {
   const [ingredients, setIngredients] = useState<IngredientRow[]>([
-    { name: "", costPerUnit: "", unit: "g", quantity: "" },
+    { name: "", selectedId: null, costPerUnit: "", unit: "g", quantity: "" },
   ]);
   const [fragranceCost, setFragranceCost] = useState("");
   const [otherCosts, setOtherCosts] = useState("");
@@ -36,7 +38,7 @@ export function BatchCostingForm() {
   const [error, setError] = useState<string | null>(null);
   const [contextManager, setContextManager] = useState<RecipeBatchContextManager | null>(null);
   const addIngredient = () => {
-    setIngredients([...ingredients, { name: "", costPerUnit: "", unit: "g", quantity: "" }]);
+    setIngredients([...ingredients, { name: "", selectedId: null, costPerUnit: "", unit: "g", quantity: "" }]);
   };
 
   const removeIngredient = (index: number) => {
@@ -45,16 +47,16 @@ export function BatchCostingForm() {
     }
   };
 
-  const updateIngredient = (index: number, field: keyof IngredientRow, value: string) => {
+  const updateIngredient = (index: number, field: keyof IngredientRow, value: string | null) => {
     const updated = [...ingredients];
     updated[index] = { ...updated[index], [field]: value };
     setIngredients(updated);
   };
 
   const calculate = async () => {
-    const validIngredients = ingredients.filter((ing) => ing.name && ing.costPerUnit && ing.quantity);
+    const validIngredients = ingredients.filter((ing) => ing.name && ing.selectedId && ing.costPerUnit && ing.quantity);
     if (validIngredients.length === 0) {
-      setError("Add at least one ingredient with name, cost, and quantity");
+      setError("Choose an ingredient from the catalog, or explicitly choose a custom ingredient, then add cost and quantity");
       return;
     }
     if (!batchYieldBars || Number(batchYieldBars) <= 0) {
@@ -142,19 +144,21 @@ export function BatchCostingForm() {
               <Plus className="h-4 w-4" /> Add ingredient
             </button>
           </div>
-          <div className="space-y-3">
+          <div className="space-y-4">
             <div className="hidden grid-cols-[minmax(0,1fr)_7rem_5rem_7rem_auto] gap-2 px-1 text-[0.68rem] font-bold uppercase tracking-[0.12em] text-ink-muted sm:grid" aria-hidden="true">
               <span>Ingredient</span><span>Cost</span><span>Unit</span><span>Quantity</span><span />
             </div>
             {ingredients.map((ing, index) => (
-              <div key={index} className="grid grid-cols-[minmax(0,1fr)_minmax(4.5rem,7rem)] gap-2 rounded border border-rule bg-sheet p-2 sm:grid-cols-[minmax(0,1fr)_7rem_5rem_7rem_auto] sm:border-0 sm:bg-transparent sm:p-0">
-                <input
-                  type="text"
-                  aria-label={`Ingredient ${index + 1} name`}
-                  placeholder="Ingredient name"
+              <div key={index} className="grid grid-cols-[minmax(0,1fr)_minmax(4.5rem,7rem)] gap-2 border border-rule bg-sheet p-3 sm:grid-cols-[minmax(0,1fr)_7rem_5rem_7rem_auto] sm:border-0 sm:bg-transparent sm:p-0">
+                <IngredientPicker
                   value={ing.name}
-                  onChange={(e) => updateIngredient(index, "name", e.target.value)}
-                  className="min-w-0 flex-1 px-3 py-2 bg-sheet border border-rule rounded-md text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:border-action"
+                  selectedId={ing.selectedId}
+                  rowLabel={`Ingredient ${index + 1}`}
+                  onChange={(value, selectedId) => {
+                    const updated = [...ingredients];
+                    updated[index] = { ...updated[index], name: value, selectedId };
+                    setIngredients(updated);
+                  }}
                 />
                 <input
                   type="number"

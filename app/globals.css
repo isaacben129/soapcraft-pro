@@ -65,8 +65,8 @@
 
 :root {
   /* ── Typography ── */
-  --font-sans: "DM Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-serif: "Playfair Display", Georgia, ui-serif, serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-serif: "Newsreader", Georgia, ui-serif, serif;
 
   /* ── Color palette: kiln studio — warm paper, ink, terracotta, olive, ochre ── */
 
@@ -225,7 +225,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 * {
-  scrollbar-color: hsl(var(--rule)) hsl(var(--background));
+  scrollbar-color: hsl(var(--border)) hsl(var(--background));
   scrollbar-width: thin;
 }
 
