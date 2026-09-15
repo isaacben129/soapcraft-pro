@@ -95,7 +95,7 @@ export function IngredientPicker({ value, selectedId, rowLabel, onChange }: Ingr
               id={`${listboxId}-${ingredient.id}`}
               type="button"
               role="option"
-              aria-selected={selectedId === ingredient.id || activeIndex === index}
+              aria-selected={selectedId === ingredient.id}
               onMouseDown={(event) => event.preventDefault()}
               onClick={() => choose(ingredient.name, ingredient.id)}
               className={`flex min-h-11 w-full items-center justify-between gap-3 px-3 py-2 text-left text-sm text-foreground hover:bg-ledger ${activeIndex === index ? "bg-ledger" : ""}`}
