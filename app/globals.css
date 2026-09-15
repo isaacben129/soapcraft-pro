@@ -4,7 +4,7 @@
   --font-sans: var(--font-sans);
   --font-serif: var(--font-serif);
   --font-display: var(--font-serif);
-  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
@@ -66,7 +66,7 @@
 :root {
   /* ── Typography ── */
   --font-sans: "DM Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-serif: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", Georgia, ui-serif, serif;
 
   /* ── Color palette: sea-glass studio — cool mineral surfaces, ink, coral action ── */
   /* Mapped from DESIGN.md §4.2 — values are HSL components for hsl() reconstruction */
@@ -128,7 +128,7 @@
 
   /* ── Design tokens ── */
   --radius: 3px;
-  --radius-lg: 3px;
+  --radius-lg: 4px;
   --radius-md: 2px;
   --radius-sm: 1px;
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
