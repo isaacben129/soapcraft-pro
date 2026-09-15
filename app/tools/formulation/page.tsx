@@ -1,39 +1,11 @@
-// ── SLICE-001: Canonical /tools/formulation (GATED) ──
-// Formulation is GATED for verification. Not a functional calculator.
-// Shows gated status, not a fake clickable route.
-
+import type { Metadata } from "next";
 import Link from "next/link";
+import { ArrowLeft, Beaker, Check, ExternalLink, ShieldAlert } from "lucide-react";
 import { ToolSeo } from "@/components/shared/tool-seo";
 import { getToolMetadata } from "@/lib/seo/tool-seo";
-import type { Metadata } from "next";
 
 export const metadata: Metadata = getToolMetadata("formulation");
 
 export default function FormulationPage() {
-  return (
-    <main className="min-h-screen">
-      <ToolSeo slug="formulation" />
-      <section className="container mx-auto max-w-3xl px-4 py-12 md:py-16">
-        <h1 className="font-display text-3xl font-bold text-foreground md:text-4xl">
-          Formulation calculator
-        </h1>
-        <p className="mt-4 text-lg leading-7 text-muted-foreground">
-          This tool is currently gated for verification.
-        </p>
-        <div className="mt-6 rounded-lg border border-warning/40 bg-warning/5 p-6">
-          <p className="font-semibold text-warning">Gated for verification</p>
-          <p className="mt-2 text-sm leading-6 text-muted-foreground">
-            The formulation calculator is not publicly available while its ingredient
-            source manifest is independently reviewed. No real formulation output is
-            advertised as usable or considered released.
-          </p>
-        </div>
-        <div className="mt-6">
-          <Link href="/tools" className="text-action hover:underline">
-            Back to all tools
-          </Link>
-        </div>
-      </section>
-    </main>
-  );
+  return <main className="min-h-screen overflow-x-hidden"><ToolSeo slug="formulation" /><section className="mx-auto max-w-4xl px-5 py-12 sm:px-8 md:py-20"><Link href="/tools" className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"><ArrowLeft className="h-4 w-4" aria-hidden="true" />Back to all tools</Link><header className="mt-10 max-w-3xl border-b border-border pb-8"><p className="eyebrow">Safety-sensitive chemistry</p><h1 className="text-display mt-3 text-4xl sm:text-5xl">Formulation calculator</h1><p className="mt-5 text-lg leading-8 text-muted-foreground">The calculation contract is documented, but public ingredient quantities remain unavailable until the source dataset and independent fixtures are approved.</p></header><section className="mt-10 border border-warning/40 bg-warning/5 p-6 sm:p-8" aria-labelledby="gate-heading"><div className="flex gap-4"><ShieldAlert className="mt-1 h-6 w-6 shrink-0 text-warning" aria-hidden="true" /><div><h2 id="gate-heading" className="text-section">Public chemistry is fail-closed</h2><p className="mt-3 leading-7 text-muted-foreground">A checked formula is only one part of a safe release. Each SAP value needs authoritative provenance, revision details, uncertainty, and an independent review. Until that evidence exists, this route will not return lye or water quantities.</p></div></div></section><div className="mt-8 grid gap-4 sm:grid-cols-2"><div className="border border-border bg-card p-6"><Beaker className="h-5 w-5 text-primary" aria-hidden="true" /><h2 className="mt-4 text-xl font-semibold">What is ready</h2><ul className="mt-4 space-y-3 text-sm leading-6 text-muted-foreground"><li className="flex gap-2"><Check className="mt-1 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />The calculation contract and water modes are documented.</li><li className="flex gap-2"><Check className="mt-1 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />The algebra and API gate have automated tests.</li><li className="flex gap-2"><Check className="mt-1 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />The route explains the boundary instead of showing a fake result.</li></ul></div><div className="border border-border bg-card p-6"><ExternalLink className="h-5 w-5 text-primary" aria-hidden="true" /><h2 className="mt-4 text-xl font-semibold">What is still required</h2><p className="mt-4 text-sm leading-6 text-muted-foreground">An independent, row-by-row SAP review, named reviewer decision, public-use decisions, and independent numerical fixtures. The current repository packet records these as pending.</p><Link href="/methodology" className="mt-5 inline-flex min-h-11 items-center font-semibold text-primary underline-offset-4 hover:underline">Read the methodology</Link></div></div></section></main>;
 }
