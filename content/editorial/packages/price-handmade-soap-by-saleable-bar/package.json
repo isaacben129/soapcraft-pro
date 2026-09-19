@@ -1,0 +1,23 @@
+{
+  "packageId": "price-handmade-soap-by-saleable-bar",
+  "state": "drafted",
+  "riskClass": "GREEN",
+  "articleFamily": "commercial-operations",
+  "author": "editorial-builder",
+  "brief": {
+    "readerSituation": "A first-time market seller can add up oils and packaging but cannot tell whether saleable bars cover fees, labels, a market table, and their own time.",
+    "decision": "Set a minimum retail price and production target from full-batch cost and expected saleable yield rather than copying a multiplier.",
+    "primaryQuestion": "How should I price handmade soap when I know ingredient cost but not true cost per saleable bar?",
+    "tension": "A cheap-looking price can feel competitive while quietly turning a day of production and selling into a loss.",
+    "primaryIntent": "how to price handmade soap by cost per bar",
+    "canonicalRoute": "/blog/price-handmade-soap-by-saleable-bar",
+    "primaryCtaHref": "/tools/batch-cost",
+    "originalValue": "Work backwards from saleable bars and channel costs with explicit illustrative inputs rather than prescribing a universal markup."
+  },
+  "creativePremises": [
+    {"name": "invisible-cost", "selected": true},
+    {"name": "target-first", "selected": false},
+    {"name": "false-certainty", "selected": false}
+  ],
+  "unknowns": ["Search Console data has not been imported.", "Evidence and an independent reviewer are not assigned."]
+}

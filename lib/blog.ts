@@ -1,10 +1,7 @@
 import blogData from "./blog-data.json";
+import { validateBlogContract, type ArticleFamily, type ContentSource, type EditorialBrief, type EditorialClaim, type ReviewManifest, type RiskClass } from "./blog-contract";
 
-export interface ContentSource {
-  title: string;
-  url: string;
-  accessedAt: string;
-}
+export type { ContentSource } from "./blog-contract";
 
 export interface BlogPost {
   slug: string;
@@ -26,7 +23,12 @@ export interface BlogPost {
   reviewStatus: "draft" | "review" | "approved" | "published";
   source?: string | null;
   sourceRevision?: string | null;
+  riskClass?: RiskClass;
+  articleFamily?: ArticleFamily;
   sources?: ContentSource[];
+  claims?: EditorialClaim[];
+  editorialBrief?: EditorialBrief;
+  reviewManifest?: ReviewManifest;
   lastReviewed?: string;
   reviewer?: string;
   contextualCTA?: {
@@ -38,14 +40,24 @@ export interface BlogPost {
 const allBlogPosts: BlogPost[] = blogData as BlogPost[];
 
 export function filterPublishedPosts(posts: BlogPost[]): BlogPost[] {
-  return posts.filter((post) => post.reviewStatus === "published");
+  return posts.filter((post) => post.reviewStatus === "published" && validateBlogContract(post).valid);
 }
 
 export function getBlogPostFrom(
   posts: BlogPost[],
   slug: string
 ): BlogPost | undefined {
-  return filterPublishedPosts(posts).find((post) => post.slug === slug);
+  const post = filterPublishedPosts(posts).find((entry) => entry.slug === slug);
+  if (!post) return undefined;
+  if (post.contextualCTA) return post;
+  const ctaByCategory: Record<string, BlogPost["contextualCTA"]> = {
+    "Soap Calculators": { text: "Open the calculators", href: "/tools" },
+    Formulation: { text: "Review the chemistry boundary", href: "/tools/formulation" },
+    Ingredients: { text: "Plan what to buy", href: "/tools/ingredient-purchase-planner" },
+    Production: { text: "Plan the production date", href: "/tools/ready-by-planner" },
+    "Soap Business": { text: "Calculate batch cost", href: "/tools/batch-cost" },
+  };
+  return { ...post, contextualCTA: ctaByCategory[post.category] ?? { text: "Browse the toolbox", href: "/tools" } };
 }
 
 export function getAllBlogSlugsFrom(posts: BlogPost[]): string[] {

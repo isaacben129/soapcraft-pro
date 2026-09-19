@@ -11,6 +11,8 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
+    "test:editorial": "python3 scripts/tests/test_content_pipeline.py && python3 scripts/editorial/validate_package.py",
+    "audit:content": "python3 scripts/audit-legacy-content.py",
     "test:watch": "vitest",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",

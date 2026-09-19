@@ -13,7 +13,8 @@ export async function POST(req: NextRequest) {
       fragranceCost = 0,
       otherCosts = 0,
       batchYieldBars,
-      targetMargin = 0,
+      targetGrossMargin,
+      targetMarkupPercent,
     } = body as {
       ingredientCosts: Array<{
         name: string;
@@ -24,7 +25,8 @@ export async function POST(req: NextRequest) {
       fragranceCost?: number;
       otherCosts?: number;
       batchYieldBars: number;
-      targetMargin?: number;
+      targetGrossMargin?: number;
+      targetMarkupPercent?: number;
     };
 
     // Validate required fields
@@ -38,6 +40,28 @@ export async function POST(req: NextRequest) {
     if (!ingredientCosts || ingredientCosts.length === 0) {
       return NextResponse.json(
         { error: "At least one ingredient cost is required" },
+        { status: 400 }
+      );
+    }
+
+    // Validate target gross margin or markup percent
+    if (targetGrossMargin !== undefined && (typeof targetGrossMargin !== "number" || targetGrossMargin < 0 || targetGrossMargin >= 100)) {
+      return NextResponse.json(
+        { error: "targetGrossMargin must be a number from 0 up to, but not including, 100" },
+        { status: 400 }
+      );
+    }
+
+    if (targetMarkupPercent !== undefined && (typeof targetMarkupPercent !== "number" || targetMarkupPercent < 0)) {
+      return NextResponse.json(
+        { error: "targetMarkupPercent must be a non-negative number" },
+        { status: 400 }
+      );
+    }
+
+    if (targetGrossMargin === undefined && targetMarkupPercent === undefined) {
+      return NextResponse.json(
+        { error: "Either targetGrossMargin or targetMarkupPercent is required" },
         { status: 400 }
       );
     }
@@ -56,19 +80,19 @@ export async function POST(req: NextRequest) {
       fragranceCost,
       otherCosts,
       batchYieldBars,
-      targetPricePerBar: 0,
+      targetGrossMargin,
+      targetMarkupPercent,
       costBasisRevision: 0,
     };
 
     const result = calculateBatchCost(input);
 
-    // Calculate suggested price based on target margin
-    const suggestedPrice = result.costPerBar * (1 + (targetMargin / 100));
+    const pricingMethod = targetGrossMargin !== undefined ? "target gross margin" : "target markup";
 
     return NextResponse.json({
       ...result,
-      suggestedPrice: Math.round(suggestedPrice * 100) / 100,
-      targetMargin,
+      suggestedPrice: result.suggestedPrice,
+      pricingMethod,
     });
   } catch (error) {
     console.error("Batch cost calculation error:", error);

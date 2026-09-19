@@ -1,116 +1,130 @@
 {
   "$schema": "https://studioforge.dev/schemas/skill-receipts.json",
-  "version": "1.0",
+  "version": "3.0.0",
   "project": "SoapCraft Pro",
-  "description": "Receipts for actual parent-loaded skills. Records studio-product-contract, studio-experience-routing, design/ui-ux-pro-max, creative:impeccable-design, design/app-life-and-style with accurate acceptance IDs/evidence.",
+  "description": "Planning receipts for the eight-tool public build contract",
   "receipts": [
     {
+      "applied": true,
+      "artifact": "receipt-record",
       "skill": "studio-product-contract",
-      "trigger": "Product contract gate for anonymous-first utility hub direction",
-      "stage": "Phase 1 — Product Contract",
-      "outputArtifact": "product/PRD.md v1.0, product/FLOWS.md v1.0, product/ARCHITECTURE.md v1.0, .studio/acceptance.json v1.0, .studio/slices.json v1.0",
-      "acceptanceIds": [
-        "UTIL-001",
-        "UTIL-007",
-        "COST-001",
-        "COST-005",
-        "COST-010",
-        "COST-011",
-        "SIZE-003",
-        "SIZE-004",
-        "MKT-001",
-        "CHEM-010",
-        "IA-CLEANUP",
-        "AF-1",
-        "AF-2",
-        "AF-C1",
-        "AF-3",
-        "AF-4"
-      ],
-      "evidence": "Anonymous-first free utility hub contract written with canonical route taxonomy, 9 stable capability categories, first proof vertical journey (batch cost), IA cleanup prerequisite, chemistry gating, and 5 anonymous flows. All requirements user-observable. Every core flow has e2e or deployed boundary. No fake evidence/status. StudioForge schema 1 compliance verified.",
-      "timestamp": "2026-09-10T00:00:00Z"
+      "trigger": "Reconcile every researched public tool into user-observable acceptance and atomic slices",
+      "stage": "Product Contract",
+      "outputArtifact": "product/PRD.md v3.0.0; product/FLOWS.md v3.0.0; product/ARCHITECTURE.md v3.0.0; product/PUBLIC-TOOL-CONTRACT.md v3.0.0; .studio/acceptance.json v3.0.0; .studio/slices.json v3.0.0",
+      "acceptanceIds": ["TOOL-FORM", "TOOL-MOLD", "TOOL-SCALE", "TOOL-COST", "TOOL-WHOLESALE", "TOOL-EVENT", "TOOL-READY", "TOOL-PURCHASE", "CTX-001", "UTIL-001", "UTIL-002", "UTIL-003", "UTIL-004", "UTIL-007", "CHEM-GATE", "F-01", "F-02", "F-03", "F-04", "F-05", "F-06", "F-07", "F-08", "F-09", "F-10", "F-11", "F-12"],
+      "evidence": "Every in-scope tool has exact responsibility, inputs, outputs, formula boundary, validation/failure states, context handoff, fixtures and release gates. Sixteen dependency-ordered slices enforce one complete vertical behavior per run.",
+      "timestamp": "2026-09-11T00:00:00Z"
     },
     {
+      "applied": true,
+      "artifact": "receipt-record",
       "skill": "studio-experience-routing",
-      "trigger": "Experience routing gate for utility hub user journeys",
-      "stage": "Phase 2 — Experience Routing",
-      "outputArtifact": "product/DESIGN.md v1.0, product/ARCHITECTURE.md (route taxonomy), .studio/slices.json (dependency-ordered journeys)",
-      "acceptanceIds": [
-        "UTIL-001",
-        "COST-001",
-        "SIZE-003",
-        "AF-1",
-        "AF-C1"
-      ],
-      "evidence": "Experience routing covers: homepage 2,000+ word visual module distribution, tool catalogue constrained desktop layout with mobile stack, first proof journey (tool catalogue → batch cost → visible result → local save/export/context handoff → reload/re-entry), IA cleanup vertical journey prior to route exposure. Every journey is dependency-ordered and thin. No legacy email/subscription slices.",
-      "timestamp": "2026-09-10T00:05:00Z"
+      "trigger": "Connected anonymous tool journeys and route reconciliation",
+      "stage": "Experience Routing",
+      "outputArtifact": "product/FLOWS.md v3.0.0; product/ARCHITECTURE.md v3.0.0",
+      "acceptanceIds": ["F-01", "F-02", "F-03", "F-04", "F-05", "F-06", "F-07", "F-08", "F-09", "F-10", "F-11", "F-12"],
+      "evidence": "Twelve browser-level journeys cover direct entry, every tool seam, local continuity, share re-entry, examples, discovery and failure recovery.",
+      "timestamp": "2026-09-11T00:05:00Z"
     },
     {
-      "skill": "design/ui-ux-pro-max",
-      "trigger": "UI/UX design skill routing check",
-      "stage": "Design Gate Reconciliation",
-      "outputArtifact": "product/DESIGN.md v1.0 (design thesis, visual system, component grammar, homepage specification, tool catalogue specification, design acceptance criteria)",
-      "acceptanceIds": [
-        "UTIL-001",
-        "COST-001",
-        "SIZE-003"
-      ],
-      "evidence": "ui-ux-pro-max skill family loaded: design, brand, ui-styling, design-system sub-skills. Design tokens verified against app/globals.css. All tokens flagged as provisional pending Isaac approval. No new brand tokens invented. Homepage specification includes 8 visual modules with 2,000+ words. Tool catalogue specification includes desktop constrained layout and mobile stack with no horizontal overflow. Design gate for unresolved visual direction documented.",
-      "timestamp": "2026-09-10T00:10:00Z"
+      "applied": true,
+      "artifact": "receipt-record",
+      "skill": "app-life-and-style",
+      "trigger": "Every tool needs complete interaction states and mobile usability",
+      "stage": "Experience Quality",
+      "outputArtifact": "product/PRD.md §8-9 and per-slice browser exit criteria",
+      "acceptanceIds": ["UTIL-001", "CTX-001", "F-07", "F-09", "F-12"],
+      "evidence": "Contract requires empty/editing/validating/result/warning/error/save/share/print states, 44px targets, keyboard completion and desktop/mobile proof.",
+      "timestamp": "2026-09-11T00:10:00Z"
     },
     {
-      "skill": "creative:impeccable-design",
-      "trigger": "Impeccable design review for visual quality and consistency",
-      "stage": "Phase 2 — Design Quality",
-      "outputArtifact": "product/DESIGN.md v1.0 (design thesis, visual system, component grammar, motion vocabulary, accessibility requirements)",
-      "acceptanceIds": [
-        "UTIL-001",
-        "COST-001"
-      ],
-      "evidence": "Impeccable design principles applied: calm production ledger aesthetic, no equal feature cards, no decorative KPI cards, factual feedback (not celebratory), status conveyed by icon/text not color only, 44px touch targets, reduced motion support, WCAG 2.2 AA target. All existing visual tokens from app/globals.css preserved as provisional. No generic stock photography. No brand mark without Isaac approval.",
-      "timestamp": "2026-09-10T00:15:00Z"
+      "applied": true,
+      "artifact": "receipt-record",
+      "skill": "studio-build",
+      "trigger": "Execute the SoapCraft Forge build and reconcile verification truth",
+      "stage": "Forge execution",
+      "outputArtifact": ".studio/acceptance.json; .studio/verification-report.json; .studio/skill-receipts.json",
+      "acceptanceIds": [],
+      "evidence": "Ran acceptance audit, focused/full regression checks, typecheck, diff hygiene, and bounded build/runtime diagnostics. Release remains rejected because browser/deployed evidence is unavailable.",
+      "timestamp": "2026-09-12T18:20:00Z"
     },
     {
-      "skill": "design/app-life-and-style",
-      "trigger": "App life and lifestyle design routing",
-      "stage": "Phase 2 — App Life",
-      "outputArtifact": "product/DESIGN.md v1.0 (app life spec, signature interaction, core loop, primary metric, user constraints, accessibility budget)",
-      "acceptanceIds": [
-        "COST-001",
-        "AF-1"
-      ],
-      "evidence": "App life spec covers: core loop (discover tool → enter inputs → see result → save/export/share → reload/re-entry), moment of truth (exact deterministic quantities, relevant warnings, save state visible), primary metric (anonymous completion rate and connected-tool continuation rate), user constraint (preserve context, never claim save that did not occur), personality (calm precision, practical craft, no magic language). Accessibility budget: WCAG 2.2 AA, keyboard complete, 44px targets, reduced motion, status beyond color.",
-      "timestamp": "2026-09-10T00:20:00Z"
+      "applied": true,
+      "artifact": "receipt-record",
+      "skill": "studio-app-implementation",
+      "trigger": "Repair anonymous-first Batch Cost context continuity",
+      "stage": "Implementation",
+      "outputArtifact": "components/shared/batch-costing-form.tsx; components/shared/recipe-batch-context.tsx; lib/context/RecipeBatchContextV1.ts",
+      "acceptanceIds": ["TOOL-COST", "CTX-001"],
+      "evidence": "Batch Cost now mounts one context manager, binds costing results, and context reset deletes only the active storage record.",
+      "timestamp": "2026-09-12T18:20:00Z"
+    },
+    {
+      "applied": true,
+      "artifact": "receipt-record",
+      "skill": "test-driven-development",
+      "trigger": "Protect context export/reset and anonymous API route behavior",
+      "stage": "Regression",
+      "outputArtifact": "lib/context/RecipeBatchContextV1.test.ts; lib/routing/public-routes.test.ts",
+      "acceptanceIds": ["CTX-001", "F-07"],
+      "evidence": "Focused Vitest run passed 34/34 tests; full suite had previously passed 184/184 in this run lineage.",
+      "timestamp": "2026-09-12T18:20:00Z"
+    },
+    {
+      "applied": true,
+      "artifact": "receipt-record",
+      "skill": "debugging",
+      "trigger": "Diagnose Next dev/build startup and anonymous API redirect",
+      "stage": "Runtime diagnosis",
+      "outputArtifact": "lib/routing/public-routes.ts; runtime command output",
+      "acceptanceIds": ["F-01", "F-07"],
+      "evidence": "Identified the API auth boundary and patched public calculation prefixes. Next dev and production compilation still hang in WSL at runtime/optimized compilation.",
+      "timestamp": "2026-09-12T18:20:00Z"
+    },
+    {
+      "applied": true,
+      "artifact": "receipt-record",
+      "skill": "requesting-code-review",
+      "trigger": "Pre-acceptance quality gate",
+      "stage": "Quality gate",
+      "outputArtifact": "git diff --check; npm run typecheck; Vitest output",
+      "acceptanceIds": [],
+      "evidence": "Diff check and typecheck passed; independent review and browser proof remain pending, so no verified release claim is made.",
+      "timestamp": "2026-09-12T18:20:00Z"
+    },
+    {
+      "applied": true,
+      "artifact": "receipt-record",
+      "skill": "app-life-and-style",
+      "trigger": "Audit public tool interaction states and mobile journey requirements",
+      "stage": "Experience quality",
+      "outputArtifact": "product/PRD.md; product/FLOWS.md; product/PUBLIC-TOOL-CONTRACT.md",
+      "acceptanceIds": ["UTIL-001", "F-07", "F-09", "F-12"],
+      "evidence": "Used the required interaction-state and browser/mobile verification criteria while preserving the release rejection for missing runtime evidence.",
+      "timestamp": "2026-09-12T18:20:00Z"
+    },
+    {
+      "applied": true,
+      "artifact": "receipt-record",
+      "skill": "impeccable-design",
+      "trigger": "Remove misleading scaffold/placeholder language from public tool surfaces",
+      "stage": "Experience quality",
+      "outputArtifact": "app/tools/page.tsx; app/tools/wholesale-pricing/page.tsx; app/tools/ready-by-planner/page.tsx; app/tools/ingredient-purchase-planner/page.tsx",
+      "acceptanceIds": ["UTIL-001"],
+      "evidence": "Replaced placeholder-form wording with truthful unavailable/in-build language; no visual acceptance was claimed.",
+      "timestamp": "2026-09-12T18:20:00Z"
     }
   ],
   "missingSkills": [],
   "gateStatus": {
-    "Gate_C": "PASS — Isaac authorized implementation on 2026-09-09; anonymous-first scope approved; chemistry gated until verification passes",
-    "Gate_R": "PASS — all required skills loaded and applied (studio-product-contract, studio-experience-routing, design/ui-ux-pro-max, creative:impeccable-design, design/app-life-and-style)",
-    "Gate_A": "PENDING — awaiting RELEASE_ACCEPTED after build and verification. Chemistry features are gated until verification gate passes. IA cleanup must complete before routes are exposed."
+    "Gate_C": "PASS — Isaac authorized all eight researched public tools on 2026-09-11",
+    "Gate_R": "PASS — contract and experience requirements are receipted",
+    "Gate_A": "PENDING — awaiting literal RELEASE_ACCEPTED after independent deployed verification"
   },
   "skillCoverageSummary": {
-    "totalSkillsReceipted": 5,
-    "actualParentLoadedSkills": [
-      "studio-product-contract",
-      "studio-experience-routing",
-      "design/ui-ux-pro-max",
-      "creative:impeccable-design",
-      "design/app-life-and-style"
-    ],
-    "capabilitiesCovered": 10,
-    "flowsCovered": 5,
-    "allCapabilityCategories": [
-      "utility-support",
-      "costing",
-      "sizing",
-      "markets",
-      "formulation (gated)",
-      "infrastructure (IA cleanup)"
-    ],
-    "allBoundaryTypes": [
-      "e2e",
-      "deployed"
-    ]
+    "totalSkillsReceipted": 3,
+    "capabilitiesCovered": 15,
+    "flowsCovered": 12,
+    "allBoundaryTypes": ["e2e", "deployed"]
   }
 }

@@ -43,14 +43,15 @@ export function articleMetadata(args: {
   author: string;
   image?: string;
   imageAlt?: string;
+  keywords?: string[];
 }): Metadata {
-  const { title, description, path, publishedAt, author, image, imageAlt } =
-    args;
+  const { title, description, path, publishedAt, author, image, imageAlt, keywords } = args;
   const url = `${SITE_URL}${path}`;
 
   return {
     title,
     description,
+    ...(keywords?.length ? { keywords } : {}),
     openGraph: {
       title,
       description,
@@ -59,9 +60,7 @@ export function articleMetadata(args: {
       publishedTime: publishedAt,
       authors: [author],
       siteName: "SoapCraft Pro",
-      ...(image
-        ? { images: [{ url: image, alt: imageAlt || title }] }
-        : {}),
+      ...(image ? { images: [{ url: image, alt: imageAlt || title }] } : {}),
     },
     twitter: {
       card: "summary_large_image",

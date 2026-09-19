@@ -30,7 +30,7 @@ export function MobileNav() {
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm" onClick={() => setOpen(false)}>
+        <div className="fixed inset-0 z-50 bg-background/90" onClick={() => setOpen(false)}>
           <nav
             className="fixed bottom-0 left-0 right-0 bg-canvas border-t border-rule rounded-t-xl p-4"
             onClick={(e) => e.stopPropagation()}

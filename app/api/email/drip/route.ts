@@ -64,7 +64,7 @@ const EMAIL_CONTENT: Record<string, { subject: string; body: string }> = {
     body: "Before you commit to craft fairs or wholesale accounts, know your break-even point.\n\nBreak-Even Bars = Total Expenses / Price Per Bar\n\nExample: $300 in booth fees at $6/bar = 50 bars to break even.\n\nUse the Craft Fair Break-Even Calculator at soapcraft-pro.vercel.app/calculators/craft-fair-break-even.",
   },
   batch_management_and_pro_features: {
-    subject: "Ready for Batch Management and Pro Features?",
+    subject: "Ready for Batch Management and Pro Tools?",
     body: "You have been using our free calculators. Now it is time to track your full production.\n\nSoapCraft Pro includes:\n- Recipe library with versioning\n- Batch logging and cure tracking\n- Cost per batch analysis\n- Inventory management\n- Email drip sequence and resources\n\nStart your free Pro trial at soapcraft-pro.vercel.app.",
   },
   craft_fair_survival_guide: {
@@ -84,7 +84,7 @@ const EMAIL_CONTENT: Record<string, { subject: string; body: string }> = {
     body: "Here are all the free tools available at SoapCraft Pro:\n\n1. Cold Process Lye Calculator\n2. Batch Costing Calculator\n3. Recipe Scaling Calculator\n4. Mold Volume Calculator\n5. Craft Fair Break-Even Calculator\n6. Wholesale Pricing Calculator\n\nNo signup required. Use them at soapcraft-pro.vercel.app/calculators/",
   },
   upgrade_to_pro: {
-    subject: "Unlock Pro Features for SoapCraft Pro",
+    subject: "Unlock Pro Tools for SoapCraft Pro",
     body: "Ready to take your soap business to the next level?\n\nSoapCraft Pro includes:\n- Recipe library with versioning\n- Batch logging and cure tracking\n- Cost per batch analysis\n- Inventory management\n- Email drip sequence and resources\n\nStart your free trial at soapcraft-pro.vercel.app.",
   },
 };

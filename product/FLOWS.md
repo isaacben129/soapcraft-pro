@@ -1,307 +1,67 @@
-# SoapCraft Pro — Customer Journeys and Flows
+# SoapCraft Pro — End-to-End Flows
 
-**Version:** 1.0 — Anonymous-First Utility Hub Flows
-**Companion to:** `product/PRD.md`, `product/DESIGN.md`, `product/ARCHITECTURE.md`
-**Approved direction:** Isaac, 2026-09-09 — anonymous-first, free, tool-first utility hub
-**Date:** 2026-09-10
+**Version:** 3.0.0
+**Companion:** `PRD.md`, `PUBLIC-TOOL-CONTRACT.md`, `ARCHITECTURE.md`
 
----
+## Flow contract
 
-## 1. Flow numbering and legend
+All core flows are public and anonymous. A core result must never be hidden behind account, email, payment or cookie consent. Local persistence and share/export are part of each tool’s completion boundary.
 
-| Prefix | Meaning |
-|--------|---------|
-| `AF` | Anonymous Flow (no login, no account) |
+## F-01 — Formulate to connected plan
 
-All flows start from a public, ungated entry point. Account creation is never a precondition for any core result. No optional-account flows exist in current launch — cloud persistence is a future slice.
+**Precondition:** public chemistry gate is open for the selected verified ingredients.
+**Journey:** open `/tools/formulation` → enter oils and explicit target mass → choose alkali, purity, superfat and one water mode → calculate → inspect math/sources/warnings → save locally or export/share → choose mold, costing, ready-by or purchasing → review inherited values → continue.
+**Failure branch:** while the chemistry gate is closed, the full form and methodology may be visible but calculate returns a truthful typed unavailable state; no estimated result. Invalid or unverified ingredients preserve input and name the blocker.
+**Outcome:** versioned formulation context is carried to the next tool without re-entry.
 
----
+## F-02 — Mold to recipe scale
 
-## 2. Anonymous flows (no login)
+Open `/tools/mold-volume` → select shape or measured volume → enter internal dimensions/fill → choose calibrated mode with prior mass/volume or planning-range mode → calculate → inspect volume, assumptions and capacity result → continue to recipe scaling → review inherited target → recalculate recipe. A planning range cannot silently become a precise target.
 
-### AF-1: Homepage → Tool Catalogue → Batch Cost → Visible Result → Local Save/Export → Reload
+## F-03 — Scale to cost
 
-**Premise:** A soapmaker lands on the homepage, discovers the tool catalogue, uses the batch cost calculator, sees a complete visible result, and saves or exports — without creating an account.
+Open `/tools/recipe-scaling` with manual or inherited recipe → choose proportional-copy or formulation-recalculation mode → enter target → calculate → inspect scale factor and line amounts → continue to batch cost → add/review cost basis → receive complete or explicitly incomplete economics.
 
-**Preconditions:** None. Public route. No cookie consent dependency.
+## F-04 — Cost to wholesale
 
-**Steps:**
-1. User enters `/` (homepage) or `/tools` (tool catalogue)
-2. Homepage distributes content through visual modules: hero → tool discovery/value cards → workflow/timeline → UI/proof panels → use-case modules → safety/trust boundary → FAQ → CTA
-3. User selects Batch Cost Calculator from `/tools` catalogue
-4. Tool loads with optional pre-filled example values, clearly labelled "Example"
-5. User enters their own inputs (ingredient costs, quantities, batch weight, packaging, labor)
-6. Deterministic calculation runs; complete result updates in real time
-7. User sees complete output: cost breakdown, cost per unit, assumptions, warnings, formula revision
-8. User chooses one or more actions:
-   - Print / export (PDF or clipboard)
-   - Create a share URL (local state link, no email required)
-   - Save locally
-9. Result is delivered; no gate, no email capture, no account prompt
-10. User reloads the page or returns later via share URL; context is preserved locally
+Open `/tools/batch-cost` → import or enter quantities → enter ingredient, packaging, labor and overhead costs → enter made and excluded units → calculate → inspect cost per made and saleable unit → continue to wholesale pricing → choose markup or gross-margin target → add fees and MOQ → calculate → print/export quote. Missing cost basis follows the user and prevents a recommended-price presentation.
 
-**Observable result:** User has a complete cost calculation result, a print/export artifact, or a share URL. No personal data collected.
+## F-05 — Price to event plan
 
-**Branches:**
-- **User enters partial inputs →** Result shows missing-cost warnings; result is explicitly incomplete and cannot be styled as a recommendation
-- **User shares URL →** Share link contains only calculation state; no email or personal data embedded
-- **User returns later →** Local state is preserved; tool loads with previous inputs
+Open `/tools/craft-fair-break-even` manually or from pricing context → enter event costs and one or more products with price, variable cost, mix, stock and sell-through → enter target profit → calculate weighted contribution, break-even, target units and stock plan → adjust assumptions → export. Zero fixed costs is valid; non-positive contribution blocks.
 
-**Recovery:**
-- If calculation errors: previous valid inputs preserved; error message with correlation ID; retry option
-- If browser refresh: local input preserved; calculation re-runs deterministically
-- If share URL is corrupted or expired: user starts calculation from scratch
+## F-06 — Ready-by to purchase plan
 
-**Persistent outcome:** Nothing persists server-side. The share URL and browser local state are the only persistent artifacts. Analytics events are aggregate and contain no recipe data.
+Open `/tools/ready-by-planner` with saleable-yield context or manual values → enter ready-by date, cure interval, buffers, capacity and blackout days → calculate production dates and batches → inspect feasibility → continue to ingredient purchase planner → aggregate formulation needs across planned batches → subtract usable stock → round to packs → compare supplier landed cost → export purchase list.
 
----
+## F-07 — Direct entry into any tool
 
-### AF-2: Homepage → Tool Catalogue → Recipe Scaling → Visible Result → Context Handoff
+A visitor may land directly from search or a shared URL. The page identifies the decision it answers, loads empty/example/shared state truthfully, validates inputs, produces the complete result, provides methodology and offers only compatible next tools. No earlier tool is mandatory when all required inputs are supplied manually.
 
-**Premise:** A soapmaker discovers recipe scaling via the tool catalogue, scales a recipe, and uses the result as context for a connected tool.
+## F-08 — Share and re-entry
 
-**Preconditions:** None. Public route.
+After any result, create a versioned share URL. Open it in a clean browser → decode and validate state → show source tool, revision and inherited values → allow edits → recompute. Personal data is absent. Oversized state offers a downloadable context file instead. Corrupt/incompatible state produces an informative empty state and preserves the URL for support without executing untrusted data.
 
-**Steps:**
-1. User enters `/tools` or navigates from the homepage
-2. User selects Recipe Scaling from the catalogue
-3. Tool loads with optional pre-filled example values, clearly labelled "Example"
-4. User enters source recipe quantities and target batch weight
-5. Deterministic calculation produces scaled ingredient amounts
-6. User sees complete output: scaled quantities, assumptions, formula revision
-7. User can export, share, or continue to a connected tool (e.g., batch cost)
-8. Relevant inputs transfer with visible editable fields
+## F-09 — Local restore and reset
 
-**Observable result:** User has a complete scaling result and can hand off context to a connected tool.
+Complete any tool → save locally → reload → restore editable inputs and recompute with version notice → reset → confirm destructive local reset → return to clean state. Save failure preserves all inputs and exposes retry/export.
 
-**Branches:**
-- **User doesn't continue →** Calculation result remains on the tool page
-- **User continues →** Context transfers (see AF-2b)
+## F-10 — Tool discovery and trust
 
-**Recovery:**
-- If transfer fails: user can manually re-enter inputs in the connected tool
-- If browser refresh: local state preserved; calculation re-runs
+Homepage → `/tools` → see exactly eight tools with purpose, required inputs, connected next step and truthful availability → open methodology/source revision → open tool. Navigation, sitemap, metadata and comparison copy do not advertise retired or gated behavior as working.
 
----
+## F-11 — Editable example and template
 
-### AF-3: Share URL → Re-entry → Continue Calculation
+Open a worked example → see `Example` label, source assumptions and expected result → edit an input → deterministic result changes → open the same tool with context. Downloadable templates contain usable content and require no email.
 
-**Premise:** A user receives or creates a share URL, opens it in a new browser, and continues working with the shared context.
+## F-12 — Error recovery
 
-**Preconditions:** Valid share URL containing calculation state.
+For validation, API, local-save, share-decode or calculation failure: preserve user input; identify the failing field or operation; show actionable recovery; do not display stale output as current; allow retry/reset/export where safe. A correlation ID is used only for server failures.
 
-**Steps:**
-1. User opens share URL in a browser (new or existing)
-2. URL parameters decode into tool inputs; tool loads with transferred state
-3. All transferred values are visibly editable; user can modify any field
-4. Calculation recalculates with transferred + modified inputs
-5. User continues the calculation workflow
-6. At any point, user can create a new share URL with the updated state
+## Persistent outcomes
 
-**Observable result:** Tool loads with pre-populated state from the share URL. Values are editable and calculation is live.
+Anonymous browser state contains versioned non-personal tool context. Share URLs/context files are portable. No server persistence or save claim occurs unless the user later opts into an account flow. Aggregate analytics records event names and route/revision only, never recipe, cost, supplier or personal values.
 
-**Branches:**
-- **URL is valid →** State loads correctly
-- **URL is corrupted/expired →** User starts from the tool's empty state; informational message
+## Required high-boundary proof
 
-**Persistent outcome:** Nothing persists server-side. The share URL is the only carrier of state.
-
----
-
-### AF-4: Homepage → Safety/Trust Boundary → Public Information
-
-**Premise:** A user visits the safety or trust boundary section of the homepage to understand what is and isn't released.
-
-**Preconditions:** None. Public route.
-
-**Steps:**
-1. User navigates to the safety/trust boundary module on the homepage
-2. Sees clear statement: chemistry is gated and not publicly released
-3. Sees safety disclaimers describing scope
-4. Sees that business outputs are planning aids, not advice
-5. Sees privacy, terms, and safety pages are publicly accessible
-6. Understands that no anonymous result requires authentication
-
-**Observable result:** User understands the safety and trust boundaries of the product.
-
----
-
-## 3. IA Cleanup flow (Journey 0 — prerequisite)
-
-### AF-C1: Route Normalization
-
-**Premise:** Before any routes are exposed, the IA must be cleaned up.
-
-**Steps:**
-1. Dead `/tools` directory content is removed or replaced
-2. Empty category `/tools` pages are removed or populated
-3. Legacy `/calculators` paths are normalized as redirects or removals
-4. Exposed pricing and subscription pages are removed from navigation and sitemap
-5. Homepage 404 routes are fixed
-6. Canonical `/tools` route is established with constrained catalogue
-7. Mobile stacking is verified with no horizontal overflow
-
-**Observable result:** All public routes return 200; navigation and sitemap contain only approved routes; no dead or empty pages remain.
-
----
-
-## 4. Context transfer between connected tools
-
-### Transfer protocol
-
-When a user moves from Tool A to Tool B:
-
-1. **Source tool exports:** Only fields the user entered or explicitly accepted
-2. **Target tool imports:** Transferred fields populate editable input fields
-3. **Visual transfer indicators:** Target tool shows which fields were inherited and from which tool
-4. **Editable by default:** All transferred values are editable, not read-only
-5. **Formula revision:** Each result records the formula revision used
-6. **No data loss:** If a field cannot transfer, it appears empty with a note explaining why
-
-### What transfers
-
-| From → To | Transfers |
-|-----------|-----------|
-| Recipe Scaling → Batch Cost | Ingredient quantities, target batch weight, recipe version |
-| Batch Cost → Recipe Scaling | Cost basis, ingredient costs |
-| Any tool → Export/Share | Current calculation state, formula revision, assumptions |
-
-### What does NOT transfer
-
-- Personal data (email, name) unless explicitly entered in the target tool
-- Account credentials
-- Previous calculation history (unless logged into account — future slice)
-- Analytics identifiers
-
----
-
-## 5. Reload and re-entry behavior
-
-### Without account (anonymous)
-
-| What persists | What does not persist |
-|---------------|----------------------|
-| Local browser state (inputs, results) | Server-side state |
-| Share URL (if bookmarked) | Session data |
-| Browser form autofill (if supported) | Tool position/scroll |
-| Analytics aggregate events (no recipe data) | Any user-specific state |
-
-**Re-entry behavior:** User opens the tool page → local state restores if browser storage persists. If they have a share URL bookmarked, they can reopen it. Otherwise, they re-enter everything.
-
-### With account (future slice)
-
-Not part of current launch. Cloud persistence requires account creation and is a future vertical journey.
-
----
-
-## 6. Error states and recovery
-
-### E-1: Calculation Error
-
-**Trigger:** Deterministic calculation produces unexpected result or validation failure.
-
-**Behavior:**
-- Previous valid inputs preserved in the form
-- Error message identifies the specific issue
-- Warning state includes words/icon (not color only)
-- Retry option available at the failure site
-- Correlation/reference ID shown only if useful for support
-
-### E-2: Save Failure
-
-**Trigger:** Local save fails (storage quota, browser error).
-
-**Behavior:**
-- Save state shows "Save failed — Retry"
-- All user data preserved locally
-- No false "Auto-saved" message
-- User can retry the save action
-
-### E-3: Tool Loading Failure
-
-**Trigger:** Tool page fails to load (API error, timeout, server unavailable).
-
-**Behavior:**
-- Error message with clear description
-- Retry button at the failure site
-- Skeleton loading states for server-loading content
-- No blank shell
-
-### E-4: Share URL Corruption/Expiry
-
-**Trigger:** Share URL is malformed, tampered with, or expired.
-
-**Behavior:**
-- Informational message: "This link is no longer valid. Start a new calculation."
-- Tool loads with empty state
-- No data lost
-
----
-
-## 7. Persistent outcomes summary
-
-### Anonymous user outcomes (current launch)
-
-- No persistent server-side data (ephemeral only)
-- Share URL is the only persistent artifact (contains calculation state, no personal data)
-- Browser local state preserves inputs and results across reloads
-- Aggregate analytics events (no PII, no recipe data)
-- Email only if explicitly exchanged for a specific delivered artifact with consent (future slice)
-
-### Account-holding user outcomes (future slice)
-
-- Cloud persistence across devices
-- Multiple saved products/batches/events
-- Historical comparisons
-- Reusable supplier/item cost records
-- Inventory and purchase-plan synchronization
-
----
-
-## 8. Flow matrix
-
-| Flow ID | Entry | Auth | Core action | Transfer | Persistent outcome |
-|---------|-------|------|-------------|----------|-------------------|
-| AF-1 | Homepage/Tool | None | Calculate → Export/Save | None | Local state + share URL |
-| AF-2 | Homepage/Tool | None | Scale → Continue | Tool→Tool | Local state + share URL |
-| AF-3 | Share URL | None | Re-enter → Continue | URL→Tool | None (ephemeral) |
-| AF-4 | Homepage | None | Safety/Trust boundary | None | None (informational) |
-| AF-C1 | IA Cleanup | None | Route normalization | None | Route taxonomy |
-
----
-
-## 9. Anti-patterns explicitly excluded
-
-This flow documentation does **not** include:
-
-- **Exit-intent email capture:** No popups or modals triggered by mouse movement toward the browser close button
-- **Fake case studies:** No fabricated user stories or testimonials
-- **Mandatory gates:** No email requirement before viewing results; no account requirement to use any tool
-- **Fake social proof:** No fabricated user counts, ratings, or testimonials
-- **Dark patterns:** No confusing unsubscribe, no hidden account deletion, no pre-checked opt-ins
-- **CRM drip sequences as primary conversion:** Email delivery only for specific delivered artifacts with explicit consent
-- **Gated calculators:** Every tool result is available without login
-- **Pricing and subscription flows:** Not part of any flow in current launch
-- **Social marketing pages:** Pinterest, TikTok, and social campaign pages are not part of any flow
-
----
-
-## 10. Measurement events
-
-All analytics events follow the approved event contract:
-
-- `tool_viewed` — page loaded with tool
-- `calculation_started` — user began entering inputs
-- `calculation_completed` — result produced
-- `connected_tool_opened` — user moved to a connected tool
-- `plan_exported` — print/export/share action
-- `share_link_created` — share URL generated
-- `account_save_requested` — user clicked save (future slice)
-- `workspace_interest_submitted` — user expressed interest (future slice)
-
-**Privacy constraint:** Analytics contain no recipes, notes, addresses, or any PII.
-
----
-
-*Document version 1.0 — Anonymous-first utility hub model. Replaces traffic-first flows v2.0.*
-*Companion to: `product/PRODUCT-CONTRACT-UTILITY-HUB.md`, `product/PRD.md`, `product/DESIGN.md`, `product/ARCHITECTURE.md`*
+Each flow has at least one Playwright/browser test. F-01 additionally needs deployed fail-closed and release-enabled evidence. F-03 through F-06 require API/UI result parity. F-08 must run in a clean browser context. F-10 requires deployed route, navigation and sitemap checks at mobile and desktop widths.

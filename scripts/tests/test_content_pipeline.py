@@ -26,7 +26,7 @@ def approved_post(**overrides):
         "slug": "evidence-backed-soap-costing",
         "title": "Evidence-backed soap costing",
         "description": "A practical guide to calculating production costs without hiding assumptions.",
-        "content": " ".join(["Evidence-backed soap costing guidance."] * 210),
+        "content": " ".join(["Evidence-backed soap costing guidance."] * 1500),
         "category": "Soap Business",
         "tags": ["soap costing", "profitability"],
         "publishedAt": "2026-08-11",
@@ -39,19 +39,21 @@ def approved_post(**overrides):
             "keywords": ["soap costing", "soap cost per bar"],
         },
         "reviewStatus": "approved",
-        "reviewer": "Isaac",
+        "riskClass": "GREEN",
+        "articleFamily": "commercial-operations",
+        "reviewer": "independent-reviewer",
         "lastReviewed": "2026-08-11T00:00:00Z",
         "contextualCTA": {
             "text": "Calculate your real batch cost",
             "href": "/calculators/soap-cost-calculator",
         },
         "sources": [
-            {
-                "title": "SoapCraft Pro deterministic costing model",
-                "url": "https://soapcraft-pro.vercel.app/calculators/soap-cost-calculator",
-                "accessedAt": "2026-08-11",
-            }
+            {"id": "product-fixture", "title": "SoapCraft costing fixture", "publisher": "SoapCraft Pro", "tier": "product", "url": "https://soapcraftpro.com/methodology", "accessedAt": "2026-08-11"},
+            {"id": "primary-record", "title": "Primary record", "publisher": "Example Authority", "tier": "primary", "url": "https://example.org/record", "accessedAt": "2026-08-11"},
         ],
+        "claims": [{"id": "cost-model", "text": "Cost decisions need explicit inputs.", "sourceIds": ["product-fixture", "primary-record"], "consequential": True, "status": "supported"}],
+        "editorialBrief": {"readerSituation": "A seller knows ingredient spend but not saleable-bar cost.", "decision": "Set a defensible price.", "primaryQuestion": "How should I price handmade soap?", "tension": "A multiplier can hide costs.", "primaryIntent": "price handmade soap by cost per bar", "originalValue": "A reproducible decision model.", "limitations": "Illustrative inputs are not universal advice."},
+        "reviewManifest": {"claimAudit": "pass", "contradictionAudit": "pass", "utilityAudit": "pass", "copyAudit": "pass", "seoAudit": "pass", "conversionAudit": "pass", "renderedQa": "pass"},
     }
     post.update(overrides)
     return post
@@ -173,7 +175,7 @@ class PublishingTests(unittest.TestCase):
             published = json.loads(store_path.read_text())
             self.assertEqual(len(published), 1)
             self.assertEqual(published[0]["reviewStatus"], "published")
-            self.assertEqual(published[0]["reviewer"], "Isaac")
+            self.assertEqual(published[0]["reviewer"], "independent-reviewer")
             self.assertEqual(len(audit_path.read_text().strip().splitlines()), 1)
 
             with self.assertRaises(ValueError):

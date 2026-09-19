@@ -34,6 +34,7 @@ export function websiteSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": `${SITE_URL}#website`,
     name: "SoapCraft Pro",
     url: SITE_URL,
     potentialAction: {

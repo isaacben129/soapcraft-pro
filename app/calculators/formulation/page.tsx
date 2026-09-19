@@ -40,7 +40,7 @@ export default function FormulationCalculatorPage() {
 
         <section
           aria-labelledby="availability-heading"
-          className="mt-10 rounded-xl border border-warning/40 bg-warning/5 p-6 md:p-8"
+          className="mt-10 rounded-lg border border-warning/40 bg-warning/5 p-6 md:p-8"
         >
           <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
             <div>
@@ -75,7 +75,7 @@ export default function FormulationCalculatorPage() {
               ["Separate weighed masses", "Results keep pure requirements, NaOH as supplied, KOH as supplied, and total alkali as supplied distinct."],
               ["Full internal precision", "The dependency chain remains unrounded. Rounding is reserved for display and export boundaries."],
             ].map(([title, text]) => (
-              <div key={title} className="rounded-xl border border-border bg-card p-5">
+              <div key={title} className="rounded-lg border border-border bg-card p-5">
                 <h3 className="font-display text-lg font-semibold text-foreground">{title}</h3>
                 <p className="mt-2 leading-7 text-muted-foreground">{text}</p>
               </div>
@@ -107,7 +107,7 @@ export default function FormulationCalculatorPage() {
           </p>
         </section>
 
-        <section className="mt-14 rounded-xl bg-muted p-6 md:p-8">
+        <section className="mt-14 rounded-lg bg-muted p-6 md:p-8">
           <h2 className="font-display text-xl font-bold text-foreground">Tools available while verification continues</h2>
           <p className="mt-2 text-muted-foreground">
             You can use the non-chemistry business calculators without an account while the formulation release gate remains closed.

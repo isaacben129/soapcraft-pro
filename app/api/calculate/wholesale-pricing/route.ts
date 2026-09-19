@@ -35,15 +35,16 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (!desiredMargin || desiredMargin < 0) {
+    if (!Number.isFinite(desiredMargin) || desiredMargin < 0 || desiredMargin >= 100) {
       return NextResponse.json(
-        { error: "Desired margin must be a non-negative number" },
+        { error: "Target gross margin must be from 0% up to, but not including, 100%" },
         { status: 400 }
       );
     }
 
+    // Gross margin is profit ÷ selling price. Keep full precision until display.
     const wholesalePricePerBar = Math.round(
-      productionCostPerBar * (1 + desiredMargin / 100) * 100
+      (productionCostPerBar / (1 - desiredMargin / 100)) * 100
     ) / 100;
     const wholesalePricePerBatch = Math.round(wholesalePricePerBar * batchSize * 100) / 100;
     const retailPricePerBar = Math.round(wholesalePricePerBar * retailMultiplier * 100) / 100;
@@ -71,7 +72,7 @@ export async function POST(req: NextRequest) {
       totalRetailRevenue,
       wholesaleProfit,
       retailProfit,
-      formula: `Wholesale = Cost × (1 + Margin/100) = ${productionCostPerBar} × (1 + ${desiredMargin}/100) = ${wholesalePricePerBar}`,
+      formula: `Wholesale floor = Cost ÷ (1 − Target gross margin) = ${productionCostPerBar} ÷ (1 − ${desiredMargin}/100) = ${wholesalePricePerBar}`,
     });
   } catch (error) {
     console.error("Wholesale pricing calculation error:", error);
