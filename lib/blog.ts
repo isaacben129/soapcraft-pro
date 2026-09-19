@@ -1,10 +1,7 @@
 import blogData from "./blog-data.json";
+import { validateBlogContract, type ArticleFamily, type ContentSource, type EditorialBrief, type EditorialClaim, type ReviewManifest, type RiskClass } from "./blog-contract";
 
-export interface ContentSource {
-  title: string;
-  url: string;
-  accessedAt: string;
-}
+export type { ContentSource } from "./blog-contract";
 
 export interface BlogPost {
   slug: string;
@@ -26,7 +23,12 @@ export interface BlogPost {
   reviewStatus: "draft" | "review" | "approved" | "published";
   source?: string | null;
   sourceRevision?: string | null;
+  riskClass?: RiskClass;
+  articleFamily?: ArticleFamily;
   sources?: ContentSource[];
+  claims?: EditorialClaim[];
+  editorialBrief?: EditorialBrief;
+  reviewManifest?: ReviewManifest;
   lastReviewed?: string;
   reviewer?: string;
   contextualCTA?: {
@@ -38,7 +40,7 @@ export interface BlogPost {
 const allBlogPosts: BlogPost[] = blogData as BlogPost[];
 
 export function filterPublishedPosts(posts: BlogPost[]): BlogPost[] {
-  return posts.filter((post) => post.reviewStatus === "published");
+  return posts.filter((post) => post.reviewStatus === "published" && validateBlogContract(post).valid);
 }
 
 export function getBlogPostFrom(

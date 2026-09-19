@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "primaryMetric": "qualified free-tool completions per 1000 attributed organic sessions",
+  "calibration": {"requiredAcceptedCampaigns": 2, "acceptedCampaigns": 0, "greenAutonomousReleaseEnabled": false},
+  "lanes": {
+    "GREEN": {"requiresIndependentReview": true, "requiresExplicitApprovalDuringCalibration": true},
+    "AMBER": {"requiresIndependentReview": true, "requiresExplicitApproval": true},
+    "RED": {"aiOnlyPublicationAllowed": false}
+  },
+  "publication": {"requiresConfirmation": true, "requiresImmutableAuditLog": true, "requiresDesktopMobileAndLoggedOutQA": true}
+}
